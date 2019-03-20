@@ -1,5 +1,6 @@
 stages:
   - test
+  - build
 
 eslint:
   image: node:10.15
@@ -13,3 +14,112 @@ eslint:
     - npm run lint
   tags:
     - docker
+
+build.develop:
+  stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
+  script:
+    - npm config set unsafe-perm true
+    - npm i
+    - npm run build-web
+    - rm -rf /home/frontend
+    - cp -r ./dist /home/frontend
+  only:
+    - develop
+  tags:
+    - develop
+  environment:
+    name: development
+
+build.master:
+  stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
+  script:
+    - npm config set unsafe-perm true
+    - npm i
+    - npm run build-web
+    - rm -rf /home/frontend
+    - cp -r ./dist /home/frontend
+  only:
+    - master
+  tags:
+    - stage
+  environment:
+    name: development
+
+build.package-linux:
+  image: electronuserland/builder:10
+  stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
+  script:
+    - npm config set unsafe-perm true
+    - npm i
+    - npm run package-linux
+  only:
+    - master
+  tags:
+    - docker
+  artifacts:
+    name: 'artifacts_linux_$CI_COMMIT_REF_NAME'
+    paths:
+      - release/*.deb
+      - release/*.rpm
+    expire_in: 1 week
+  environment:
+    name: development
+
+build.package-win:
+  image: electronuserland/builder:wine
+  stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
+  script:
+    - npm config set unsafe-perm true
+    - npm i
+    - npm run package-win
+  only:
+    - master
+  tags:
+    - docker
+  artifacts:
+    name: 'artifacts_win_$CI_COMMIT_REF_NAME'
+    paths:
+      - release/*.exe
+      - release/*.msi
+    expire_in: 1 week
+  environment:
+    name: development
+
+build.package-mac:
+  stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
+  script:
+    - npm config set unsafe-perm true
+    - npm i
+    - npm run package-mac
+  only:
+    - master
+  tags:
+    - echo-mac
+  artifacts:
+    name: 'artifacts_mac_$CI_COMMIT_REF_NAME'
+    paths:
+      - release/*.dmg
+      - release/*.zip
+    expire_in: 1 week
+  environment:
+    name: development
