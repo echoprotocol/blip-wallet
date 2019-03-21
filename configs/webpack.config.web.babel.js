@@ -71,10 +71,8 @@ export default {
 					{
 						loader: 'css-loader',
 						options: {
-							modules: true,
+							modules: false,
 							sourceMap: true,
-							importLoaders: 1,
-							localIdentName: '[name]__[local]__[hash:base64:5]',
 						},
 					},
 				],
@@ -107,10 +105,8 @@ export default {
 					{
 						loader: 'css-loader',
 						options: {
-							modules: true,
+							modules: false,
 							sourceMap: true,
-							importLoaders: 1,
-							localIdentName: '[name]__[local]__[hash:base64:5]',
 						},
 					},
 					{
@@ -154,6 +150,11 @@ export default {
 			// EOT Font
 			{
 				test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+				use: 'file-loader',
+			},
+			// OTF Font
+			{
+				test: /\.otf(\?v=\d+\.\d+\.\d+)?$/,
 				use: 'file-loader',
 			},
 			// SVG Font

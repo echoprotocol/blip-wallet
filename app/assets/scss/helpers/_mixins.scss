@@ -1,0 +1,62 @@
+@mixin max-vw($width) {
+	@media (max-width: $width + "px") {
+		@content;
+	}
+}
+
+@mixin min-vw($width) {
+	@media (min-width: $width + "px") {
+		@content;
+	}
+}
+
+@mixin max-vh($height) {
+	@media (max-height: $height + "px") {
+		@content;
+	}
+}
+
+@mixin min-vh($height) {
+	@media (min-height: $height + "px") {
+		@content;
+	}
+}
+
+@mixin absolute-stretch {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+}
+
+@mixin hardwareAccel() {
+	transform: translateZ(0);
+}
+
+@mixin onBtnFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
+	@include hardwareAccel();
+	position: relative;
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: -($outerBorderWidth + $innerBorderWidth);
+		right: -($outerBorderWidth + $innerBorderWidth);
+		bottom: -($outerBorderWidth + $innerBorderWidth);
+		left: -($outerBorderWidth + $innerBorderWidth);
+		border: $outerBorderWidth solid transparent;
+		border-radius: $angular + 2px;
+		transition: border-color $speed;
+	}
+
+	&:not(:active) {
+		&:focus {
+			&:before {
+				border-color: $color;
+			}
+		}
+	}
+}

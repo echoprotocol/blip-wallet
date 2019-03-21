@@ -1,0 +1,20 @@
+html {
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body {
+	@include min-vw(1400) {
+		font-size: calc(62.5% + 0.14vw);
+	}
+	@include min-vw(1200) {
+		font-size: calc(62.5% + 0.05vw);
+	}
+	margin: 0;
+	font-size: 62.5%;
+}

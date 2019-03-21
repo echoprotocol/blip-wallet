@@ -1,0 +1,52 @@
+$source: '/app/assets/fonts/SourceSansPro' !default;
+$icomoon: '/app/assets/fonts/Icomoon' !default;
+
+// SourceSansPro Regular
+@font-face {
+	font-family: 'SourceSansPro-Regular';
+	font-style: normal;
+	font-weight: normal;
+	src: url('#{$source}/Regular/SourceSansPro-Regular.eot');
+	src: url('#{$source}/Regular/SourceSansPro-Regular.woff2') format('woff2'),
+	url('#{$source}/Regular/SourceSansPro-Regular.woff') format('woff'),
+	url('#{$source}/Regular/SourceSansPro-Regular.ttf') format('truetype'),
+	url('#{$source}/Regular/SourceSansPro-Regular.svg#SourceSansPro-Regular')
+	format('svg');
+}
+
+@mixin source-regular {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-family: 'SourceSansPro-Regular';
+}
+
+@font-face {
+	font-family: 'SourceSansPro-SemiBold';
+	font-style: normal;
+	font-weight: normal;
+	src: url('#{$source}/SemiBold/SourceSansPro-SemiBold.eot');
+	src: url('#{$source}/SemiBold/SourceSansPro-SemiBold.eot?#iefix')
+	format('embedded-opentype'),
+	url('#{$source}/SemiBold/SourceSansPro-SemiBold.svg#SourceSansPro-SemiBold')
+	format('svg'),
+	url('#{$source}/SemiBold/SourceSansPro-SemiBold.ttf') format('truetype'),
+	url('#{$source}/SemiBold/SourceSansPro-SemiBold.woff') format('woff'),
+	url('#{$source}/SemiBold/SourceSansPro-SemiBold.woff2') format('woff2');
+}
+
+@mixin source-semibold {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-family: 'SourceSansPro-SemiBold';
+}
+
+@font-face {
+	font-family: 'icomoon';
+	font-style: normal;
+	font-weight: normal;
+	src: url('#{$icomoon}/icomoon.eot?e11wn4');
+	src: url('#{$icomoon}/icomoon.eot?e11wn4#iefix') format('embedded-opentype'),
+	url('#{$icomoon}/icomoon.ttf?e11wn4') format('truetype'),
+	url('#{$icomoon}/icomoon.woff?e11wn4') format('woff'),
+	url('#{$icomoon}/icomoon.svg?e11wn4#icomoon') format('svg');
+}
