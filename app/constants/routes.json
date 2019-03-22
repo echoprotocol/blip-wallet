@@ -1,3 +1,4 @@
 {
-  "AUTHORIZATION": "/"
+	"AUTHORIZATION": "/authorization",
+	"ACCOUNT_CREATED": "/account-created"
 }

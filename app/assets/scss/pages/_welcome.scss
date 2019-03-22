@@ -1,0 +1,155 @@
+.welcome-wrap {
+	@include max-vw(900) {
+		justify-content: space-between;
+	}
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	height: 100vh;
+	padding: 40px;
+}
+
+.welcome-card {
+	@include min-vw(900) {
+		margin-left: 50px;
+	}
+	@include min-vw(1400) {
+		width: 380px;
+		margin-left: 100px;
+	}
+	width: 340px;
+	margin-left: 25px;
+	border-radius: 3px;
+	background-color: #dbd2f3;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.02);
+
+	.card-wrap {
+		display: flex;
+		padding-right: 38px;
+		padding-left: 34px;
+	}
+
+	.head {
+		width: 100%;
+		height: 103px;
+		border-bottom: 1px solid #c3b9df;
+
+		.card-wrap {
+			align-items: center;
+			display: flex;
+			padding-top: 25px;
+		}
+
+		.avatar {
+			min-width: 44px;
+			height: 44px;
+			margin-right: 18px;
+			border-radius: 3px;
+		}
+
+		.account-info {
+			.label {
+				@include source-regular();
+				color: rgba(#000, 0.5);
+				font-size: 1.4em;
+				letter-spacing: 0.019em;
+			}
+
+			.name {
+				@include source-semibold();
+				margin-top: 3px;
+				color: #000;
+				font-size: 1.8em;
+				letter-spacing: 0.018em;
+				line-height: 1em;
+				word-break: break-all;
+			}
+		}
+	}
+
+	.body {
+		@include min-vw(1400) {
+			height: 400px;
+			padding: 40px 0;
+		}
+		height: 348px;
+		padding: 30px 0;
+
+		.card-wrap {
+			flex-direction: column;
+			height: 100%;
+			color: #000;
+
+			span {
+				font-size: 1.6em;
+				line-height: 1.3;
+			}
+		}
+
+		.wif-wrap {
+			padding-top: 40px;
+
+			.wif-label {
+				color: rgba(#000, 0.5);
+				font-size: 1.4em;
+			}
+
+			.wif {
+				@include source-semibold();
+				margin: 8px 0 0;
+				font-size: 2.4em;
+				letter-spacing: 0.02em;
+				line-height: 1.21;
+				word-break: break-all;
+			}
+		}
+
+		.btn-white {
+			margin-top: auto;
+		}
+	}
+}
+
+.welcome-info {
+	@include max-vw(900) {
+		width: 280px;
+
+		br {
+			display: none;
+		}
+	}
+	@include min-vw(900) {
+		margin-right: 50px;
+	}
+	@include min-vw(1400) {
+		height: 503px;
+		margin-right: 100px;
+	}
+	flex-direction: column;
+	align-items: flex-start;
+	display: flex;
+	width: 390px;
+	height: 451px;
+	margin-right: 25px;
+
+	h1 {
+		@include source-semibold();
+		@include max-vw(900) {
+			font-size: 3em;
+		}
+		margin: 25px 0 0.6em;
+		color: #fff;
+		font-size: 3.5em;
+	}
+
+	p {
+		@include source-regular();
+		color: #b89bf5;
+		font-size: 1.6em;
+	}
+
+	.btn-primary {
+		height: 40px;
+		margin: auto 0 40px;
+	}
+}

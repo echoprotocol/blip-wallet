@@ -92,7 +92,7 @@ export default merge.smart(baseConfig, {
 					{
 						loader: 'css-loader',
 						options: {
-							modules: true,
+							modules: false,
 							sourceMap: true,
 							importLoaders: 1,
 							localIdentName: '[name]__[local]__[hash:base64:5]',
@@ -138,43 +138,9 @@ export default merge.smart(baseConfig, {
 					},
 				],
 			},
-			// WOFF Font
 			{
-				test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-				use: {
-					loader: 'url-loader',
-					options: {
-						limit: 10000,
-						mimetype: 'application/font-woff',
-					},
-				},
-			},
-			// WOFF2 Font
-			{
-				test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-				use: {
-					loader: 'url-loader',
-					options: {
-						limit: 10000,
-						mimetype: 'application/font-woff',
-					},
-				},
-			},
-			// TTF Font
-			{
-				test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-				use: {
-					loader: 'url-loader',
-					options: {
-						limit: 10000,
-						mimetype: 'application/octet-stream',
-					},
-				},
-			},
-			// EOT Font
-			{
-				test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-				use: 'file-loader',
+				test: /\.(woff|woff2|eot|ttf|otf)$/,
+				loader: 'url-loader?limit=100000',
 			},
 			// SVG Font
 			{

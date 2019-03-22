@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tab, Button } from 'semantic-ui-react';
 
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import SignIn from './sign-in';
+import SignUp from './sign-up';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import googleLogo from '../../assets/images/google-logo.svg';
 
@@ -16,6 +16,7 @@ class Authorization extends React.Component {
 			activeIndex: 0,
 		};
 	}
+
 	setActiveTab(e, active) {
 		e.stopPropagation();
 		this.setState({
@@ -42,7 +43,7 @@ class Authorization extends React.Component {
 	}
 
 	render() {
-		
+
 		const { activeIndex, indexPanes } = this.state;
 
 		const panes = [
@@ -71,18 +72,19 @@ class Authorization extends React.Component {
 				render: () => (
 					<Tab.Pane>
 						<div className="inner"><SignUp /></div>
-					</Tab.Pane>),
+					</Tab.Pane>
+				),
 			},
 			{
 				menuItem: <Button
 					key="2"
 					className="g-auth"
-					content={
+					content={(
 						<React.Fragment>
 							<img className="ic" src={googleLogo} alt="" />
 							<span className="text">Sign in with Google</span>
 						</React.Fragment>
-					}
+					)}
 					onClick={(e) => this.setActiveTab(e, activeIndex)}
 				/>,
 			},

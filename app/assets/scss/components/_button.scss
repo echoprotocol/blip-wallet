@@ -1,7 +1,9 @@
 @mixin btn() {
 	align-items: center;
 	justify-content: center;
+	position: relative;
 	display: flex;
+	line-height: 1px;
 	white-space: nowrap;
 	transition: color 0.3s, border 0.3s, background-color 0.3s;
 
@@ -11,6 +13,23 @@
 
 	.ic {
 		margin-right: 12px;
+	}
+
+	&.arrow {
+		padding: 0 50px 0 30px;
+
+		&-left {
+			padding: 0 30px 0 50px;
+		}
+	}
+
+	.arrow-right {
+		align-items: center;
+		position: absolute;
+		top: 0;
+		right: 17px;
+		bottom: 0;
+		display: flex;
 	}
 }
 
@@ -40,12 +59,46 @@
 		border: 1px solid #43d7ad;
 		background-color: #43d7ad;
 	}
-}
 
-[class*=" btn-"] {
 	&.disabled {
 		border: 1px solid #8f77c5;
 		background-color: transparent;
 		color: #a78edc;
+	}
+}
+
+.btn-white {
+	@include source-semibold();
+
+	@include min-vw(1400) {
+		height: 38px;
+	}
+	@include onBtnFocus(3px, 2px, 1px, rgba(rgba(#8676b1, 0.035), 0.45));
+
+	@include btn();
+
+	height: 28px;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	background-color: #fff;
+	color: #000;
+	font-size: 1.4em;
+	transition: box-shadow $speed;
+
+	&:focus {
+		border: 1px solid #8676b1;
+	}
+
+	&:active {
+		border: 1px solid #fff;
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.01);
+	}
+
+	&:hover {
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.03);
+	}
+
+	.copy {
+		margin: 0 5px 0 -5px;
 	}
 }

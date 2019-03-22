@@ -1,4 +1,24 @@
 i.icon {
 	display: inline-block;
+	font-family: 'icomoon' !important;
 	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1;
+	text-transform: none;
+	speak: none;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.copy:before {
+	content: '\e901';
+	font-size: 13px;
+}
+
+.arrow-right:before {
+	content: '\e902';
+	font-size: 14px;
 }

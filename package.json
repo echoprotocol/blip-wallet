@@ -55,7 +55,6 @@
       "git add"
     ]
   },
-
   "main": "./app/main.prod.js",
   "build": {
     "productName": "BlipWallet",
