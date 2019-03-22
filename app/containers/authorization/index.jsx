@@ -25,17 +25,16 @@ class Authorization extends React.Component {
 	}
 
 	generatePanes(e, panes) {
-		
+
 		const elmClasses = e.target.classList;
 
-		if (!elmClasses.contains('menu-item') || elmClasses.contains('active') ) {
+		if (!elmClasses.contains('menu-item') || elmClasses.contains('active')) {
 			return;
 		}
 
 		panes.splice(-1, 1);
 
-		const indexPanes = panes.map((pane) =>
-			(pane.menuItem.props.tabIndex === -1 ? 0 : -1)).reverse();
+		const indexPanes = panes.map((pane) => (pane.menuItem.props.tabIndex === -1 ? 0 : -1)).reverse();
 
 		this.setState({
 			indexPanes,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
+
 import { AUTHORIZATION, ACCOUNT_CREATED } from './constants/routes';
 import App from './containers/app';
 import Authorization from './containers/authorization';

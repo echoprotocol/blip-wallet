@@ -1,0 +1,25 @@
+.dimmer {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	background-color: rgba(#65509f, 0.9);
+
+	&-loading {
+		animation: rotation $speed * 4 infinite linear, fadeIn $speed * 2;
+	}
+
+	&-content {
+		@include source-semibold();
+		margin-top: 40px;
+		color: #fff;
+		font-size: 1.3em;
+		letter-spacing: 0.03em;
+		animation: fadeIn $speed * 2;
+	}
+}
