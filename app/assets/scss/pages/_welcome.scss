@@ -136,10 +136,12 @@
 		@include source-semibold();
 		@include max-vw(900) {
 			font-size: 3em;
+			letter-spacing: 0.03em;
 		}
 		margin: 25px 0 0.6em;
 		color: #fff;
 		font-size: 3.5em;
+		letter-spacing: 0.035em;
 	}
 
 	p {
@@ -152,4 +154,23 @@
 		height: 40px;
 		margin: auto 0 40px;
 	}
+}
+
+.wif-toast {
+	@include source-regular();
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	width: 100%;
+	height: 60px;
+	background-image: url(../images/wif-gradient.png);
+	background-position: bottom;
+	background-repeat-y: no-repeat;
+	color: #b89bf5;
+	font-size: 1.4em;
+	letter-spacing: 0.014em;
 }

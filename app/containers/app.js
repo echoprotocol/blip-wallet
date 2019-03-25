@@ -28,7 +28,7 @@ App.propTypes = {
 };
 
 App.defaultProps = {
-	loading: true,
+	loading: false,
 	dimmerContent: 'Account is about to be imported',
 };
 

@@ -66,7 +66,9 @@ class accountCreated extends React.Component {
 							</div>
 						</div>
 					</div>
-
+					<div className="wif-toast">
+						{'WIF is copied to clipboard'}
+					</div>
 				</div>
 			</div>
 		);
