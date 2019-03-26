@@ -1,5 +1,5 @@
 {
-    "ignoreFiles": "../assets/scss/vendors/**/*",
+    "ignoreFiles": ["./app/assets/scss/vendors/**/*", "./app/assets/scss/helpers/_mixins.scss"],
     "plugins": [
         "stylelint-order"
     ],

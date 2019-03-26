@@ -1,0 +1,159 @@
+.dropdown-lang {
+	.dropdown-label {
+		margin-bottom: 15px;
+		color: #a482ea;
+		font-size: 1.5em;
+	}
+}
+
+.dropdown {
+	position: relative;
+
+	&:not(.show) {
+		.dropdown-toggle:not(:active) {
+			&:focus {
+				@include onBtnFocus(4px, 2px, 1px, rgba(#43d7ad, 0.45));
+				border: 1px solid #43d7ad;
+			}
+		}
+	}
+
+	&.show {
+		.dropdown-toggle {
+			.carret {
+				&:before {
+					@include triangle(bottom, #a482ea);
+				}
+
+				&:after {
+					display: none;
+				}
+			}
+
+			&:active {
+				.carret {
+					&:before {
+						@include triangle(bottom, rgba(#c8adff, 0.5));
+					}
+				}
+			}
+
+			&:hover {
+				.carret {
+					&:before {
+						@include triangle(bottom, #c8adff);
+					}
+				}
+			}
+		}
+	}
+
+	.dropdown-toggle {
+		position: relative;
+	}
+}
+
+.dropdown-toggle {
+	@include min-vw(1400) {
+		height: 52px;
+	}
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+	display: flex;
+	width: 100%;
+	height: 44px;
+	padding: 0 14px;
+	border: 1px solid #a482ea;
+	border-radius: 3px;
+	background-color: transparent;
+	color: #fff;
+	font-size: 1.8em;
+	outline: none;
+	transition: border $speed, background-color $speed, color $speed;
+	will-change: transform;
+	
+	.carret {
+		&:after {
+			@include triangle(top, #a482ea);
+		}
+
+		&:after,
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 14px;
+			bottom: 0;
+			width: 0px;
+			height: 0px;
+			margin: auto;
+		}
+	}
+
+	&:hover {
+		background-color: rgba(#4d3b7e, 0.4);
+
+		.carret {
+			&:after {
+				@include triangle(top, #c8adff);
+			}
+		}
+	}
+
+	&:active {
+		border: 1px solid #8968ca;
+		background-color: rgba(#4d3b7e, 0.6);
+		color: #ae93e7;
+
+		.carret {
+			&:after {
+				@include triangle(top, rgba(#c8adff, 0.5));
+			}
+		}
+	}
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: 0;
+	z-index: 3;
+	display: none;
+	margin-top: 4px;
+	padding: 10px 1px;
+	border-radius: 3px;
+	background-color: #dbd2f3;
+	list-style: none;
+	background-clip: padding-box;
+}
+
+.dropdown-item {
+	display: block;
+	padding: 10px 14px;
+	border-radius: 3px;
+	color: #000;
+	font-size: 1.6em;
+	white-space: nowrap;
+	transition: background-color $speed, color $speed;
+
+	&:hover,
+	&:focus {
+		background-color: #fff;
+		color: #000;
+	}
+
+	&.active {
+		color: #8d8d8d;
+	}
+
+	&.disabled,
+	&:disabled {
+		background-color: transparent;
+	}
+}
+
+.dropdown-menu.show {
+	display: block;
+}

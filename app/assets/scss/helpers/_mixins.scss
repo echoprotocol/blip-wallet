@@ -1,29 +1,29 @@
 @mixin max-vw($width) {
-	@media (max-width: $width + "px") {
+	@media (max-width: $width + 'px') {
 		@content;
 	}
 }
 
 @mixin min-vw($width) {
-	@media (min-width: $width + "px") {
+	@media (min-width: $width + 'px') {
 		@content;
 	}
 }
 
 @mixin max-vh($height) {
-	@media (max-height: $height + "px") {
+	@media (max-height: $height + 'px') {
 		@content;
 	}
 }
 
 @mixin min-vh($height) {
-	@media (min-height: $height + "px") {
+	@media (min-height: $height + 'px') {
 		@content;
 	}
 }
 
 @mixin absolute-stretch {
-	content: "";
+	content: '';
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -41,7 +41,7 @@
 	position: relative;
 
 	&:before {
-		content: "";
+		content: '';
 		position: absolute;
 		top: -($outerBorderWidth + $innerBorderWidth);
 		right: -($outerBorderWidth + $innerBorderWidth);
@@ -59,4 +59,27 @@
 			}
 		}
 	}
+}
+
+@mixin triangle($direction, $color: #000, $size: 4px) {
+	$perpendicular-borders: $size solid transparent;
+
+	@if $direction == top or $direction == bottom {
+		border-right: $perpendicular-borders;
+		border-left: $perpendicular-borders;
+		transition: border-top-color $speed, border-bottom-color $speed;
+
+	} @else if $direction == right or $direction == left {
+		border-top: $perpendicular-borders;
+		border-bottom: $perpendicular-borders;
+		transition: border-left-color $speed, border-right-color $speed;
+
+	}
+	content: '';
+	z-index: 2;
+
+	width: 0;
+	height: 0;
+
+	border-#{$direction}: $size solid $color;
 }

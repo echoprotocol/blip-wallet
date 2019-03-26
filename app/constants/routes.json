@@ -1,4 +1,5 @@
 {
 	"AUTHORIZATION": "/authorization",
-	"ACCOUNT_CREATED": "/account-created"
+	"ACCOUNT_CREATED": "/account-created",
+	"SELECT_LANGUAGE": "/select-language"
 }

@@ -1,0 +1,30 @@
+.lang-wrap {
+	@include source-regular();
+	@include max-vh(600) {
+		justify-content: flex-start;
+		padding: 200px 0 50px;
+	}
+	flex-direction: column;
+	justify-content: center;
+	display: flex;
+	width: 100%;
+	max-width: 370px;
+	min-height: 100vh;
+	margin: auto;
+
+	h3 {
+		margin: 0 0 30px;
+		color: #fff;
+		font-size: 1.7em;
+		letter-spacing: 0.03em;
+	}
+
+	.btn-primary {
+		@include min-vw(1400) {
+			min-width: 144px;
+			height: 42px;
+		}
+		align-self: flex-start;
+		margin-top: 65px;
+	}
+}
