@@ -20,7 +20,7 @@
 			@include max-vw(1200) {
 				margin-right: 13px;
 				font-size: 1.9em;
-				letter-spacing: 0.6px;
+				letter-spacing: 0.019em;
 			}
 
 			order: 2;
@@ -30,7 +30,7 @@
 			background-color: transparent;
 			color: #b89bf5;
 			font-size: 2.2em;
-			letter-spacing: 0.9px;
+			letter-spacing: 0.022em;
 			line-height: 1;
 			user-select: none;
 			transition: color $speed;
@@ -144,9 +144,9 @@
 	.lines {
 		@include min-vh(680) {
 			height: calc(68vh - 1px);
+			padding: 20vh 0 0;
 		}
 		flex-direction: column;
-		justify-content: center;
 		display: flex;
 		padding: 56px 0;
 	}
@@ -158,24 +158,26 @@
 		&-label {
 			@include source-regular();
 			@include min-vw(1400) {
+				min-width: 112px;
 				line-height: 60px;
 			}
-			width: 134px;
 			margin-right: 1.9em;
 			color: #fff;
 			font-size: 1.6em;
+			letter-spacing: 0;
 			line-height: 44px;
 			text-align: right;
 			white-space: nowrap;
 		}
 
 		&-content {
-			@include max-vw(1400) {
-				max-width: 362px;
+			@include min-vw(1200) {
+				min-width: 420px;
 			}
-			width: 100%;
-			min-width: 362px;
-			max-width: 486px;
+			@include min-vw(1400) {
+				min-width: 460px;
+			}
+			width: 362px;
 		}
 
 		&:not(:last-child) {

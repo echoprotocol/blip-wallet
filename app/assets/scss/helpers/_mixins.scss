@@ -1,29 +1,29 @@
 @mixin max-vw($width) {
-	@media (max-width: $width + "px") {
+	@media (max-width: $width + 'px') {
 		@content;
 	}
 }
 
 @mixin min-vw($width) {
-	@media (min-width: $width + "px") {
+	@media (min-width: $width + 'px') {
 		@content;
 	}
 }
 
 @mixin max-vh($height) {
-	@media (max-height: $height + "px") {
+	@media (max-height: $height + 'px') {
 		@content;
 	}
 }
 
 @mixin min-vh($height) {
-	@media (min-height: $height + "px") {
+	@media (min-height: $height + 'px') {
 		@content;
 	}
 }
 
 @mixin absolute-stretch {
-	content: "";
+	content: '';
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -32,16 +32,18 @@
 	z-index: -1;
 }
 
-@mixin hardwareAccel() {
+@mixin hardware-accel() {
+	-webkit-transform: translateZ(0) scale(1, 1);
 	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
 }
 
 @mixin onBtnFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
-	@include hardwareAccel();
+	@include hardware-accel();
 	position: relative;
 
 	&:before {
-		content: "";
+		content: '';
 		position: absolute;
 		top: -($outerBorderWidth + $innerBorderWidth);
 		right: -($outerBorderWidth + $innerBorderWidth);

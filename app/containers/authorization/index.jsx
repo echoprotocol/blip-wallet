@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, Button } from 'semantic-ui-react';
 
 import SignIn from './sign-in';
-import SignUp from './sign-up';
+import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import googleLogo from '../../assets/images/google-logo.svg';
 
@@ -70,7 +70,7 @@ class Authorization extends React.Component {
 				/>,
 				render: () => (
 					<Tab.Pane>
-						<div className="inner"><SignUp /></div>
+						<div className="inner"><ImportAccount /></div>
 					</Tab.Pane>
 				),
 			},

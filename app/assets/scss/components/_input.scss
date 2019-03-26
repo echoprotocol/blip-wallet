@@ -29,9 +29,10 @@
 	input {
 		@include input();
 		@include source-semibold();
+		@include hardware-accel();
 		color: #33353f;
 		font-size: 1.7em;
-		letter-spacing: 0.25px;
+		letter-spacing: 0.017em;
 
 		&::placeholder {
 			color: #624d9a;
@@ -61,7 +62,7 @@
 	margin-top: 1.2em;
 	color: #b89bf5;
 	font-size: 1.4em;
-	letter-spacing: 0.12px;
+	letter-spacing: 0;
 	line-height: 1.4em;
 
 	.hint {
