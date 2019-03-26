@@ -2,8 +2,6 @@ import React from 'react';
 import { Input, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import avatar from '../../assets/images/default-avatar.svg';
-
 class ImportAccount extends React.Component {
 
 	componentDidMount() {
@@ -98,13 +96,11 @@ class ImportAccount extends React.Component {
 }
 ImportAccount.propTypes = {
 	error: PropTypes.bool,
-	loading: PropTypes.bool,
 	errorMessage: PropTypes.string,
 };
 
 ImportAccount.defaultProps = {
 	error: false,
-	loading: true,
 	errorMessage: '',
 };
 
