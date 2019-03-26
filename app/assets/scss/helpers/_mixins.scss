@@ -32,12 +32,14 @@
 	z-index: -1;
 }
 
-@mixin hardwareAccel() {
+@mixin hardware-accel() {
+	-webkit-transform: translateZ(0) scale(1, 1);
 	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
 }
 
 @mixin onBtnFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
-	@include hardwareAccel();
+	@include hardware-accel();
 	position: relative;
 
 	&:before {
