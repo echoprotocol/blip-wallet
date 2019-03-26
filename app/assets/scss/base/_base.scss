@@ -15,6 +15,7 @@ body {
 	@include min-vw(1200) {
 		font-size: calc(62.5% + 0.05vw);
 	}
+
 	margin: 0;
 	font-size: 62.5%;
 }

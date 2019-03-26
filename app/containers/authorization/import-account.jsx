@@ -12,7 +12,8 @@ class ImportAccount extends React.Component {
 		const { error, errorMessage } = this.props;
 		return (
 
-			<div className="authorization-form">
+			<div className="form-wrap">
+
 				<div className="form-content">
 					<div className="lines">
 						<div className="line">
