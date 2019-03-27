@@ -1,12 +1,29 @@
-.welcome-wrap {
-	@include max-vw(900) {
-		justify-content: space-between;
-	}
+.welcome-page {
 	align-items: center;
 	justify-content: center;
 	display: flex;
 	height: 100vh;
+}
+
+.welcome-wrap {
+	@include max-vw(900) {
+		justify-content: space-between;
+	}
+	align-items: stretch;
+	justify-content: center;
+	display: flex;
 	padding: 40px;
+
+	.avatar {
+		@include min-vw(1400) {
+			min-width: 60px;
+			height: 60px;
+		}
+		min-width: 44px;
+		height: 44px;
+		margin-right: 1.8em;
+		border-radius: 3px;
+	}
 }
 
 .welcome-card {
@@ -14,7 +31,7 @@
 		margin-left: 50px;
 	}
 	@include min-vw(1400) {
-		width: 380px;
+		width: 420px;
 		margin-left: 100px;
 	}
 	width: 340px;
@@ -31,20 +48,12 @@
 
 	.head {
 		width: 100%;
-		height: 103px;
 		border-bottom: 1px solid #c3b9df;
 
 		.card-wrap {
 			align-items: center;
 			display: flex;
-			padding-top: 25px;
-		}
-
-		.avatar {
-			min-width: 44px;
-			height: 44px;
-			margin-right: 18px;
-			border-radius: 3px;
+			padding: 25px 38px;
 		}
 
 		.account-info {
@@ -59,23 +68,20 @@
 				margin-top: 3px;
 				color: #000;
 				font-size: 1.8em;
-				line-height: 1em;
+				line-height: 1.2em;
 				word-break: break-all;
 			}
 		}
 	}
 
 	.body {
-		@include min-vw(1400) {
-			height: 400px;
-			padding: 40px 0;
-		}
-		height: 348px;
-		padding: 30px 0;
-
 		.card-wrap {
+			@include min-vw(1400) {
+				padding: 40px 38px;
+			}
 			flex-direction: column;
 			height: 100%;
+			padding: 25px 38px;
 			color: #000;
 
 			span {
@@ -85,7 +91,7 @@
 		}
 
 		.wif-wrap {
-			padding-top: 40px;
+			padding: 3em 0 4em;
 
 			.wif-label {
 				color: rgba(#000, 0.5);
@@ -109,25 +115,15 @@
 }
 
 .welcome-info {
-	@include max-vw(900) {
-		width: 280px;
-
-		br {
-			display: none;
-		}
-	}
 	@include min-vw(900) {
 		margin-right: 50px;
 	}
 	@include min-vw(1400) {
-		height: 503px;
 		margin-right: 100px;
 	}
 	flex-direction: column;
 	align-items: flex-start;
 	display: flex;
-	width: 390px;
-	height: 451px;
 	margin-right: 25px;
 
 	h1 {
@@ -140,10 +136,12 @@
 		color: #fff;
 		font-size: 3.5em;
 		letter-spacing: 0.035em;
+		white-space: nowrap;
 	}
 
 	p {
 		@include source-regular();
+		width: 20vw;
 		color: #b89bf5;
 		font-size: 1.6em;
 	}
@@ -160,26 +158,18 @@
 		}
 		align-items: center;
 		width: auto;
-		height: 480px;
+		min-height: 40vh;
 		text-align: center;
 
 		.account {
 			align-items: center;
 			display: flex;
-			width: 340px;
-			height: 103px;
+			width: 70%;
 			margin-top: 50px;
-			padding: 0 30px;
+			padding: 1.8em 2em;
 			border: 1px solid #9175cc;
 			border-radius: 3px;
 			text-align: left;
-
-			.avatar {
-				min-width: 44px;
-				height: 44px;
-				margin-right: 18px;
-				border-radius: 3px;
-			}
 
 			.account-info {
 				.label {
@@ -194,9 +184,13 @@
 					color: #fff;
 					font-size: 1.8em;
 					line-height: 1em;
-					word-break: break-all;
+					word-break: brebreak-word;
 				}
 			}
+		}
+
+		.btn-primary.arrow {
+			margin: 12vh 0 0 0;
 		}
 	}
 }

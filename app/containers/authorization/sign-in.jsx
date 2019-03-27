@@ -57,9 +57,7 @@ class SignIn extends React.Component {
 								<div className="avatar-box">
 									<img src={avatar} alt="" />
 									<div className="avatar-desciption">
-										{'Avatar is created automatically after account'}
-										<br />
-										{' confirmation '}
+										{'Avatar is created automatically after account confirmation '}
 									</div>
 								</div>
 

@@ -1,11 +1,11 @@
 @mixin input {
+	@include min-vw(1200) {
+		font-size: 18px;
+	}
 	@include min-vw(1400) {
 		height: 60px;
 		padding: 0 22px;
 		font-size: 20px;
-	}
-	@include min-vw(1200) {
-		font-size: 18px;
 	}
 	height: 44px;
 	padding: 0 14px;
@@ -40,12 +40,11 @@
 		@include source-semibold();
 		@include hardware-accel();
 		color: #33353f;
-
-		font-size: 1.7em;
 		letter-spacing: 0.017em;
 
 		&::placeholder {
 			color: #624d9a;
+			line-height: 44px;
 		}
 	}
 
@@ -142,20 +141,9 @@ form {
 
 			&[type='password'] {
 				color: #5a478e;
-				font-family: caption;
-				font-size: 22px;
 				letter-spacing: 0.1em;
 
 				&::placeholder {
-					@include source-semibold();
-					@include min-vw(1400) {
-						font-size: 20px;
-					}
-					@include min-vw(1200) {
-						font-size: 18px;
-					}
-					font-size: 16px;
-
 					letter-spacing: 0.017em;
 				}
 			}
