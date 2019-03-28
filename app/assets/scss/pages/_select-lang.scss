@@ -21,8 +21,7 @@
 
 	.btn-primary {
 		@include min-vw(1400) {
-			min-width: 144px;
-			height: 42px;
+			min-width: 180px;
 		}
 		align-self: flex-start;
 		margin-top: 65px;

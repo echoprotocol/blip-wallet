@@ -19,7 +19,7 @@ class SignIn extends React.Component {
 					<div className="lines">
 						<div className="line">
 							<div className="line-label">
-								{'Account name'}
+								Account name
 							</div>
 							<div className="line-content">
 								<div className="field">
@@ -51,13 +51,13 @@ class SignIn extends React.Component {
 						<div className="line">
 
 							<div className="line-label">
-								{'Echo avatar'}
+								Echo avatar
 							</div>
 							<div className="line-content">
 								<div className="avatar-box">
 									<img src={avatar} alt="" />
 									<div className="avatar-desciption">
-										{'Avatar is created automatically after account confirmation '}
+										Avatar is created automatically after account confirmation
 									</div>
 								</div>
 

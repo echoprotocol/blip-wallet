@@ -7,11 +7,12 @@ import accountCreated from './containers/account-сreated';
 import selectLanguage from './containers/select-language';
 import accountImported from './containers/account-imported';
 import CreatePassword from './containers/create-password';
+import RestorePassword from './containers/restore-password';
 
 import {
 	AUTHORIZATION, CREATE_PASSWORD,
-	ACCOUNT_CREATED, SELECT_LANGUAGE,
-	ACCOUNT_IMPORTED,
+	RESTORE_PASSWORD, ACCOUNT_CREATED,
+	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
 } from './constants/routes';
 
 export default () => (
@@ -21,6 +22,7 @@ export default () => (
 			<Route path={ACCOUNT_CREATED} component={accountCreated} />
 			<Route path={ACCOUNT_IMPORTED} component={accountImported} />
 			<Route path={CREATE_PASSWORD} component={CreatePassword} />
+			<Route path={RESTORE_PASSWORD} component={RestorePassword} />
 			<Route path={SELECT_LANGUAGE} component={selectLanguage} />
 		</Switch>
 	</App>

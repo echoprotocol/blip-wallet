@@ -22,7 +22,7 @@ class SelectLanguage extends React.Component {
 						className="dropdown-lang"
 					>
 						<div className="dropdown-label">
-							{'	language'}
+							language
 						</div>
 
 						<Dropdown.Toggle variant="Info">
@@ -35,13 +35,13 @@ class SelectLanguage extends React.Component {
 								<Dropdown.Item
 									eventKey="1"
 								>
-									{'English'}
+									English
 								</Dropdown.Item>
 								<Dropdown.Item eventKey="2">
-									{'Русский (Russian)'}
+									Русский (Russian)
 								</Dropdown.Item>
 								<Dropdown.Item eventKey="3">
-									{'Deutsch (German)'}
+									Deutsch (German)
 								</Dropdown.Item>
 							</PerfectScrollbar>
 						</Dropdown.Menu>

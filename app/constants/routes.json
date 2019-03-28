@@ -3,5 +3,6 @@
 	"ACCOUNT_CREATED": "/account-created",
 	"ACCOUNT_IMPORTED": "/account-imported",
 	"CREATE_PASSWORD": "/create-password",
+	"RESTORE_PASSWORD": "/restore-password",
 	"SELECT_LANGUAGE": "/select-language"
 }

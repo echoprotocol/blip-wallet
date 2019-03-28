@@ -31,6 +31,10 @@
 		bottom: 0;
 		display: flex;
 	}
+
+	&.fluid {
+		width: 100%;
+	}
 }
 
 .btn-primary {
@@ -78,12 +82,13 @@
 	@include btn();
 
 	height: 28px;
+	padding: 0 20px;
 	border: 1px solid #fff;
 	border-radius: 3px;
 	background-color: #fff;
 	color: #000;
 	font-size: 1.4em;
-	transition: box-shadow $speed;
+	transition: box-shadow $speed, background-color $speed, color $speed;
 
 	&:focus {
 		border: 1px solid #8676b1;
@@ -98,7 +103,14 @@
 		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.03);
 	}
 
+	&.disabled {
+		border-color: rgba(#676767, 0.67);
+		background-color: transparent;
+		color: rgba(#000, 0.6);
+	}
+
 	.copy {
+		display: flex;
 		margin: 0 5px 0 -5px;
 	}
 }

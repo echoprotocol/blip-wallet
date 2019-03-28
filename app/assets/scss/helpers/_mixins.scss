@@ -63,6 +63,13 @@
 	}
 }
 
+@mixin onCheckboxFocus($color) {
+	@include hardware-accel();
+	box-shadow:
+    0 0 0 2px rgba($color, .2),
+    0 0 0 2px rgba($color, .2);
+}
+
 @mixin triangle($direction, $color: #000, $size: 4px) {
 	$perpendicular-borders: $size solid transparent;
 
