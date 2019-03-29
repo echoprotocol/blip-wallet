@@ -53,6 +53,7 @@
 	background-color: #43d7ad;
 	color: #574589;
 	font-size: 1.5em;
+	transition: color 0.3s, border 0.3s, background-color 0.3s, width 0.3s;
 
 	&:hover {
 		border: 1px solid #59ebc1;
@@ -68,6 +69,52 @@
 		border: 1px solid #8f77c5;
 		background-color: transparent;
 		color: #a78edc;
+	}
+
+	.text {
+		opacity: 1;
+		transition: opacity $speed;
+		transition-delay: 0.1s;
+	}
+
+	&.round-animation {
+		position: relative;
+		margin: auto;
+		transition: width 0.2s, border-radius 0.2s, padding 0.2s;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-image: url(../images/check.svg);
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 20px;
+			opacity: 0;
+		}
+	}
+
+	&.ok {
+		@include min-vw(1400) {
+			width: 56px;
+		}
+		width: 38px;
+		border-radius: 50%;
+
+		&:after {
+			opacity: 1;
+			transition: opacity $speed;
+			transition-delay: 0.1s;
+		}
+
+		.text {
+			visibility: hidden;
+			opacity: 0;
+			transition: none;
+		}
 	}
 }
 

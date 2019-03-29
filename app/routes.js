@@ -8,11 +8,14 @@ import selectLanguage from './containers/select-language';
 import accountImported from './containers/account-imported';
 import CreatePassword from './containers/create-password';
 import RestorePassword from './containers/restore-password';
+import UnlockWallet from './containers/unlock-wallet';
+
 
 import {
 	AUTHORIZATION, CREATE_PASSWORD,
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
+	UNLOCK_WALLET,
 } from './constants/routes';
 
 export default () => (
@@ -24,6 +27,8 @@ export default () => (
 			<Route path={CREATE_PASSWORD} component={CreatePassword} />
 			<Route path={RESTORE_PASSWORD} component={RestorePassword} />
 			<Route path={SELECT_LANGUAGE} component={selectLanguage} />
+			<Route path={UNLOCK_WALLET} component={UnlockWallet} />
+
 		</Switch>
 	</App>
 );

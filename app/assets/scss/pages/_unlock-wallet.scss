@@ -1,0 +1,33 @@
+.unlock-page {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	min-height: 100vh;
+	padding: 5vh 5vw;
+
+	.blip-logo {
+		width: 90px;
+		margin: 8vh 0 auto;
+	}
+
+	.form-wrap {
+		margin: 0 0 8vh;
+	}
+
+	.btn-wrap {
+		margin: auto 0 1em;
+
+		.btn-primary:not(.ok) {
+			width: 200px;
+			padding: 0 20px;
+		}
+	}
+}
+
+.unlock-info {
+	@include source-regular();
+	margin: -2em 0 2em;
+	color: #fff;
+	font-size: 2.1em;
+}

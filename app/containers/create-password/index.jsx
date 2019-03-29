@@ -55,7 +55,7 @@ class CreatePassword extends React.Component {
 						<div className="lines">
 							<div className="line">
 								<div className="line-label">
-									{'Enter Password'}
+									Enter Password
 								</div>
 								<div className="line-content">
 									<div className="field">
@@ -76,7 +76,7 @@ class CreatePassword extends React.Component {
 							</div>
 							<div className="line">
 								<div className="line-label">
-									{'Repeat Password'}
+									Repeat Password
 								</div>
 								<div className="line-content">
 									<div className="field">

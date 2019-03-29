@@ -4,5 +4,6 @@
 	"ACCOUNT_IMPORTED": "/account-imported",
 	"CREATE_PASSWORD": "/create-password",
 	"RESTORE_PASSWORD": "/restore-password",
-	"SELECT_LANGUAGE": "/select-language"
+	"SELECT_LANGUAGE": "/select-language",
+	"UNLOCK_WALLET": "/unlock-wallet"
 }
