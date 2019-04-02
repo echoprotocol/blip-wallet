@@ -8,6 +8,7 @@ class AccountImported extends React.Component {
 
 		return (
 			<div className="main-bg">
+
 				<div className="welcome-page">
 					<div className="welcome-wrap">
 						<div className="welcome-info import">

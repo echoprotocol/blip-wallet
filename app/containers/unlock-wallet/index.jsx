@@ -65,13 +65,13 @@ class UnlockWallet extends React.Component {
 						</div>
 					</div>
 					<div className="btn-wrap">
-						{/* Toggle class ok,  */}
+						{/* Toggle class ok */}
 						<Button
 							className="btn-primary round-animation ok"
 							fluid
 							content={(
 								<React.Fragment>
-									<div className="text">Unlock</div> // Clear if disabled
+									<div className="text">Unlock</div>{/* text will "Clear" if disabled */}
 								</React.Fragment>
 							)}
 						/>

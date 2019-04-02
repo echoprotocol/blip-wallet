@@ -122,13 +122,13 @@
 	@include source-semibold();
 
 	@include min-vw(1400) {
-		height: 38px;
+		height: 56px;
 	}
 	@include onBtnFocus(3px, 2px, 1px, rgba(rgba(#8676b1, 0.035), 0.45));
 
 	@include btn();
 
-	height: 28px;
+	height: 38px;
 	padding: 0 20px;
 	border: 1px solid #fff;
 	border-radius: 3px;

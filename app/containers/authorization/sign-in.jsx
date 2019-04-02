@@ -1,5 +1,7 @@
 import React from 'react';
 import { Input, Button } from 'semantic-ui-react';
+import { Animated } from 'react-animated-css';
+
 import PropTypes from 'prop-types';
 
 import avatar from '../../assets/images/default-avatar.svg';
@@ -7,17 +9,26 @@ import avatar from '../../assets/images/default-avatar.svg';
 class SignIn extends React.Component {
 
 	componentDidMount() {
-		this.nameInput.focus();
+		setTimeout(() => {
+			this.nameInput.focus();
+		}, 500);
 	}
 
 	render() {
-		const { error, loading, errorMessage } = this.props;
+		const {
+			error, loading, errorMessage, isVisible,
+		} = this.props;
 		return (
 
 			<div className="form-wrap">
 				<div className="form-content">
 					<div className="lines">
-						<div className="line">
+						<Animated
+							className="line"
+							animationIn="fadeInRight"
+							animationOut="fadeOutLeft"
+							isVisible={isVisible}
+						>
 							<div className="line-label">
 								Account name
 							</div>
@@ -47,8 +58,14 @@ class SignIn extends React.Component {
 
 							</div>
 
-						</div>
-						<div className="line">
+						</Animated>
+						<Animated
+							className="line"
+							animationIn="fadeInRight"
+							animationOut="fadeOutLeft"
+							animationInDelay={50}
+							isVisible={isVisible}
+						>
 
 							<div className="line-label">
 								Echo avatar
@@ -62,20 +79,25 @@ class SignIn extends React.Component {
 								</div>
 
 							</div>
-						</div>
+						</Animated>
 					</div>
 					<div className="form-action">
 						<div className="line">
 							<div className="line-label" />
 							<div className="line-content">
-								<div className="btns-wrap">
-
+								<Animated
+									className="btns-wrap"
+									animationIn="fadeInRight"
+									animationOut="fadeOutLeft"
+									animationInDelay={100}
+									isVisible={isVisible}
+								>
 									<Button
 										disabled
 										className="btn-primary"
 										content={<span className="text">Create account</span>}
 									/>
-								</div>
+								</Animated>
 							</div>
 						</div>
 
@@ -92,6 +114,7 @@ SignIn.propTypes = {
 	error: PropTypes.bool,
 	loading: PropTypes.bool,
 	errorMessage: PropTypes.string,
+	isVisible: PropTypes.bool.isRequired,
 };
 
 SignIn.defaultProps = {
