@@ -1,21 +1,48 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-
+import { Animated } from 'react-animated-css';
+import { CREATE_PASSWORD } from '../../constants/routes';
 import blipLogo from '../../assets/images/blip-logo.svg';
 
 class SelectLanguage extends React.Component {
 
-	render() {
+	constructor(props) {
+		super(props);
 
+		this.state = {
+			isVisible: true,
+		};
+	}
+
+	goForward() {
+
+		const { history } = this.props;
+
+		this.setState({
+			isVisible: false,
+		});
+
+		setTimeout(() => {
+			history.push(CREATE_PASSWORD);
+		}, 200);
+	}
+
+	render() {
+		const { isVisible } = this.state;
 		return (
 			<div className="main-bg">
 				<a href="/" className="logo-wrap">
 					<img src={blipLogo} alt="" />
-
 				</a>
-				<div className="lang-wrap">
+				<Animated
+					className="lang-wrap"
+					animationIn="fadeInRight"
+					animationOut="fadeOutLeft"
+					isVisible={isVisible}
+				>
 					<h3>Choose your preferred language</h3>
 
 					<Dropdown
@@ -49,6 +76,8 @@ class SelectLanguage extends React.Component {
 
 					<Button
 						className="btn-primary arrow"
+						to={CREATE_PASSWORD}
+						onClick={() => this.goForward()}
 						content={(
 							<React.Fragment>
 								<div className="text">Proceed</div>
@@ -56,11 +85,15 @@ class SelectLanguage extends React.Component {
 							</React.Fragment>
 						)}
 					/>
-				</div>
+				</Animated>
 			</div>
 		);
 	}
 
 }
+
+SelectLanguage.propTypes = {
+	history: PropTypes.object.isRequired,
+};
 
 export default SelectLanguage;

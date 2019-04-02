@@ -1,4 +1,6 @@
 import React from 'react';
+import { Animated } from 'react-animated-css';
+import { Link } from 'react-router-dom';
 import blipLogo from '../../assets/images/blip-logo.svg';
 
 class Header extends React.Component {
@@ -8,13 +10,16 @@ class Header extends React.Component {
 
 			<header className="header">
 				<div className="logo-wrap">
-					<a href="/">
+					<Link to="/">
 						<img src={blipLogo} alt="" />
-					</a>
+					</Link>
 				</div>
-				<div className="page-title">
-					{'Create Password'}
-				</div>
+				<Animated
+					animationIn="slideInRight"
+					animationOut="fadeOutLeft"
+					className="page-title"
+				>Create Password
+				</Animated>
 			</header>
 		);
 	}

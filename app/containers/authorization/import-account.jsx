@@ -2,6 +2,7 @@ import React from 'react';
 import { Animated } from 'react-animated-css';
 import { Input, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { ACCOUNT_IMPORTED } from '../../constants/routes';
 
 class ImportAccount extends React.Component {
 
@@ -12,7 +13,11 @@ class ImportAccount extends React.Component {
 	}
 
 	render() {
-		const { error, errorMessage, isVisible } = this.props;
+		const {
+			error, errorMessage,
+			isVisible, goForward,
+		} = this.props;
+
 		return (
 			<div className="form-wrap">
 				<div className="form-content">
@@ -88,8 +93,9 @@ class ImportAccount extends React.Component {
 									isVisible={isVisible}
 								>
 									<Button
-										disabled
+										// disabled
 										className="btn-primary"
+										onClick={() => goForward(ACCOUNT_IMPORTED)}
 										content={<span className="text">Import account</span>}
 									/>
 
@@ -110,6 +116,7 @@ ImportAccount.propTypes = {
 	error: PropTypes.bool,
 	errorMessage: PropTypes.string,
 	isVisible: PropTypes.bool.isRequired,
+	goForward: PropTypes.func.isRequired,
 };
 
 ImportAccount.defaultProps = {

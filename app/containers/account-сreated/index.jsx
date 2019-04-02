@@ -1,16 +1,34 @@
 import React from 'react';
+import { Animated } from 'react-animated-css';
 import { Button, Icon } from 'semantic-ui-react';
 import avatar from '../../assets/images/default-avatar.svg';
 
 class AccountCreated extends React.Component {
 
-	render() {
+	constructor(props) {
+		super(props);
 
+		this.state = {
+			isVisible: true,
+		};
+	}
+
+	render() {
+		const { isVisible } = this.state;
 		return (
 			<div className="main-bg">
 				<div className="welcome-page">
-					<div className="welcome-wrap">
-						<div className="welcome-info">
+					<div
+						className="welcome-wrap"
+
+					>
+
+						<Animated
+							className="welcome-info"
+							animationIn="fadeInRight"
+							animationOut="fadeOutLeft"
+							isVisible={isVisible}
+						>
 							<h1>
 								New Echo account is
 								<br />
@@ -29,8 +47,14 @@ class AccountCreated extends React.Component {
 									</React.Fragment>
 								)}
 							/>
-						</div>
-						<div className="welcome-card">
+						</Animated>
+						<Animated
+							className="welcome-card"
+							animationIn="fadeInRight"
+							animationOut="fadeOutLeft"
+							animationInDelay={50}
+							isVisible={isVisible}
+						>
 							<div className="head">
 								<div className="card-wrap">
 									<img className="avatar" src={avatar} alt="" />
@@ -66,11 +90,16 @@ class AccountCreated extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
+						</Animated>
 					</div>
-					<div className="wif-toast">
-						WIF is copied to clipboard
-					</div>
+					<Animated
+						className="wif-toast"
+						animationIn="fadeIn"
+						animationOut="fadeOut"
+						isVisible={isVisible}
+					> WIF is copied to clipboard
+					</Animated>
+
 				</div>
 			</div>
 		);

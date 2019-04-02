@@ -5,6 +5,7 @@ import { Animated } from 'react-animated-css';
 import PropTypes from 'prop-types';
 
 import avatar from '../../assets/images/default-avatar.svg';
+import { ACCOUNT_CREATED } from '../../constants/routes';
 
 class SignIn extends React.Component {
 
@@ -16,7 +17,8 @@ class SignIn extends React.Component {
 
 	render() {
 		const {
-			error, loading, errorMessage, isVisible,
+			error, loading, errorMessage, isVisible, goForward,
+
 		} = this.props;
 		return (
 
@@ -93,8 +95,9 @@ class SignIn extends React.Component {
 									isVisible={isVisible}
 								>
 									<Button
-										disabled
+										// disabled
 										className="btn-primary"
+										onClick={() => goForward(ACCOUNT_CREATED)}
 										content={<span className="text">Create account</span>}
 									/>
 								</Animated>
@@ -114,6 +117,7 @@ SignIn.propTypes = {
 	error: PropTypes.bool,
 	loading: PropTypes.bool,
 	errorMessage: PropTypes.string,
+	goForward: PropTypes.func.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 };
 

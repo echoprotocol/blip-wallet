@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
@@ -43,6 +44,20 @@ class Authorization extends React.Component {
 
 	}
 
+	goForward(path) {
+
+		const { history } = this.props;
+
+		this.setState({
+			isVisibleTab: false,
+			isVisibleMenu: false,
+		});
+
+		setTimeout(() => {
+			history.push(path);
+		}, 200);
+	}
+
 	renderMenu() {
 		const { activeIndex, isVisibleMenu } = this.state;
 
@@ -63,7 +78,6 @@ class Authorization extends React.Component {
 		<Animated
 			animationIn={activeIndex ? 'fadeInRightBig' : 'slideInRight'}
 			animationOut="fadeOutLeft"
-			animateOnMount={false}
 			isVisible={isVisibleMenu}
 		>
 			Create new account
@@ -87,7 +101,6 @@ class Authorization extends React.Component {
 			animationIn={!activeIndex ? 'fadeInRightBig' : 'slideInRight'}
 			animationOut="fadeOutLeft"
 			isVisible={isVisibleMenu}
-			animateOnMount={false}
 		>
 			Import account
 		</Animated>
@@ -135,8 +148,18 @@ class Authorization extends React.Component {
 						<div className="inner">
 							{
 								activeIndex
-									? <ImportAccount isVisible={isVisibleTab} />
-									: <SignIn isVisible={isVisibleTab} />
+									? (
+										<ImportAccount
+											goForward={(path) => this.goForward(path)}
+											isVisible={isVisibleTab}
+										/>
+									)
+									: (
+										<SignIn
+											goForward={(path) => this.goForward(path)}
+											isVisible={isVisibleTab}
+										/>
+									)
 							}
 						</div>
 					</div>
@@ -147,5 +170,7 @@ class Authorization extends React.Component {
 	}
 
 }
-
+Authorization.propTypes = {
+	history: PropTypes.object.isRequired,
+};
 export default Authorization;

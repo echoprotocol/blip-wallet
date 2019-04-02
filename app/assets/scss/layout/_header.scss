@@ -17,10 +17,15 @@
 		left: 0;
 		height: 1px;
 		background-color: rgba(184, 155, 245, 0.4);
+		animation-name: fadeIn;
+		animation-duration: 0.2s;
 	}
 
 	.logo-wrap {
-		bottom: 0;
+		@include min-vw(1400) {
+			bottom: -3px;
+		}
+		bottom: -2px;
 	}
 
 	.page-title {
