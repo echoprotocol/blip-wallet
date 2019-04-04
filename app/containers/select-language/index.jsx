@@ -33,7 +33,7 @@ class SelectLanguage extends React.Component {
 	render() {
 		const { isVisible } = this.state;
 		return (
-			<div className="main-bg">
+			<div className="page">
 				<a href="/" className="logo-wrap">
 					<img src={blipLogo} alt="" />
 				</a>

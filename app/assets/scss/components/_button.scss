@@ -7,10 +7,6 @@
 	white-space: nowrap;
 	transition: color 0.3s, border 0.3s, background-color 0.3s;
 
-	&:focus {
-		outline: none;
-	}
-
 	.ic {
 		margin-right: 12px;
 	}
@@ -34,6 +30,12 @@
 
 	&.fluid {
 		width: 100%;
+	}
+}
+
+.button {
+	&:focus {
+		outline: none;
 	}
 }
 
@@ -141,13 +143,13 @@
 		border: 1px solid #8676b1;
 	}
 
+	&:hover {
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.03);
+	}
+
 	&:active {
 		border: 1px solid #fff;
 		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.01);
-	}
-
-	&:hover {
-		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.03);
 	}
 
 	&.disabled {
@@ -159,5 +161,32 @@
 	.copy {
 		display: flex;
 		margin: 0 5px 0 -5px;
+	}
+}
+
+.btn-transparent {
+	@include btn();
+	@include source-regular();
+	@include onBtnFocus(3px, 2px, 2px, rgba(rgba(#43d7ad, 0.035), 0.45));
+	padding: 8px 7px;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	background-color: transparent;
+
+	&:focus {
+		border: 1px solid #43d7ad;
+	}
+
+	&:hover {
+		color: #e1d2ff;
+	}
+
+	&:active {
+		border: 1px solid transparent;
+		color: rgba(#c1afee, 0.5);
+	}
+
+	.icon {
+		margin-right: 12px;
 	}
 }

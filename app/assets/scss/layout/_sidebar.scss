@@ -1,0 +1,106 @@
+.sidebar {
+	flex-direction: column;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	z-index: 2;
+	display: flex;
+	opacity: 1;
+	transition: opacity 0.3s, transform 0.3s ease;
+	transition-delay: 0.2s;
+
+	&-wrap {
+		@include min-vw(1400) {
+			width: 300px;
+		}
+
+		position: relative;
+		z-index: 2;
+		width: 255px;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	&.right {
+		@include min-vw(1400) {
+			left: calc(100% - 300px);
+		}
+		left: calc(100% - 255px);
+	}
+
+	.visible {
+		@include background();
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: space-between;
+		display: flex;
+		width: 100vw;
+		height: 100%;
+		padding: 132px 0 40px 0;
+		background-color: rgba(#6852a4, 1);
+		transition: background-color $speed;
+
+		&:before {
+			opacity: 0.3;
+		}
+	}
+
+	.btn-transparent {
+		margin-left: calc(27px + 0.5vw);
+		color: #c1afee;
+		font-size: 1.4em;
+	}
+}
+
+.sidebar-nav {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+
+	li {
+		padding: 0 calc(22px + 0.5vw);
+		border-left: 5px solid transparent;
+		transition: border $speed;
+
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
+
+		&.active {
+			border-left: 5px solid #43d7ad;
+
+			.sidebar-nav-link {
+				color: #fff;
+			}
+		}
+	}
+
+	.sidebar-nav-link {
+		@include source-semibold();
+
+		@include onBtnFocus(3px, 2px, 2px, rgba(rgba(#43d7ad, 0.035), 0.45));
+
+		border: 1px solid transparent;
+		border-radius: 3px;
+		background-color: transparent;
+		color: #c1afee;
+		font-size: 1.5em;
+		line-height: 1.5;
+		text-align: left;
+		transition: color $speed;
+
+		&:focus {
+			border: 1px solid #43d7ad;
+		}
+
+		&:hover {
+			color: #e1d2ff;
+		}
+
+		&:active {
+			border: 1px solid transparent;
+			color: rgba(#c1afee, 0.5);
+		}
+	}
+}

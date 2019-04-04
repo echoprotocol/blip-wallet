@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
@@ -16,8 +17,7 @@ class Authorization extends React.Component {
 		super(props);
 		this.state = {
 			activeIndex: 0,
-			isVisibleMenu: true,
-			isVisibleTab: true,
+			isVisible: true,
 		};
 	}
 
@@ -25,32 +25,25 @@ class Authorization extends React.Component {
 
 		e.stopPropagation();
 		this.setState({
-			isVisibleMenu: false,
-			isVisibleTab: false,
+			isVisible: false,
 			activeIndex: active,
 		});
 
 		setTimeout(() => {
 			this.setState({
-				isVisibleTab: true,
+				isVisible: true,
+				activeIndex: active,
 			});
-		}, 200);
-
-		setTimeout(() => {
-			this.setState({
-				isVisibleMenu: true,
-			});
-		}, 100);
-
+		}, 150);
 	}
+
 
 	goForward(path) {
 
 		const { history } = this.props;
 
 		this.setState({
-			isVisibleTab: false,
-			isVisibleMenu: false,
+			isVisible: false,
 		});
 
 		setTimeout(() => {
@@ -59,7 +52,7 @@ class Authorization extends React.Component {
 	}
 
 	renderMenu() {
-		const { activeIndex, isVisibleMenu } = this.state;
+		const { activeIndex, isVisible } = this.state;
 
 		const menuItems = [
 			{
@@ -78,7 +71,7 @@ class Authorization extends React.Component {
 		<Animated
 			animationIn={activeIndex ? 'fadeInRightBig' : 'slideInRight'}
 			animationOut="fadeOutLeft"
-			isVisible={isVisibleMenu}
+			isVisible={isVisible}
 		>
 			Create new account
 		</Animated>
@@ -100,7 +93,7 @@ class Authorization extends React.Component {
 		<Animated
 			animationIn={!activeIndex ? 'fadeInRightBig' : 'slideInRight'}
 			animationOut="fadeOutLeft"
-			isVisible={isVisibleMenu}
+			isVisible={isVisible}
 		>
 			Import account
 		</Animated>
@@ -121,10 +114,9 @@ class Authorization extends React.Component {
 
 	render() {
 
-		const { activeIndex, isVisibleTab } = this.state;
-
+		const { activeIndex, isVisible } = this.state;
 		return (
-			<div className="main-bg">
+			<div className="page">
 				<div className="logo-wrap">
 					<img src={blipLogo} alt="" />
 				</div>
@@ -151,26 +143,32 @@ class Authorization extends React.Component {
 									? (
 										<ImportAccount
 											goForward={(path) => this.goForward(path)}
-											isVisible={isVisibleTab}
+											isVisible={isVisible}
 										/>
 									)
 									: (
 										<SignIn
 											goForward={(path) => this.goForward(path)}
-											isVisible={isVisibleTab}
+											isVisible={isVisible}
 										/>
 									)
 							}
 						</div>
 					</div>
 				</div>
-
 			</div>
 		);
 	}
 
 }
+
 Authorization.propTypes = {
 	history: PropTypes.object.isRequired,
 };
-export default Authorization;
+
+export default connect(
+	(state) => ({
+		locked: state.global.get('locked'),
+		lockAnimation: state.global.get('locked'),
+	}),
+)(Authorization);

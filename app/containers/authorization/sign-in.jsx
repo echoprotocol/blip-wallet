@@ -17,8 +17,8 @@ class SignIn extends React.Component {
 
 	render() {
 		const {
-			error, loading, errorMessage, isVisible, goForward,
-
+			error, loading, errorMessage,
+			isVisible, goForward,
 		} = this.props;
 		return (
 
@@ -65,7 +65,7 @@ class SignIn extends React.Component {
 							className="line"
 							animationIn="fadeInRight"
 							animationOut="fadeOutLeft"
-							animationInDelay={50}
+							animationInDelay={80}
 							isVisible={isVisible}
 						>
 
@@ -91,7 +91,7 @@ class SignIn extends React.Component {
 									className="btns-wrap"
 									animationIn="fadeInRight"
 									animationOut="fadeOutLeft"
-									animationInDelay={100}
+									animationInDelay={120}
 									isVisible={isVisible}
 								>
 									<Button

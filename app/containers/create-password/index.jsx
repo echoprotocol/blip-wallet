@@ -65,7 +65,7 @@ class CreatePassword extends React.Component {
 		const { showPas, showReapeatPas, isVisible } = this.state;
 		return (
 
-			<div className="main-bg">
+			<div className="page">
 				<Header />
 				<div className="form-wrap">
 					<div className="form-content">

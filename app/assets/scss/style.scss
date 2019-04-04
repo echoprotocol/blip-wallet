@@ -10,6 +10,8 @@
 
 @import 'layout/header';
 @import 'layout/dimmer';
+@import 'layout/grid';
+@import 'layout/sidebar';
 
 @import 'components/button';
 @import 'components/link';
@@ -22,6 +24,5 @@
 @import 'pages/auth';
 @import 'pages/welcome';
 @import 'pages/select-lang';
-@import 'pages/common';
 @import 'pages/restore-password';
 @import 'pages/unlock-wallet';
