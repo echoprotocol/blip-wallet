@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
 
@@ -80,7 +81,7 @@ class Authorization extends React.Component {
 			animationOut="fadeOutLeft"
 			isVisible={isVisibleMenu}
 		>
-			Create new account
+			<FormattedMessage id="account.create" />
 		</Animated>
 	</Button>,
 			},
@@ -102,7 +103,7 @@ class Authorization extends React.Component {
 			animationOut="fadeOutLeft"
 			isVisible={isVisibleMenu}
 		>
-			Import account
+			<FormattedMessage id="account.import" />
 		</Animated>
 
 	</Button>,

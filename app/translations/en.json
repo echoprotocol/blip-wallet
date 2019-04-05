@@ -1,0 +1,14 @@
+{
+  "account": {
+    "create": "Create new account",
+    "import": "Import account"
+  },
+
+  "language": {
+    "title": "Choose your preferred language",
+    "description": "Language",
+    "en": "English",
+    "ru": "Russian",
+    "proceed": "Proceed"
+  }
+}

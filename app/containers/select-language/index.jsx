@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Animated } from 'react-animated-css';
+import { FormattedMessage } from 'react-intl';
+
 import { CREATE_PASSWORD } from '../../constants/routes';
 import blipLogo from '../../assets/images/blip-logo.svg';
+import { setLanguage } from '../../actions/global-actions';
+import { EN_LOCALE, RU_LOCALE } from '../../constants/global-constants';
 
 class SelectLanguage extends React.Component {
 
@@ -15,6 +20,12 @@ class SelectLanguage extends React.Component {
 		this.state = {
 			isVisible: true,
 		};
+	}
+
+	onSelect(key) {
+		const { setLanguage: changeLanguage } = this.props;
+
+		changeLanguage(key);
 	}
 
 	goForward() {
@@ -32,6 +43,8 @@ class SelectLanguage extends React.Component {
 
 	render() {
 		const { isVisible } = this.state;
+		const { language } = this.props;
+
 		return (
 			<div className="main-bg">
 				<a href="/" className="logo-wrap">
@@ -43,32 +56,30 @@ class SelectLanguage extends React.Component {
 					animationOut="fadeOutLeft"
 					isVisible={isVisible}
 				>
-					<h3>Choose your preferred language</h3>
+					<h3><FormattedMessage id="language.title" /></h3>
 
 					<Dropdown
 						className="dropdown-lang"
+						onSelect={(key) => this.onSelect(key)}
 					>
 						<div className="dropdown-label">
-							language
+							<FormattedMessage id="language.description" />
 						</div>
 
 						<Dropdown.Toggle variant="Info">
-							<div className="lang-title">English</div>
+							<div className="lang-title">
+								<FormattedMessage id={`language.${language}`} />
+							</div>
 							<span className="carret" />
 						</Dropdown.Toggle>
 
 						<Dropdown.Menu>
 							<PerfectScrollbar className="lang-scroll">
-								<Dropdown.Item
-									eventKey="1"
-								>
-									English
+								<Dropdown.Item eventKey={EN_LOCALE}>
+									<FormattedMessage id="language.en" />
 								</Dropdown.Item>
-								<Dropdown.Item eventKey="2">
-									Русский (Russian)
-								</Dropdown.Item>
-								<Dropdown.Item eventKey="3">
-									Deutsch (German)
+								<Dropdown.Item eventKey={RU_LOCALE}>
+									<FormattedMessage id="language.ru" />
 								</Dropdown.Item>
 							</PerfectScrollbar>
 						</Dropdown.Menu>
@@ -80,7 +91,7 @@ class SelectLanguage extends React.Component {
 						onClick={() => this.goForward()}
 						content={(
 							<React.Fragment>
-								<div className="text">Proceed</div>
+								<div className="text"><FormattedMessage id="language.proceed" /></div>
 								<Icon className="arrow-right" />
 							</React.Fragment>
 						)}
@@ -94,6 +105,15 @@ class SelectLanguage extends React.Component {
 
 SelectLanguage.propTypes = {
 	history: PropTypes.object.isRequired,
+	language: PropTypes.string.isRequired,
+	setLanguage: PropTypes.func.isRequired,
 };
 
-export default SelectLanguage;
+export default connect(
+	(state) => ({
+		language: state.global.get('language'),
+	}),
+	(dispatch) => ({
+		setLanguage: (value) => dispatch(setLanguage(value)),
+	}),
+)(SelectLanguage);
