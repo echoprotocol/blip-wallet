@@ -4,6 +4,8 @@ import { EN_LOCALE } from '../constants/global-constants';
 
 const DEFAULT_FIELDS = Map({
 	language: EN_LOCALE,
+	loading: '',
+	isConnected: false,
 });
 
 export default createModule({

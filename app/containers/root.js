@@ -6,6 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 // import type { Store } from '../reducers/types';
 import Routes from '../routes';
+import { initApp } from '../actions/global-actions';
 
 // type Props = {
 //   store: Store,
@@ -13,6 +14,12 @@ import Routes from '../routes';
 // };
 
 export default class Root extends Component {
+
+	componentDidMount() {
+		const { store } = this.props;
+
+		store.dispatch(initApp(store));
+	}
 
 	render() {
 		const { store, history } = this.props;

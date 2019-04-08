@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
 
-import SignIn from './sign-in';
+import CreateAccount from './create-account';
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import googleLogo from '../../assets/images/google-logo.svg';
+import AccountCreated from '../account-сreated';
 
 
 class Authorization extends React.Component {
@@ -19,6 +19,8 @@ class Authorization extends React.Component {
 			activeIndex: 0,
 			isVisibleMenu: true,
 			isVisibleTab: true,
+			wif: '',
+			accountName: '',
 		};
 	}
 
@@ -45,17 +47,14 @@ class Authorization extends React.Component {
 
 	}
 
-	goForward(path) {
-
-		const { history } = this.props;
-
+	goForward(accountName, wif) {
 		this.setState({
 			isVisibleTab: false,
 			isVisibleMenu: false,
 		});
 
 		setTimeout(() => {
-			history.push(path);
+			this.setState({ wif, accountName });
 		}, 200);
 	}
 
@@ -81,7 +80,7 @@ class Authorization extends React.Component {
 			animationOut="fadeOutLeft"
 			isVisible={isVisibleMenu}
 		>
-			<FormattedMessage id="account.create" />
+			<FormattedMessage id="account.create.title" />
 		</Animated>
 	</Button>,
 			},
@@ -120,7 +119,7 @@ class Authorization extends React.Component {
 			)));
 	}
 
-	render() {
+	renderAuth() {
 
 		const { activeIndex, isVisibleTab } = this.state;
 
@@ -140,7 +139,7 @@ class Authorization extends React.Component {
 							content={(
 								<React.Fragment>
 									<img className="ic" src={googleLogo} alt="" />
-									<span className="text">Sign in with Google</span>
+									<span className="text"><FormattedMessage id="account.google" /></span>
 								</React.Fragment>
 							)}
 						/>
@@ -156,8 +155,8 @@ class Authorization extends React.Component {
 										/>
 									)
 									: (
-										<SignIn
-											goForward={(path) => this.goForward(path)}
+										<CreateAccount
+											goForward={(accountName, wif) => this.goForward(accountName, wif)}
 											isVisible={isVisibleTab}
 										/>
 									)
@@ -170,8 +169,14 @@ class Authorization extends React.Component {
 		);
 	}
 
+	render() {
+		const { wif, accountName } = this.state;
+
+		return (
+			wif ? <AccountCreated wif={wif} accountName={accountName} /> : this.renderAuth()
+		);
+	}
+
 }
-Authorization.propTypes = {
-	history: PropTypes.object.isRequired,
-};
+
 export default Authorization;

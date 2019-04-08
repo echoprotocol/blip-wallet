@@ -1,14 +1,53 @@
 {
-  "account": {
-    "create": "Create new account",
-    "import": "Import account"
-  },
-
   "language": {
     "title": "Choose your preferred language",
     "description": "Language",
     "en": "English",
     "ru": "Russian",
     "proceed": "Proceed"
+  },
+
+  "account": {
+    "google": "Sign in with Google",
+
+    "import": "Import account",
+
+    "create": {
+      "title": "Create new account",
+      "name": "Account name",
+      "name.placeholder": "Account name",
+      "avatar": "ECHO avatar",
+      "avatar.description": "Avatar is created automatically after account confirmation",
+      "hint1": "- must be 3-63 characters long",
+      "hint2": "- must start with latin letter",
+      "hint3": "- may contain only lowercase letters, digits and hyphen",
+      "button": "Create account",
+      "loading": "New account is now creating",
+      "error": {
+        "Account name should have only one dash in a row.": "Account name should have only one dash in a row.",
+        "Account name should end with a letter or digit.": "Account name should end with a letter or digit.",
+        "Each account segment should end with a letter or digit.": "Each account segment should end with a letter or digit.",
+        "Each account segment should be longer.": "Each account segment should be longer.",
+        "Account already exist": "Account already exist",
+        "Connection error": "Connection error"
+      }
+
+    },
+    
+    "created": {
+      "title1": "New Echo account is",
+      "title2": "successfully created",
+      "description1": "Account was added to Blip wallet automatically.",
+      "description2": "You can get an access to it in other Echo wallets.",
+      "wif": {
+        "name": "Account name",
+        "hint1": "Save your WIF key.",
+        "hint2": "You will need it in case of restoring",
+        "hint3": "or exporting this account.",
+        "button": "Copy WIF to clipboard",
+        "copied": "WIF is copied to clipboard"
+      },
+      "button": "Proceed to Blip"
+    }
   }
 }

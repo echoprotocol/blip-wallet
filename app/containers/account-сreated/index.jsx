@@ -1,6 +1,12 @@
 import React from 'react';
 import { Animated } from 'react-animated-css';
 import { Button, Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import copy from 'clipboard-copy';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { withRouter } from 'react-router';
+
 import avatar from '../../assets/images/default-avatar.svg';
 
 class AccountCreated extends React.Component {
@@ -13,16 +19,29 @@ class AccountCreated extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		const { wif } = this.props;
+
+		copy(wif);
+	}
+
 	render() {
+		const {
+			wif, accountName, intl, history,
+		} = this.props;
 		const { isVisible } = this.state;
+
+		const hint1 = intl.formatMessage({ id: 'account.created.wif.hint1' });
+		const hint2 = intl.formatMessage({ id: 'account.created.wif.hint2' });
+		const hint3 = intl.formatMessage({ id: 'account.created.wif.hint3' });
+		const wifButton = intl.formatMessage({ id: 'account.created.wif.button' });
+
 		return (
 			<div className="main-bg">
 				<div className="welcome-page">
 					<div
 						className="welcome-wrap"
-
 					>
-
 						<Animated
 							className="welcome-info"
 							animationIn="fadeInRight"
@@ -30,19 +49,20 @@ class AccountCreated extends React.Component {
 							isVisible={isVisible}
 						>
 							<h1>
-								New Echo account is
+								<FormattedMessage id="account.created.title1" />
 								<br />
-								succesfully created
+								<FormattedMessage id="account.created.title2" />
 							</h1>
 							<p>
-								Account was added to Blip wallet automatically.
-								You can get an access to it in other echo wallets.
+								<FormattedMessage id="account.created.description1" />
+								<FormattedMessage id="account.created.description2" />
 							</p>
 							<Button
 								className="btn-primary arrow"
+								onClick={() => history.push('/select-language')}
 								content={(
 									<React.Fragment>
-										<div className="text">Proceed to Blip</div>
+										<div className="text"><FormattedMessage id="account.created.button" /></div>
 										<Icon className="arrow-right" />
 									</React.Fragment>
 								)}
@@ -59,35 +79,37 @@ class AccountCreated extends React.Component {
 								<div className="card-wrap">
 									<img className="avatar" src={avatar} alt="" />
 									<div className="account-info">
-										<div className="label">Account name</div>
-										<div className="name">Homersimpson223090sdlc56-xf</div>
+										<div className="label"><FormattedMessage id="account.created.wif.name" /></div>
+										<div className="name">{accountName}</div>
 									</div>
 								</div>
 							</div>
 							<div className="body">
 								<div className="card-wrap">
 									<span>
-										Save your WIF key.
+										{hint1}
 										<br />
-										You will need it in case of restoring
+										{hint2}
 										<br />
-										or exporting this  account.
+										{hint3}
 									</span>
 									<div className="wif-wrap">
 										<div className="wif-label">WIF</div>
 										<div className="wif">
-											5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF
+											{wif}
 										</div>
 									</div>
-									<Button
-										className="btn-white"
-										content={(
-											<React.Fragment>
-												<Icon name="copy" />
-												<div className="text">Copy WIF to clipboard</div>
-											</React.Fragment>
-										)}
-									/>
+									<CopyToClipboard text={wif}>
+										<Button
+											className="btn-white"
+											content={(
+												<React.Fragment>
+													<Icon name="copy" />
+													<div className="text">{wifButton}</div>
+												</React.Fragment>
+											)}
+										/>
+									</CopyToClipboard>
 								</div>
 							</div>
 						</Animated>
@@ -97,9 +119,8 @@ class AccountCreated extends React.Component {
 						animationIn="fadeIn"
 						animationOut="fadeOut"
 						isVisible={isVisible}
-					> WIF is copied to clipboard
+					> <FormattedMessage id="account.created.wif.copied" />
 					</Animated>
-
 				</div>
 			</div>
 		);
@@ -107,4 +128,11 @@ class AccountCreated extends React.Component {
 
 }
 
-export default AccountCreated;
+AccountCreated.propTypes = {
+	history: PropTypes.object.isRequired,
+	wif: PropTypes.string.isRequired,
+	accountName: PropTypes.string.isRequired,
+	intl: intlShape.isRequired,
+};
+
+export default injectIntl(withRouter(AccountCreated));

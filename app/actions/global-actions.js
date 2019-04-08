@@ -1,4 +1,6 @@
 import GlobalReducer from '../reducers/global-reducer';
+import Services from '../services';
+
 
 /**
  *  @method setValue
@@ -10,6 +12,20 @@ import GlobalReducer from '../reducers/global-reducer';
  */
 export const setValue = (field, value) => (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field, value }));
+};
+
+const setIsConnected = (status) => (dispatch) => {
+	dispatch(setValue('isConnected', status));
+};
+
+export const initApp = (store) => async (dispatch) => {
+	const language = localStorage.getItem('locale');
+
+	if (language) {
+		dispatch(setValue('language', language));
+	}
+
+	await Services.getEcho().init({ store }, (status) => dispatch(setIsConnected(status)));
 };
 
 /**
