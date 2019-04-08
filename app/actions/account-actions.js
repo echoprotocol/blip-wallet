@@ -1,10 +1,15 @@
 import { PrivateKey } from 'echojs-lib';
 
 import Services from '../services';
+import CryptoService from '../services/crypto-service';
+
 import { FORM_SIGN_UP } from '../constants/form-constants';
 import { setFormError, toggleLoading } from './form-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
+
+import Account from '../logic-components/db/models/account';
+import Key from '../logic-components/db/models/key';
 
 /**
  * @method validateAccount
@@ -67,20 +72,22 @@ export const registerAccount = () => async (dispatch, getState) => {
 	}
 
 	try {
-		const wif = Services.getCrypto().generateWIF();
 
-		const echoRandKey = Services.getCrypto().generateEchoRandKey();
+		const wif = CryptoService.generateWIF();
 
-		const key = PrivateKey.fromWif(wif).toPublicKey().toString();
+		const echoRandKey = CryptoService.generateEchoRandKey();
 
-		await Services.getEcho().api.registerAccount(accountName.value, key, key, key, echoRandKey);
+		const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
-		// const accountData = await Services.getEcho().api.getAccountByName(accountName.value);
+		await Services.getEcho().api.registerAccount(accountName.value, publicKey, publicKey, publicKey, echoRandKey);
 
-		// const account = { id: accountData.id, name: accountName };
-		// const accountKey = { wif, publicKey: key };
+		const accountData = await Services.getEcho().api.getAccountByName(accountName.value);
 
-		await Services.getCrypto().saveWIF(accountName, wif);
+		const userStorage = Services.getUserStorage();
+
+		await userStorage.addAccount(Account.create(accountData.id, accountName.value));
+		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
+
 
 		return { wif, accountName: accountName.value };
 	} catch (err) {

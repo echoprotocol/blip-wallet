@@ -1,6 +1,6 @@
 import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
-
+import UserStorageService from '../services/user-storage-service';
 
 /**
  *  @method setValue
@@ -25,7 +25,17 @@ export const initApp = (store) => async (dispatch) => {
 		dispatch(setValue('language', language));
 	}
 
+	const networkId = 'testnet';
+	const password = 'password';
+
+	const userStorage = Services.getUserStorage();
+	await userStorage.init();
+	await userStorage.setNetworkId(networkId);
+	await userStorage.createDB(password);
+	await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
+
 	await Services.getEcho().init({ store }, (status) => dispatch(setIsConnected(status)));
+
 };
 
 /**
