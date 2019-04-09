@@ -57,7 +57,6 @@ class Blockchain {
 
 		this.isConnectedCb = isConnectedCb;
 		this.isConnectedCb(this.isConnected);
-
 	}
 
 	async localConnect() {
