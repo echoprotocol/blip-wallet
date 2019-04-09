@@ -81,3 +81,15 @@ export const setLanguage = (language) => (dispatch) => {
 
 	localStorage.setItem('locale', language);
 };
+
+/**
+ *  @method lockToggle
+ *
+ * 	Toggle lock visibility
+ *
+ * 	@param {Boolean} value
+ */
+
+export const lockToggle = (value) => (dispatch) => {
+	dispatch(GlobalReducer.actions.lockToggle({ value }));
+};

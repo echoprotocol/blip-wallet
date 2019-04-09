@@ -16,10 +16,9 @@ class Authorization extends React.Component {
 		super(props);
 		this.state = {
 			activeIndex: 0,
-			isVisibleMenu: true,
-			isVisibleTab: true,
 			wif: '',
 			accountName: '',
+			isVisible: true,
 		};
 	}
 
@@ -27,29 +26,21 @@ class Authorization extends React.Component {
 
 		e.stopPropagation();
 		this.setState({
-			isVisibleMenu: false,
-			isVisibleTab: false,
+			isVisible: false,
 			activeIndex: active,
 		});
 
 		setTimeout(() => {
 			this.setState({
-				isVisibleTab: true,
+				isVisible: true,
+				activeIndex: active,
 			});
-		}, 200);
-
-		setTimeout(() => {
-			this.setState({
-				isVisibleMenu: true,
-			});
-		}, 100);
-
+		}, 150);
 	}
 
 	goForward(accountName, wif) {
 		this.setState({
-			isVisibleTab: false,
-			isVisibleMenu: false,
+			isVisible: false,
 		});
 
 		setTimeout(() => {
@@ -58,7 +49,7 @@ class Authorization extends React.Component {
 	}
 
 	renderMenu() {
-		const { activeIndex, isVisibleMenu } = this.state;
+		const { activeIndex, isVisible } = this.state;
 
 		const menuItems = [
 			{
@@ -77,7 +68,7 @@ class Authorization extends React.Component {
 		<Animated
 			animationIn={activeIndex ? 'fadeInRightBig' : 'slideInRight'}
 			animationOut="fadeOutLeft"
-			isVisible={isVisibleMenu}
+			isVisible={isVisible}
 		>
 			<FormattedMessage id="account.create.title" />
 		</Animated>
@@ -99,7 +90,7 @@ class Authorization extends React.Component {
 		<Animated
 			animationIn={!activeIndex ? 'fadeInRightBig' : 'slideInRight'}
 			animationOut="fadeOutLeft"
-			isVisible={isVisibleMenu}
+			isVisible={isVisible}
 		>
 			<FormattedMessage id="account.import" />
 		</Animated>
@@ -120,10 +111,9 @@ class Authorization extends React.Component {
 
 	renderAuth() {
 
-		const { activeIndex, isVisibleTab } = this.state;
-
+		const { activeIndex, isVisible } = this.state;
 		return (
-			<div className="main-bg">
+			<div className="page">
 				<div className="logo-wrap">
 					<img src={blipLogo} alt="" />
 				</div>
@@ -140,20 +130,19 @@ class Authorization extends React.Component {
 									? (
 										<ImportAccount
 											goForward={(path) => this.goForward(path)}
-											isVisible={isVisibleTab}
+											isVisible={isVisible}
 										/>
 									)
 									: (
 										<CreateAccount
 											goForward={(accountName, wif) => this.goForward(accountName, wif)}
-											isVisible={isVisibleTab}
+											isVisible={isVisible}
 										/>
 									)
 							}
 						</div>
 					</div>
 				</div>
-
 			</div>
 		);
 	}

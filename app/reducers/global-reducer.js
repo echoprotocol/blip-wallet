@@ -7,6 +7,7 @@ const DEFAULT_FIELDS = Map({
 	loading: '',
 	isConnected: false,
 	accounts: new Map({}),
+	locked: true,
 });
 
 export default createModule({
@@ -37,6 +38,10 @@ export default createModule({
 
 				return state;
 			},
+		},
+
+		lockToggle: {
+			reducer: (state, { payload }) => state.set('locked', !payload.value),
 		},
 	},
 });

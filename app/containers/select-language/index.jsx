@@ -46,7 +46,7 @@ class SelectLanguage extends React.Component {
 		const { language } = this.props;
 
 		return (
-			<div className="main-bg">
+			<div className="page">
 				<a href="/" className="logo-wrap">
 					<img src={blipLogo} alt="" />
 				</a>
