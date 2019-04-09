@@ -18,7 +18,7 @@ class App extends React.Component {
 
 	render() {
 		const {
-			children, loading, dimmerContent, language,
+			children, loading, language,
 		} = this.props;
 
 		const messages = { en, ru };
@@ -31,7 +31,7 @@ class App extends React.Component {
 					{children}
 					{
 						loading && (
-							<BlipDimmer content={dimmerContent} />
+							<BlipDimmer content={loading} />
 						)
 					}
 				</React.Fragment>
@@ -42,19 +42,14 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-	loading: PropTypes.bool,
-	dimmerContent: PropTypes.string,
 	language: PropTypes.string.isRequired,
-};
-
-App.defaultProps = {
-	loading: false,
-	dimmerContent: 'Account is about to be imported',
+	loading: PropTypes.string.isRequired,
 };
 
 export default connect(
 	(state) => ({
 		language: state.global.get('language'),
+		loading: state.global.get('loading'),
 	}),
 	() => ({}),
 )(App);

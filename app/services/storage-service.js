@@ -118,8 +118,8 @@ class StorageService {
 		const doesDBExist = await this.doesDBExist();
 
 		if (doesDBExist) {
-			// throw new Error('createDB error. DB exists.'); //TODO::
-			await this.storage.delete(ENCRYPTED_DB_NAME);
+			throw new Error('createDB error. DB exists.');
+			// await this.storage.delete(ENCRYPTED_DB_NAME);
 		}
 
 		const header = StorageService.generateNewHeader();

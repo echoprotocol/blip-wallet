@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import CreateAccount from './create-account';
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
-import googleLogo from '../../assets/images/google-logo.svg';
 import AccountCreated from '../account-сreated';
 
 
@@ -133,16 +132,6 @@ class Authorization extends React.Component {
 						{
 							this.renderMenu()
 						}
-
-						<Button
-							className="g-auth"
-							content={(
-								<React.Fragment>
-									<img className="ic" src={googleLogo} alt="" />
-									<span className="text"><FormattedMessage id="account.google" /></span>
-								</React.Fragment>
-							)}
-						/>
 					</div>
 					<div className="segment active tab">
 						<div className="inner">

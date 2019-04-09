@@ -14,10 +14,11 @@ class Storage {
 	}
 
 	async init() {
+		const { store } = this;
 
 		this.db = await openDB(this.dbName, 1, {
 			upgrade(db) {
-				db.createObjectStore(this.store);
+				db.createObjectStore(store);
 			},
 		});
 

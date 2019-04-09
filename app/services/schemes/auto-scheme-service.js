@@ -1,22 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 import CryptoService from '../crypto-service';
-
-class PrivateStorage {
-
-	/**
-	 *
-	 * @param {String} protectedPrivateKey
-	 * @param {String} protectedIV
-	 * @param {String} encryptedEncryptionHash
-	 */
-	constructor(protectedPrivateKey, protectedIV, encryptedEncryptionHash) {
-		this.protectedPrivateKey = protectedPrivateKey;
-		this.protectedIV = protectedIV;
-		this.encryptedEncryptionHash = encryptedEncryptionHash;
-	}
-
-}
-
-let privateStorage;
+import PrivateStorage from '../../logic-components/private-storage';
 
 class AutoSchemeService {
 
@@ -26,6 +10,7 @@ class AutoSchemeService {
 	 */
 	constructor(storageService) {
 		this.storageService = storageService;
+		this._privateStorage = null;
 	}
 
 	/**
@@ -39,11 +24,11 @@ class AutoSchemeService {
 	}
 
 	getEncHash() {
-		if (!privateStorage) {
+		if (!this._privateStorage) {
 			throw new Error('Private storage doesn\'t set');
 		}
 
-		const decrypted = CryptoService.decryptData(privateStorage.protectedPrivateKey, privateStorage.encryptedEncryptionHash, { IV: privateStorage.protectedIV });
+		const decrypted = CryptoService.decryptData(this._privateStorage.protectedPrivateKey, this._privateStorage.encryptedEncryptionHash, { IV: this._privateStorage.protectedIV });
 
 		return decrypted.toString('hex');
 	}
@@ -68,7 +53,7 @@ class AutoSchemeService {
 	 */
 	async setEncryptionHash(password) {
 
-		if (privateStorage) {
+		if (this._privateStorage) {
 			throw new Error('PrivateStorage is enabled. Please reset it');
 		}
 
@@ -78,12 +63,12 @@ class AutoSchemeService {
 		const protectedIV = CryptoService.randomBytes(16).toString('hex');
 		const encryptedEncryptionHash = CryptoService.encryptData(protectedPrivateKey, Buffer.from(encHash, 'hex'), { IV: protectedIV });
 
-		privateStorage = new PrivateStorage(protectedPrivateKey, protectedIV, encryptedEncryptionHash);
+		this._privateStorage = new PrivateStorage(protectedPrivateKey, protectedIV, encryptedEncryptionHash);
 
 	}
 
 	resetPrivateStorage() {
-		privateStorage = null;
+		this._privateStorage = null;
 	}
 
 }

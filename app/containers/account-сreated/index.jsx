@@ -3,7 +3,6 @@ import { Animated } from 'react-animated-css';
 import { Button, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import copy from 'clipboard-copy';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { withRouter } from 'react-router';
 
@@ -16,20 +15,15 @@ class AccountCreated extends React.Component {
 
 		this.state = {
 			isVisible: true,
+			isVisibleWif: false,
 		};
-	}
-
-	componentDidMount() {
-		const { wif } = this.props;
-
-		copy(wif);
 	}
 
 	render() {
 		const {
 			wif, accountName, intl, history,
 		} = this.props;
-		const { isVisible } = this.state;
+		const { isVisible, isVisibleWif } = this.state;
 
 		const hint1 = intl.formatMessage({ id: 'account.created.wif.hint1' });
 		const hint2 = intl.formatMessage({ id: 'account.created.wif.hint2' });
@@ -102,6 +96,7 @@ class AccountCreated extends React.Component {
 									<CopyToClipboard text={wif}>
 										<Button
 											className="btn-white"
+											onClick={() => this.setState({ isVisibleWif: true })}
 											content={(
 												<React.Fragment>
 													<Icon name="copy" />
@@ -118,7 +113,7 @@ class AccountCreated extends React.Component {
 						className="wif-toast"
 						animationIn="fadeIn"
 						animationOut="fadeOut"
-						isVisible={isVisible}
+						isVisible={isVisibleWif}
 					> <FormattedMessage id="account.created.wif.copied" />
 					</Animated>
 				</div>

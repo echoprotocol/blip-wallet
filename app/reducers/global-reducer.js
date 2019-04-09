@@ -6,6 +6,7 @@ const DEFAULT_FIELDS = Map({
 	language: EN_LOCALE,
 	loading: '',
 	isConnected: false,
+	accounts: new Map({}),
 });
 
 export default createModule({

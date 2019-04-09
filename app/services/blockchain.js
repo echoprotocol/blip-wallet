@@ -19,6 +19,7 @@ class Blockchain {
 
 	constructor() {
 		this.current = '';
+		this.network = '';
 		this.remote = null;
 		this.local = null;
 		this.api = null;
@@ -34,13 +35,15 @@ class Blockchain {
 		return this.remote.isConnected || this.local.isConnected;
 	}
 
-	async init(store, isConnectedCb) {
+	async init(network, store, isConnectedCb) {
 
 		if (this.remote || this.local) {
 			throw new Error('Instance already initialized');
 		}
 
 		try {
+			this.setNetworkGroup(network);
+
 			this.remote = new Echo();
 			this.local = new Echo();
 
@@ -87,12 +90,16 @@ class Blockchain {
 		this.local.disconnect();
 	}
 
+	setNetworkGroup(network) {
+		this.network = network;
+	}
+
 	async _createConnection(instance, node) {
 
 		this.current = node;
 
 		try {
-			await instance.connect(NETWORKS[node].url, {
+			await instance.connect(NETWORKS.testnet[node].url, {
 				connectionTimeout: CONNECTION_TIMEOUT,
 				maxRetries: MAX_RETRIES,
 				pingTimeout: PING_TIMEOUT,

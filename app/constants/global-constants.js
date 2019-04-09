@@ -12,13 +12,15 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
 
 export const NETWORKS = {
-	remote: {
-		name: 'Remote node',
-		url: 'wss://testnet.echo-dev.io/ws',
-	},
-	local: {
-		name: 'Local node',
-		url: 'ws://127.0.0.1:8090', // there must be a local node
+	testnet: {
+		remote: {
+			name: 'Remote node',
+			url: 'wss://testnet.echo-dev.io/ws',
+		},
+		local: {
+			name: 'Local node',
+			url: 'ws://127.0.0.1:8090', // there must be a local node
+		},
 	},
 };
 
@@ -32,7 +34,6 @@ export const RANDOM_SIZE = 2048;
 export const ECHORANDKEY_SIZE = 47;
 
 export const KEY_CODE_ENTER = 13;
-
 export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
 

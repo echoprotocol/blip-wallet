@@ -1,5 +1,4 @@
 import Blockchain from './blockchain';
-import CryptoService from './crypto-service';
 import UserStorageService from './user-storage-service';
 
 class Services {
@@ -18,17 +17,6 @@ class Services {
 		this.blockchain = new Blockchain();
 
 		return this.blockchain;
-	}
-
-	getCrypto() {
-
-		if (this.crypto) {
-			return this.crypto;
-		}
-
-		this.crypto = new CryptoService();
-
-		return this.crypto;
 	}
 
 	/**

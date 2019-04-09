@@ -104,7 +104,11 @@
     "type": "git",
     "url": "https://github.com/echoprotocol/blip-wallet.git"
   },
-  "author": "PixelPlex",
+  "author": {
+    "name": "PixelPlex",
+    "email": "info@pixelplex.io",
+    "url": "https://pixelplex.io"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/echoprotocol/blip-wallet/issues"
@@ -235,7 +239,6 @@
     "@fortawesome/fontawesome-free": "^5.6.3",
     "bs58": "^4.0.1",
     "classnames": "^2.2.6",
-    "clipboard-copy": "^3.0.0",
     "connected-react-router": "^5.0.1",
     "crypto-random-string": "^1.0.0",
     "devtron": "^1.4.0",

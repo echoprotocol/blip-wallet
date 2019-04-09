@@ -2,7 +2,6 @@ import { PrivateKey } from 'echojs-lib';
 
 import Services from '../services';
 import CryptoService from '../services/crypto-service';
-
 import { FORM_SIGN_UP } from '../constants/form-constants';
 import { setFormError, toggleLoading } from './form-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
@@ -10,6 +9,7 @@ import GlobalReducer from '../reducers/global-reducer';
 
 import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
+import { setValue } from './global-actions';
 
 /**
  * @method validateAccount
@@ -53,6 +53,14 @@ export const validateAccount = (form, accountName) => async (dispatch) => {
 	return true;
 };
 
+const addAccount = (id, name) => (dispatch, getState) => {
+	let accounts = getState().global.get('accounts');
+
+	accounts = accounts.set(id, name);
+
+	dispatch(setValue('accounts', accounts));
+};
+
 /**
  * @method registerAccount
  *
@@ -85,9 +93,9 @@ export const registerAccount = () => async (dispatch, getState) => {
 
 		const userStorage = Services.getUserStorage();
 
+		dispatch(addAccount(accountData.id, accountName.value));
 		await userStorage.addAccount(Account.create(accountData.id, accountName.value));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
-
 
 		return { wif, accountName: accountName.value };
 	} catch (err) {

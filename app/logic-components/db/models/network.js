@@ -20,11 +20,21 @@ class Network {
 		return new Network(accounts, keys);
 	}
 
+	/**
+	 *
+	 * @param {Account} account
+	 * @returns {Network}
+	 */
 	addAccount(account) {
 		this.accounts.push(account);
 		return this;
 	}
 
+	/**
+	 *
+	 * @param {Key} key
+	 * @returns {Network}
+	 */
 	addKey(key) {
 		this.keys.push(key);
 		return this;
