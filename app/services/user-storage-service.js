@@ -74,6 +74,7 @@ class UserStorageService {
 	async setScheme(scheme, password) {
 
 		this.scheme = scheme;
+
 		await autoSchemeService.resetPrivateStorage();
 
 		switch (scheme) {
@@ -231,7 +232,9 @@ class UserStorageService {
 	 * @return {Promise.<void>}
 	 */
 	async deleteDB() {
+
 		await storageService.deleteDB();
+
 	}
 
 	/**

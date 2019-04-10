@@ -5,7 +5,6 @@ import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
 
 import CreateAccount from './create-account';
-
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import AccountCreated from '../account-сreated';
@@ -17,7 +16,6 @@ class Authorization extends React.Component {
 		super(props);
 		this.state = {
 			activeIndex: 0,
-
 			wif: '',
 			accountName: '',
 			isVisible: true,

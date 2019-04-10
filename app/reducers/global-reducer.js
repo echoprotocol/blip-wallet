@@ -1,6 +1,5 @@
 import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
-
 import { EN_LOCALE } from '../constants/global-constants';
 
 const DEFAULT_FIELDS = Map({
@@ -23,9 +22,6 @@ export default createModule({
 				return state;
 			},
 		},
-		lockToggle: {
-			reducer: (state, { payload }) => state.set('locked', !payload.value),
-		},
 		setIn: {
 			reducer: (state, { payload }) => {
 				Object.keys(payload.params).forEach((field) => {
@@ -41,6 +37,9 @@ export default createModule({
 
 				return state;
 			},
+		},
+		lockToggle: {
+			reducer: (state, { payload }) => state.set('locked', !payload.value),
 		},
 	},
 });

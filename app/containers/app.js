@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { Animated } from 'react-animated-css';
+
 import { withRouter } from 'react-router';
+
 import localeEn from 'react-intl/locale-data/en';
 import localeRu from 'react-intl/locale-data/ru';
 
@@ -15,7 +17,6 @@ import TranslateHelper from '../helpers/translate-helper';
 
 import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
-
 import Services from '../services';
 import {
 	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES,
@@ -91,6 +92,7 @@ class App extends React.Component {
 					<div
 						className="global-wrap"
 					>
+
 						{locked && LOCKED_ROUTES.includes(pathname) && PUBLIC_ROUTES.includes(pathname)
 							? (
 								<Animated
@@ -120,6 +122,7 @@ class App extends React.Component {
 					}
 
 					{ !locked && SIDE_MENU_ROUTES.includes(pathname) && <SideMenu /> }
+
 				</React.Fragment>
 			</IntlProvider>
 

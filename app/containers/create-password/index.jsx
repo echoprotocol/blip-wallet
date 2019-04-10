@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import { Input, Button } from 'semantic-ui-react';
 import { Animated } from 'react-animated-css';
@@ -90,6 +91,7 @@ class CreatePassword extends React.Component {
 		} else {
 			this.setState({ showRepeatPas: !pas });
 		}
+
 	}
 
 	renderPrivacyEye(pas, a) {
@@ -109,6 +111,7 @@ class CreatePassword extends React.Component {
 	}
 
 	render() {
+
 		const { error, loading } = this.props;
 		const {
 			showPas, showRepeatPas, isVisible,
@@ -161,6 +164,7 @@ class CreatePassword extends React.Component {
 												</div>
 											)
 										}
+
 									</div>
 
 								</div>
@@ -229,7 +233,6 @@ class CreatePassword extends React.Component {
 												/>
 											)}
 										</FormattedMessage>
-
 									</Animated>
 								</div>
 							</div>

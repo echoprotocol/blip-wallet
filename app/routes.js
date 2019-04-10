@@ -9,7 +9,6 @@ import CreatePassword from './containers/create-password';
 import RestorePassword from './containers/restore-password';
 import Page404 from './components/page404/page404';
 
-
 import {
 	AUTHORIZATION, CREATE_PASSWORD,
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
