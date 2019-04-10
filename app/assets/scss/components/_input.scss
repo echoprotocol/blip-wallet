@@ -1,14 +1,19 @@
 @mixin input {
+	@include min-vw(1200) {
+		font-size: 18px;
+	}
 	@include min-vw(1400) {
 		height: 60px;
 		padding: 0 22px;
+		font-size: 20px;
 	}
 	height: 44px;
 	padding: 0 14px;
 	border: 1px solid #bfaaeb;
 	border-radius: 3px;
 	background-color: #bfaaeb;
-	transition: background-color $speed ease, border $speed ease;
+	font-size: 16px;
+	transition: background-color $speed ease, color $speed, border $speed ease;
 
 	&:hover {
 		border: 1px solid #cdbaf5;
@@ -22,6 +27,10 @@
 	}
 }
 
+.field {
+	position: relative;
+}
+
 .input {
 	align-items: center;
 	display: flex;
@@ -31,11 +40,11 @@
 		@include source-semibold();
 		@include hardware-accel();
 		color: #33353f;
-		font-size: 1.7em;
 		letter-spacing: 0.017em;
 
 		&::placeholder {
 			color: #624d9a;
+			line-height: 44px;
 		}
 	}
 
@@ -49,6 +58,20 @@
 	&.fluid {
 		input {
 			width: 100%;
+		}
+	}
+
+	&.disabled {
+		input {
+			border-color: #7d65be;
+			background-color: #7d65be;
+			color: #574589;
+
+			&:hover,
+			&:focus {
+				background-color: #7d65be;
+				color: #574589;
+			}
 		}
 	}
 }
@@ -105,6 +128,7 @@ form {
 
 .error {
 	input,
+	input:hover,
 	input:focus {
 		border-color: #ff5484;
 	}
@@ -121,4 +145,47 @@ form {
 	background-color: #4e4275;
 	color: #ff5b5b;
 	font-size: 13px;
+}
+
+// Password
+
+.input {
+	&.password {
+		input {
+			padding-right: 57px;
+
+			&[type='password'] {
+				color: #5a478e;
+				letter-spacing: 0.1em;
+
+				&::placeholder {
+					letter-spacing: 0.017em;
+				}
+			}
+		}
+
+		.icon-eye {
+			@include min-vw(1400) {
+				height: 60px;
+			}
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 60px;
+			height: 44px;
+			border: 0;
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-position: center;
+			outline: none;
+
+			&.enable {
+				background-image: url(../images/eye-enable.svg);
+			}
+
+			&.disabled {
+				background-image: url(../images/eye-disabled.svg);
+			}
+		}
+	}
 }

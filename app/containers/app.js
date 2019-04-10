@@ -1,35 +1,97 @@
-/* eslint-disable react/prop-types */ // TODO::
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Animated } from 'react-animated-css';
+
+import { IntlProvider, addLocaleData } from 'react-intl';
+import localeEn from 'react-intl/locale-data/en';
+import localeRu from 'react-intl/locale-data/ru';
 
 import BlipDimmer from '../components/blip-dimmer';
+import SideMenu from '../components/side-menu';
+import Unlock from '../components/unlock-wallet';
+import { PUBLIC_ROUTES } from '../constants/routes-constants';
 
+import en from '../translations/en';
+import ru from '../translations/ru';
+import TranslateHelper from '../helpers/translate-helper';
+
+addLocaleData([...localeEn, ...localeRu]);
 class App extends React.Component {
 
+
 	render() {
-		const { children, loading, dimmerContent } = this.props;
+
+		const {
+			children, loading, locked,
+			pathname, language,
+		} = this.props;
+
+		const messages = { en, ru };
+
+		const flatten = TranslateHelper.flattenMessages(messages[language]);
+
 		return (
-			<React.Fragment>
-				{children}
-				{
-					loading && (
-						<BlipDimmer content={dimmerContent} />
-					)
-				}
-			</React.Fragment>
+			<IntlProvider locale={language} messages={flatten}>
+				<React.Fragment>
+
+					{ (PUBLIC_ROUTES.includes(pathname) || locked) && <div className="bg" />}
+
+					<div
+						className="global-wrap"
+					>
+						{locked
+							? (
+								<Animated
+									animationIn="fadeInRightBig"
+									animationOut="fadeOutLeft"
+									isVisible={locked}
+									className="unlock-page"
+									animateOnMount={false}
+								>
+									<Unlock />
+								</Animated>
+							) : (
+								<Animated
+									animationIn="fadeInRightBig"
+									animationOut="fadeOutLeft"
+								>
+									{children}
+								</Animated>
+							) }
+
+
+					</div>
+					{
+						loading && (
+							<BlipDimmer content={loading} />
+						)
+					}
+
+					{ !PUBLIC_ROUTES.includes(pathname) && <SideMenu /> }
+				</React.Fragment>
+			</IntlProvider>
+
 		);
 	}
 
 }
 
 App.propTypes = {
-	loading: PropTypes.bool,
-	dimmerContent: PropTypes.string,
+	language: PropTypes.string.isRequired,
+	loading: PropTypes.string.isRequired,
+	pathname: PropTypes.string.isRequired,
+	locked: PropTypes.bool.isRequired,
+	children: PropTypes.element.isRequired,
 };
 
-App.defaultProps = {
-	loading: false,
-	dimmerContent: 'Account is about to be imported',
-};
+export default connect(
+	(state) => ({
 
-export default App;
+		language: state.global.get('language'),
+		loading: state.global.get('loading'),
+		locked: state.global.get('locked'),
+		pathname: state.router.location.pathname,
+	}),
+	() => ({}),
+)(App);

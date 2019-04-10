@@ -3,16 +3,26 @@
 @import 'helpers/animations';
 
 @import 'vendors/normalize';
+@import 'vendors/animate';
 
 @import 'base/fonts';
 @import 'base/base';
 
+@import 'layout/header';
 @import 'layout/dimmer';
+@import 'layout/grid';
+@import 'layout/sidebar';
 
 @import 'components/button';
+@import 'components/link';
 @import 'components/input';
 @import 'components/icon';
+@import 'components/form';
+@import 'components/dropdown';
+@import 'components/checkbox';
 
 @import 'pages/auth';
 @import 'pages/welcome';
-@import 'pages/common';
+@import 'pages/select-lang';
+@import 'pages/restore-password';
+@import 'pages/unlock-wallet';

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Tab, Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
+import { Animated } from 'react-animated-css';
+import classnames from 'classnames';
 
-import SignIn from './sign-in';
+import CreateAccount from './create-account';
+
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
-import googleLogo from '../../assets/images/google-logo.svg';
+import AccountCreated from '../account-сreated';
 
 
 class Authorization extends React.Component {
@@ -12,95 +16,151 @@ class Authorization extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			indexPanes: [0, -1],
 			activeIndex: 0,
+			isVisible: true,
+			wif: '',
+			accountName: '',
 		};
 	}
 
+	static getDerivedStateFromProps(props, state) {
+		if (props.locked) {
+			return { isVisible: false };
+		}
+		return state;
+	}
+
 	setActiveTab(e, active) {
+
 		e.stopPropagation();
 		this.setState({
+			isVisible: false,
 			activeIndex: active,
 		});
+
+		setTimeout(() => {
+			this.setState({
+				isVisible: true,
+				activeIndex: active,
+			});
+		}, 150);
 	}
 
-	generatePanes(e, panes) {
-
-		const elmClasses = e.target.classList;
-
-		if (!elmClasses.contains('menu-item') || elmClasses.contains('active')) {
-			return;
-		}
-
-		panes.splice(-1, 1);
-
-		const indexPanes = panes.map((pane) => (pane.menuItem.props.tabIndex === -1 ? 0 : -1)).reverse();
-
+	goForward(accountName, wif) {
 		this.setState({
-			indexPanes,
+			isVisible: false,
 		});
+
+		setTimeout(() => {
+			this.setState({ wif, accountName });
+		}, 200);
 	}
 
-	render() {
+	renderMenu() {
+		const { activeIndex, isVisible } = this.state;
 
-		const { activeIndex, indexPanes } = this.state;
-
-		const panes = [
+		const menuItems = [
 			{
-				menuItem: <Button
-					key="0"
-					className="menu-item"
-					content="Create new account"
-					tabIndex={indexPanes[1]}
-					onClick={(e) => this.setActiveTab(e, 0)}
-				/>,
-				render: () => (
-					<Tab.Pane>
-						<div className="inner"><SignIn /></div>
-					</Tab.Pane>
-				),
+				menuItem:
+	<Button
+		key="0"
+		className={
+			classnames(
+				'menu-item',
+				{ active: !activeIndex },
+			)
+		}
+		disabled={!activeIndex}
+		onClick={(e) => this.setActiveTab(e, 0)}
+	>
+		<Animated
+			animationIn={activeIndex ? 'fadeInRightBig' : 'slideInRight'}
+			animationOut="fadeOutLeft"
+			isVisible={isVisible}
+		>
+			<FormattedMessage id="account.create.title" />
+		</Animated>
+	</Button>,
+
 			},
 			{
-				menuItem: <Button
-					key="1"
-					className="menu-item"
-					content="Import account"
-					tabIndex={indexPanes[0]}
-					onClick={(e) => this.setActiveTab(e, 1)}
-				/>,
-				render: () => (
-					<Tab.Pane>
-						<div className="inner"><ImportAccount /></div>
-					</Tab.Pane>
-				),
-			},
-			{
-				menuItem: <Button
-					key="2"
-					className="g-auth"
-					content={(
-						<React.Fragment>
-							<img className="ic" src={googleLogo} alt="" />
-							<span className="text">Sign in with Google</span>
-						</React.Fragment>
-					)}
-					onClick={(e) => this.setActiveTab(e, activeIndex)}
-				/>,
+				menuItem:
+	<Button
+		key="1"
+		className={
+			classnames(
+				'menu-item',
+				{ active: !!activeIndex },
+			)
+		}
+		disabled={!!activeIndex}
+		onClick={(e) => this.setActiveTab(e, 1)}
+	>
+		<Animated
+			animationIn={!activeIndex ? 'fadeInRightBig' : 'slideInRight'}
+			animationOut="fadeOutLeft"
+			isVisible={isVisible}
+		>
+			<FormattedMessage id="account.import" />
+		</Animated>
+
+	</Button>,
 			},
 		];
 
+		if (activeIndex) {
+			menuItems.reverse();
+		}
+
 		return (
-			<div className="main-bg">
+			menuItems.map((item) => (
+				item.menuItem
+			)));
+	}
+
+	renderAuth() {
+
+		const { activeIndex, isVisible } = this.state;
+		return (
+			<div className="page">
 				<div className="logo-wrap">
 					<img src={blipLogo} alt="" />
 				</div>
-				<Tab
-					panes={panes}
-					className="auth-tabs"
-					activeIndex={activeIndex}
-					onTabChange={(e, data) => this.generatePanes(e, data.panes)}
-				/>
+				<div className="auth-tabs">
+					<div className="menu">
+						{
+							this.renderMenu()
+						}
+					</div>
+					<div className="segment active tab">
+						<div className="inner">
+							{
+								activeIndex
+									? (
+										<ImportAccount
+											goForward={(path) => this.goForward(path)}
+											isVisible={isVisible}
+										/>
+									)
+									: (
+										<CreateAccount
+											goForward={(accountName, wif) => this.goForward(accountName, wif)}
+											isVisible={isVisible}
+										/>
+									)
+							}
+						</div>
+					</div>
+				</div>
 			</div>
+		);
+	}
+
+	render() {
+		const { wif, accountName } = this.state;
+
+		return (
+			wif ? <AccountCreated wif={wif} accountName={accountName} /> : this.renderAuth()
 		);
 	}
 

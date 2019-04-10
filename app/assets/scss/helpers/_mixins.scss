@@ -62,3 +62,48 @@
 		}
 	}
 }
+
+@mixin onCheckboxFocus($color) {
+	@include hardware-accel();
+	box-shadow:
+    0 0 0 2px rgba($color, .2),
+    0 0 0 2px rgba($color, .2);
+}
+
+@mixin triangle($direction, $color: #000, $size: 4px) {
+	$perpendicular-borders: $size solid transparent;
+
+	@if $direction == top or $direction == bottom {
+		border-right: $perpendicular-borders;
+		border-left: $perpendicular-borders;
+		transition: border-top-color $speed, border-bottom-color $speed;
+
+	} @else if $direction == right or $direction == left {
+		border-top: $perpendicular-borders;
+		border-bottom: $perpendicular-borders;
+		transition: border-left-color $speed, border-right-color $speed;
+
+	}
+	content: '';
+	z-index: 2;
+
+	width: 0;
+	height: 0;
+
+	border-#{$direction}: $size solid $color;
+}
+
+@mixin background() {
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		background-image: url(../images/bg.jpg);
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+}

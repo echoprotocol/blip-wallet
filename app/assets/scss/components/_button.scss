@@ -7,10 +7,6 @@
 	white-space: nowrap;
 	transition: color 0.3s, border 0.3s, background-color 0.3s;
 
-	&:focus {
-		outline: none;
-	}
-
 	.ic {
 		margin-right: 12px;
 	}
@@ -31,6 +27,16 @@
 		bottom: 0;
 		display: flex;
 	}
+
+	&.fluid {
+		width: 100%;
+	}
+}
+
+.button {
+	&:focus {
+		outline: none;
+	}
 }
 
 .btn-primary {
@@ -49,6 +55,7 @@
 	background-color: #43d7ad;
 	color: #574589;
 	font-size: 1.5em;
+	transition: color 0.3s, border 0.3s, background-color 0.3s, width 0.3s;
 
 	&:hover {
 		border: 1px solid #59ebc1;
@@ -65,28 +72,79 @@
 		background-color: transparent;
 		color: #a78edc;
 	}
+
+	.text {
+		opacity: 1;
+		transition: opacity $speed;
+		transition-delay: 0.1s;
+	}
+
+	&.round-animation {
+		position: relative;
+		margin: auto;
+		transition: width 0.2s, border-radius 0.2s, padding 0.2s;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-image: url(../images/check.svg);
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 20px;
+			opacity: 0;
+		}
+	}
+
+	&.ok {
+		@include min-vw(1400) {
+			width: 56px;
+		}
+		width: 38px;
+		border-radius: 50%;
+
+		&:after {
+			opacity: 1;
+			transition: opacity $speed;
+			transition-delay: 0.1s;
+		}
+
+		.text {
+			visibility: hidden;
+			opacity: 0;
+			transition: none;
+		}
+	}
 }
 
 .btn-white {
 	@include source-semibold();
 
 	@include min-vw(1400) {
-		height: 38px;
+		height: 56px;
 	}
 	@include onBtnFocus(3px, 2px, 1px, rgba(rgba(#8676b1, 0.035), 0.45));
 
 	@include btn();
 
-	height: 28px;
+	height: 38px;
+	padding: 0 20px;
 	border: 1px solid #fff;
 	border-radius: 3px;
 	background-color: #fff;
 	color: #000;
 	font-size: 1.4em;
-	transition: box-shadow $speed;
+	transition: box-shadow $speed, background-color $speed, color $speed;
 
 	&:focus {
 		border: 1px solid #8676b1;
+	}
+
+	&:hover {
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.03);
 	}
 
 	&:active {
@@ -94,11 +152,41 @@
 		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.01);
 	}
 
-	&:hover {
-		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.03);
+	&.disabled {
+		border-color: rgba(#676767, 0.67);
+		background-color: transparent;
+		color: rgba(#000, 0.6);
 	}
 
 	.copy {
+		display: flex;
 		margin: 0 5px 0 -5px;
+	}
+}
+
+.btn-transparent {
+	@include btn();
+	@include source-regular();
+	@include onBtnFocus(3px, 2px, 2px, rgba(rgba(#43d7ad, 0.035), 0.45));
+	padding: 8px 7px;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	background-color: transparent;
+
+	&:focus {
+		border: 1px solid #43d7ad;
+	}
+
+	&:hover {
+		color: #e1d2ff;
+	}
+
+	&:active {
+		border: 1px solid transparent;
+		color: rgba(#c1afee, 0.5);
+	}
+
+	.icon {
+		margin-right: 12px;
 	}
 }
