@@ -7,7 +7,7 @@ const DEFAULT_FIELDS = Map({
 	loading: '',
 	isConnected: false,
 	accounts: new Map({}),
-	locked: true,
+	locked: false,
 });
 
 export default createModule({

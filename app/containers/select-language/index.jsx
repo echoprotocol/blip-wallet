@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { CREATE_PASSWORD } from '../../constants/routes';
 import blipLogo from '../../assets/images/blip-logo.svg';
-import { setLanguage } from '../../actions/global-actions';
+import { setValue, setLanguage } from '../../actions/global-actions';
 import { EN_LOCALE, RU_LOCALE } from '../../constants/global-constants';
 
 class SelectLanguage extends React.Component {
@@ -30,7 +30,7 @@ class SelectLanguage extends React.Component {
 
 	goForward() {
 
-		const { history } = this.props;
+		const { history, setLanguageStorage } = this.props;
 
 		this.setState({
 			isVisible: false,
@@ -39,6 +39,8 @@ class SelectLanguage extends React.Component {
 		setTimeout(() => {
 			history.push(CREATE_PASSWORD);
 		}, 200);
+
+		setLanguageStorage();
 	}
 
 	render() {
@@ -107,6 +109,7 @@ SelectLanguage.propTypes = {
 	history: PropTypes.object.isRequired,
 	language: PropTypes.string.isRequired,
 	setLanguage: PropTypes.func.isRequired,
+	setLanguageStorage: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -114,6 +117,7 @@ export default connect(
 		language: state.global.get('language'),
 	}),
 	(dispatch) => ({
-		setLanguage: (value) => dispatch(setLanguage(value)),
+		setLanguage: (value) => dispatch(setValue('language', value)),
+		setLanguageStorage: () => dispatch(setLanguage()),
 	}),
 )(SelectLanguage);

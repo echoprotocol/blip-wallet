@@ -22,6 +22,13 @@ class Authorization extends React.Component {
 		};
 	}
 
+	componentWillMount() {
+		this.setState({
+			isVisible: true,
+		});
+	}
+
+
 	setActiveTab(e, active) {
 
 		e.stopPropagation();

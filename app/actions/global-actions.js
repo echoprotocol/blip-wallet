@@ -2,6 +2,8 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import UserStorageService from '../services/user-storage-service';
 import { NETWORKS } from '../constants/global-constants';
+import { history } from '../store/configureStore';
+import { AUTHORIZATION, SELECT_LANGUAGE } from '../constants/routes';
 
 /**
  *  @method setValue
@@ -35,13 +37,18 @@ export const initAccounts = () => async (dispatch, getState) => {
 	dispatch(setValue('accounts', accountsStore));
 };
 
-export const initApp = (store) => async (dispatch) => {
+export const initApp = (store) => async (dispatch, getState) => {
+	const { pathname } = getState().router.location;
+
 	dispatch(setValue('loading', 'global.loading'));
 
 	const language = localStorage.getItem('locale');
 
 	if (language) {
 		dispatch(setValue('language', language));
+	} else if (pathname === '/') {
+		history.push(SELECT_LANGUAGE);
+		dispatch(setValue('locked', false));
 	}
 
 	const networkId = localStorage.getItem('network') || Object.keys(NETWORKS)[0];
@@ -76,8 +83,8 @@ export const initApp = (store) => async (dispatch) => {
  *
  * 	@param {String} language
  */
-export const setLanguage = (language) => (dispatch) => {
-	dispatch(setValue('language', language));
+export const setLanguage = () => (dispatch, getState) => {
+	const language = getState().global.get('language');
 
 	localStorage.setItem('locale', language);
 };
@@ -89,7 +96,10 @@ export const setLanguage = (language) => (dispatch) => {
  *
  * 	@param {Boolean} value
  */
-
 export const lockToggle = (value) => (dispatch) => {
 	dispatch(GlobalReducer.actions.lockToggle({ value }));
+
+	if (value) {
+		history.push(AUTHORIZATION);
+	}
 };

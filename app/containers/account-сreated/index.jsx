@@ -7,6 +7,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { withRouter } from 'react-router';
 
 import avatar from '../../assets/images/default-avatar.svg';
+import { SELECT_LANGUAGE } from '../../constants/routes';
 
 class AccountCreated extends React.Component {
 
@@ -54,7 +55,7 @@ class AccountCreated extends React.Component {
 						</p>
 						<Button
 							className="btn-primary arrow"
-							onClick={() => history.push('/select-language')}
+							onClick={() => history.push(SELECT_LANGUAGE)}
 							content={(
 								<React.Fragment>
 									<div className="text"><FormattedMessage id="account.created.button" /></div>
@@ -114,6 +115,7 @@ class AccountCreated extends React.Component {
 					className="wif-toast"
 					animationIn="fadeIn"
 					animationOut="fadeOut"
+					animateOnMount={false}
 					isVisible={isVisibleWif}
 				> <FormattedMessage id="account.created.wif.copied" />
 				</Animated>
