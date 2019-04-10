@@ -1,20 +1,20 @@
 import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
-import _ from 'lodash';
+
 import { EN_LOCALE } from '../constants/global-constants';
 
 const DEFAULT_FIELDS = Map({
 	language: EN_LOCALE,
-	locked: true,
 	loading: '',
 	isConnected: false,
 	accounts: new Map({}),
+	locked: true,
+	inited: false,
 });
 
 export default createModule({
 	name: 'global',
-
-	initialState: _.cloneDeep(DEFAULT_FIELDS),
+	initialState: DEFAULT_FIELDS,
 	transformations: {
 		set: {
 			reducer: (state, { payload }) => {
@@ -23,7 +23,6 @@ export default createModule({
 				return state;
 			},
 		},
-
 		lockToggle: {
 			reducer: (state, { payload }) => state.set('locked', !payload.value),
 		},
@@ -36,14 +35,12 @@ export default createModule({
 				return state;
 			},
 		},
-
 		remove: {
 			reducer: (state, { payload }) => {
 				state = state.deleteIn([payload.field, payload.param]);
 
 				return state;
 			},
-
 		},
 	},
 });

@@ -7,6 +7,7 @@ import selectLanguage from './containers/select-language';
 import accountImported from './containers/account-imported';
 import CreatePassword from './containers/create-password';
 import RestorePassword from './containers/restore-password';
+import Page404 from './components/page404/page404';
 
 
 import {
@@ -15,16 +16,17 @@ import {
 	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
 } from './constants/routes-constants';
 
-
 export default () => (
 	<App>
 		<Switch>
-			<Route path={AUTHORIZATION} component={Authorization} />
-			<Route path={ACCOUNT_CREATED} component={accountCreated} />
-			<Route path={ACCOUNT_IMPORTED} component={accountImported} />
-			<Route path={CREATE_PASSWORD} component={CreatePassword} />
-			<Route path={RESTORE_PASSWORD} component={RestorePassword} />
-			<Route path={SELECT_LANGUAGE} component={selectLanguage} />
+			<Route exact path="/" component={selectLanguage} />
+			<Route exact path={CREATE_PASSWORD} component={CreatePassword} />
+			<Route exact path={RESTORE_PASSWORD} component={RestorePassword} />
+			<Route exact path={SELECT_LANGUAGE} component={selectLanguage} />
+			<Route exact path={AUTHORIZATION} component={Authorization} />
+			<Route exact path={ACCOUNT_CREATED} component={accountCreated} />
+			<Route exact path={ACCOUNT_IMPORTED} component={accountImported} />
+			<Route exact path="*" component={Page404} />
 		</Switch>
 	</App>
 );

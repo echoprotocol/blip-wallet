@@ -146,6 +146,15 @@ class StorageService {
 
 	/**
 	 *
+	 * @return {Promise.<void>}
+	 */
+	async deleteDB() {
+		console.log('DLERT!');
+		await this.storage.delete(ENCRYPTED_DB_NAME);
+	}
+
+	/**
+	 *
 	 * @param {Object} decryptedData
 	 * @param {String} encHash - hex
 	 * @return {Promise.<void>}

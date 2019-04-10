@@ -51,6 +51,7 @@ class UnlockWallet extends React.Component {
 
 	render() {
 		const { showPas, isVisible } = this.state;
+
 		return (
 			<React.Fragment>
 				<Animated
@@ -76,6 +77,7 @@ class UnlockWallet extends React.Component {
 					isVisible={isVisible}
 					animateOnMount={false}
 					animationInDelay={100}
+
 				>
 					<div className="line">
 						<div className="line-content">
@@ -102,6 +104,7 @@ class UnlockWallet extends React.Component {
 					animationInDelay={150}
 					isVisible={isVisible}
 				>
+
 					{/* Toggle class ok */}
 					<Button
 						className="btn-primary round-animation ok"

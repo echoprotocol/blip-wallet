@@ -27,9 +27,7 @@ class CreateAccount extends React.Component {
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
-			this.nameInput.focus();
-		}, 500);
+		this.nameInput.focus();
 	}
 
 	componentWillUnmount() {

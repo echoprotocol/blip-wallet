@@ -17,18 +17,19 @@ class Authorization extends React.Component {
 		super(props);
 		this.state = {
 			activeIndex: 0,
-			isVisible: true,
+
 			wif: '',
 			accountName: '',
+			isVisible: true,
 		};
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		if (props.locked) {
-			return { isVisible: false };
-		}
-		return state;
+	componentWillMount() {
+		this.setState({
+			isVisible: true,
+		});
 	}
+
 
 	setActiveTab(e, active) {
 
@@ -81,7 +82,6 @@ class Authorization extends React.Component {
 			<FormattedMessage id="account.create.title" />
 		</Animated>
 	</Button>,
-
 			},
 			{
 				menuItem:

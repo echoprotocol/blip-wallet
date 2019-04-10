@@ -9,7 +9,6 @@ import { FormattedMessage } from 'react-intl';
 import Header from '../../components/header';
 import ValidatePasswordHelper from '../../helpers/validate-password-helper';
 import { FORM_CREATE_PASSWORD } from '../../constants/form-constants';
-import { AUTHORIZATION } from '../../constants/routes-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 import { createDB } from '../../actions/global-actions';
 
@@ -54,10 +53,10 @@ class CreatePassword extends React.Component {
 	}
 
 	onKeyDown(e) {
-		const { password, repeatPassword, repeatError } = this.state;
-		const { loading, error } = this.props;
+		const { hintsError } = this.state;
+		const { loading } = this.props;
 
-		if (loading || !password || !repeatPassword || error || repeatError) { return; }
+		if (loading || hintsError) { return; }
 
 		const { keyCode } = e;
 
@@ -71,7 +70,7 @@ class CreatePassword extends React.Component {
 	async onSubmit() {
 		const { password, repeatPassword, repeatError } = this.state;
 
-		if (repeatError || this.props.error) {
+		if (repeatError) {
 			return;
 		}
 
@@ -91,19 +90,6 @@ class CreatePassword extends React.Component {
 		} else {
 			this.setState({ showRepeatPas: !pas });
 		}
-	}
-
-	goForward() {
-
-		const { history } = this.props;
-
-		this.setState({
-			isVisible: false,
-		});
-
-		setTimeout(() => {
-			history.push(AUTHORIZATION);
-		}, 200);
 	}
 
 	renderPrivacyEye(pas, a) {
@@ -258,7 +244,6 @@ class CreatePassword extends React.Component {
 
 CreatePassword.propTypes = {
 	error: PropTypes.any,
-	history: PropTypes.object.isRequired,
 	createDB: PropTypes.func.isRequired,
 	loading: PropTypes.bool,
 };
@@ -271,11 +256,9 @@ CreatePassword.defaultProps = {
 export default connect(
 	(state) => ({
 		loading: state.form.getIn([FORM_CREATE_PASSWORD, 'loading']),
-		error: state.form.getIn([FORM_CREATE_PASSWORD, 'error']),
 		locked: state.global.get('locked'),
 	}),
 	(dispatch) => ({
 		createDB: (value) => dispatch(createDB(FORM_CREATE_PASSWORD, value)),
 	}),
-
 )(CreatePassword);

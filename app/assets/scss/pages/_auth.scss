@@ -13,6 +13,12 @@
 		margin: 0 0 0 145px;
 		padding: 0 0 24px;
 
+		.animated { // TODO:: rm
+			&.slideInRight {
+				opacity: 1 !important;
+			}
+		}
+
 		&-item {
 			@include source-regular();
 

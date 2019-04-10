@@ -43,6 +43,7 @@ export const validateAccount = (form, accountName) => async (dispatch) => {
 			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exist'));
 		}
 	} catch (err) {
+
 		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exist'));
 
 		console.warn(err.message || err);

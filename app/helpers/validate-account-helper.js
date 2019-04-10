@@ -33,12 +33,10 @@ class ValidateAccountHelper {
 	static accountNameHints(accountName) {
 		const hints = {};
 
-		if (accountName.length < NAME_MIN_LENGTH) {
+		if (accountName.length < NAME_MIN_LENGTH || accountName.length > NAME_MAX_LENGTH) {
 			hints.hint1 = '';
 		} else if (accountName.length <= NAME_MAX_LENGTH) {
 			hints.hint1 = 'active';
-		} else {
-			hints.hint1 = 'error';
 		}
 
 		if (!accountName.length) {
@@ -50,13 +48,13 @@ class ValidateAccountHelper {
 		}
 
 		if (!/^[~a-z]/.test(accountName)) {
-			hints.hint2 = 'error';
+			hints.hint2 = '';
 		} else {
 			hints.hint2 = 'active';
 		}
 
 		if (!/^[~a-z0-9-]*$/.test(accountName)) {
-			hints.hint3 = 'error';
+			hints.hint3 = '';
 		} else {
 			hints.hint3 = 'active';
 		}

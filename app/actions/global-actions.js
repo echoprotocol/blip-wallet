@@ -1,10 +1,13 @@
 import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
+
 import { history } from '../store/configureStore';
-import UserStorageService from '../services/user-storage-service';
-import { AUTHORIZATION } from '../constants/routes-constants';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS } from '../constants/global-constants';
+import UserStorageService from '../services/user-storage-service';
+import LanguageService from '../services/language';
+import { AUTHORIZATION } from '../constants/routes-constants';
+
 
 /**
  *  @method setValue
@@ -39,23 +42,24 @@ export const initAccounts = () => async (dispatch, getState) => {
 };
 
 export const initApp = (store) => async (dispatch) => {
+
 	dispatch(setValue('loading', 'global.loading'));
 
-	const language = localStorage.getItem('locale');
+	const language = LanguageService.getCurrentLanguage();
 
 	if (language) {
 		dispatch(setValue('language', language));
 	}
 
-
 	const networkId = localStorage.getItem('network') || Object.keys(NETWORKS)[0];
 
 	try {
+
 		const userStorage = Services.getUserStorage();
 		await userStorage.init();
 		await userStorage.setNetworkId(networkId);
 
-		await dispatch(initAccounts());
+		dispatch(setValue('inited', true));
 
 		await Services.getEcho().init(networkId, { store }, (status) => dispatch(setIsConnected(status)));
 	} catch (err) {
@@ -63,20 +67,8 @@ export const initApp = (store) => async (dispatch) => {
 	} finally {
 		dispatch(setValue('loading', ''));
 	}
-};
 
-/**
- *  @method setLanguage
- *
- * 	Set app language
- *
- * 	@param {String} language
- */
-export const setLanguage = (language) => (dispatch) => {
-	dispatch(setValue('language', language));
-	localStorage.setItem('locale', language);
 };
-
 
 /**
  *  @method createDB
@@ -90,30 +82,32 @@ export const createDB = (form, password) => async (dispatch) => {
 	try {
 		dispatch(setValueToForm(form, 'loading', true));
 		const userStorage = Services.getUserStorage();
-		const doesDBExist = await userStorage.doesDBExist();
 
-		if (!doesDBExist) {
-			await userStorage.createDB(password);
-		}
+		await userStorage.deleteDB(password);
+		await userStorage.createDB(password);
+
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
-
+		await dispatch(initAccounts());
+		dispatch(setValue('locked', false));
 		history.push(AUTHORIZATION);
 		return true;
 	} catch (err) {
+		console.error(err);
 		return false;
 	} finally {
 		dispatch(setValueToForm(form, 'loading', false));
 	}
+
 };
 
 /**
- *  @method lockToggle
+ *  @method setLanguage
  *
- * 	Toggle lock visibility
+ * 	Set app language
  *
- * 	@param {Boolean} value
  */
+export const setLanguage = () => (dispatch, getState) => {
+	const language = getState().global.get('language');
 
-export const lockToggle = (value) => (dispatch) => {
-	dispatch(GlobalReducer.actions.lockToggle({ value }));
+	localStorage.setItem('locale', language);
 };

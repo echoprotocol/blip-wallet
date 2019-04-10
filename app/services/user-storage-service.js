@@ -74,6 +74,7 @@ class UserStorageService {
 	async setScheme(scheme, password) {
 
 		this.scheme = scheme;
+		await autoSchemeService.resetPrivateStorage();
 
 		switch (scheme) {
 			case UserStorageService.SCHEMES.AUTO:
@@ -83,7 +84,6 @@ class UserStorageService {
 				await autoSchemeService.setEncryptionHash(password);
 				break;
 			case UserStorageService.SCHEMES.MANUAL:
-				await autoSchemeService.resetPrivateStorage();
 				break;
 			default:
 				throw new Error('Unknown scheme');
@@ -231,7 +231,7 @@ class UserStorageService {
 	 * @return {Promise.<void>}
 	 */
 	async deleteDB() {
-		await this.storageService.deleteDB();
+		await storageService.deleteDB();
 	}
 
 	/**

@@ -8,9 +8,7 @@ import { ACCOUNT_IMPORTED } from '../../constants/routes-constants';
 class ImportAccount extends React.Component {
 
 	componentDidMount() {
-		setTimeout(() => {
-			this.nameInput.focus();
-		}, 500);
+		this.nameInput.focus();
 	}
 
 	render() {
@@ -30,7 +28,6 @@ class ImportAccount extends React.Component {
 							isVisible={isVisible}
 						>
 							<div className="line-label">Account name</div>
-
 							<div className="line-content">
 								<div className="field">
 									<Input
@@ -80,10 +77,8 @@ class ImportAccount extends React.Component {
 										<div className="hint">You can import any Echo account here</div>
 									</div>
 								</div>
-
 							</div>
 						</Animated>
-
 					</div>
 					<div className="form-action">
 						<div className="line">
