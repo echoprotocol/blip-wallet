@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-// import { Animated } from 'react-animated-css';
 // import { FormattedMessage } from 'react-intl';
 // import { CREATE_PASSWORD } from '../../constants/routes-constants';
 // import { EN_LOCALE, RU_LOCALE } from '../../constants/global-constants';
@@ -17,6 +16,9 @@ class Wallet extends React.Component {
 
 		return (
 			<div className="wallet page">
+				<div className="wallet-settings">
+				sd
+				</div>
 				<PerfectScrollbar className="page-scroll">
 					<div className="settings-wrap">
 						<Button
@@ -41,6 +43,7 @@ class Wallet extends React.Component {
 									<span className="coins">+ 0.00000 </span>
 									<span className="currency">ECHO </span>
 									<span className="message">(unclaimed)</span>
+									<a href="" className="claim-link">Claim balance</a>
 								</div>
 							</div>
 						</div>
@@ -74,8 +77,25 @@ class Wallet extends React.Component {
 					</div>
 					<div className="footer-actions">
 						<div className="btn-wrap btns-2">
-							<Button className="btn-main" />
-							<Button className="btn-main" />
+							<Button
+								className="btn-main"
+								content={
+									<span className="text">Send</span>
+								}
+							/>
+							<Button
+								className="btn-gray"
+								content={
+									<span className="text">Receive</span>
+								}
+							/>
+						</div>
+						<div className="footer-info">
+							<div className="mode">Local mode</div>
+							<div className="sync">
+									Syncing with network:
+								<span className="percent">100%</span>
+							</div>
 						</div>
 					</div>
 					<div className="loading-status" />

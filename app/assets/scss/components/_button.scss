@@ -82,7 +82,8 @@
 	&.round-animation {
 		position: relative;
 		margin: auto;
-		transition: width 0.2s, border-radius 0.2s, padding 0.2s;
+		transition: width 0.2s, border-radius 0.2s, padding 0.2s,
+		background-color 0.3s, color 0.3s;
 
 		&:after {
 			content: '';
@@ -126,13 +127,13 @@
 	@include min-vw(1400) {
 		height: 56px;
 	}
-	@include onBtnFocus(50px, 2px, 2px, rgba(#43d7ad, 0.45));
+	@include onBtnFocus(4px, 2px, 2px, rgba(#7158ad, 0.45));
 
 	@include btn();
 
 	height: 38px;
 	border: 1px solid #7158ad;
-	border-radius: 50px;
+	border-radius: 4px;
 	background-color: #7158ad;
 	color: #fff;
 	font-size: 1.5em;
@@ -159,45 +160,46 @@
 		transition: opacity $speed;
 		transition-delay: 0.1s;
 	}
+}
 
-	&.round-animation {
-		position: relative;
-		margin: auto;
-		transition: width 0.2s, border-radius 0.2s, padding 0.2s;
+.btn-gray {
+	@include source-semibold();
 
-		&:after {
-			content: '';
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-image: url(../images/check.svg);
-			background-repeat: no-repeat;
-			background-position: center;
-			background-size: 20px;
-			opacity: 0;
-		}
+	@include min-vw(1400) {
+		height: 56px;
+	}
+	@include onBtnFocus(4px, 2px, 2px, rgba(#d5d5d5, 0.45));
+
+	@include btn();
+
+	height: 38px;
+	border: 1px solid #d5d5d5;
+	border-radius: 4px;
+	background-color: #d5d5d5;
+	color: #33353f;
+	font-size: 1.5em;
+	transition: color 0.3s, border 0.3s, background-color 0.3s, width 0.3s;
+
+	&:hover {
+		border: 1px solid #d5d5d5;
+		background-color: #d5d5d5;
 	}
 
-	&.ok {
-		@include min-vw(1400) {
-			width: 56px;
-		}
-		width: 38px;
-		border-radius: 50%;
+	&:active {
+		border: 1px solid rgba(#d5d5d5, 0.7);
+		background-color: rgba(#d5d5d5, 0.7);
+	}
 
-		&:after {
-			opacity: 1;
-			transition: opacity $speed;
-			transition-delay: 0.1s;
-		}
+	&.disabled {
+		border: 1px solid #8f77c5;
+		background-color: transparent;
+		color: #a78edc;
+	}
 
-		.text {
-			visibility: hidden;
-			opacity: 0;
-			transition: none;
-		}
+	.text {
+		opacity: 1;
+		transition: opacity $speed;
+		transition-delay: 0.1s;
 	}
 }
 
@@ -278,4 +280,14 @@
 	padding: 0;
 	border: 0;
 	background-color: transparent;
+}
+
+.btn-wrap {
+	display: flex;
+
+	button {
+		&:not(:last-child) {
+			margin-right: 1em;
+		}
+	}
 }

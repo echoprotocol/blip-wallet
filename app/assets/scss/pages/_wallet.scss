@@ -54,6 +54,12 @@
 		.message {
 			font-size: 1.4em;
 		}
+
+		.claim-link {
+			margin-left: 5px;
+			color: #68539a;
+			font-size: 1.4em;
+		}
 	}
 
 	.balance {
@@ -151,4 +157,47 @@
 			}
 		}
 	}
+
+	.footer-actions {
+		align-items: center;
+		justify-content: space-between;
+		display: flex;
+		margin-top: 1.5em;
+
+		.btn-wrap {
+			button {
+				width: 100%;
+				min-width: 140px;
+				max-width: 10em;
+			}
+		}
+
+		.footer-info {
+			@include source-regular();
+			font-size: 1.4em;
+			text-align: right;
+
+			.mode {
+				margin-bottom: 6px;
+				color: #8e8e97;
+			}
+
+			.sync {
+				color: #5b5c63;
+
+				.percent {
+					margin-left: 5px;
+					color: #33353f;
+				}
+			}
+		}
+	}
+}
+
+.wallet-settings {
+	position: absolute;
+	left: 100%;
+	z-index: 7;
+	width: 400px;
+	background-color: #5b4b93;
 }
