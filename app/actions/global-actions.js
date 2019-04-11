@@ -87,7 +87,7 @@ export const createDB = (form, password) => async (dispatch) => {
 
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		await dispatch(initAccounts());
-
+		dispatch(setValue('locked', false));
 		history.push(AUTHORIZATION);
 		return true;
 	} catch (err) {
