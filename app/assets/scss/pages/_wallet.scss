@@ -12,18 +12,20 @@
 
 	&-wrap {
 		@include min-vw(1400) {
-			padding: 0 50px;
+			padding: 40px 50px 0;
 		}
 		flex-direction: column;
 		position: relative;
 		display: flex;
 		min-height: calc(100% - 40px);
-		padding: 0 35px;
+		padding: 40px 35px 0;
 	}
 
 	.settings-wrap {
 		align-items: center;
-		justify-content: flex-end;
+		position: absolute;
+		top: 0;
+		right: 0;
 		display: flex;
 		height: 40px;
 		padding: 0 16px;
@@ -33,8 +35,18 @@
 		flex: 1;
 	}
 
-	&.open {
-		overflow: visible;
+	&-page-wrap {
+		overflow: hidden;
+
+		.page {
+			transition: transform 0.2s;
+		}
+
+		&.open {
+			.page {
+				transform: translateX(-480px);
+			}
+		}
 	}
 }
 
@@ -200,8 +212,70 @@
 
 .wallet-settings {
 	position: absolute;
+	top: 0;
+	bottom: 0;
 	left: 100%;
-	z-index: 7;
-	width: 400px;
+	width: 480px;
 	background-color: #5b4b93;
+}
+
+.settings-tabs {
+	.menu {
+		align-items: flex-end;
+		display: flex;
+		height: 6vh;
+		min-height: 126px;
+		padding: 0 24px 24px;
+		border-bottom: 1px solid rgba(184, 155, 245, 0.4);
+
+		&-item {
+			@include source-regular();
+
+			@include btn();
+			margin-right: 13px;
+
+			border: 1px solid transparent;
+			border-radius: 3px;
+			background-color: transparent;
+			color: #b89bf5;
+			font-size: 1.9em;
+			letter-spacing: 0.019em;
+			line-height: 1;
+			user-select: none;
+			transition: color $speed;
+			animation: fadeIn $speed;
+			will-change: transform;
+
+			&:not(.active):not(:active) {
+				@include onBtnFocus(4px, 2px, 2px, rgba(#43d7ad, 0.45));
+
+				&:focus {
+					border: 1px solid #43d7ad;
+					transition: all $speed;
+				}
+			}
+
+			&:hover {
+				color: #e1d2ff;
+			}
+
+			&:active {
+				border: 1px solid transparent;
+				color: rgba(#e1d2ff, 0.5);
+			}
+
+			&:not(.active) {
+				cursor: pointer;
+			}
+
+			&.active {
+				color: #fff;
+				cursor: text;
+			}
+		}
+	}
+
+	.tab {
+		padding: 30px;
+	}
 }

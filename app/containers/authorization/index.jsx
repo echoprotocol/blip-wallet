@@ -43,9 +43,6 @@ class Authorization extends React.Component {
 
 		setTimeout(() => {
 			this.props.startAnimation(AUTHORIZATION, true);
-			this.setState({
-				activeIndex: active,
-			});
 		}, 200);
 	}
 
@@ -76,7 +73,7 @@ class Authorization extends React.Component {
 		onClick={(e) => this.setActiveTab(e, 0)}
 	>
 		<Animated
-			animationIn={activeIndex ? 'fadeInRightBig' : 'slideInRight'}
+			animationIn={activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
 			animationOut="fadeOutLeft"
 			isVisible={isVisible}
 		>
@@ -98,7 +95,7 @@ class Authorization extends React.Component {
 		onClick={(e) => this.setActiveTab(e, 1)}
 	>
 		<Animated
-			animationIn={!activeIndex ? 'fadeInRightBig' : 'slideInRight'}
+			animationIn={!activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
 			animationOut="fadeOutLeft"
 			isVisible={isVisible}
 		>
@@ -134,7 +131,7 @@ class Authorization extends React.Component {
 							this.renderMenu()
 						}
 					</div>
-					<div className="segment active tab">
+					<div className="segment tab">
 						<div className="inner">
 							{
 								activeIndex
