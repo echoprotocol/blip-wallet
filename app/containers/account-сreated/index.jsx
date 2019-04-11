@@ -1,13 +1,17 @@
 import React from 'react';
-import { Animated } from 'react-animated-css';
-import { Button, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Animated } from 'react-animated-css';
+
+import { Button, Icon } from 'semantic-ui-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { withRouter } from 'react-router';
 
 import avatar from '../../assets/images/default-avatar.svg';
-import { SELECT_LANGUAGE } from '../../constants/routes-constants';
+import { startAnimation } from '../../actions/animation-actions';
+
+import { ACCOUNT_CREATED, SELECT_LANGUAGE } from '../../constants/routes-constants';
 
 class AccountCreated extends React.Component {
 
@@ -15,16 +19,20 @@ class AccountCreated extends React.Component {
 		super(props);
 
 		this.state = {
-			isVisible: true,
 			isVisibleWif: false,
 		};
 	}
 
+	componentWillUnmount() {
+		this.props.startAnimation(ACCOUNT_CREATED, true);
+	}
+
+
 	render() {
+		const { isVisibleWif } = this.state;
 		const {
-			wif, accountName, intl, history,
+			wif, accountName, intl, history, isVisible,
 		} = this.props;
-		const { isVisible, isVisibleWif } = this.state;
 
 		const hint1 = intl.formatMessage({ id: 'account.created.wif.hint1' });
 		const hint2 = intl.formatMessage({ id: 'account.created.wif.hint2' });
@@ -34,6 +42,7 @@ class AccountCreated extends React.Component {
 		return (
 			<div className="welcome-page page">
 				<div className="welcome-wrap">
+
 					<Animated
 						className="welcome-info"
 						animationIn="fadeInRight"
@@ -125,10 +134,19 @@ class AccountCreated extends React.Component {
 }
 
 AccountCreated.propTypes = {
+	isVisible: PropTypes.bool.isRequired,
+	startAnimation: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 	wif: PropTypes.string.isRequired,
 	accountName: PropTypes.string.isRequired,
 	intl: intlShape.isRequired,
 };
 
-export default injectIntl(withRouter(AccountCreated));
+export default injectIntl(withRouter(connect(
+	(state) => ({
+		isVisible: state.animation.getIn([ACCOUNT_CREATED, 'isVisible']),
+	}),
+	(dispatch) => ({
+		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+	}),
+)(AccountCreated)));

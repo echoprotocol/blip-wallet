@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import {
 	FORM_CREATE_PASSWORD,
+	FORM_UNLOCK,
 	FORM_SIGN_UP,
 } from '../constants/form-constants';
 
@@ -13,6 +14,9 @@ const DEFAULT_FIELDS = Map({
 });
 
 const DEFAULT_FORM_FIELDS = {
+	[FORM_UNLOCK]: Map({
+		error: null,
+	}),
 	[FORM_SIGN_UP]: Map({
 		accountName: {
 			value: '',
@@ -25,6 +29,7 @@ export default createModule({
 	name: 'form',
 	initialState: Map({
 		[FORM_CREATE_PASSWORD]: _.cloneDeep(DEFAULT_FIELDS),
+		[FORM_UNLOCK]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_UNLOCK]),
 		[FORM_SIGN_UP]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_UP]),
 	}),
 	transformations: {

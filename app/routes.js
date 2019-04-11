@@ -15,6 +15,7 @@ import {
 	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
 } from './constants/routes-constants';
 
+
 export default () => (
 	<App>
 		<Switch>

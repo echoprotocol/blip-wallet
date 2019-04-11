@@ -2,8 +2,8 @@ import React from 'react';
 import { Animated } from 'react-animated-css';
 import { Input, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-
 import { ACCOUNT_IMPORTED } from '../../constants/routes-constants';
+
 
 class ImportAccount extends React.Component {
 

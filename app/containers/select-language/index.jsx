@@ -6,7 +6,6 @@ import { Button, Icon } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Animated } from 'react-animated-css';
 import { FormattedMessage } from 'react-intl';
-
 import { CREATE_PASSWORD } from '../../constants/routes-constants';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import { setValue, setLanguage } from '../../actions/global-actions';

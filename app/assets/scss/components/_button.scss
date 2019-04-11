@@ -82,7 +82,7 @@
 	&.round-animation {
 		position: relative;
 		margin: auto;
-		transition: width 0.2s, border-radius 0.2s, padding 0.2s;
+		transition: width 0.2s, border-radius 0.2s, padding 0.2s, background-color 0.3s, color 0.3s, border 0.3s;
 
 		&:after {
 			content: '';

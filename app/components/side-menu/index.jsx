@@ -6,18 +6,14 @@ import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import { Sidebar, Button } from 'semantic-ui-react';
 import { setValue } from '../../actions/global-actions';
+import { startAnimation } from '../../actions/animation-actions';
+import { UNLOCK } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
 
 
 class SideMenu extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			isVisible: true,
-		};
-	}
 
 	goForward(path) {
 		const { history } = this.props;
@@ -28,16 +24,17 @@ class SideMenu extends React.Component {
 	}
 
 	lockToggle() {
-		const { isVisible } = this.state;
-		this.setState({ isVisible: !isVisible });
+		this.props.startAnimation(this.props.pathname, false);
 
-		this.props.lockToggle(!this.props.locked);
+		setTimeout(() => {
+			this.props.lockToggle(!this.props.locked);
+			this.props.startAnimation(UNLOCK, true);
+		}, 200);
 	}
 
 
 	render() {
-		const { isVisible } = this.state;
-		const { pathname } = this.props;
+		const { pathname, locked } = this.props;
 
 		return (
 			<Sidebar direction="right">
@@ -45,7 +42,7 @@ class SideMenu extends React.Component {
 					<Animated
 						animationIn="fadeInRightBig"
 						animationOut="fadeOut"
-						isVisible={isVisible}
+						isVisible={!locked}
 						className="visible"
 					>
 						<ul className="sidebar-nav">
@@ -103,6 +100,7 @@ SideMenu.propTypes = {
 	history: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
 	lockToggle: PropTypes.func.isRequired,
+	startAnimation: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
@@ -112,5 +110,6 @@ export default withRouter(connect(
 	}),
 	(dispatch) => ({
 		lockToggle: (value) => dispatch(setValue('locked', value)),
+		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
 	}),
 )(SideMenu));

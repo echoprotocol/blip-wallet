@@ -1,20 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Animated } from 'react-animated-css';
 import { Button, Icon } from 'semantic-ui-react';
 import avatar from '../../assets/images/default-avatar.svg';
+import { startAnimation } from '../../actions/animation-actions';
+import { ACCOUNT_IMPORTED } from '../../constants/routes-constants';
 
 class AccountImported extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			isVisible: true,
-		};
+	componentWillUnmount() {
+		this.props.startAnimation(ACCOUNT_IMPORTED, true);
 	}
 
 	render() {
-		const { isVisible } = this.state;
+		const { isVisible } = this.props;
 		return (
 
 			<div className="welcome-page page">
@@ -70,4 +70,16 @@ class AccountImported extends React.Component {
 
 }
 
-export default AccountImported;
+AccountImported.propTypes = {
+	isVisible: PropTypes.bool.isRequired,
+	startAnimation: PropTypes.func.isRequired,
+};
+
+export default connect(
+	(state) => ({
+		isVisible: state.animation.getIn([ACCOUNT_IMPORTED, 'isVisible']),
+	}),
+	(dispatch) => ({
+		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+	}),
+)(AccountImported);

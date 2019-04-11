@@ -74,6 +74,7 @@ class UserStorageService {
 	async setScheme(scheme, password) {
 
 		this.scheme = scheme;
+		await autoSchemeService.resetPrivateStorage();
 
 		await autoSchemeService.resetPrivateStorage();
 
@@ -152,8 +153,14 @@ class UserStorageService {
 	 */
 	async isMasterPassword(password) {
 		this.checkNetwork();
-		const decryptedData = await this.getCurrentScheme().getDecryptedData({ password });
-		return !!decryptedData;
+
+		try {
+			const decryptedData = await this.getCurrentScheme().getDecryptedData({ password });
+			return !!decryptedData;
+		} catch (error) {
+			return false;
+		}
+
 	}
 
 	/**

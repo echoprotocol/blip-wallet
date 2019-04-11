@@ -1,14 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import { Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
 
 import CreateAccount from './create-account';
+
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import AccountCreated from '../account-сreated';
 
+import { startAnimation } from '../../actions/animation-actions';
+
+import { AUTHORIZATION } from '../../constants/routes-constants';
 
 class Authorization extends React.Component {
 
@@ -16,39 +23,34 @@ class Authorization extends React.Component {
 		super(props);
 		this.state = {
 			activeIndex: 0,
+
 			wif: '',
 			accountName: '',
-			isVisible: true,
 		};
 	}
 
-	componentWillMount() {
-		this.setState({
-			isVisible: true,
-		});
+	componentWillUnmount() {
+		this.props.startAnimation(AUTHORIZATION, true);
 	}
-
 
 	setActiveTab(e, active) {
 
 		e.stopPropagation();
+		this.props.startAnimation(AUTHORIZATION, false);
 		this.setState({
-			isVisible: false,
 			activeIndex: active,
 		});
 
 		setTimeout(() => {
+			this.props.startAnimation(AUTHORIZATION, true);
 			this.setState({
-				isVisible: true,
 				activeIndex: active,
 			});
-		}, 150);
+		}, 200);
 	}
 
 	goForward(accountName, wif) {
-		this.setState({
-			isVisible: false,
-		});
+		this.props.startAnimation(AUTHORIZATION, false);
 
 		setTimeout(() => {
 			this.setState({ wif, accountName });
@@ -56,7 +58,8 @@ class Authorization extends React.Component {
 	}
 
 	renderMenu() {
-		const { activeIndex, isVisible } = this.state;
+		const { isVisible } = this.props;
+		const { activeIndex } = this.state;
 
 		const menuItems = [
 			{
@@ -118,7 +121,8 @@ class Authorization extends React.Component {
 
 	renderAuth() {
 
-		const { activeIndex, isVisible } = this.state;
+		const { activeIndex } = this.state;
+		const { isVisible } = this.props;
 		return (
 			<div className="page">
 				<div className="logo-wrap">
@@ -164,4 +168,16 @@ class Authorization extends React.Component {
 
 }
 
-export default Authorization;
+Authorization.propTypes = {
+	isVisible: PropTypes.bool.isRequired,
+	startAnimation: PropTypes.func.isRequired,
+};
+
+export default connect(
+	(state) => ({
+		isVisible: state.animation.getIn([AUTHORIZATION, 'isVisible']),
+	}),
+	(dispatch) => ({
+		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+	}),
+)(Authorization);

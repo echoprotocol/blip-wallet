@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import { Input, Button } from 'semantic-ui-react';
 import { Animated } from 'react-animated-css';
@@ -10,7 +9,10 @@ import { FormattedMessage } from 'react-intl';
 import Header from '../../components/header';
 import ValidatePasswordHelper from '../../helpers/validate-password-helper';
 import { FORM_CREATE_PASSWORD } from '../../constants/form-constants';
+import { CREATE_PASSWORD } from '../../constants/routes-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
+
+import { startAnimation } from '../../actions/animation-actions';
 import { createDB } from '../../actions/global-actions';
 
 class CreatePassword extends React.Component {
@@ -21,7 +23,6 @@ class CreatePassword extends React.Component {
 		this.state = {
 			showPas: false,
 			showRepeatPas: false,
-			isVisible: true,
 			password: '',
 			repeatPassword: '',
 			repeatError: false,
@@ -32,6 +33,10 @@ class CreatePassword extends React.Component {
 			hint4: '',
 		};
 
+	}
+
+	componentWillUnmount() {
+		this.props.startAnimation(CREATE_PASSWORD, true);
 	}
 
 	onChange(e) {
@@ -111,10 +116,10 @@ class CreatePassword extends React.Component {
 	}
 
 	render() {
+		const { error, loading, isVisible } = this.props;
 
-		const { error, loading } = this.props;
 		const {
-			showPas, showRepeatPas, isVisible,
+			showPas, showRepeatPas,
 			hint1, hint2, hint3, hint4, repeatError,
 			password, repeatPassword, hintsError,
 		} = this.state;
@@ -233,6 +238,7 @@ class CreatePassword extends React.Component {
 												/>
 											)}
 										</FormattedMessage>
+
 									</Animated>
 								</div>
 							</div>
@@ -247,6 +253,8 @@ class CreatePassword extends React.Component {
 
 CreatePassword.propTypes = {
 	error: PropTypes.any,
+	startAnimation: PropTypes.func.isRequired,
+	isVisible: PropTypes.bool.isRequired,
 	createDB: PropTypes.func.isRequired,
 	loading: PropTypes.bool,
 };
@@ -259,9 +267,11 @@ CreatePassword.defaultProps = {
 export default connect(
 	(state) => ({
 		loading: state.form.getIn([FORM_CREATE_PASSWORD, 'loading']),
-		locked: state.global.get('locked'),
+		error: state.form.getIn([FORM_CREATE_PASSWORD, 'error']),
+		isVisible: state.animation.getIn([CREATE_PASSWORD, 'isVisible']),
 	}),
 	(dispatch) => ({
+		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
 		createDB: (value) => dispatch(createDB(FORM_CREATE_PASSWORD, value)),
 	}),
 )(CreatePassword);

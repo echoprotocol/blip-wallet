@@ -45,7 +45,6 @@ class ValidatePasswordHelper {
 		return hints;
 	}
 
-
 }
 
 export default ValidatePasswordHelper;

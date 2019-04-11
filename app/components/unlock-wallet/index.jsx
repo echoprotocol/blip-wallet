@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import { Animated } from 'react-animated-css';
 import blipLogo from '../../assets/images/blip-logo.svg';
-import { setValue } from '../../actions/global-actions';
+import { validateUnlock, setValue } from '../../actions/global-actions';
+import { startAnimation } from '../../actions/animation-actions';
+import { UNLOCK } from '../../constants/routes-constants';
+import { setValue as setValueToForm } from '../../actions/form-actions';
+import { FORM_UNLOCK } from '../../constants/form-constants';
+import { KEY_CODE_ENTER } from '../../constants/global-constants';
+
 
 class UnlockWallet extends React.Component {
 
@@ -14,7 +22,8 @@ class UnlockWallet extends React.Component {
 
 		this.state = {
 			showPas: false,
-			isVisible: true,
+			password: '',
+			valid: false,
 		};
 	}
 
@@ -23,13 +32,45 @@ class UnlockWallet extends React.Component {
 		this.setState({ showPas: !showPas });
 	}
 
-	lockToggle() {
-		const { isVisible } = this.state;
-		this.setState({ isVisible: !isVisible });
+	onChange(e) {
+		const { value } = e.target;
 
-		setTimeout(() => {
-			this.props.lockToggle(!this.props.locked);
-		}, 200);
+		this.props.setValueToForm('error', null);
+		this.setState({
+			password: value,
+		});
+
+	}
+
+	async onKeyPress(e) {
+		const { password } = this.state;
+		const { form } = this.props;
+
+		if (form.get('loading') || !password || form.get('error') || password.length < 8) {
+			return;
+		}
+
+		const code = e.keyCode || e.which;
+
+		if (KEY_CODE_ENTER === code) {
+			await this.validateUnlock();
+		}
+	}
+
+	async validateUnlock() {
+		const { password } = this.state;
+		const valid = await this.props.validateUnlock(FORM_UNLOCK, password);
+
+		this.setState({ valid });
+
+		if (valid) {
+			setTimeout(() => {
+				this.props.startAnimation(UNLOCK, false);
+			}, 500);
+			setTimeout(() => {
+				this.props.unlockWallet(false);
+			}, 1000);
+		}
 	}
 
 	renderPrivacyEye() {
@@ -50,7 +91,12 @@ class UnlockWallet extends React.Component {
 	}
 
 	render() {
-		const { showPas, isVisible } = this.state;
+		const { showPas, password, valid } = this.state;
+		const { isVisible, form, intl } = this.props;
+
+		const placeholder = intl.formatMessage({ id: 'unlock.placeholder' });
+		const button = intl.formatMessage({ id: 'unlock.button' });
+		const link = intl.formatMessage({ id: 'unlock.link' });
 
 		return (
 			<React.Fragment>
@@ -67,8 +113,10 @@ class UnlockWallet extends React.Component {
 					animationIn="fadeInRight"
 					animationOut="fadeOutLeft"
 					isVisible={isVisible}
+					animateOnMount={false}
 					animationInDelay={50}
-				>Unlock your wallet
+				>
+					<FormattedMessage id="unlock.title" />
 				</Animated>
 				<Animated
 					animationIn="fadeInRight"
@@ -77,21 +125,34 @@ class UnlockWallet extends React.Component {
 					isVisible={isVisible}
 					animateOnMount={false}
 					animationInDelay={100}
-
 				>
 					<div className="line">
 						<div className="line-content">
 							<div className="field">
 								<Input
-									placeholder="Enter Password"
+									placeholder={placeholder}
 									ref={(input) => { this.nameInput = input; }}
 									className="password"
-									error
+									error={!!form.get('error')}
 									loading={false}
 									type={showPas ? 'text' : 'password'}
 									icon={this.renderPrivacyEye()}
 									fluid
+									value={password}
+									onChange={(e) => this.onChange(e)}
+									onKeyPress={(e) => this.onKeyPress(e)}
 								/>
+								{
+									form.get('error')
+										&& (
+											<div className="error-message">
+												<FormattedMessage
+													id={`unlock.error.${form.get('error')}`}
+													defaultMessage={form.get('error')}
+												/>
+											</div>
+										)
+								}
 							</div>
 						</div>
 					</div>
@@ -104,15 +165,15 @@ class UnlockWallet extends React.Component {
 					animationInDelay={150}
 					isVisible={isVisible}
 				>
-
-					{/* Toggle class ok */}
 					<Button
-						className="btn-primary round-animation ok"
+						className={classnames('btn-primary round-animation', { ok: valid })}
 						fluid
-						onClick={() => this.lockToggle()}
+						onClick={() => this.validateUnlock()}
+						onKeyPress={(e) => this.onKeyPress(e)}
+						disabled={password.length < 8}
 						content={(
 							<React.Fragment>
-								<div className="text">Unlock</div>{/* text will "Clear" if disabled */}
+								<div className="text">{button}</div>{/* text will "Clear" if disabled */}
 							</React.Fragment>
 						)}
 					/>
@@ -125,7 +186,7 @@ class UnlockWallet extends React.Component {
 					animationInDelay={150}
 					isVisible={isVisible}
 				>
-					<a className="link" href="/restore-password">Forgot password?</a>
+					<a className="link" href="/restore-password">{link}</a>
 				</Animated>
 			</React.Fragment>
 		);
@@ -134,16 +195,25 @@ class UnlockWallet extends React.Component {
 }
 
 UnlockWallet.propTypes = {
-	lockToggle: PropTypes.func.isRequired,
-	locked: PropTypes.bool.isRequired,
+	startAnimation: PropTypes.func.isRequired,
+	validateUnlock: PropTypes.func.isRequired,
+	unlockWallet: PropTypes.func.isRequired,
+	setValueToForm: PropTypes.func.isRequired,
+	intl: intlShape.isRequired,
+	form: PropTypes.object.isRequired,
+	isVisible: PropTypes.bool.isRequired,
 };
 
-export default connect(
+export default withRouter(injectIntl(connect(
 	(state) => ({
-		pathname: state.router.location.pathname,
-		locked: state.global.get('locked'),
+		isVisible: state.animation.getIn([UNLOCK, 'isVisible']),
+		form: state.form.get(FORM_UNLOCK),
 	}),
 	(dispatch) => ({
-		lockToggle: (value) => dispatch(setValue('locked', value)),
+		validateUnlock: (form, password) => dispatch(validateUnlock(form, password)),
+		unlockWallet: (value) => dispatch(setValue('locked', value)),
+		setValueToForm: (form, value) => dispatch(setValueToForm(FORM_UNLOCK, form, value)),
+		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+
 	}),
-)(UnlockWallet);
+)(UnlockWallet)));
