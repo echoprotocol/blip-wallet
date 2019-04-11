@@ -72,7 +72,7 @@
 	outline: none;
 	transition: border $speed, background-color $speed, color $speed;
 	will-change: transform;
-	
+
 	.carret {
 		&:after {
 			@include triangle(top, #a482ea);
@@ -122,11 +122,22 @@
 	z-index: 3;
 	display: none;
 	margin-top: 4px;
-	padding: 10px 1px;
 	border-radius: 3px;
 	background-color: #dbd2f3;
 	list-style: none;
 	background-clip: padding-box;
+
+	.scrollbar-container {
+		a {
+			&:first-child {
+				margin-top: 10px;
+			}
+
+			&:last-child {
+				margin-bottom: 1px;
+			}
+		}
+	}
 }
 
 .dropdown-item {

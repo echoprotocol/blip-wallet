@@ -2,8 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import { Animated } from 'react-animated-css';
-
+import classnames from 'classnames';
 import { withRouter } from 'react-router';
 
 import localeEn from 'react-intl/locale-data/en';
@@ -90,27 +89,19 @@ class App extends React.Component {
 					{ (PUBLIC_ROUTES.includes(pathname) || locked) && <div className="bg" />}
 
 					<div
-						className="global-wrap"
+						className={
+							classnames(
+								'global-wrap',
+								{ withSidebar: SIDE_MENU_ROUTES.includes(pathname) },
+							)
+						}
 					>
 
 						{locked && LOCKED_ROUTES.includes(pathname) && PUBLIC_ROUTES.includes(pathname)
 							? (
-								<Animated
-									animationIn="fadeInRightBig"
-									animationOut="fadeOutLeft"
-									isVisible={locked}
-									className="unlock-page"
-									animateOnMount={false}
-								>
-									<Unlock />
-								</Animated>
+								<Unlock />
 							) : (
-								<Animated
-									animationIn="fadeInRightBig"
-									animationOut="fadeOutLeft"
-								>
-									{children}
-								</Animated>
+								<React.Fragment>{children}</React.Fragment>
 							) }
 
 

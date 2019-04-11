@@ -13,7 +13,9 @@ import {
 	AUTHORIZATION, CREATE_PASSWORD,
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
+	WALLET,
 } from './constants/routes-constants';
+import Wallet from './containers/wallet';
 
 
 export default () => (
@@ -26,6 +28,7 @@ export default () => (
 			<Route exact path={AUTHORIZATION} component={Authorization} />
 			<Route exact path={ACCOUNT_CREATED} component={accountCreated} />
 			<Route exact path={ACCOUNT_IMPORTED} component={accountImported} />
+			<Route exact path={WALLET} component={Wallet} />
 			<Route exact path="*" component={Page404} />
 		</Switch>
 	</App>

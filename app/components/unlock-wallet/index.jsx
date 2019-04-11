@@ -99,7 +99,7 @@ class UnlockWallet extends React.Component {
 		const link = intl.formatMessage({ id: 'unlock.link' });
 
 		return (
-			<React.Fragment>
+			<div className="unlock-page">
 				<Animated
 					className="blip-logo"
 					animationIn="fadeInRight"
@@ -188,7 +188,7 @@ class UnlockWallet extends React.Component {
 				>
 					<a className="link" href="/restore-password">{link}</a>
 				</Animated>
-			</React.Fragment>
+			</div>
 		);
 	}
 

@@ -1,11 +1,22 @@
 .global-wrap {
 	position: relative;
 
+	&.withSidebar {
+		background-color: #f1f1f1;
+
+		.page {
+			@include min-vw(1400) {
+				width: calc(100vw - 300px);
+			}
+			width: calc(100vw - 255px);
+		}
+	}
+
 	.page {
 		position: relative;
 		width: 100vw;
-		min-width: 100vw;
 		min-height: 100vh;
+		background-color: #f1f1f1;
 		transition: visibility 3s;
 	}
 }
@@ -16,4 +27,15 @@
 	width: 100%;
 	height: 100vh;
 	background-color: rgba(#6852a4, 0.7);
+
+	& + .global-wrap {
+		.page {
+			background-color: transparent;
+		}
+	}
+}
+
+.page-scroll {
+	position: relative;
+	height: 100vh;
 }

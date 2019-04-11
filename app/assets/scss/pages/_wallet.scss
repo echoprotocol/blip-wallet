@@ -1,0 +1,154 @@
+.wallet {
+	flex-direction: column;
+	display: flex;
+	height: 100vh;
+
+	.title {
+		@include source-semibold();
+		color: #33353f;
+		font-size: 1.3em;
+		text-transform: uppercase;
+	}
+
+	&-wrap {
+		@include min-vw(1400) {
+			padding: 0 50px;
+		}
+		flex-direction: column;
+		position: relative;
+		display: flex;
+		min-height: calc(100% - 40px);
+		padding: 0 35px;
+	}
+
+	.settings-wrap {
+		align-items: center;
+		justify-content: flex-end;
+		display: flex;
+		height: 40px;
+		padding: 0 16px;
+	}
+
+	.page-scroll {
+		flex: 1;
+	}
+}
+
+.balance-info {
+	color: #33353f;
+
+	.info {
+		@include source-regular();
+
+		color: rgba(#33353f, 0.5);
+
+		.coins {
+			font-size: 2em;
+		}
+
+		.currency {
+			font-size: 1.4em;
+			text-transform: uppercase;
+		}
+
+		.message {
+			font-size: 1.4em;
+		}
+	}
+
+	.balance {
+		@include source-semibold();
+
+		.int {
+			font-size: 6em;
+		}
+
+		.fraction {
+			font-size: 4em;
+		}
+
+		.currency {
+			font-size: 4em;
+		}
+	}
+}
+
+.wallet-container {
+	margin: auto 0;
+}
+
+.wallet-footer {
+	position: relative;
+	min-height: 210px;
+	padding: 2.5em;
+	background-color: #e8e8e8;
+	box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+
+	.last-transaction {
+		position: relative;
+		padding: 1.8em;
+		border: 1px solid #bcbcbc;
+		border-radius: 4px;
+
+		.label {
+			@include source-semibold();
+			position: absolute;
+			top: 0;
+			margin: -0.5em 0 0 -10px;
+			padding: 0 10px;
+			background-color: #e8e8e8;
+			font-size: 1.2em;
+			letter-spacing: 0.2em;
+			line-height: 1;
+			text-transform: uppercase;
+		}
+
+		.line {
+			@include source-regular();
+			display: flex;
+			color: #5b5c63;
+
+			.date {
+				margin-right: 4em;
+				font-size: 1.4em;
+			}
+
+			.action {
+				font-size: 1.4em;
+			}
+
+			.balance {
+				@include source-semibold();
+				margin-left: auto;
+				color: #3f4a52;
+				font-size: inherit;
+
+				.coins {
+					margin-right: 5px;
+					font-size: 2.1em;
+				}
+
+				.currency {
+					font-size: 1.6em;
+				}
+			}
+
+			.action-info {
+				color: #8e8e97;
+				font-size: 1.4em;
+
+				& + .action-info {
+					margin-left: 4em;
+				}
+
+				.action-label {
+					margin-right: 5px;
+				}
+
+				a {
+					color: #7158ad;
+				}
+			}
+		}
+	}
+}
