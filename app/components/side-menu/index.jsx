@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { Sidebar, Button } from 'semantic-ui-react';
 import { setValue } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
-import { UNLOCK } from '../../constants/routes-constants';
+import { UNLOCK, WALLET } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
 
@@ -46,7 +46,7 @@ class SideMenu extends React.Component {
 						className="visible"
 					>
 						<ul className="sidebar-nav">
-							<li className={classnames({ active: pathname === '/' })}>
+							<li className={classnames({ active: pathname === WALLET })}>
 								<Button
 									className="sidebar-nav-link"
 									onClick={() => this.lockToggle()}

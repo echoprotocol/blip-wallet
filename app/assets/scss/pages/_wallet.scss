@@ -216,10 +216,16 @@
 	bottom: 0;
 	left: 100%;
 	width: 480px;
-	background-color: #5b4b93;
+	height: 100%;
+	border-right: 1px solid #4d4175;
+	background-color: #5e4b98;
 }
 
 .settings-tabs {
+	flex-direction: column;
+	display: flex;
+	height: 100%;
+
 	.menu {
 		align-items: flex-end;
 		display: flex;
@@ -275,7 +281,69 @@
 		}
 	}
 
-	.tab {
+	.segment {
 		padding: 30px;
+
+		&.action {
+			margin-top: auto;
+			padding-bottom: 35px;
+
+			.btn-primary {
+				padding-right: 3.2em;
+				padding-left: 3.2em;
+			}
+		}
+
+		&.accounts-filter {
+			.info-text {
+				@include source-regular();
+				color: #fff;
+				font-size: 1.4em;
+			}
+
+			.checkbox {
+				label {
+					align-items: center;
+					padding-left: 34px;
+				}
+
+				.label-avatar {
+					width: 24px;
+					height: 24px;
+					margin-right: 14px;
+					border-radius: 50%;
+				}
+
+				.label-account-name {
+					@include source-regular();
+
+					@include min-vw(1400) {
+						font-size: 18px;
+					}
+					color: #fff;
+					font-size: 16px;
+					line-height: 0;
+				}
+			}
+
+			.accounts-list {
+				.account {
+					&:not(:last-child) {
+						margin-bottom: 1.4em;
+					}
+				}
+			}
+
+			.select-accounts {
+				.title {
+					@include source-semibold();
+					margin: 3em 0 1.2em;
+					color: #fff;
+					font-size: 1.3em;
+					letter-spacing: 0.2em;
+					text-transform: uppercase;
+				}
+			}
+		}
 	}
 }

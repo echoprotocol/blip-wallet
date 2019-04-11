@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import classnames from 'classnames';
-
+import avatar from '../../assets/images/default-avatar.svg';
 
 class Settings extends React.Component {
 
@@ -65,11 +65,57 @@ class Settings extends React.Component {
 	}
 
 	renderFilterByAccounts() {
+		const { open } = this.props;
 		return (
-			<div className="info-text">
+			<React.Fragment>
+				<div className="segment tab accounts-filter">
+					<div className="info-text">
 				If you have more than one account, your accounts balances will be displayed together.
 				You can filter your balances by account:
-			</div>
+					</div>
+					<div className="select-accounts">
+						<div className="title">Select accounts</div>
+						<div className="accounts-list">
+							<div className="account">
+								<div className="checkbox transparent">
+									<input
+										disabled={!open}
+										type="checkbox"
+										id="acc0"
+									/>
+									<label htmlFor="acc0" className="checkbox-label">
+										<img alt="" src={avatar} className="label-avatar" />
+										<span className="label-account-name"> Homersimpson</span>
+									</label>
+								</div>
+							</div>
+							<div className="account">
+								<div className="checkbox transparent">
+									<input
+										disabled={!open}
+										type="checkbox"
+										id="acc1"
+									/>
+									<label htmlFor="acc1" className="checkbox-label">
+										<img alt="" src={avatar} className="label-avatar" />
+										<span className="label-account-name"> Homersimpson</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div className="segment action">
+					<Button
+						className="btn-primary"
+						onClick={(e) => { this.toggleSettings(e); }}
+						content={
+							<span className="text">Save changes</span>
+						}
+					/>
+				</div>
+			</React.Fragment>
 		);
 	}
 
@@ -90,11 +136,9 @@ class Settings extends React.Component {
 							this.renderMenu()
 						}
 					</div>
-					<div className="segment tab">
-						{
-							!activeIndex ? this.renderFilterByAccounts() : this.renderArchivedAssets()
-						}
-					</div>
+					{
+						!activeIndex ? this.renderFilterByAccounts() : this.renderArchivedAssets()
+					}
 				</div>
 
 			</div>

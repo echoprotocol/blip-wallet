@@ -23,7 +23,6 @@
 				}
 				content: '';
 				position: absolute;
-				top: 0.3em;
 				left: 0.2em;
 				z-index: 22;
 				width: 14px;
@@ -48,7 +47,6 @@
 		@include source-regular();
 		position: relative;
 		display: flex;
-		padding-left: 3em;
 		font-size: 1.4em;
 		line-height: 1.4;
 
@@ -60,7 +58,6 @@
 			}
 			content: '';
 			position: absolute;
-			top: 0.2em;
 			left: 0;
 			display: flex;
 			width: 16px;
@@ -71,6 +68,56 @@
 			background-color: #fff;
 			transition: background-color $speed, border-color $speed,
 			box-shadow $speed;
+		}
+	}
+
+	&.transparent {
+		input[type='checkbox'] {
+			&:disabled ~ label {
+				&:before {
+					border-color: #b0a9c5;
+					background-color: transparent;
+				}
+			}
+
+			&:checked ~ label {
+				&:before {
+					border-color: #43d7ad;
+					background-color: #43d7ad;
+				}
+
+				&:after {
+					@include min-vw(1400) {
+						width: 16px;
+						min-width: 16px;
+						height: 16px;
+					}
+					content: '';
+					position: absolute;
+					left: 0.2em;
+					z-index: 22;
+					width: 14px;
+					min-width: 14px;
+					height: 14px;
+					background-image: url(../images/check.svg);
+					background-repeat: no-repeat;
+					background-size: 100%;
+				}
+			}
+
+			&:focus {
+				& ~ label {
+					&:before {
+						@include onCheckboxFocus(#8676b1);
+					}
+				}
+			}
+		}
+
+		label {
+			&:before {
+				background-color: transparent;
+			}
 		}
 	}
 }
