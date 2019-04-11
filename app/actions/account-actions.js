@@ -2,24 +2,23 @@ import { PrivateKey } from 'echojs-lib';
 
 import Services from '../services';
 import CryptoService from '../services/crypto-service';
-import { FORM_SIGN_UP } from '../constants/form-constants';
-import { setFormError, toggleLoading } from './form-actions';
+import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
+import { setFormError, toggleLoading, setValue } from './form-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
 
 import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
-import { setValue } from './global-actions';
 
 /**
- * @method validateAccount
+ * @method validateCreateAccount
  *
  * Validate account name and lookup
  *
  * @param form
  * @param accountName
  */
-export const validateAccount = (form, accountName) => async (dispatch) => {
+export const validateCreateAccount = (form, accountName) => async (dispatch) => {
 	const error = ValidateAccountHelper.validateAccountName(accountName);
 
 	if (error) {
@@ -107,4 +106,138 @@ export const registerAccount = () => async (dispatch, getState) => {
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
 
+};
+
+/**
+ * @method validateImportAccount
+ *
+ * Validate account name and lookup
+ *
+ * @param accountName
+ */
+const validateImportAccount = async (accountName) => {
+	const error = ValidateAccountHelper.validateAccountName(accountName);
+
+	if (error) {
+		return error;
+	}
+
+	const result = await Services.getEcho().api.lookupAccounts(accountName);
+
+	if (!result.find((i) => i[0] === accountName)) {
+
+		return 'This account does not exist';
+	}
+
+	return null;
+};
+
+/**
+ * @method importAccount
+ *
+ * Import account
+ *
+ * @param accountName
+ * @param wif
+ */
+export const importAccount = (accountName, wif) => async (dispatch) => {
+
+	const accountNameError = await validateImportAccount(accountName);
+	const wifError = ValidateAccountHelper.validateWIF(wif);
+
+	if (accountNameError || wifError) {
+		dispatch(setValue(FORM_SIGN_IN, 'accountNameError', accountNameError));
+		dispatch(setValue(FORM_SIGN_IN, 'wifError', wifError));
+		return false;
+	}
+
+	if (!Services.getEcho().isConnected) {
+		dispatch(setValue(FORM_SIGN_IN, 'accountNameError', 'Connection error'));
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+
+		return false;
+	}
+
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.import.loading' }));
+
+
+	try {
+		if (CryptoService.isWIF(wif)) {
+			const active = PrivateKey.fromWif(wif).toPublicKey().toString();
+
+			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
+
+			if (!accountId) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
+				return false;
+			}
+
+			const userStorage = Services.getUserStorage();
+			if (await userStorage.isWIFAdded(wif, accountId)) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF already added'));
+				return false;
+			}
+
+			const account = await Services.getEcho().api.getObject(accountId);
+
+			if (account.name !== accountName) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
+				return false;
+			}
+
+			const publicKeys = account.active.key_auths;
+
+			const activeKey = publicKeys.find((key) => key[0] === active);
+
+			if (!activeKey) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF is not active key.'));
+				return false;
+			}
+
+			const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
+
+			dispatch(addAccount(accountId, accountName));
+			await userStorage.addAccount(Account.create(accountId, accountName));
+			await userStorage.addKey(Key.create(publicKey, wif, accountId));
+		} else {
+			const active = CryptoService.getPublicKey(accountName, wif);
+			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
+
+			if (!accountId) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
+				return false;
+			}
+
+			const account = await Services.getEcho().api.getAccountByName(accountName);
+			const keys = account.active.key_auths;
+
+			const hasKey = keys.find((key) => {
+				[key] = key;
+				return key === active;
+			});
+
+			if (!hasKey) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF is not active key.'));
+				return false;
+			}
+
+			const userStorage = Services.getUserStorage();
+			if (await userStorage.isWIFAdded(wif, accountId)) {
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF already added'));
+				return false;
+			}
+
+			dispatch(addAccount(accountId, accountName));
+			await userStorage.addAccount(Account.create(accountId, accountName));
+			await userStorage.addKey(Key.create(hasKey[0], wif, accountId));
+		}
+	} catch (err) {
+		dispatch(setValue(FORM_SIGN_IN, 'accountNameError', err.message || err));
+
+		return false;
+	} finally {
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+	}
+
+	return true;
 };

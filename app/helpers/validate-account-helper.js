@@ -62,6 +62,23 @@ class ValidateAccountHelper {
 		return hints;
 	}
 
+	/**
+	 * @method validateWIF
+	 *
+	 * Validate wif key
+	 *
+	 * @param {String} wif
+	 */
+	static validateWIF(wif) {
+		if (!wif) { return 'WIF should not be empty'; }
+
+		if (wif.length !== 0 && wif.length < 8) {
+			return 'WIF must be 8 characters or more';
+		}
+
+		return null;
+	}
+
 }
 
 export default ValidateAccountHelper;

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import avatar from '../../assets/images/default-avatar.svg';
 import { FORM_SIGN_UP } from '../../constants/form-constants';
 import { clearForm, setFormValue, toggleLoading } from '../../actions/form-actions';
-import { registerAccount, validateAccount } from '../../actions/account-actions';
+import { registerAccount, validateCreateAccount } from '../../actions/account-actions';
 import ValidateAccountHelper from '../../helpers/validate-account-helper';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 
@@ -242,6 +242,6 @@ export default injectIntl(connect(
 		toggleLoading: (field, value) => dispatch(toggleLoading(FORM_SIGN_UP, field, value)),
 		registerAccount: () => dispatch(registerAccount()),
 		clearForm: () => dispatch(clearForm(FORM_SIGN_UP)),
-		validateAccount: (form, name) => dispatch(validateAccount(form, name)),
+		validateAccount: (form, name) => dispatch(validateCreateAccount(form, name)),
 	}),
 )(CreateAccount));

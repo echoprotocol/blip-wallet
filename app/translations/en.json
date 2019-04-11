@@ -22,7 +22,24 @@
 	},
 
 	"account": {
-		"import": "Import account",
+		"import": {
+			"title": "Import account",
+			"description": "You can import any Echo account here",
+			"name": "Account name",
+			"name.placeholder": "Account name",
+			"wif": "WIF key",
+			"wif.placeholder": "WIF key",
+			"loading": "Account is about to be imported",
+			"button": "Import account"
+		},
+
+		"imported": {
+			"title1": "New Echo account is",
+			"title2": "succesfully bound to Blip wallet",
+			"name": "Account name",
+			"button": "Proceed to Blip"
+		},
+
 		"create": {
 			"title": "Create new account",
 			"name": "Account name",
@@ -42,7 +59,9 @@
 				"Account already exist": "Account already exist",
 				"Connection error": "Connection error"
 			}
+
 		},
+
 		"created": {
 			"title1": "New Echo account is",
 			"title2": "successfully created",

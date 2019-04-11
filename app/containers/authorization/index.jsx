@@ -12,6 +12,7 @@ import CreateAccount from './create-account';
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import AccountCreated from '../account-сreated';
+import AccountImported from '../account-imported';
 
 import { startAnimation } from '../../actions/animation-actions';
 
@@ -102,7 +103,7 @@ class Authorization extends React.Component {
 			animationOut="fadeOutLeft"
 			isVisible={isVisible}
 		>
-			<FormattedMessage id="account.import" />
+			<FormattedMessage id="account.import.title" />
 		</Animated>
 
 	</Button>,
@@ -140,7 +141,7 @@ class Authorization extends React.Component {
 								activeIndex
 									? (
 										<ImportAccount
-											goForward={(path) => this.goForward(path)}
+											goForward={(accountName, wif) => this.goForward(accountName, wif)}
 											isVisible={isVisible}
 										/>
 									)
@@ -161,9 +162,15 @@ class Authorization extends React.Component {
 	render() {
 		const { wif, accountName } = this.state;
 
-		return (
-			wif ? <AccountCreated wif={wif} accountName={accountName} /> : this.renderAuth()
-		);
+		if (wif) {
+			return (<AccountCreated wif={wif} accountName={accountName} />);
+		}
+
+		if (accountName) {
+			return (<AccountImported accountName={accountName} />);
+		}
+
+		return this.renderAuth();
 	}
 
 }

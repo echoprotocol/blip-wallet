@@ -17,6 +17,11 @@ import LocalNode from './localNode';
 
 class Blockchain {
 
+	/**
+	 *  @constructor
+	 *
+	 *  Init nodes, api, store
+	 */
 	constructor() {
 		this.current = '';
 		this.network = '';
@@ -27,6 +32,10 @@ class Blockchain {
 		this.isConnectedCb = null;
 	}
 
+	/**
+	 * @readonly
+	 * @type {boolean}
+	 */
 	get isConnected() {
 		if (!this.remote || !this.local) {
 			return 'Not initialized';
@@ -35,6 +44,13 @@ class Blockchain {
 		return this.remote.isConnected || this.local.isConnected;
 	}
 
+	/**
+	 *
+	 * @param network
+	 * @param store
+	 * @param isConnectedCb
+	 * @returns {Promise<void>}
+	 */
 	async init(network, store, isConnectedCb) {
 
 		if (this.remote || this.local) {
@@ -99,7 +115,7 @@ class Blockchain {
 		this.current = node;
 
 		try {
-			await instance.connect(NETWORKS.testnet[node].url, {
+			await instance.connect(NETWORKS[this.network][node].url, {
 				connectionTimeout: CONNECTION_TIMEOUT,
 				maxRetries: MAX_RETRIES,
 				pingTimeout: PING_TIMEOUT,
