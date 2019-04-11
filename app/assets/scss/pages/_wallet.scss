@@ -32,6 +32,10 @@
 	.page-scroll {
 		flex: 1;
 	}
+
+	&.open {
+		overflow: visible;
+	}
 }
 
 .balance-info {
