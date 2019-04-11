@@ -44,7 +44,10 @@
 
 		&.open {
 			.page {
-				transform: translateX(-480px);
+				@include min-vw(1400) {
+					transform: translateX(-480px);
+				}
+				transform: translateX(-420px);
 			}
 		}
 	}
@@ -211,11 +214,14 @@
 }
 
 .wallet-settings {
+	@include min-vw(1400) {
+		width: 480px;
+	}
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 100%;
-	width: 480px;
+	width: 420px;
 	height: 100%;
 	border-right: 1px solid #4d4175;
 	background-color: #5e4b98;
@@ -340,7 +346,7 @@
 					margin: 3em 0 1.2em;
 					color: #fff;
 					font-size: 1.3em;
-					letter-spacing: 0.2em;
+					letter-spacing: 0.18em;
 					text-transform: uppercase;
 				}
 			}

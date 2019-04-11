@@ -70,8 +70,8 @@ class Settings extends React.Component {
 			<React.Fragment>
 				<div className="segment tab accounts-filter">
 					<div className="info-text">
-				If you have more than one account, your accounts balances will be displayed together.
-				You can filter your balances by account:
+						If you have more than one account, your accounts balances will be displayed together.
+						You can filter your balances by account:
 					</div>
 					<div className="select-accounts">
 						<div className="title">Select accounts</div>
@@ -109,7 +109,7 @@ class Settings extends React.Component {
 				<div className="segment action">
 					<Button
 						className="btn-primary"
-						onClick={(e) => { this.toggleSettings(e); }}
+						disabled={!open}
 						content={
 							<span className="text">Save changes</span>
 						}
