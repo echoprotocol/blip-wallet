@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -26,6 +25,17 @@ class UnlockWallet extends React.Component {
 			password: '',
 			valid: false,
 		};
+
+		this.onClickForgotPassword = this.onClickForgotPassword.bind(this);
+
+	}
+
+	async onClickForgotPassword(e) {
+		e.preventDefault();
+
+		await this.props.startAnimation(UNLOCK, false);
+		this.props.history.push(RESTORE_PASSWORD);
+
 	}
 
 	onTogglePrivacy() {
@@ -187,7 +197,7 @@ class UnlockWallet extends React.Component {
 					animationInDelay={150}
 					isVisible={isVisible}
 				>
-					<Link className="link" to={RESTORE_PASSWORD}>{link}</Link>
+					<a className="link" href={RESTORE_PASSWORD} onClick={this.onClickForgotPassword}>{link}</a>
 				</Animated>
 			</React.Fragment>
 		);
@@ -203,6 +213,7 @@ UnlockWallet.propTypes = {
 	intl: intlShape.isRequired,
 	form: PropTypes.object.isRequired,
 	isVisible: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(injectIntl(connect(

@@ -51,7 +51,7 @@
 		padding-left: 3em;
 		font-size: 1.4em;
 		line-height: 1.4;
-
+		cursor: pointer;
 		&:before {
 			@include min-vw(1400) {
 				width: 18px;

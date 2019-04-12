@@ -157,6 +157,26 @@ export const lockApp = () => async (dispatch, getState) => {
  */
 export const setLanguage = () => (dispatch, getState) => {
 	const language = getState().global.get('language');
+	LanguageService.setCurrentLanguage(language);
+};
 
-	localStorage.setItem('locale', language);
+/**
+ *  @method clearWalletData
+ *
+ * 	clear blip wallet
+ *
+ */
+export const clearWalletData = () => async (dispatch) => {
+
+	const userStorage = Services.getUserStorage();
+	const doesDBExist = await userStorage.doesDBExist();
+
+	if (doesDBExist) {
+		await userStorage.deleteDB();
+	}
+
+	LanguageService.resetLanguage();
+
+	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
+
 };

@@ -21,7 +21,7 @@ import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Services from '../services';
 import {
-	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES,
+	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 import LanguageService from '../services/language';
@@ -72,12 +72,26 @@ class App extends React.Component {
 
 		if (!routed && [CREATE_PASSWORD].includes(pathname)) {
 
+			routed = true;
+
 			const userStorage = Services.getUserStorage();
 
 			const doesDBExist = await userStorage.doesDBExist();
 
 			if (doesDBExist) {
 				this.props.history.push(AUTHORIZATION);
+			}
+
+		}
+
+		if (!routed && [RESTORE_PASSWORD].includes(pathname)) {
+
+			const userStorage = Services.getUserStorage();
+
+			const doesDBExist = await userStorage.doesDBExist();
+
+			if (!doesDBExist) {
+				this.props.history.push(CREATE_PASSWORD);
 			}
 
 		}
