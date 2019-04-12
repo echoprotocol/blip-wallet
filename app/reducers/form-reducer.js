@@ -3,6 +3,7 @@ import { Map } from 'immutable';
 import _ from 'lodash';
 
 import {
+	FORM_SIGN_IN,
 	FORM_CREATE_PASSWORD,
 	FORM_UNLOCK,
 	FORM_SIGN_UP,
@@ -23,6 +24,10 @@ const DEFAULT_FORM_FIELDS = {
 			error: null,
 		},
 	}),
+	[FORM_SIGN_IN]: Map({
+		accountNameError: '',
+		wifError: '',
+	}),
 };
 
 export default createModule({
@@ -31,6 +36,7 @@ export default createModule({
 		[FORM_CREATE_PASSWORD]: _.cloneDeep(DEFAULT_FIELDS),
 		[FORM_UNLOCK]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_UNLOCK]),
 		[FORM_SIGN_UP]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_UP]),
+		[FORM_SIGN_IN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_IN]),
 	}),
 	transformations: {
 		set: {

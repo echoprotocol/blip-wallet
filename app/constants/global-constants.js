@@ -1,3 +1,4 @@
+
 export const DB_NAME = 'keyval-store';
 export const STORE = 'keyval';
 export const ENCRYPTED_DB_NAME = 'db';
@@ -26,6 +27,7 @@ export const NETWORKS = {
 
 export const DISCONNECT_STATUS = 'disconnect';
 export const CONNECT_STATUS = 'connect';
+export const ACTIVE_KEY = 'active';
 
 export const REMOTE_NODE = 'remote';
 export const LOCAL_NODE = 'local';

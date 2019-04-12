@@ -66,6 +66,7 @@ build.package-linux:
     - npm run package-linux
   only:
     - master
+    - develop
   tags:
     - docker
   artifacts:
@@ -90,6 +91,7 @@ build.package-win:
     - npm run package-win
   only:
     - master
+    - develop
   tags:
     - docker
   artifacts:
@@ -113,6 +115,7 @@ build.package-mac:
     - npm run package-mac
   only:
     - master
+    - develop
   tags:
     - echo-mac
   artifacts:

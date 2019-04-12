@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Animated } from 'react-animated-css';
 import { Button, Icon } from 'semantic-ui-react';
+import { withRouter } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 import avatar from '../../assets/images/default-avatar.svg';
 import { startAnimation } from '../../actions/animation-actions';
-import { ACCOUNT_IMPORTED } from '../../constants/routes-constants';
+import { ACCOUNT_IMPORTED, SELECT_LANGUAGE } from '../../constants/routes-constants';
 
 class AccountImported extends React.Component {
 
@@ -14,7 +16,9 @@ class AccountImported extends React.Component {
 	}
 
 	render() {
+		const { accountName, history } = this.props;
 		const { isVisible } = this.props;
+
 		return (
 
 			<div className="welcome-page page">
@@ -26,9 +30,9 @@ class AccountImported extends React.Component {
 							isVisible={isVisible}
 						>
 							<h1>
-							New Echo account is
+								<FormattedMessage id="account.imported.title1" />
 								<br />
-							succesfully bound to Blip wallet
+								<FormattedMessage id="account.imported.title2" />
 							</h1>
 						</Animated>
 						<Animated
@@ -40,9 +44,9 @@ class AccountImported extends React.Component {
 						>
 							<img className="avatar" src={avatar} alt="" />
 							<div className="account-info">
-								<div className="label">Account name</div>
+								<div className="label"><FormattedMessage id="account.imported.name" /></div>
 								<div className="name">
-									Homersimpson223090sdlc56-xf
+									{accountName}
 								</div>
 							</div>
 						</Animated>
@@ -54,9 +58,10 @@ class AccountImported extends React.Component {
 						>
 							<Button
 								className="btn-primary arrow"
+								onClick={() => history.push(SELECT_LANGUAGE)}
 								content={(
 									<React.Fragment>
-										<div className="text">Proceed to Blip</div>
+										<div className="text"><FormattedMessage id="account.imported.button" /></div>
 										<Icon className="arrow-right" />
 									</React.Fragment>
 								)}
@@ -71,15 +76,17 @@ class AccountImported extends React.Component {
 }
 
 AccountImported.propTypes = {
+	history: PropTypes.object.isRequired,
+	accountName: PropTypes.string.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	startAnimation: PropTypes.func.isRequired,
 };
 
-export default connect(
+export default withRouter(connect(
 	(state) => ({
 		isVisible: state.animation.getIn([ACCOUNT_IMPORTED, 'isVisible']),
 	}),
 	(dispatch) => ({
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
 	}),
-)(AccountImported);
+)(AccountImported));

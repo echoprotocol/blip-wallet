@@ -3,7 +3,9 @@ import scrypt from 'scrypt-js';
 import { PrivateKey, ED25519 } from 'echojs-lib';
 import bs58 from 'bs58';
 import random from 'crypto-random-string';
-import { ALGORITHM, ECHORANDKEY_SIZE, RANDOM_SIZE } from '../constants/global-constants';
+import {
+	ACTIVE_KEY, ALGORITHM, ECHORANDKEY_SIZE, RANDOM_SIZE,
+} from '../constants/global-constants';
 
 class CryptoService {
 
@@ -115,6 +117,24 @@ class CryptoService {
 	}
 
 	/**
+	 *  @method isWIF
+	 *
+	 *  Check string is WIF.
+	 *
+	 *  @param {String} passwordOrWIF
+	 *
+	 *  @return {Boolean} isWIF
+	 */
+	static isWIF(passwordOrWIF) {
+		try {
+			PrivateKey.fromWif(passwordOrWIF);
+			return true;
+		} catch (err) {
+			return false;
+		}
+	}
+
+	/**
 	 *  @method generateEchoRandKey
 	 *
 	 * 	Generate random string and private key from this seed.
@@ -129,6 +149,23 @@ class CryptoService {
 			return CryptoService.generateEchoRandKey();
 		}
 		return echoRandKey;
+	}
+
+	/**
+	 *  @method getPublicKey
+	 *
+	 *  Generate public key from seed, using in desktop app.
+	 *
+	 *  @param {String} username
+	 *  @param {String} password
+	 *  @param {String} role - optional
+	 *
+	 *  @return {String} publicKey
+	 */
+	static getPublicKey(username, password, role = ACTIVE_KEY) {
+		const seed = `${username}${role}${password}`;
+		const privateKey = PrivateKey.fromSeed(seed);
+		return privateKey.toPublicKey().toString();
 	}
 
 }
