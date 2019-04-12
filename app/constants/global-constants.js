@@ -1,4 +1,3 @@
-
 export const DB_NAME = 'keyval-store';
 export const STORE = 'keyval';
 export const ENCRYPTED_DB_NAME = 'db';
@@ -46,3 +45,17 @@ export const PING_INTERVAL = 7000;
 
 export const EN_LOCALE = 'en';
 export const RU_LOCALE = 'ru';
+
+export const LOCK_TIMEOUT = 1 * 60 * 1000; // 1 min
+export const LOCK_TIMER_EVENTS = [
+	// 'mousemove',
+	'keydown',
+	'wheel',
+	'DOMMouseScroll',
+	'mouseWheel',
+	'mousedown',
+	'touchstart',
+	'touchmove',
+	'MSPointerDown',
+	'MSPointerMove',
+];

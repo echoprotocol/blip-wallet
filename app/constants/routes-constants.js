@@ -6,6 +6,7 @@ export const RESTORE_PASSWORD = '/restore-password';
 export const SELECT_LANGUAGE = '/select-language';
 export const UNLOCK = 'unlock';
 export const PAGE404 = '/page404';
+export const INDEX_ROUTE = '/';
 
 export const PUBLIC_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,

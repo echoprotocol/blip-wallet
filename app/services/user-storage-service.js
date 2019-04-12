@@ -76,8 +76,6 @@ class UserStorageService {
 		this.scheme = scheme;
 		await autoSchemeService.resetPrivateStorage();
 
-		await autoSchemeService.resetPrivateStorage();
-
 		switch (scheme) {
 			case UserStorageService.SCHEMES.AUTO:
 				if (!password) {
@@ -102,6 +100,24 @@ class UserStorageService {
 			default:
 				throw new Error('Unknown scheme');
 		}
+	}
+
+	/**
+	 *
+	 * @return {Promise.<void>}
+	 */
+	async resetCurrentScheme() {
+		switch (this.scheme) {
+			case UserStorageService.SCHEMES.AUTO:
+				await this.getCurrentScheme().resetPrivateStorage();
+				break;
+			case UserStorageService.SCHEMES.MANUAL:
+				break;
+			default:
+				break;
+		}
+
+		this.scheme = null;
 	}
 
 	/**

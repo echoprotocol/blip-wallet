@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -9,7 +10,7 @@ import { Animated } from 'react-animated-css';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import { validateUnlock, setValue } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
-import { UNLOCK } from '../../constants/routes-constants';
+import { UNLOCK, RESTORE_PASSWORD } from '../../constants/routes-constants';
 import { setValue as setValueToForm } from '../../actions/form-actions';
 import { FORM_UNLOCK } from '../../constants/form-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
@@ -186,7 +187,7 @@ class UnlockWallet extends React.Component {
 					animationInDelay={150}
 					isVisible={isVisible}
 				>
-					<a className="link" href="/restore-password">{link}</a>
+					<Link className="link" to={RESTORE_PASSWORD}>{link}</Link>
 				</Animated>
 			</React.Fragment>
 		);

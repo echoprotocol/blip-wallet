@@ -137,6 +137,18 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 
 };
 
+export const lockApp = () => async (dispatch, getState) => {
+	const { pathname } = getState().router.location;
+
+	const userStorage = Services.getUserStorage();
+	await userStorage.resetCurrentScheme();
+	dispatch(startAnimation(pathname, false));
+	setTimeout(() => {
+		dispatch(setValue('locked', true));
+		dispatch(startAnimation(UNLOCK, true));
+	}, 200);
+};
+
 /**
  *  @method setLanguage
  *

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import App from './containers/app';
 import Authorization from './containers/authorization';
 import accountCreated from './containers/account-сreated';
@@ -13,13 +13,14 @@ import {
 	AUTHORIZATION, CREATE_PASSWORD,
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
+	INDEX_ROUTE,
 } from './constants/routes-constants';
 
 
 export default () => (
 	<App>
 		<Switch>
-			<Route exact path="/" component={selectLanguage} />
+			<Redirect exact from={INDEX_ROUTE} to={SELECT_LANGUAGE} />
 			<Route exact path={CREATE_PASSWORD} component={CreatePassword} />
 			<Route exact path={RESTORE_PASSWORD} component={RestorePassword} />
 			<Route exact path={SELECT_LANGUAGE} component={selectLanguage} />
