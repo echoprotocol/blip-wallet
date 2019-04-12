@@ -120,8 +120,36 @@ class Settings extends React.Component {
 	}
 
 	renderArchivedAssets() {
+		const { open } = this.props;
 		return (
-			'hoho'
+			<React.Fragment>
+				<div className="segment tab archive-assets">
+					<div className="info-text">
+					You can hide/show assets if you are bored watching them.
+					Echo is a proto-asset (Alpha and Omega. The beggining and the end).
+					You can’t hide it. Haha
+					</div>
+					<div className="archive-table">
+						<div className="line">
+							<div className="coin">Echo</div>
+							<div className="checkbox-toggle">
+								<input type="checkbox" name="" id="" />
+							</div>
+							<div className="balance">0.00000000</div>
+						</div>
+					</div>
+
+				</div>
+				<div className="segment action">
+					<Button
+						className="btn-primary"
+						disabled={!open}
+						content={
+							<span className="text">Save changes</span>
+						}
+					/>
+				</div>
+			</React.Fragment>
 		);
 	}
 
