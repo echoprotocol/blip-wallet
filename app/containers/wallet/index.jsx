@@ -4,8 +4,17 @@ import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
 import { CACHE_MAPS } from 'echojs-lib';
 
 import { saveSelectedAccounts, updateBalance } from '../../actions/balance-actions';
+import { setLastTransaction } from '../../actions/transaction-actions';
 import Wallet from '../../components/wallet';
 
+const filteredHistories = createSelector(
+	(state) => state.global.get('accounts').filter((a) => a.get('selected')),
+	(state) => state.echoCache.get(CACHE_MAPS.FULL_ACCOUNTS),
+	(accounts, objects) => accounts.reduce(
+		(map, name, id) => map.set(id, objects.getIn([id, 'history'])),
+		Immutable.Map({}),
+	),
+);
 
 const filteredObjects = createSelector(
 	(state) => state.wallet.get('balances'),
@@ -17,6 +26,13 @@ const filteredObjects = createSelector(
 );
 
 const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
+
+const historySelector = createImmutableSelector(
+	(state) => state.global.get('accounts').filter((a) => a.get('selected')),
+	(state) => filteredHistories(state),
+	(accounts, histories) => accounts.mapKeys((accountId) => ([accountId, histories.get(accountId)])),
+);
+
 const balanceSelector = createImmutableSelector(
 	(state) => state.wallet.get('balances'),
 	(state) => filteredObjects(state),
@@ -36,9 +52,12 @@ export default connect(
 		language: state.global.get('language'),
 		currentNode: state.global.get('currentNode'),
 		balances: balanceSelector(state),
+		transaction: state.wallet.get('transaction'),
+		histories: historySelector(state),
 	}),
 	(dispatch) => ({
 		updateBalance: () => dispatch(updateBalance()),
+		setTransaction: () => dispatch(setLastTransaction()),
 		saveSelectedAccounts: (accounts) => dispatch(saveSelectedAccounts(accounts)),
 	}),
 )(Wallet);

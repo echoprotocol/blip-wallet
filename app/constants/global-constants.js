@@ -24,6 +24,14 @@ export const NETWORKS = {
 	},
 };
 
+export const EXPLORER_URL = {
+	testnet: 'https://explorer.echo-dev.io',
+};
+
+export const ECHO_ASSET_ID = '1.3.0';
+export const ECHO_ASSET_PRECISION = 5;
+export const ECHO_ASSET_SYMBOL = 'ECHO';
+
 export const DISCONNECT_STATUS = 'disconnect';
 export const CONNECT_STATUS = 'connect';
 export const ACTIVE_KEY = 'active';
@@ -33,9 +41,6 @@ export const LOCAL_NODE = 'local';
 
 export const RANDOM_SIZE = 2048;
 export const ECHORANDKEY_SIZE = 47;
-
-export const CORE_ASSET_ID = '1.3.0';
-export const CORE_ASSET_SYMBOL = 'ECHO';
 
 export const KEY_CODE_ENTER = 13;
 export const NAME_MIN_LENGTH = 1;

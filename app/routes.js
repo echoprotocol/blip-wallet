@@ -13,8 +13,7 @@ import {
 	AUTHORIZATION, CREATE_PASSWORD,
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
-	WALLET,
-	INDEX_ROUTE,
+	INDEX_ROUTE, WALLET,
 } from './constants/routes-constants';
 import Wallet from './containers/wallet';
 

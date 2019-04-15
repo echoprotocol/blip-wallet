@@ -93,5 +93,222 @@
 		"error": {
 			"Please, enter correct password": "Please, enter correct password"
 		}
+	},
+
+	"wallet": {
+		"transaction": {
+			"title": "last transaction"
+		}
+	},
+
+	"operations": {
+		"transfer": {
+			"title": {
+				"sent": "Transfer sent",
+				"received": "Transfer received"
+			},
+			"from": "From",
+			"subject": "To"
+		},
+		"limit_order_create": {
+			"title": "Place order",
+			"from": "Seller"
+		},
+		"limit_order_cancel": {
+			"title": "Cancel order",
+			"from": "Fee paying account",
+			"subject": "Order"
+		},
+		"call_order_update": {
+			"title": "Update margin",
+			"from": "Funding account"
+		},
+		"fill_order": {
+			"title": "Fill order",
+			"from": "Account",
+			"subject": "Order"
+		},
+		"account_create": {
+			"title": "Account created",
+			"from": "Creator",
+			"subject": "Account"
+		},
+		"account_update": {
+			"title": "Update account",
+			"from": "Account"
+		},
+		"account_whitelist": {
+			"title": "Account whitelist",
+			"from": "Authorizing account",
+			"subject": "Account"
+		},
+		"account_upgrade": {
+			"title": "Upgrade Account",
+			"from": "Account to upgrade"
+		},
+		"account_transfer": {
+			"title": "Transfer Account",
+			"from": "Account",
+			"subject": "New owner"
+		},
+		"asset_create": {
+			"title": "Create asset",
+			"from": "Issuer",
+			"subject": "Symbol"
+		},
+		"asset_update": {
+			"title": "Update asset",
+			"from": "Issuer",
+			"subject": "Asset"
+		},
+		"asset_update_bitasset": {
+			"title": "Update SmartCoin",
+			"from": "Issuer",
+			"subject": "Asset"
+		},
+		"asset_update_feed_producers": {
+			"title": "Update asset feed producers",
+			"from": "Issuer",
+			"subject": "Asset"
+		},
+		"asset_issue": {
+			"title": "Issue asset",
+			"from": "Issuer",
+			"subject": "Issue to account"
+		},
+		"asset_reserve": {
+			"title": "Burn asset",
+			"from": "Payer"
+		},
+		"asset_fund_fee_pool": {
+			"title": "Fund asset fee pool",
+			"from": "Account"
+		},
+		"asset_settle": {
+			"title": "Asset settlement",
+			"from": "Account"
+		},
+		"asset_global_settle": {
+			"title": "Global asset settlement",
+			"from": "Issuer"
+		},
+		"asset_publish_feed": {
+			"title": "Publish feed",
+			"from": "Publisher",
+			"subject": "Asset"
+		},
+		"witness_create": {
+			"title": "Create witness",
+			"from": "Account"
+		},
+		"witness_create": {
+			"title": "Update witness",
+			"from": "Account",
+			"subject": "Witness"
+		},
+		"proposal_create": {
+			"title": "Create proposal",
+			"from": "Account"
+		},
+		"proposal_update": {
+			"title": "Update proposal",
+			"from": "Account"
+		},
+		"proposal_delete": {
+			"title": "Delete proposal",
+			"from": "Account"
+		},
+		"withdraw_permission_create": {
+			"title": "Create withdrawal permission",
+			"from": "Account"
+		},
+		"withdraw_permission_update": {
+			"title": "Update withdrawal permission",
+			"from": "Account"
+		},
+		"withdraw_permission_claim": {
+			"title": "Claim withdrawal permission",
+			"from": "From",
+			"subject": "To"
+		},
+		"withdraw_permission_delete": {
+			"title": "Delete withdrawal permission",
+			"from": "Account"
+		},
+		"committee_member_create": {
+			"title": "Create committee member",
+			"from": "Account"
+		},
+		"committee_member_update": {
+			"title": "Update committee member",
+			"from": "Account"
+		},
+		"committee_member_update_global_parameters": {
+			"title": "Global parameters update"
+		},
+		"vesting_balance_create": {
+			"title": "Create vesting balance",
+			"from": "Creator",
+			"subject": "Owner"
+		},
+		"vesting_balance_withdraw": {
+			"title": "Withdraw vesting balance",
+			"from": "Owner"
+		},
+		"worker_create": {
+			"title": "Create worker",
+			"from": "Owner",
+			"subject": "Worker"
+		},
+		"custom": {
+			"title": "Custom",
+			"from": "Payer"
+		},
+		"assert": {
+			"title": "Assert operation",
+			"from": "Account"
+		},
+		"balance_claim": {
+			"title": "Claim balance",
+			"subject": "Account"
+		},
+		"override_transfer": {
+			"title": "Override transfer",
+			"from": "From",
+			"subject": "To"
+		},
+		"transfer_to_blind": {
+			"title": "Transfer to blinded account",
+			"from": "From"
+		},
+		"blind_transfer": {
+			"title": "Blinded transfer"
+		},
+		"transfer_from_blind": {
+			"title": "Transfer from blinded account",
+			"subject": "To"
+		},
+		"asset_settle_cancel": {
+			"title": "Cancel asset settlement",
+			"from": "Account"
+		},
+		"asset_claim_fees": {
+			"title": "Claim asset fees",
+			"from": "Issuer"
+		},
+		"contract_create": {
+			"title": "Contract create",
+			"from": "Creator"
+		},
+		"contract_call": {
+			"title": "Contract call",
+			"from": "Account",
+			"subject": "Contract"
+		},
+		"contract_transfer": {
+			"title": "Contract transfer",
+			"from": "From",
+			"subject": "To"
+		}
 	}
 }

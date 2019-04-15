@@ -53,9 +53,9 @@ class UserStorageService {
 
 	/**
 	 *
-	 * @return {Promise.<String>}
+	 * @return {String}
 	 */
-	async getNetworkId() {
+	getNetworkId() {
 		return this.networkId;
 	}
 
@@ -135,7 +135,7 @@ class UserStorageService {
 		this.checkNetwork();
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
-		const networkId = await this.getNetworkId();
+		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
 		network.addAccount(account);
@@ -181,7 +181,7 @@ class UserStorageService {
 		this.checkNetwork();
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
-		const networkId = await this.getNetworkId();
+		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
 		return network.getAllAccounts();
@@ -220,7 +220,7 @@ class UserStorageService {
 		this.checkNetwork();
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
-		const networkId = await this.getNetworkId();
+		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
 		network.addKey(key);
@@ -240,7 +240,7 @@ class UserStorageService {
 		this.checkNetwork();
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
-		const networkId = await this.getNetworkId();
+		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
 		return network.getAllKeys().map((key) => key.publicKey);
@@ -256,7 +256,7 @@ class UserStorageService {
 		this.checkNetwork();
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
-		const networkId = await this.getNetworkId();
+		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
 		return network.getAllKeys().find((key) => publicKey === key.publicKey);
@@ -273,7 +273,7 @@ class UserStorageService {
 		this.checkNetwork();
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
-		const networkId = await this.getNetworkId();
+		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
 		return network.getAllKeys().find((key) => (wif === key.wif) && (accountId === key.accountId));

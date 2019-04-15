@@ -3,6 +3,7 @@ import { Map } from 'immutable';
 
 const DEFAULT_FIELDS = Map({
 	balances: new Map({}),
+	transaction: new Map({}),
 });
 
 export default createModule({

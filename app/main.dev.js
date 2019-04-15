@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 
 if (
 	process.env.NODE_ENV === 'development'
-  || process.env.DEBUG_PROD === 'true'
+	|| process.env.DEBUG_PROD === 'true'
 ) {
 	require('electron-debug')();
 }
@@ -64,7 +64,7 @@ app.on('window-all-closed', () => {
 app.on('ready', async () => {
 	if (
 		process.env.NODE_ENV === 'development'
-    || process.env.DEBUG_PROD === 'true'
+		|| process.env.DEBUG_PROD === 'true'
 	) {
 		await installExtensions();
 	}
@@ -95,10 +95,17 @@ app.on('ready', async () => {
 		mainWindow = null;
 	});
 
+	mainWindow.webContents.on('new-window', (e, url) => {
+		if (url !== mainWindow.webContents.getURL()) {
+			e.preventDefault();
+			shell.openExternal(url);
+		}
+	});
+
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
 
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
-  new AppUpdater();
+	new AppUpdater();
 });

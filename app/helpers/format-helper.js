@@ -1,4 +1,5 @@
 import BN from 'bignumber.js';
+import moment from 'moment';
 
 export default class FormatHelper {
 
@@ -18,6 +19,17 @@ export default class FormatHelper {
 	 */
 	static capitalizeFirstLetter(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
+	/**
+	 *
+	 * @param string date
+	 * @param string language
+	 * @param string formatter
+	 * @returns {String}
+	 */
+	static transformDate(date, language, formatter) {
+		return moment.utc(date).local().locale(language).format(formatter);
 	}
 
 }

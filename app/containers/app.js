@@ -21,7 +21,7 @@ import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Services from '../services';
 import {
-	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD,
+	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 import LanguageService from '../services/language';
@@ -79,7 +79,7 @@ class App extends React.Component {
 			const doesDBExist = await userStorage.doesDBExist();
 
 			if (doesDBExist) {
-				this.props.history.push(AUTHORIZATION);
+				this.props.history.push(WALLET);
 			}
 
 		}
@@ -94,6 +94,13 @@ class App extends React.Component {
 				this.props.history.push(CREATE_PASSWORD);
 			}
 
+		}
+
+		if (!routed && [WALLET].includes(pathname)) {
+			const { locked, accounts } = this.props;
+			if (!locked && !accounts.size) {
+				this.props.history.push(AUTHORIZATION);
+			}
 		}
 
 		return true;
@@ -164,6 +171,7 @@ App.propTypes = {
 	children: PropTypes.element.isRequired,
 	lock: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
+	accounts: PropTypes.object.isRequired,
 	locked: PropTypes.bool,
 	inited: PropTypes.bool,
 };
@@ -179,6 +187,7 @@ export default connect(
 		language: state.global.get('language'),
 		loading: state.global.get('loading'),
 		locked: state.global.get('locked'),
+		accounts: state.global.get('accounts'),
 		pathname: state.router.location.pathname,
 	}),
 	(dispatch) => ({

@@ -54,13 +54,22 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 	return true;
 };
 
-const addAccount = (id, name) => (dispatch, getState) => {
+/**
+ * @method addAccount
+ *
+ *
+ * @param id
+ * @param name
+ */
+const addAccount = (id, name) => async (dispatch, getState) => {
 	let accounts = getState().global.get('accounts');
 
 	accounts = accounts.setIn([id, 'name'], name);
 	accounts = accounts.setIn([id, 'selected'], true);
 
 	dispatch(setValueGlobal('accounts', accounts));
+
+	await Services.getEcho().api.getFullAccounts([id]);
 };
 
 /**
@@ -95,7 +104,7 @@ export const registerAccount = () => async (dispatch, getState) => {
 
 		const userStorage = Services.getUserStorage();
 
-		dispatch(addAccount(accountData.id, accountName.value));
+		await dispatch(addAccount(accountData.id, accountName.value));
 		await userStorage.addAccount(Account.create(accountData.id, accountName.value));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
@@ -198,7 +207,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 
 			const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
-			dispatch(addAccount(accountId, accountName));
+			await dispatch(addAccount(accountId, accountName));
 			await userStorage.addAccount(Account.create(accountId, accountName));
 			await userStorage.addKey(Key.create(publicKey, wif, accountId));
 		} else {
@@ -229,7 +238,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 				return false;
 			}
 
-			dispatch(addAccount(accountId, accountName));
+			await dispatch(addAccount(accountId, accountName));
 			await userStorage.addAccount(Account.create(accountId, accountName));
 			await userStorage.addKey(Key.create(hasKey[0], wif, accountId));
 		}

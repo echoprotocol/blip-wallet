@@ -39,10 +39,10 @@
             "loading": "Аккаунт импортируется",
             "button": "Импортировать",
             "error": {
-                "Account name should start with a lowercase letter.": "Имя должно начинаться со строчной буквы",
-                "Account name should not be empty": "Имя не может быть пустым",
-                "Account name should be longer.": "Имя должно быть длиннее",
-                "Account name should be shorter.": "Имя должно быть короче",
+                "Аккаунт name should start with a lowercase letter.": "Имя должно начинаться со строчной буквы",
+                "Аккаунт name should not be empty": "Имя не может быть пустым",
+                "Аккаунт name should be longer.": "Имя должно быть длиннее",
+                "Аккаунт name should be shorter.": "Имя должно быть короче",
                 "Each account segment should start with a lowercase letter.": "Каждая часть должна начинаться со строчной буквы",
                 "Each account segment should have only lowercase letters, digits, or dashes.": "Каждая часть должна состоять из строчных букв, цифр, или тире",
                 "Each account segment should end with a lowercase letter or digit.": "Каждая часть должна заканчиваться строчной буквой или цифрой",
@@ -76,11 +76,11 @@
             "button": "Создать аккаунт",
             "loading": "Создаётся новый аккаунт",
             "error": {
-                "Account name should have only one dash in a row.": "Не больше одного тире подряд.",
-                "Account name should end with a letter or digit.": "Должно заканчиваться буквой или цифрой.",
+                "Аккаунт name should have only one dash in a row.": "Не больше одного тире подряд.",
+                "Аккаунт name should end with a letter or digit.": "Должно заканчиваться буквой или цифрой.",
                 "Each account segment should end with a letter or digit.": "Сегменты должны заканчиваться буквой или цифрой.",
                 "Each account segment should be longer.": "Сегменты должны быть длиннее",
-                "Account already exist": "Такой аккаунт уже есть",
+                "Аккаунт already exist": "Такой аккаунт уже есть",
                 "Connection error": "Ошибка соединения"
             }
         },
@@ -109,5 +109,223 @@
         "error": {
             "Please, enter correct password": "Неверный пароль"
         }
-    }
+    },
+
+    "wallet": {
+        "transaction": {
+            "title": "Последняя транзакция"
+        }
+    },
+
+    "operations": {
+		"transfer": {
+            "title": {
+    			"sent": "Перевод отправлен",
+    			"received": "Перевод получен"
+            },
+			"from": "Отправитель",
+			"to": "Получатель"
+		},
+        "limit_order_create": {
+            "title": "Разместить заказ",
+            "from": "Продавец"
+        },
+        "limit_order_cancel": {
+            "title": "Отменить заказ",
+            "from": "Платёжный аккаунт",
+            "subject": "Заказ"
+        },
+        "call_order_update": {
+            "title": "Обновить поля",
+            "from": "Платёжный аккаунт"
+        },
+        "fill_order": {
+            "title": "Заполнить заказ",
+            "from": "Аккаунт",
+            "subject": "Заказ"
+        },
+        "account_create": {
+            "title": "Аккаунт создан",
+            "from": "Создатель",
+            "subject": "Аккаунт"
+        },
+        "account_update": {
+            "title": "Обновить аккаунт",
+            "from": "Аккаунт"
+        },
+        "account_whitelist": {
+            "title": "Белый список аккаунтов",
+            "from": "Авторизующий аккаунт",
+            "subject": "Аккаунт"
+        },
+        "account_upgrade": {
+            "title": "Обновить аккаунт",
+            "from": "Аккаунт для обновления"
+        },
+        "account_transfer": {
+            "title": "Перевод аккаунта",
+            "from": "Аккаунт",
+            "subject": "Новый владелец"
+        },
+        "asset_create": {
+            "title": "Создать актив",
+            "from": "Издатель",
+            "subject": "Символ"
+        },
+        "asset_update": {
+            "title": "Обновить активt",
+            "from": "Издатель",
+            "subject": "Актив"
+        },
+        "asset_update_bitasset": {
+            "title": "Обновить SmartCoin",
+            "from": "Издатель",
+            "subject": "Актив"
+        },
+        "asset_update_feed_producers": {
+            "title": "Обновление производителей фидов активов",
+            "from": "Издатель",
+            "subject": "Актив"
+        },
+        "asset_issue": {
+            "title": "Выпуск актива",
+            "from": "Издатель",
+            "subject": "Аккаунт"
+        },
+        "asset_reserve": {
+            "title": "Сжечь актив",
+            "from": "Плательщик"
+        },
+        "asset_fund_fee_pool": {
+            "title": "Финансировать сбор средств фонда",
+            "from": "Аккаунт"
+        },
+        "asset_settle": {
+            "title": "Расчет активов",
+            "from": "Аккаунт"
+        },
+        "asset_global_settle": {
+            "title": "Глобальный расчет активов",
+            "from": "Издатель"
+        },
+        "asset_publish_feed": {
+            "title": "Опубликовать фид",
+            "from": "Издатель",
+            "subject": "Актив"
+        },
+        "witness_create": {
+            "title": "Создать свидетеля",
+            "from": "Аккаунт"
+        },
+        "witness_create": {
+            "title": "Обновить свидетеля",
+            "from": "Аккаунт",
+            "subject": "Свидетель"
+        },
+        "proposal_create": {
+            "title": "Создание заявки",
+            "from": "Аккаунт"
+        },
+        "proposal_update": {
+            "title": "Обновление заявки",
+            "from": "Аккаунт"
+        },
+        "proposal_delete": {
+            "title": "Удаление заявки",
+            "from": "Аккаунт"
+        },
+        "withdraw_permission_create": {
+            "title": "Создать разрешение на снятие средств",
+            "from": "Аккаунт"
+        },
+        "withdraw_permission_update": {
+            "title": "Обновить разрешение на снятие средств",
+            "from": "Аккаунт"
+        },
+        "withdraw_permission_claim": {
+            "title": "Требовать разрешения на снятие средств",
+            "from": "From",
+            "subject": "To"
+        },
+        "withdraw_permission_delete": {
+            "title": "Удалить разрешение на снятие средств",
+            "from": "Аккаунт"
+        },
+        "committee_member_create": {
+            "title": "Создать члена комитета",
+            "from": "Аккаунт"
+        },
+        "committee_member_update": {
+            "title": "Обновить члена комитета",
+            "from": "Аккаунт"
+        },
+        "committee_member_update_global_parameters": {
+            "title": "Обновление глобальных параметров"
+        },
+        "vesting_balance_create": {
+            "title": "Создать наделяющий баланс",
+            "from": "Создатель",
+            "subject": "Владелец"
+        },
+        "vesting_balance_withdraw": {
+            "title": "Снять баланс",
+            "from": "Владелец"
+        },
+        "worker_create": {
+            "title": "Создать работника",
+            "from": "Владелец",
+            "subject": "Работник"
+        },
+        "custom": {
+            "title": "Кастом",
+            "from": "Плательщик"
+        },
+        "assert": {
+            "title": "Подтвердить операцию",
+            "from": "Аккаунт"
+        },
+        "balance_claim": {
+            "title": "Запрос баланса",
+            "subject": "Аккаунт"
+        },
+        "override_transfer": {
+            "title": "Отменить перевод",
+            "from": "Отправитель",
+            "subject": "Получатель"
+        },
+        "transfer_to_blind": {
+            "title": "Перевод на слепой аккаунт",
+            "from": "Отправитель"
+        },
+        "blind_transfer": {
+            "title": "Слепой перевод"
+        },
+        "transfer_from_blind": {
+            "title": "Перевод с слепого аккаунта",
+            "subject": "Получатель"
+        },
+        "asset_settle_cancel": {
+            "title": "Отменить расчет активов",
+            "from": "Аккаунт"
+        },
+        "asset_claim_fees": {
+            "title": "Запрос по активам",
+            "from": "Издатель"
+        },
+        "contract_create": {
+            "title": "Создание контракта",
+            "from": "Создатель"
+        },
+        "contract_call": {
+            "title": "Вызов контракта",
+            "from": "Аккаунт",
+            "subject": "Контракт"
+        },
+        "contract_transfer": {
+            "title": "Перевод в контракте",
+            "from": "Отправитель",
+            "subject": "Получатель"
+        }
+	}
+
 }

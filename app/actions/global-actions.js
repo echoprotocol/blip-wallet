@@ -38,6 +38,8 @@ export const initAccounts = () => async (dispatch, getState) => {
 		});
 	});
 
+	await Services.getEcho().api.getFullAccounts(accounts.map(({ id }) => id));
+
 	dispatch(setValue('accounts', accountsStore));
 };
 
@@ -129,6 +131,7 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 		if (correctPassword) {
 			await dispatch(initAccounts());
 
+			dispatch(initAccounts());
 			return true;
 		}
 		dispatch(setValueToForm(form, 'error', 'Please, enter correct password'));
