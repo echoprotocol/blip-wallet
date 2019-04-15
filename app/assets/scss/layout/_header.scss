@@ -22,10 +22,7 @@
 	}
 
 	.logo-wrap {
-		@include min-vw(1400) {
-			bottom: -3px;
-		}
-		bottom: -2px;
+		bottom: 0;
 	}
 
 	.page-title {

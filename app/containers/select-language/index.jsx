@@ -50,9 +50,9 @@ class SelectLanguage extends React.Component {
 
 		return (
 			<div className="page">
-				<a href="/" className="logo-wrap">
+				<div className="logo-wrap">
 					<img src={blipLogo} alt="" />
-				</a>
+				</div>
 				<Animated
 					className="lang-wrap"
 					animationIn="fadeInRight"
