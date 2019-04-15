@@ -22,3 +22,13 @@ i.icon {
 	content: '\e902';
 	font-size: 14px;
 }
+
+.arrow-left {
+	transform: rotate(180deg);
+
+	&:before {
+		content: '\e902';
+		color: #d9c7fd;
+		font-size: 14px;
+	}
+}

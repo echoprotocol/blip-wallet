@@ -34,7 +34,7 @@ class Authorization extends React.Component {
 		this.props.startAnimation(AUTHORIZATION, true);
 	}
 
-	setActiveTab(e, active) {
+	async setActiveTab(e, active) {
 
 		e.stopPropagation();
 		this.props.startAnimation(AUTHORIZATION, false);
@@ -42,9 +42,11 @@ class Authorization extends React.Component {
 			activeIndex: active,
 		});
 
-		setTimeout(() => {
-			this.props.startAnimation(AUTHORIZATION, true);
-		}, 200);
+		await this.props.startAnimation(AUTHORIZATION, true);
+
+		this.setState({
+			activeIndex: active,
+		});
 	}
 
 	goForward(accountName, wif) {

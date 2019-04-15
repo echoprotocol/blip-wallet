@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 import { Animated } from 'react-animated-css';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import { startAnimation } from '../../actions/animation-actions';
 import { clearWalletData } from '../../actions/global-actions';
-import { RESTORE_PASSWORD, SELECT_LANGUAGE } from '../../constants/routes-constants';
+import {
+	RESTORE_PASSWORD, SELECT_LANGUAGE, UNLOCK,
+} from '../../constants/routes-constants';
 
 
 class RestorePassword extends React.Component {
@@ -40,12 +42,37 @@ class RestorePassword extends React.Component {
 		this.props.history.push(SELECT_LANGUAGE);
 	}
 
+	async returnFunction() {
+		await this.props.startAnimation(RESTORE_PASSWORD, false);
+		this.props.history.goBack();
+		this.props.startAnimation(UNLOCK, true);
+	}
+
+
 	render() {
 		const { isVisible } = this.props;
 
 		return (
 			<div className="restore-page page">
+
 				<div className="restore-wrap">
+					<Animated
+						className="restore-back"
+						animationIn="fadeInRightBig"
+						animationOut="fadeOutLeft"
+						isVisible={isVisible}
+					>
+						<Button
+							className="btn-return arrow left"
+							onClick={() => this.returnFunction()}
+							content={(
+								<React.Fragment>
+									<div className="text">Return</div>
+									<Icon className="arrow-left" />
+								</React.Fragment>
+							)}
+						/>
+					</Animated>
 					<Animated
 						className="restore-logo-wrap"
 						animationIn="fadeInRightBig"
@@ -54,6 +81,7 @@ class RestorePassword extends React.Component {
 					>
 						<img className="blip-logo" src={blipLogo} alt="" />
 					</Animated>
+
 					<div className="restore-info">
 						<Animated
 							animationIn="fadeInRightBig"
@@ -116,6 +144,7 @@ RestorePassword.propTypes = {
 	clearWalletData: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 };
+
 
 export default connect(
 	(state) => ({
