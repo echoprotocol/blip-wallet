@@ -13,7 +13,44 @@ class Settings extends React.Component {
 		super(props);
 		this.state = {
 			activeIndex: 0,
+			selectedAccounts: [],
 		};
+	}
+
+	componentDidMount() {
+		const { accounts, updateBalance } = this.props;
+		const selectedAccounts = [];
+		accounts.forEach((account, id) => {
+			if (account.get('selected')) {
+				selectedAccounts.push(id);
+			}
+		});
+
+		this.setState({ selectedAccounts });
+
+		updateBalance();
+	}
+
+
+	onSelect(value) {
+		let { selectedAccounts } = this.state;
+
+		if (selectedAccounts.includes(value)) {
+			selectedAccounts = selectedAccounts.filter((acc) => acc !== value);
+		} else {
+			selectedAccounts.push(value);
+		}
+
+		this.setState({ selectedAccounts });
+	}
+
+	onSave(e) {
+		const { saveSelectedAccounts, toggleSettings } = this.props;
+		const { selectedAccounts } = this.state;
+
+		toggleSettings(e);
+
+		saveSelectedAccounts(selectedAccounts);
 	}
 
 	setActiveTab(e, active) {
@@ -67,9 +104,40 @@ class Settings extends React.Component {
 			)));
 	}
 
+	renderAccounts() {
+		const { accounts, open } = this.props;
+		const { selectedAccounts } = this.state;
+
+		const result = [];
+
+		accounts.forEach((account, index) => {
+			const key = index;
+			result.push(
+				<div className="account" key={key}>
+					<div className="checkbox transparent">
+						<input
+							disabled={!open}
+							checked={selectedAccounts.includes(index)}
+							type="checkbox"
+							id={index}
+							onChange={() => {}}
+						/>
+						<label htmlFor={index} className="checkbox-label" onClick={() => this.onSelect(index)}>
+							<img alt="" src={avatar} className="label-avatar" />
+							<span className="label-account-name">{account.get('name')}</span>
+						</label>
+					</div>
+				</div>,
+			);
+		});
+
+		return result;
+	}
+
 	renderFilterByAccounts() {
 		const { open } = this.props;
 		const { activeIndex } = this.state;
+
 		return (
 			<React.Fragment>
 				<div className="segment tab accounts-filter">
@@ -84,32 +152,7 @@ class Settings extends React.Component {
 						<div className="select-accounts">
 							<div className="title">Select accounts</div>
 							<div className="accounts-list">
-								<div className="account">
-									<div className="checkbox transparent">
-										<input
-											disabled={!open}
-											type="checkbox"
-											id="acc0"
-										/>
-										<label htmlFor="acc0" className="checkbox-label">
-											<img alt="" src={avatar} className="label-avatar" />
-											<span className="label-account-name"> Homersimpson</span>
-										</label>
-									</div>
-								</div>
-								<div className="account">
-									<div className="checkbox transparent">
-										<input
-											disabled={!open}
-											type="checkbox"
-											id="acc1"
-										/>
-										<label htmlFor="acc1" className="checkbox-label">
-											<img alt="" src={avatar} className="label-avatar" />
-											<span className="label-account-name"> Homersimpson</span>
-										</label>
-									</div>
-								</div>
+								{this.renderAccounts()}
 							</div>
 						</div>
 					</Animated>
@@ -122,6 +165,7 @@ class Settings extends React.Component {
 					<Button
 						className="btn-primary"
 						disabled={!open}
+						onClick={(e) => this.onSave(e)}
 						content={
 							<span className="text">Save changes</span>
 						}
@@ -215,6 +259,10 @@ class Settings extends React.Component {
 
 Settings.propTypes = {
 	open: PropTypes.bool.isRequired,
+	accounts: PropTypes.object.isRequired,
+	saveSelectedAccounts: PropTypes.func.isRequired,
+	updateBalance: PropTypes.func.isRequired,
+	toggleSettings: PropTypes.func.isRequired,
 };
 
 export default Settings;

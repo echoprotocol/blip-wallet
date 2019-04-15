@@ -4,6 +4,7 @@ import Services from '../services';
 import CryptoService from '../services/crypto-service';
 import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
 import { setFormError, toggleLoading, setValue } from './form-actions';
+import { setValue as setValueGlobal } from './global-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
 
@@ -56,9 +57,10 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 const addAccount = (id, name) => (dispatch, getState) => {
 	let accounts = getState().global.get('accounts');
 
-	accounts = accounts.set(id, name);
+	accounts = accounts.setIn([id, 'name'], name);
+	accounts = accounts.setIn([id, 'selected'], true);
 
-	dispatch(setValue('accounts', accounts));
+	dispatch(setValueGlobal('accounts', accounts));
 };
 
 /**

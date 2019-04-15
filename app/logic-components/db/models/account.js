@@ -6,19 +6,22 @@ class Account {
 	 *
 	 * @param {String} id
 	 * @param {String} name
+	 * @param {Boolean} selected
 	 */
-	constructor(id, name) {
+	constructor(id, name, selected) {
 		this.id = id;
 		this.name = name;
+		this.selected = selected;
 	}
 
 	/**
 	 *
 	 * @param {String} id
 	 * @param {String} name
+	 * @param {Boolean} selected
 	 * @return {Account}
 	 */
-	static create(id, name) {
+	static create(id, name, selected = true) {
 
 		if (!validators.isAccountId(id)) {
 			throw new Error('Account id is required.');
@@ -28,7 +31,11 @@ class Account {
 			throw new Error('Account name is required.');
 		}
 
-		return new Account(id, name);
+		if (typeof selected !== 'boolean') {
+			throw new Error('Selected must be a boolean.');
+		}
+
+		return new Account(id, name, selected);
 	}
 
 }

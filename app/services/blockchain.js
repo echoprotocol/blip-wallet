@@ -22,14 +22,14 @@ class Blockchain {
 	 *
 	 *  Init nodes, api, store
 	 */
-	constructor() {
+	constructor(emitter) {
 		this.current = '';
 		this.network = '';
 		this.remote = null;
 		this.local = null;
 		this.api = null;
 		this.store = null;
-		this.isConnectedCb = null;
+		this.emitter = emitter;
 	}
 
 	/**
@@ -48,10 +48,9 @@ class Blockchain {
 	 *
 	 * @param network
 	 * @param store
-	 * @param isConnectedCb
 	 * @returns {Promise<void>}
 	 */
-	async init(network, store, isConnectedCb) {
+	async init(network, store) {
 
 		if (this.remote || this.local) {
 			throw new Error('Instance already initialized');
@@ -74,8 +73,7 @@ class Blockchain {
 			}
 		}
 
-		this.isConnectedCb = isConnectedCb;
-		this.isConnectedCb(this.isConnected);
+		this.emitter.emit('setIsConnected', this.isConnected);
 	}
 
 	async localConnect() {
@@ -113,6 +111,7 @@ class Blockchain {
 	async _createConnection(instance, node) {
 
 		this.current = node;
+		this.emitter.emit('setCurrentNode', node);
 
 		try {
 			await instance.connect(NETWORKS[this.network][node].url, {
@@ -135,7 +134,7 @@ class Blockchain {
 		this.api = this.local.api;
 
 		this.local.subscriber.setStatusSubscribe(DISCONNECT_STATUS, () => this._localDisconnectCb());
-		this.local.subscriber.setStatusSubscribe(CONNECT_STATUS, () => this.isConnectedCb(this.isConnected));
+		this.local.subscriber.setStatusSubscribe(CONNECT_STATUS, () => this.emitter.emit('setIsConnected', this.isConnected));
 
 		this.local.cache.setStore(store);
 	}
@@ -146,7 +145,7 @@ class Blockchain {
 		this.api = this.remote.api;
 
 		this.remote.subscriber.setStatusSubscribe(DISCONNECT_STATUS, () => this._remoteDisconnectCb());
-		this.remote.subscriber.setStatusSubscribe(CONNECT_STATUS, () => this.isConnectedCb(this.isConnected));
+		this.remote.subscriber.setStatusSubscribe(CONNECT_STATUS, () => this.emitter.emit('setIsConnected', this.isConnected));
 
 		this.remote.cache.setStore(store);
 	}
@@ -158,7 +157,7 @@ class Blockchain {
 
 		await this._createConnection(this.local, LOCAL_NODE);
 
-		this.isConnectedCb(this.isConnected);
+		this.emitter.emit('setIsConnected', this.isConnected);
 
 		this._copyCacheToLocal();
 
@@ -176,7 +175,7 @@ class Blockchain {
 
 		await this._createConnection(this.remote);
 
-		this.isConnectedCb(this.isConnected);
+		this.emitter.emit('setIsConnected', this.isConnected);
 
 		this._copyCacheToRemote();
 

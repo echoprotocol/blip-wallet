@@ -32,6 +32,16 @@ class Network {
 
 	/**
 	 *
+	 * @param {Account} accounts
+	 * @returns {Network}
+	 */
+	updateAccounts(accounts) {
+		this.accounts = accounts;
+		return this;
+	}
+
+	/**
+	 *
 	 * @param {Key} key
 	 * @returns {Network}
 	 */

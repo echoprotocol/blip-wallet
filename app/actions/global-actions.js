@@ -7,6 +7,7 @@ import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS } from '../constants/global-constants';
 import LanguageService from '../services/language';
+import Listeners from '../services/listeners';
 
 /**
  *  @method setValue
@@ -20,10 +21,9 @@ export const setValue = (field, value) => (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field, value }));
 };
 
-const setIsConnected = (status) => (dispatch) => {
-	dispatch(setValue('isConnected', status));
-};
-
+/**
+ *  @method initAccounts
+ */
 export const initAccounts = () => async (dispatch, getState) => {
 	const userStorage = Services.getUserStorage();
 
@@ -33,15 +33,24 @@ export const initAccounts = () => async (dispatch, getState) => {
 
 	accountsStore = accountsStore.withMutations((mapAccounts) => {
 		accounts.forEach((account) => {
-			mapAccounts.set(account.id, account.name);
+			mapAccounts.setIn([account.id, 'name'], account.name);
+			mapAccounts.setIn([account.id, 'selected'], account.selected);
 		});
 	});
 
 	dispatch(setValue('accounts', accountsStore));
 };
 
-
+/**
+ *  @method initApp
+ *
+ * 	Initialization application
+ *
+ * 	@param {Object} store - redux store
+ */
 export const initApp = (store) => async (dispatch) => {
+	const listeners = new Listeners();
+	listeners.initListeners(dispatch);
 
 	dispatch(setValue('loading', 'global.loading'));
 
@@ -61,7 +70,7 @@ export const initApp = (store) => async (dispatch) => {
 
 		dispatch(setValue('inited', true));
 
-		await Services.getEcho().init(networkId, { store }, (status) => dispatch(setIsConnected(status)));
+		await Services.getEcho().init(networkId, { store });
 	} catch (err) {
 		console.warn(err.message || err);
 	} finally {
@@ -118,6 +127,7 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 		const correctPassword = await userStorage.isMasterPassword(password);
 
 		if (correctPassword) {
+			await dispatch(initAccounts());
 
 			return true;
 		}
@@ -173,9 +183,7 @@ export const clearWalletData = () => async (dispatch, getState) => {
 	LanguageService.resetLanguage();
 
 	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
-	dispatch(startAnimation(pathname, false));
-	setTimeout(() => {
-		history.push(SELECT_LANGUAGE);
-	}, 200);
+	await dispatch(startAnimation(pathname, false));
+	history.push(SELECT_LANGUAGE);
 
 };

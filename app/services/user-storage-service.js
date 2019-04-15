@@ -148,6 +148,32 @@ class UserStorageService {
 
 	/**
 	 *
+	 * @param {Array} accounts
+	 * @param {Object?} params
+	 * @return {Promise.<void>}
+	 */
+	async updateAccounts(accounts, params) {
+
+		if (!(accounts.every((account) => account instanceof Account))) {
+			throw new Error('Account object is required');
+		}
+
+		this.checkNetwork();
+
+		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
+		const networkId = await this.getNetworkId();
+		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
+
+		network.updateAccounts(accounts);
+
+		await this.updateDB(decryptedData, params);
+
+		console.info(`[DB] Accounts updated. Accounts: ${JSON.stringify(accounts)}. Network: ${networkId}`);
+
+	}
+
+	/**
+	 *
 	 * @param {Object?} params
 	 * @return {Promise.<*>}
 	 */
@@ -292,7 +318,7 @@ class UserStorageService {
 			network = Network.create([], []);
 		} else {
 			const rawNetwork = decryptedData.data.networks[networkId];
-			network = Network.create(rawNetwork.accounts.map((account) => Account.create(account.id, account.name)), rawNetwork.keys.map((key) => Key.create(key.publicKey, key.wif, key.accountId)));
+			network = Network.create(rawNetwork.accounts.map((account) => Account.create(account.id, account.name, account.selected)), rawNetwork.keys.map((key) => Key.create(key.publicKey, key.wif, key.accountId)));
 		}
 
 		decryptedData.data.networks[networkId] = network;

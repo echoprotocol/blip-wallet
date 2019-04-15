@@ -237,6 +237,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.6.3",
+    "bignumber.js": "^8.1.1",
     "bs58": "^4.0.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^5.0.1",
@@ -249,6 +250,8 @@
     "history": "^4.7.2",
     "idb": "^4.0.2",
     "immutable": "^4.0.0-rc.12",
+    "is-promise": "^2.1.0",
+    "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "react": "^16.7.0",
     "react-animated-css": "1.0.4",
@@ -265,6 +268,7 @@
     "redux": "^4.0.1",
     "redux-modules": "^1.1.1",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "scrypt-js": "^2.0.4",
     "semantic-ui-react": "^0.86.0",
     "source-map-support": "^0.5.9"

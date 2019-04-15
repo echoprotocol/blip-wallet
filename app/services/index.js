@@ -1,5 +1,6 @@
 import Blockchain from './blockchain';
 import UserStorageService from './user-storage-service';
+import Emitter from './emitter';
 
 class Services {
 
@@ -7,6 +8,7 @@ class Services {
 		this.blockchain = null;
 		this.crypto = null;
 		this.userStorageService = null;
+		this.emitter = null;
 	}
 
 	getEcho() {
@@ -14,7 +16,7 @@ class Services {
 			return this.blockchain;
 		}
 
-		this.blockchain = new Blockchain();
+		this.blockchain = new Blockchain(this.getEmitter());
 
 		return this.blockchain;
 	}
@@ -32,6 +34,17 @@ class Services {
 		this.userStorageService = new UserStorageService();
 
 		return this.userStorageService;
+	}
+
+	getEmitter() {
+
+		if (this.emitter) {
+			return this.emitter;
+		}
+
+		this.emitter = new Emitter();
+
+		return this.emitter;
 	}
 
 }
