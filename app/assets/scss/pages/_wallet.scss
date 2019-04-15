@@ -44,8 +44,11 @@
 
 		&.open {
 			.page {
-				@include min-vw(1400) {
+				@include min-vw(1000) {
 					transform: translateX(-480px);
+				}
+				@include min-vw(1400) {
+					transform: translateX(-520px);
 				}
 				transform: translateX(-420px);
 			}
@@ -205,7 +208,7 @@
 				color: #5b5c63;
 
 				.percent {
-					margin-left: 5px;
+					@include source-semibold();
 					color: #33353f;
 				}
 			}
@@ -214,8 +217,11 @@
 }
 
 .wallet-settings {
-	@include min-vw(1400) {
+	@include min-vw(1000) {
 		width: 480px;
+	}
+	@include min-vw(1400) {
+		width: 520px;
 	}
 	position: absolute;
 	top: 0;
@@ -348,6 +354,56 @@
 					font-size: 1.3em;
 					letter-spacing: 0.18em;
 					text-transform: uppercase;
+				}
+			}
+
+			.archive-table {
+				margin-top: 6em;
+
+				.line {
+					align-items: center;
+					display: flex;
+
+					&:not(:last-child):not(.sub) {
+						margin-bottom: 20px;
+					}
+
+					.col {
+						&:nth-child(1) {
+							width: 100%;
+						}
+					}
+
+					.coin {
+						@include source-regular();
+						margin-right: 2em;
+						color: #fff;
+						font-size: 1.4em;
+						text-transform: uppercase;
+					}
+
+					.balance {
+						@include source-regular();
+						@include text-overflow();
+						@include min-vw(1000) {
+							max-width: 230px;
+						}
+						max-width: 180px;
+						color: #c1afee;
+						font-size: 1.4em;
+					}
+
+					.type {
+						@include source-regular();
+						padding: 0 4px 1px 4px;
+						background-color: #544389;
+						color: #ac9ada;
+						font-size: 1.3em;
+					}
+
+					& + .line {
+						margin-top: 8px;
+					}
 				}
 			}
 		}

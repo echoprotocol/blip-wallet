@@ -5,7 +5,6 @@ import { Button } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-
 // import { FormattedMessage } from 'react-intl';
 // import { CREATE_PASSWORD } from '../../constants/routes-constants';
 // import { EN_LOCALE, RU_LOCALE } from '../../constants/global-constants';
@@ -84,7 +83,7 @@ class Wallet extends React.Component {
 							<div className="line">
 								<span className="action-info">
 									<span className="action-label">Creator:</span>
-									<a href="/">homeres</a> {/*  or span (for From) */}
+									<Link to="/">homeres</Link> {/*  or span (for From) */}
 								</span>
 								<span className="action-info">
 									<span className="action-label">Creator:</span>
@@ -110,8 +109,8 @@ class Wallet extends React.Component {
 							<div className="footer-info">
 								<div className="mode">Local mode</div>
 								<div className="sync">
-									Syncing with network:
-									<span className="percent">100%</span>
+									<span className="percent">100%</span> synced with network
+
 								</div>
 							</div>
 						</div>
@@ -141,7 +140,5 @@ Wallet.propTypes = {
 export default connect(
 	(state) => ({
 		language: state.global.get('language'),
-	}),
-	() => ({
 	}),
 )(Wallet);

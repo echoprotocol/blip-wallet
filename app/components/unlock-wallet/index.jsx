@@ -30,6 +30,10 @@ class UnlockWallet extends React.Component {
 
 	}
 
+	componentDidMount() {
+		this.unlockInput.focus();
+	}
+
 	async onClickForgotPassword(e) {
 		e.preventDefault();
 
@@ -80,6 +84,7 @@ class UnlockWallet extends React.Component {
 			}, 500);
 			setTimeout(() => {
 				this.props.unlockWallet(false);
+
 			}, 1000);
 		}
 	}
@@ -142,7 +147,7 @@ class UnlockWallet extends React.Component {
 							<div className="field">
 								<Input
 									placeholder={placeholder}
-									ref={(input) => { this.nameInput = input; }}
+									ref={(input) => { this.unlockInput = input; }}
 									className="password"
 									error={!!form.get('error')}
 									loading={false}

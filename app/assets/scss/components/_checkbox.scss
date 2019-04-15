@@ -24,7 +24,7 @@
 				content: '';
 				position: absolute;
 				left: 0.2em;
-				z-index: 22;
+				z-index: 2;
 				width: 14px;
 				min-width: 14px;
 				height: 14px;
@@ -50,6 +50,7 @@
 		font-size: 1.4em;
 		line-height: 1.4;
 		cursor: pointer;
+
 		&:before {
 			@include min-vw(1400) {
 				width: 18px;
@@ -95,7 +96,7 @@
 					content: '';
 					position: absolute;
 					left: 0.2em;
-					z-index: 22;
+					z-index: 2;
 					width: 14px;
 					min-width: 14px;
 					height: 14px;

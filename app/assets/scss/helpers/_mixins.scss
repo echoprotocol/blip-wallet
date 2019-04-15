@@ -32,6 +32,12 @@
 	z-index: -1;
 }
 
+@mixin text-overflow() {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 @mixin hardware-accel() {
 	-webkit-transform: translateZ(0) scale(1, 1);
 	transform: translateZ(0);

@@ -23,13 +23,16 @@ class SideMenu extends React.Component {
 		}, 200);
 	}
 
-	lockToggle() {
+	async lock() {
+
 		this.props.startAnimation(this.props.pathname, false);
+		this.props.lock(true);
 
 		setTimeout(() => {
-			this.props.lockToggle(!this.props.locked);
 			this.props.startAnimation(UNLOCK, true);
+
 		}, 200);
+
 	}
 
 
@@ -42,6 +45,7 @@ class SideMenu extends React.Component {
 					<Animated
 						animationIn="fadeInRightBig"
 						animationOut="fadeOut"
+						animateOnMount={false}
 						isVisible={!locked}
 						className="visible"
 					>
@@ -49,7 +53,6 @@ class SideMenu extends React.Component {
 							<li className={classnames({ active: pathname === WALLET })}>
 								<Button
 									className="sidebar-nav-link"
-									onClick={() => this.lockToggle()}
 									content="My Wallet"
 								/>
 							</li>
@@ -57,28 +60,25 @@ class SideMenu extends React.Component {
 								<Button
 									className="sidebar-nav-link"
 									content="Transaction History"
-									onClick={() => this.lockToggle()}
 								/>
 							</li>
 							<li>
 								<Button
 									className="sidebar-nav-link"
 									content="Manage accounts"
-									onClick={() => this.lockToggle()}
 								/>
 							</li>
 							<li>
 								<Button
 									className="sidebar-nav-link"
 									content="Settings"
-									onClick={() => this.lockToggle()}
 								/>
 							</li>
 						</ul>
 
 						<Button
 							className="btn-transparent"
-							onClick={() => this.lockToggle()}
+							onClick={() => this.lock()}
 							content={(
 								<React.Fragment>
 									<img className="icon" src={lock} alt="" />
@@ -99,7 +99,7 @@ SideMenu.propTypes = {
 	pathname: PropTypes.string.isRequired,
 	history: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
-	lockToggle: PropTypes.func.isRequired,
+	lock: PropTypes.func.isRequired,
 	startAnimation: PropTypes.func.isRequired,
 };
 
@@ -109,7 +109,7 @@ export default withRouter(connect(
 		locked: state.global.get('locked'),
 	}),
 	(dispatch) => ({
-		lockToggle: (value) => dispatch(setValue('locked', value)),
+		lock: (value) => dispatch(setValue('locked', value)),
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
 	}),
 )(SideMenu));

@@ -2,7 +2,7 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { AUTHORIZATION, UNLOCK } from '../constants/routes-constants';
+import { AUTHORIZATION, UNLOCK, SELECT_LANGUAGE } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS } from '../constants/global-constants';
@@ -113,16 +113,11 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 		const userStorage = Services.getUserStorage();
 		const doesDBExist = await userStorage.doesDBExist();
 
-		if (!doesDBExist) {
-			return false;
-		}
+		if (!doesDBExist) { return false; }
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		const correctPassword = await userStorage.isMasterPassword(password);
 
 		if (correctPassword) {
-			setTimeout(() => {
-				dispatch(startAnimation(UNLOCK, false));
-			}, 4000);
 
 			return true;
 		}
@@ -166,8 +161,8 @@ export const setLanguage = () => (dispatch, getState) => {
  * 	clear blip wallet
  *
  */
-export const clearWalletData = () => async (dispatch) => {
-
+export const clearWalletData = () => async (dispatch, getState) => {
+	const { pathname } = getState().router.location;
 	const userStorage = Services.getUserStorage();
 	const doesDBExist = await userStorage.doesDBExist();
 
@@ -178,5 +173,9 @@ export const clearWalletData = () => async (dispatch) => {
 	LanguageService.resetLanguage();
 
 	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
+	dispatch(startAnimation(pathname, false));
+	setTimeout(() => {
+		history.push(SELECT_LANGUAGE);
+	}, 200);
 
 };

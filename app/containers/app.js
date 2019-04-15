@@ -132,7 +132,7 @@ class App extends React.Component {
 						}
 					>
 
-						{locked && LOCKED_ROUTES.includes(pathname) && PUBLIC_ROUTES.includes(pathname)
+						{locked && LOCKED_ROUTES.includes(pathname)
 							? (
 								<Unlock />
 							) : (
