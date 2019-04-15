@@ -2,16 +2,42 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 import { Animated } from 'react-animated-css';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import { startAnimation } from '../../actions/animation-actions';
-import { RESTORE_PASSWORD } from '../../constants/routes-constants';
+import { clearWalletData } from '../../actions/global-actions';
+import { RESTORE_PASSWORD, SELECT_LANGUAGE } from '../../constants/routes-constants';
+
 
 class RestorePassword extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			checked: false,
+		};
+
+		this.onChange = this.onChange.bind(this);
+		this.onClearData = this.onClearData.bind(this);
+	}
+
 	componentWillUnmount() {
 		this.props.startAnimation(RESTORE_PASSWORD, true);
+	}
+
+	onChange() {
+		this.setState((prevState) => ({
+			checked: !prevState.checked,
+		}));
+	}
+
+	async onClearData() {
+		await this.props.clearWalletData();
+		await this.props.startAnimation(RESTORE_PASSWORD, false);
+		this.props.history.push(SELECT_LANGUAGE);
 	}
 
 	render() {
@@ -35,7 +61,7 @@ class RestorePassword extends React.Component {
 							isVisible={isVisible}
 						>
 							<h1>
-							Your Password number cannot be restored
+								<FormattedMessage id="restorePassword.title" />
 							</h1>
 						</Animated>
 						<Animated
@@ -45,9 +71,7 @@ class RestorePassword extends React.Component {
 							isVisible={isVisible}
 						>
 							<p>
-								You can clear your account data from Blip and set a new password.
-								If you do, you will lose access to the accounts you&apos;ve logged into.
-								You will need to log into them again, after you have set a&nbsp;new&nbsp;password.
+								<FormattedHTMLMessage id="restorePassword.description" />
 							</p>
 						</Animated>
 
@@ -60,21 +84,21 @@ class RestorePassword extends React.Component {
 						isVisible={isVisible}
 					>
 						<div className="checkbox">
-							<input type="checkbox" id="clear-data" />
+							<input onChange={this.onChange} checked={this.state.checked} type="checkbox" id="clear-data" />
 							<label htmlFor="clear-data" className="checkbox-label">
 								<div className="label-text">
-									I understand that Blip does not store backups of my account keys,
-									and I will lose access to them by clearing my account data.
+									<FormattedMessage id="restorePassword.checkboxLabel" />
 								</div>
 							</label>
 						</div>
 						<Button
 							className="btn-white"
-							disabled
+							disabled={!this.state.checked}
 							fluid
+							onClick={this.onClearData}
 							content={(
 								<React.Fragment>
-									<div className="text">Clear Blip Data</div>
+									<div className="text"><FormattedMessage id="restorePassword.btn" /></div>
 								</React.Fragment>
 							)}
 						/>
@@ -89,6 +113,8 @@ class RestorePassword extends React.Component {
 RestorePassword.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
 	startAnimation: PropTypes.func.isRequired,
+	clearWalletData: PropTypes.func.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default connect(
@@ -97,5 +123,6 @@ export default connect(
 	}),
 	(dispatch) => ({
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		clearWalletData: () => dispatch(clearWalletData()),
 	}),
 )(RestorePassword);

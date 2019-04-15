@@ -9,7 +9,7 @@ import { Animated } from 'react-animated-css';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import { validateUnlock, setValue } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
-import { UNLOCK } from '../../constants/routes-constants';
+import { UNLOCK, RESTORE_PASSWORD } from '../../constants/routes-constants';
 import { setValue as setValueToForm } from '../../actions/form-actions';
 import { FORM_UNLOCK } from '../../constants/form-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
@@ -25,6 +25,17 @@ class UnlockWallet extends React.Component {
 			password: '',
 			valid: false,
 		};
+
+		this.onClickForgotPassword = this.onClickForgotPassword.bind(this);
+
+	}
+
+	async onClickForgotPassword(e) {
+		e.preventDefault();
+
+		await this.props.startAnimation(UNLOCK, false);
+		this.props.history.push(RESTORE_PASSWORD);
+
 	}
 
 	onTogglePrivacy() {
@@ -186,7 +197,7 @@ class UnlockWallet extends React.Component {
 					animationInDelay={150}
 					isVisible={isVisible}
 				>
-					<a className="link" href="/restore-password">{link}</a>
+					<a className="link" href={RESTORE_PASSWORD} onClick={this.onClickForgotPassword}>{link}</a>
 				</Animated>
 			</div>
 		);
@@ -202,6 +213,7 @@ UnlockWallet.propTypes = {
 	intl: intlShape.isRequired,
 	form: PropTypes.object.isRequired,
 	isVisible: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(injectIntl(connect(

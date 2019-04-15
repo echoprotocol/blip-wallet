@@ -63,7 +63,7 @@ build.package-linux:
   script:
     - npm config set unsafe-perm true
     - npm i
-    - npm run package-linux
+    - DEBUG_PROD=true npm run package-linux
   only:
     - master
     - develop
@@ -88,7 +88,7 @@ build.package-win:
   script:
     - npm config set unsafe-perm true
     - npm i
-    - npm run package-win
+    - DEBUG_PROD=true npm run package-win
   only:
     - master
     - develop
@@ -112,7 +112,7 @@ build.package-mac:
   script:
     - npm config set unsafe-perm true
     - npm i
-    - npm run package-mac
+    - DEBUG_PROD=true npm run package-mac
   only:
     - master
     - develop

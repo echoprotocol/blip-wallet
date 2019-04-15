@@ -28,7 +28,7 @@ export default class MenuBuilder {
 	}
 
 	setupDevelopmentEnvironment() {
-		this.mainWindow.openDevTools();
+
 		this.mainWindow.webContents.on('context-menu', (e, props) => {
 			const { x, y } = props;
 
@@ -45,17 +45,17 @@ export default class MenuBuilder {
 
 	buildDarwinTemplate() {
 		const subMenuAbout = {
-			label: 'Electron',
+			label: 'Blip',
 			submenu: [
 				{
-					label: 'About ElectronReact',
+					label: 'About Blip',
 					selector: 'orderFrontStandardAboutPanel:',
 				},
 				{ type: 'separator' },
 				{ label: 'Services', submenu: [] },
 				{ type: 'separator' },
 				{
-					label: 'Hide ElectronReact',
+					label: 'Hide Blip',
 					accelerator: 'Command+H',
 					selector: 'hide:',
 				},
@@ -155,20 +155,20 @@ export default class MenuBuilder {
 					label: 'Documentation',
 					click() {
 						shell.openExternal(
-							'https://github.com/atom/electron/tree/master/docs#readme',
+							'https://github.com/echoprotocol/blip-wallet',
 						);
 					},
 				},
 				{
 					label: 'Community Discussions',
 					click() {
-						shell.openExternal('https://discuss.atom.io/c/electron');
+						shell.openExternal('https://github.com/echoprotocol/blip-wallet/issues');
 					},
 				},
 				{
 					label: 'Search Issues',
 					click() {
-						shell.openExternal('https://github.com/atom/electron/issues');
+						shell.openExternal('https://github.com/echoprotocol/blip-wallet/issues');
 					},
 				},
 			],
@@ -251,20 +251,20 @@ export default class MenuBuilder {
 						label: 'Documentation',
 						click() {
 							shell.openExternal(
-								'https://github.com/atom/electron/tree/master/docs#readme',
+								'https://github.com/echoprotocol/blip-wallet',
 							);
 						},
 					},
 					{
 						label: 'Community Discussions',
 						click() {
-							shell.openExternal('https://discuss.atom.io/c/electron');
+							shell.openExternal('https://github.com/echoprotocol/blip-wallet/issues');
 						},
 					},
 					{
 						label: 'Search Issues',
 						click() {
-							shell.openExternal('https://github.com/atom/electron/issues');
+							shell.openExternal('https://github.com/echoprotocol/blip-wallet/issues');
 						},
 					},
 				],

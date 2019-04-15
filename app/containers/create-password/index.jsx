@@ -169,7 +169,6 @@ class CreatePassword extends React.Component {
 												</div>
 											)
 										}
-
 									</div>
 
 								</div>

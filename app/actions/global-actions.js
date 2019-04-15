@@ -137,6 +137,18 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 
 };
 
+export const lockApp = () => async (dispatch, getState) => {
+	const { pathname } = getState().router.location;
+
+	const userStorage = Services.getUserStorage();
+	await userStorage.resetCurrentScheme();
+	dispatch(startAnimation(pathname, false));
+	setTimeout(() => {
+		dispatch(setValue('locked', true));
+		dispatch(startAnimation(UNLOCK, true));
+	}, 200);
+};
+
 /**
  *  @method setLanguage
  *
@@ -145,6 +157,26 @@ export const validateUnlock = (form, password) => async (dispatch) => {
  */
 export const setLanguage = () => (dispatch, getState) => {
 	const language = getState().global.get('language');
+	LanguageService.setCurrentLanguage(language);
+};
 
-	localStorage.setItem('locale', language);
+/**
+ *  @method clearWalletData
+ *
+ * 	clear blip wallet
+ *
+ */
+export const clearWalletData = () => async (dispatch) => {
+
+	const userStorage = Services.getUserStorage();
+	const doesDBExist = await userStorage.doesDBExist();
+
+	if (doesDBExist) {
+		await userStorage.deleteDB();
+	}
+
+	LanguageService.resetLanguage();
+
+	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
+
 };

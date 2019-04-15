@@ -1,8 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import { IntlProvider, addLocaleData } from 'react-intl';
 import classnames from 'classnames';
+import IdleTimer from 'react-idle-timer';
+
 import { withRouter } from 'react-router';
 
 import localeEn from 'react-intl/locale-data/en';
@@ -18,13 +21,17 @@ import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Services from '../services';
 import {
-	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES,
+	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD,
 } from '../constants/routes-constants';
+import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 import LanguageService from '../services/language';
+
+import { lockApp } from '../actions/global-actions';
 
 addLocaleData([...localeEn, ...localeRu]);
 
 class App extends React.Component {
+
 
 	componentDidMount() {
 		this.checkLocation();
@@ -32,6 +39,14 @@ class App extends React.Component {
 
 	componentDidUpdate() {
 		this.checkLocation();
+	}
+
+	onIdle() {
+		const { pathname } = this.props;
+
+		if (LOCKED_ROUTES.includes(pathname)) {
+			this.props.lock();
+		}
 	}
 
 	async checkLocation() {
@@ -57,12 +72,26 @@ class App extends React.Component {
 
 		if (!routed && [CREATE_PASSWORD].includes(pathname)) {
 
+			routed = true;
+
 			const userStorage = Services.getUserStorage();
 
 			const doesDBExist = await userStorage.doesDBExist();
 
 			if (doesDBExist) {
 				this.props.history.push(AUTHORIZATION);
+			}
+
+		}
+
+		if (!routed && [RESTORE_PASSWORD].includes(pathname)) {
+
+			const userStorage = Services.getUserStorage();
+
+			const doesDBExist = await userStorage.doesDBExist();
+
+			if (!doesDBExist) {
+				this.props.history.push(CREATE_PASSWORD);
 			}
 
 		}
@@ -85,6 +114,12 @@ class App extends React.Component {
 		return (
 			<IntlProvider locale={language} messages={flatten}>
 				<React.Fragment>
+					<IdleTimer
+						element={document}
+						onIdle={() => this.onIdle()}
+						timeout={LOCK_TIMEOUT}
+						events={LOCK_TIMER_EVENTS}
+					/>
 
 					{ (PUBLIC_ROUTES.includes(pathname) || locked) && <div className="bg" />}
 
@@ -127,6 +162,7 @@ App.propTypes = {
 	loading: PropTypes.string.isRequired,
 	pathname: PropTypes.string.isRequired,
 	children: PropTypes.element.isRequired,
+	lock: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 	locked: PropTypes.bool,
 	inited: PropTypes.bool,
@@ -145,5 +181,7 @@ export default connect(
 		locked: state.global.get('locked'),
 		pathname: state.router.location.pathname,
 	}),
-	() => ({}),
+	(dispatch) => ({
+		lock: () => dispatch(lockApp()),
+	}),
 )(withRouter(App));

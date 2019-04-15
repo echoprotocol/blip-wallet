@@ -149,7 +149,6 @@ class StorageService {
 	 * @return {Promise.<void>}
 	 */
 	async deleteDB() {
-		console.log('DLERT!');
 		await this.storage.delete(ENCRYPTED_DB_NAME);
 	}
 

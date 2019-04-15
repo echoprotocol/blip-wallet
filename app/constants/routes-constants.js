@@ -7,6 +7,7 @@ export const SELECT_LANGUAGE = '/select-language';
 export const WALLET = '/wallet';
 export const UNLOCK = 'unlock';
 export const PAGE404 = '/page404';
+export const INDEX_ROUTE = '/';
 
 export const PUBLIC_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
