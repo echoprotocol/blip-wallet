@@ -54,6 +54,10 @@ class Storage {
 	 * @return {Promise.<void>}
 	 */
 	async delete(key) {
+		if (!this.getDB()) {
+			return null;
+		}
+
 		return this.getDB().delete(this.store, key);
 	}
 

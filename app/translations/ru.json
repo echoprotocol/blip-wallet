@@ -39,10 +39,10 @@
             "loading": "Аккаунт импортируется",
             "button": "Импортировать",
             "error": {
-                "Аккаунт name should start with a lowercase letter.": "Имя должно начинаться со строчной буквы",
-                "Аккаунт name should not be empty": "Имя не может быть пустым",
-                "Аккаунт name should be longer.": "Имя должно быть длиннее",
-                "Аккаунт name should be shorter.": "Имя должно быть короче",
+                "Account name should start with a lowercase letter.": "Имя должно начинаться со строчной буквы",
+                "Account name should not be empty": "Имя не может быть пустым",
+                "Account name should be longer.": "Имя должно быть длиннее",
+                "Account name should be shorter.": "Имя должно быть короче",
                 "Each account segment should start with a lowercase letter.": "Каждая часть должна начинаться со строчной буквы",
                 "Each account segment should have only lowercase letters, digits, or dashes.": "Каждая часть должна состоять из строчных букв, цифр, или тире",
                 "Each account segment should end with a lowercase letter or digit.": "Каждая часть должна заканчиваться строчной буквой или цифрой",
@@ -76,11 +76,12 @@
             "button": "Создать аккаунт",
             "loading": "Создаётся новый аккаунт",
             "error": {
-                "Аккаунт name should have only one dash in a row.": "Не больше одного тире подряд.",
-                "Аккаунт name should end with a letter or digit.": "Должно заканчиваться буквой или цифрой.",
+                "Account name should have only one dash in a row.": "Не больше одного тире подряд.",
+                "Account name should end with a letter or digit.": "Должно заканчиваться буквой или цифрой.",
+                "Account name should end with a lowercase letter or digit.": "Должно заканчиваться маленькой буквой или цифрой.",
                 "Each account segment should end with a letter or digit.": "Сегменты должны заканчиваться буквой или цифрой.",
                 "Each account segment should be longer.": "Сегменты должны быть длиннее",
-                "Аккаунт already exist": "Такой аккаунт уже есть",
+                "Account already exist": "Такой аккаунт уже есть",
                 "Connection error": "Ошибка соединения"
             }
         },
@@ -217,7 +218,7 @@
             "title": "Создать свидетеля",
             "from": "Аккаунт"
         },
-        "witness_create": {
+        "witness_update": {
             "title": "Обновить свидетеля",
             "from": "Аккаунт",
             "subject": "Свидетель"
