@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import { Sidebar, Button } from 'semantic-ui-react';
-import { setValue } from '../../actions/global-actions';
+import { lockApp } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
 import { UNLOCK, WALLET } from '../../constants/routes-constants';
 
@@ -13,7 +13,6 @@ import lock from '../../assets/images/lock.png';
 
 
 class SideMenu extends React.Component {
-
 
 	goForward(path) {
 		const { history } = this.props;
@@ -109,7 +108,7 @@ export default withRouter(connect(
 		locked: state.global.get('locked'),
 	}),
 	(dispatch) => ({
-		lock: (value) => dispatch(setValue('locked', value)),
+		lock: () => dispatch(lockApp()),
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
 	}),
 )(SideMenu));

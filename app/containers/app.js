@@ -85,7 +85,6 @@ class App extends React.Component {
 		}
 
 		if (!routed && [RESTORE_PASSWORD].includes(pathname)) {
-
 			const userStorage = Services.getUserStorage();
 
 			const doesDBExist = await userStorage.doesDBExist();
@@ -98,6 +97,7 @@ class App extends React.Component {
 
 		if (!routed && [WALLET].includes(pathname)) {
 			const { locked, accounts } = this.props;
+			console.log('accounts', accounts.toJS());
 			if (!locked && !accounts.size) {
 				this.props.history.push(AUTHORIZATION);
 			}

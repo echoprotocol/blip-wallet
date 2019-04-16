@@ -1,3 +1,4 @@
+import { Map } from 'immutable';
 import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
@@ -153,6 +154,7 @@ export const lockApp = () => async (dispatch, getState) => {
 	await dispatch(startAnimation(pathname, false));
 
 	dispatch(setValue('locked', true));
+	dispatch(setValue('accounts', new Map({})));
 	dispatch(startAnimation(UNLOCK, true));
 };
 
@@ -185,6 +187,8 @@ export const clearWalletData = () => async (dispatch, getState) => {
 	LanguageService.resetLanguage();
 
 	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
+	dispatch(setValue('locked', true));
+	dispatch(setValue('accounts', new Map({})));
 
 	await dispatch(startAnimation(pathname, false));
 	history.push(SELECT_LANGUAGE);
