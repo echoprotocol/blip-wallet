@@ -171,7 +171,7 @@ class CreateAccount extends React.Component {
 							</div>
 							<div className="line-content">
 								<div className="avatar-box">
-									<Avatar accountName={form.get('accountName').value} />
+									<Avatar accountName={isSuccess ? form.get('accountName').value : ''} />
 									<div className="avatar-desciption">
 										<FormattedMessage id="account.create.avatar.description" />
 									</div>
