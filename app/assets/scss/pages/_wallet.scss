@@ -319,14 +319,8 @@
 					padding-left: 34px;
 				}
 
-				.label-avatar {
-					width: 24px;
-					height: 24px;
-					margin-right: 14px;
-					border-radius: 50%;
-				}
-
 				.label-account-name {
+					margin-left: 14px;
 					@include source-regular();
 
 					@include min-vw(1400) {

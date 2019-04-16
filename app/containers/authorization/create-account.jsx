@@ -6,12 +6,12 @@ import classnames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 
-import avatar from '../../assets/images/default-avatar.svg';
 import { FORM_SIGN_UP } from '../../constants/form-constants';
 import { clearForm, setFormValue, toggleLoading } from '../../actions/form-actions';
 import { registerAccount, validateCreateAccount } from '../../actions/account-actions';
 import ValidateAccountHelper from '../../helpers/validate-account-helper';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
+import Avatar from '../../components/avatar';
 
 class CreateAccount extends React.Component {
 
@@ -84,14 +84,6 @@ class CreateAccount extends React.Component {
 		if (KEY_CODE_ENTER === code && this.isSuccess()) {
 			await this.onCreate();
 		}
-	}
-
-	getAvatar() {
-		if (this.isSuccess()) {
-			return avatar;// call generate avatar method
-		}
-
-		return avatar;
 	}
 
 	isSuccess() {
@@ -179,7 +171,7 @@ class CreateAccount extends React.Component {
 							</div>
 							<div className="line-content">
 								<div className="avatar-box">
-									<img src={this.getAvatar()} alt="" />
+									<Avatar accountName={form.get('accountName').value} />
 									<div className="avatar-desciption">
 										<FormattedMessage id="account.create.avatar.description" />
 									</div>

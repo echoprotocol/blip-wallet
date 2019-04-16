@@ -5,7 +5,8 @@ import { Animated } from 'react-animated-css';
 import { Button, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { FormattedMessage } from 'react-intl';
-import avatar from '../../assets/images/default-avatar.svg';
+
+import Avatar from '../../components/avatar';
 import { startAnimation } from '../../actions/animation-actions';
 import { ACCOUNT_IMPORTED, SELECT_LANGUAGE } from '../../constants/routes-constants';
 
@@ -42,7 +43,7 @@ class AccountImported extends React.Component {
 							animationInDelay={50}
 							isVisible={isVisible}
 						>
-							<img className="avatar" src={avatar} alt="" />
+							<Avatar accountName={accountName} />
 							<div className="account-info">
 								<div className="label"><FormattedMessage id="account.imported.name" /></div>
 								<div className="name">

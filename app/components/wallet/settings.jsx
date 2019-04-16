@@ -4,8 +4,7 @@ import { Button } from 'semantic-ui-react';
 import classnames from 'classnames';
 import { Animated } from 'react-animated-css';
 
-import avatar from '../../assets/images/default-avatar.svg';
-
+import Avatar from '../avatar';
 
 class Settings extends React.Component {
 
@@ -123,7 +122,7 @@ class Settings extends React.Component {
 							onChange={() => {}}
 						/>
 						<label htmlFor={index} className="checkbox-label" onClick={() => this.onSelect(index)}>
-							<img alt="" src={avatar} className="label-avatar" />
+							<Avatar accountName={account.get('name')} round />
 							<span className="label-account-name">{account.get('name')}</span>
 						</label>
 					</div>

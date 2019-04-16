@@ -8,10 +8,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { withRouter } from 'react-router';
 
-import avatar from '../../assets/images/default-avatar.svg';
 import { startAnimation } from '../../actions/animation-actions';
-
 import { ACCOUNT_CREATED, SELECT_LANGUAGE } from '../../constants/routes-constants';
+import Avatar from '../../components/avatar';
 
 class AccountCreated extends React.Component {
 
@@ -78,7 +77,7 @@ class AccountCreated extends React.Component {
 					>
 						<div className="head">
 							<div className="card-wrap">
-								<img className="avatar" src={avatar} alt="" />
+								<Avatar accountName={accountName} />
 								<div className="account-info">
 									<div className="label"><FormattedMessage id="account.created.wif.name" /></div>
 									<div className="name">{accountName}</div>

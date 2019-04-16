@@ -114,16 +114,6 @@
 		@include source-regular();
 		align-items: center;
 		display: flex;
-
-		img {
-			@include min-vw(1400) {
-				min-width: 60px;
-				height: 60px;
-			}
-			min-width: 44px;
-			height: 44px;
-			border-radius: 3px;
-		}
 	}
 
 	.avatar-desciption {

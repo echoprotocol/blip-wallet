@@ -13,17 +13,6 @@
 	justify-content: center;
 	display: flex;
 	padding: 40px;
-
-	.avatar {
-		@include min-vw(1400) {
-			min-width: 60px;
-			height: 60px;
-		}
-		min-width: 44px;
-		height: 44px;
-		margin-right: 1.8em;
-		border-radius: 3px;
-	}
 }
 
 .welcome-card {
@@ -57,6 +46,7 @@
 		}
 
 		.account-info {
+			margin-left: 1.8em;
 			.label {
 				@include source-regular();
 				color: rgba(#000, 0.5);
@@ -180,6 +170,7 @@
 			text-align: left;
 
 			.account-info {
+				margin-left: 1.8em;
 				.label {
 					@include source-regular();
 					color: #b89bf5;
