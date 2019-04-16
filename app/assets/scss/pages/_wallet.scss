@@ -106,13 +106,14 @@
 }
 
 .wallet-footer {
+	flex-direction: column;
+	justify-content: space-between;
 	position: relative;
+	display: flex;
 	padding: 2.5em;
 	background-color: #e8e8e8;
 	box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
-	display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+
 	.last-transaction {
 		position: relative;
 		padding: 1.8em;
@@ -299,6 +300,7 @@
 	}
 
 	.segment {
+		position: relative;
 		padding: 30px;
 
 		&.action {
@@ -325,12 +327,12 @@
 				}
 
 				.label-account-name {
-					margin-left: 14px;
 					@include source-regular();
 
 					@include min-vw(1400) {
 						font-size: 18px;
 					}
+					margin-left: 14px;
 					color: #fff;
 					font-size: 16px;
 					line-height: 0;
@@ -411,7 +413,7 @@
 
 .balances-list {
 	display: grid;
-	margin-top: 40px;
+	margin: 40px 0;
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 	grid-gap: 6px;
 

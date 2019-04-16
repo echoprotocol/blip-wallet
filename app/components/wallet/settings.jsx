@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import classnames from 'classnames';
 import { Animated } from 'react-animated-css';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import Avatar from '../avatar';
 
@@ -139,14 +140,14 @@ class Settings extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="segment tab accounts-filter">
+				<PerfectScrollbar className="segment tab accounts-filter">
 					<Animated
 						isVisible={!activeIndex}
 						animationIn="fadeIn"
 					>
 						<div className="info-text">
-						If you have more than one account, your accounts balances will be displayed together.
-						You can filter your balances by account:
+								If you have more than one account, your accounts balances will be displayed together.
+								You can filter your balances by account:
 						</div>
 						<div className="select-accounts">
 							<div className="title">Select accounts</div>
@@ -155,7 +156,7 @@ class Settings extends React.Component {
 							</div>
 						</div>
 					</Animated>
-				</div>
+				</PerfectScrollbar>
 				<Animated
 					isVisible={!activeIndex}
 					animationIn="fadeIn"

@@ -47,6 +47,7 @@
 
 		.account-info {
 			margin-left: 1.8em;
+
 			.label {
 				@include source-regular();
 				color: rgba(#000, 0.5);
@@ -129,6 +130,7 @@
 		color: #fff;
 		font-size: 3.5em;
 		letter-spacing: 0.035em;
+		white-space: nowrap;
 	}
 
 	p {
@@ -171,6 +173,7 @@
 
 			.account-info {
 				margin-left: 1.8em;
+
 				.label {
 					@include source-regular();
 					color: #b89bf5;
@@ -212,112 +215,4 @@
 	color: #b89bf5;
 	font-size: 1.4em;
 	letter-spacing: 0.014em;
-}
-
-.balances-list {
-	display: grid;
-	margin-top: 40px;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	grid-gap: 6px;
-
-	.line {
-		justify-content: space-between;
-		display: flex;
-	}
-
-	.balance-title {
-		@include source-regular();
-		color: #72747f;
-		font-size: 14px;
-	}
-
-	.balance-item {
-		flex-direction: column;
-		justify-content: space-between;
-		position: relative;
-		display: flex;
-		height: 110px;
-		overflow: hidden;
-		padding: 15px 10px 15px 25px;
-		border: 1px solid rgba(#9c9ea8, 0.46);
-		border-radius: 4px;
-		cursor: pointer;
-
-		.line {
-			transition: margin 0.3s;
-		}
-
-		&:hover {
-			&.hide {
-				.line {
-					margin-top: 25px;
-				}
-			}
-
-			.balance-item-header {
-				top: 0;
-			}
-
-			.balance-type {
-				background-color: #68539a;
-			}
-		}
-
-		.balance-item-header {
-			position: absolute;
-			top: -26px;
-			right: 0;
-			left: 0;
-			height: 25px;
-			background-color: rgba(#cdced3, 0.3);
-			transition: top 0.3s;
-
-			.wrap {
-				position: relative;
-				width: 100%;
-			}
-
-			.balance-item-close {
-				position: absolute;
-				right: 0;
-				width: 40px;
-				height: 25px;
-				border: 0;
-				background-color: transparent;
-				color: #8e8e97;
-				transition: background-color 0.3s, color 0.3s;
-
-				&:hover {
-					background-color: #68539a;
-
-					color: #fff;
-				}
-			}
-		}
-
-		.balance {
-			@include source-semibold();
-			align-items: baseline;
-			display: flex;
-			color: #33353f;
-
-			.integer {
-				font-size: 20px;
-			}
-
-			.fractional {
-				@include text-overflow();
-				width: 100%;
-				font-size: 16px;
-			}
-		}
-
-		.balance-type {
-			@include source-regular();
-			padding: 2px 4px;
-			background-color: #c9cacf;
-			color: #fff;
-			transition: background-color 0.3s;
-		}
-	}
 }

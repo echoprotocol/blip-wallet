@@ -50,7 +50,7 @@
 			"title": "Create new account",
 			"name": "Account name",
 			"name.placeholder": "Account name",
-			"avatar": "ECHO avatar",
+			"avatar": "Echo avatar",
 			"avatar.description": "Avatar is created automatically after account confirmation",
 			"hint1": "- must be 1-63 characters long",
 			"hint2": "- must start with latin letter",

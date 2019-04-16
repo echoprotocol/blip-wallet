@@ -23,7 +23,7 @@
 				letter-spacing: 0.019em;
 			}
 
-			margin-right: 2em;
+			margin-right: 1.6em;
 			border: 1px solid transparent;
 			border-radius: 3px;
 			background-color: transparent;
@@ -106,6 +106,18 @@
 
 	.inner {
 		width: 100%;
+	}
+
+	.hints {
+		.hint {
+			&:nth-child(3) {
+				@include min-vw(1400) {
+					letter-spacing: -0.035em;
+					white-space: nowrap;
+				}
+				letter-spacing: -0.02em;
+			}
+		}
 	}
 }
 
