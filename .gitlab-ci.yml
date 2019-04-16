@@ -82,7 +82,7 @@ build.package-win:
   image: electronuserland/builder:wine
   stage: build
   cache:
-    key: $CI_COMMIT_REF_NAME
+    key: "win_$CI_COMMIT_REF_NAME"
     paths:
       - node_modules
   script:
