@@ -1,7 +1,6 @@
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions';
 import WalletReducer from '../reducers/wallet-reducer';
-import { ECHO_ASSET_ID } from '../constants/global-constants';
 
 /**
  *  @method setValue
@@ -44,9 +43,9 @@ export const updateBalance = () => async (dispatch, getState) => {
 	let balances = getState().wallet.get('balances');
 
 	selectedAccounts.forEach((account) => {
-		if (Object.keys(account.balances).includes(ECHO_ASSET_ID)) {
-			balances = balances.set(account.balances[ECHO_ASSET_ID], ECHO_ASSET_ID);
-		}
+		Object.entries(account.balances).forEach(([assetId, balanceId]) => {
+			balances = balances.set(balanceId, assetId);
+		});
 	});
 
 	dispatch(setValue('balances', balances));

@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
+import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import LastTransaction from './last-transaction';
-import { ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 
 
 class Wallet extends React.Component {
@@ -38,16 +38,64 @@ class Wallet extends React.Component {
 		}
 	}
 
+	getAssets(balances) {
+		if (!balances.size) {
+			return null;
+		}
+
+		const uniqAssets = [];
+
+		balances.forEach((value) => {
+			const id = value.asset.get('id');
+
+			if (id !== ECHO_ASSET_ID && !uniqAssets.find((v) => v.id === id)) {
+				uniqAssets.push({
+					id,
+					precision: value.asset.get('precision'),
+					symbol: value.asset.get('symbol'),
+				});
+			}
+		});
+
+		const assets = [];
+
+		uniqAssets.forEach((asset) => {
+			const amounts = balances.reduce((arr, balance) => {
+				if (balance.asset.get('id') === asset.id) {
+					arr.push(balance.amount);
+				}
+				return arr;
+			}, []);
+
+			const amount = FormatHelper.accumulateBalances(amounts);
+
+			assets.push({
+				amount: FormatHelper.formatAmount(amount, asset.precision),
+				symbol: asset.symbol,
+			});
+		});
+
+		return this.sortAssets(assets);
+	}
+
 	getBalance(balances) {
 		if (!balances.size) {
 			return null;
 		}
 
-		const result = FormatHelper.accumulateBalances([...balances.map((a) => a.amount).values()]);
+		const amounts = [];
+
+		balances.forEach((b) => {
+			if (b.asset.get('id') === ECHO_ASSET_ID) {
+				amounts.push(b.amount);
+			}
+		});
+
+		const result = FormatHelper.accumulateBalances(amounts);
 
 		const precision = [...balances.values()][0].asset.get('precision');
 
-		return result.div(10 ** precision).toString();
+		return FormatHelper.formatAmount(result, precision);
 	}
 
 	getFraction(balance) {
@@ -60,6 +108,19 @@ class Wallet extends React.Component {
 		return '00000';
 	}
 
+	sortAssets(assets) {
+		return assets.sort((a, b) => {
+			if (!a || !b) {
+				return 0;
+			}
+
+			if (a.symbol < b.symbol) { return -1; }
+			if (a.symbol > b.symbol) { return 1; }
+
+			return 0;
+		});
+	}
+
 	updateLastTransaction() {
 		this.props.setTransaction();
 	}
@@ -69,6 +130,40 @@ class Wallet extends React.Component {
 		const { showSettings } = this.state;
 		this.setState({
 			showSettings: !showSettings,
+		});
+	}
+
+	renderAssets() {
+		const { balances } = this.props;
+
+		const assets = this.getAssets(balances);
+
+		if (!assets) {
+			return null;
+		}
+
+		return assets.map((asset, index) => {
+			const key = index;
+
+			return (
+				<div className="balance-item" key={key}> {/* add class hide */}
+					{/* <div className="balance-item-header">
+											<div className="wrap">
+												<Button className="balance-item-close" content={
+													<Icon className="icon-close-big" />
+												} />
+											</div>
+										</div> */}
+					<div className="line">
+						<div className="balance-title">{asset.symbol}</div>
+						<div className="balance-type">asset</div>
+					</div>
+					<div className="balance">
+						<span className="integer">{asset.amount ? `${asset.amount.split('.')[0]}.` : '0.'}</span>
+						<span className="fractional">{this.getFraction(asset.amount)}</span>
+					</div>
+				</div>
+			);
 		});
 	}
 
@@ -111,23 +206,7 @@ class Wallet extends React.Component {
 									</div>
 								</div>
 								<div className="balances-list">
-									<div className="balance-item"> {/* add class hide */}
-										{/* <div className="balance-item-header">
-											<div className="wrap">
-												<Button className="balance-item-close" content={
-													<Icon className="icon-close-big" />
-												} />
-											</div>
-										</div> */}
-										<div className="line">
-											<div className="balance-title">T-ECHO20</div>
-											<div className="balance-type">erc20 token</div>
-										</div>
-										<div className="balance">
-											<span className="integer">2 34234234.</span>
-											<span className="fractional">234091422129423409142212942340914221294</span>
-										</div>
-									</div>
+									{this.renderAssets()}
 								</div>
 							</div>
 						</div>
