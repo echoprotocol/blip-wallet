@@ -31,6 +31,7 @@ class Wallet extends React.Component {
 
 		if (!histories.equals(prevProps.histories)) {
 			this.updateLastTransaction();
+			updBalance();
 		}
 
 		if (!accounts.equals(prevAccounts)) {

@@ -19,6 +19,10 @@ export const set = (field, value) => (dispatch) => {
 };
 
 export const formatTransaction = async (transaction, accountId = undefined) => {
+	if (!transaction) {
+		return new Map({});
+	}
+
 	const [type, operation] = transaction.get('op');
 	// const [, result] = transaction.get('result');
 	const block = await Services.getEcho().api.getBlock(transaction.get('block_num'));
@@ -123,7 +127,6 @@ export const setLastTransaction = () => async (dispatch, getState) => {
 	const transaction = await formatTransaction(
 		account.getIn(['history', '0']),
 		account.get('id'),
-		account.get('name'),
 	);
 
 	dispatch(set('transaction', transaction));
