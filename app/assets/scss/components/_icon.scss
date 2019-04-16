@@ -23,6 +23,10 @@ i.icon {
 	font-size: 14px;
 }
 
+.icon-close-big:before {
+	content: '\e903';
+}
+
 .arrow-left {
 	transform: rotate(180deg);
 

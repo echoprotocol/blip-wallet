@@ -129,9 +129,9 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 		const correctPassword = await userStorage.isMasterPassword(password);
 
 		if (correctPassword) {
+
 			await dispatch(initAccounts());
 
-			dispatch(initAccounts());
 			return true;
 		}
 		dispatch(setValueToForm(form, 'error', 'Please, enter correct password'));
@@ -185,6 +185,7 @@ export const clearWalletData = () => async (dispatch, getState) => {
 	LanguageService.resetLanguage();
 
 	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
+
 	await dispatch(startAnimation(pathname, false));
 	history.push(SELECT_LANGUAGE);
 

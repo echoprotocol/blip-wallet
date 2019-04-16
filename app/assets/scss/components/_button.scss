@@ -136,7 +136,7 @@
 	@include min-vw(1400) {
 		height: 56px;
 	}
-	@include onBtnFocus(4px, 2px, 2px, rgba(#7158ad, 0.45));
+	@include onBtnFocus(4px, 2px, 2px, rgba(#472e8a, 0.3));
 
 	@include btn();
 
@@ -149,13 +149,13 @@
 	transition: color 0.3s, border 0.3s, background-color 0.3s, width 0.3s;
 
 	&:hover {
-		border: 1px solid #574589;
-		background-color: #574589;
+		border: 1px solid #7d64bc;
+		background-color: #7d64bc;
 	}
 
 	&:active {
-		border: 1px solid rgba(#7158ad, 0.7);
-		background-color: rgba(#7158ad, 0.7);
+		border: 1px solid rgba(#6a52a4, 1);
+		background-color: rgba(#6a52a4, 1);
 	}
 
 	&.disabled {
@@ -177,26 +177,31 @@
 	@include min-vw(1400) {
 		height: 56px;
 	}
-	@include onBtnFocus(4px, 2px, 2px, rgba(#d5d5d5, 0.45));
+	@include onBtnFocus(4px, 3px, 1px, rgba(#cbcbcb, 0.3));
 
 	@include btn();
 
 	height: 38px;
-	border: 1px solid #d5d5d5;
+	border: 1px solid #dedede;
 	border-radius: 4px;
-	background-color: #d5d5d5;
+	background-color: #dedede;
 	color: #33353f;
 	font-size: 1.5em;
 	transition: color 0.3s, border 0.3s, background-color 0.3s, width 0.3s;
 
 	&:hover {
-		border: 1px solid #d5d5d5;
-		background-color: #d5d5d5;
+		border: 1px solid #d4d4d4;
+		background-color: #d4d4d4;
+	}
+
+	&:focus {
+		border: 1px solid #bfbfbf;
 	}
 
 	&:active {
-		border: 1px solid rgba(#d5d5d5, 0.7);
-		background-color: rgba(#d5d5d5, 0.7);
+		border: 1px solid rgba(#cbcbcb, 1);
+		background-color: rgba(#cbcbcb, 1);
+		color: rgba(#33353f, 0.5);
 	}
 
 	&.disabled {

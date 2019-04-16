@@ -55,6 +55,7 @@ export default connect(
 		transaction: state.wallet.get('transaction'),
 		histories: historySelector(state),
 	}),
+
 	(dispatch) => ({
 		updateBalance: () => dispatch(updateBalance()),
 		setTransaction: () => dispatch(setLastTransaction()),

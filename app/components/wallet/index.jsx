@@ -110,6 +110,25 @@ class Wallet extends React.Component {
 										<Link to="/" className="claim-link">Claim balance</Link>
 									</div>
 								</div>
+								<div className="balances-list">
+									<div className="balance-item"> {/* add class hide */}
+										{/* <div className="balance-item-header">
+											<div className="wrap">
+												<Button className="balance-item-close" content={
+													<Icon className="icon-close-big" />
+												} />
+											</div>
+										</div> */}
+										<div className="line">
+											<div className="balance-title">T-ECHO20</div>
+											<div className="balance-type">erc20 token</div>
+										</div>
+										<div className="balance">
+											<span className="integer">2 34234234.</span>
+											<span className="fractional">234091422129423409142212942340914221294</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</PerfectScrollbar>
