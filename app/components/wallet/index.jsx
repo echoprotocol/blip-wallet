@@ -5,6 +5,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
@@ -189,7 +190,7 @@ class Wallet extends React.Component {
 				<div className="wallet page">
 					<PerfectScrollbar className="page-scroll">
 						<div className="wallet-wrap">
-							<div className="title">My balance</div>
+							<div className="title"><FormattedMessage id="wallet.balance" /></div>
 							<div className="wallet-container">
 								<div className="balance-info">
 									<div className="balance">
@@ -220,18 +221,18 @@ class Wallet extends React.Component {
 								<Button
 									className="btn-main"
 									content={
-										<span className="text">Send</span>
+										<span className="text"><FormattedMessage id="wallet.send" /></span>
 									}
 								/>
 								<Button
 									className="btn-gray"
 									content={
-										<span className="text">Receive</span>
+										<span className="text"><FormattedMessage id="wallet.receive" /></span>
 									}
 								/>
 							</div>
 							<div className="footer-info">
-								<div className="mode">{`${FormatHelper.capitalizeFirstLetter(currentNode)} node`}</div>
+								<div className="mode"><FormattedMessage id={`wallet.${FormatHelper.capitalizeFirstLetter(currentNode)} node`} /></div>
 								{/* <div className="sync"> */}
 								{/*	Syncing with network: */}
 								{/*	<span className="percent">100%</span> */}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import classnames from 'classnames';
 import { Animated } from 'react-animated-css';
+import { FormattedMessage } from 'react-intl';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import Avatar from '../avatar';
@@ -78,7 +79,7 @@ class Settings extends React.Component {
 			)
 		}
 		onClick={(e) => this.setActiveTab(e, 0)}
-	> Filter by accounts
+	> <FormattedMessage id="wallet.filtert" />
 	</Button>,
 			},
 			{
@@ -93,7 +94,7 @@ class Settings extends React.Component {
 			)
 		}
 		onClick={(e) => this.setActiveTab(e, 1)}
-	>Archived assets
+	><FormattedMessage id="wallet.archivedt" />
 	</Button>,
 			},
 		];
@@ -146,11 +147,10 @@ class Settings extends React.Component {
 						animationIn="fadeIn"
 					>
 						<div className="info-text">
-								If you have more than one account, your accounts balances will be displayed together.
-								You can filter your balances by account:
+							<FormattedMessage id="wallet.filter" />
 						</div>
 						<div className="select-accounts">
-							<div className="title">Select accounts</div>
+							<div className="title"><FormattedMessage id="wallet.select" /></div>
 							<div className="accounts-list">
 								{this.renderAccounts()}
 							</div>
@@ -167,7 +167,7 @@ class Settings extends React.Component {
 						disabled={!open}
 						onClick={(e) => this.onSave(e)}
 						content={
-							<span className="text">Save changes</span>
+							<span className="text"><FormattedMessage id="wallet.save" /></span>
 						}
 					/>
 				</Animated>
@@ -186,9 +186,7 @@ class Settings extends React.Component {
 					className="segment tab archive-assets"
 				>
 					<div className="info-text">
-					You can hide/show assets if you are bored watching them.
-					Echo is a proto-asset (Alpha and Omega. The beggining and the end).
-					You can’t hide it. Haha
+						<FormattedMessage id="wallet.archived" />
 					</div>
 					<div className="archive-table">
 						<div className="line">

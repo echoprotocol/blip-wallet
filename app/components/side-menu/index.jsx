@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import { Sidebar, Button } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
 import { UNLOCK, WALLET } from '../../constants/routes-constants';
@@ -50,28 +51,52 @@ class SideMenu extends React.Component {
 					>
 						<ul className="sidebar-nav">
 							<li className={classnames({ active: pathname === WALLET })}>
-								<Button
-									className="sidebar-nav-link"
-									content="My Wallet"
-								/>
+								<FormattedMessage id="wallet.menu.mywallet">
+									{
+										(content) => (
+											<Button
+												className="sidebar-nav-link"
+												content={content}
+											/>
+										)
+									}
+								</FormattedMessage>
 							</li>
 							<li>
-								<Button
-									className="sidebar-nav-link"
-									content="Transaction History"
-								/>
+								<FormattedMessage id="wallet.menu.history">
+									{
+										(content) => (
+											<Button
+												className="sidebar-nav-link"
+												content={content}
+											/>
+										)
+									}
+								</FormattedMessage>
 							</li>
 							<li>
-								<Button
-									className="sidebar-nav-link"
-									content="Manage accounts"
-								/>
+								<FormattedMessage id="wallet.menu.manage">
+									{
+										(content) => (
+											<Button
+												className="sidebar-nav-link"
+												content={content}
+											/>
+										)
+									}
+								</FormattedMessage>
 							</li>
 							<li>
-								<Button
-									className="sidebar-nav-link"
-									content="Settings"
-								/>
+								<FormattedMessage id="wallet.menu.settings">
+									{
+										(content) => (
+											<Button
+												className="sidebar-nav-link"
+												content={content}
+											/>
+										)
+									}
+								</FormattedMessage>
 							</li>
 						</ul>
 
@@ -81,7 +106,7 @@ class SideMenu extends React.Component {
 							content={(
 								<React.Fragment>
 									<img className="icon" src={lock} alt="" />
-									Lock application
+									<FormattedMessage id="wallet.menu.lock" />
 								</React.Fragment>
 							)}
 						/>
