@@ -39,6 +39,10 @@ class LastTransaction extends React.Component {
 
 		const title = intl.formatMessage({ id: 'wallet.transaction.title' });
 
+		if (!transaction.size) {
+			return null;
+		}
+
 		return (
 			<div className="last-transaction">
 				<div className="label">{title}</div>

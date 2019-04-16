@@ -97,7 +97,7 @@ class App extends React.Component {
 
 		if (!routed && [WALLET].includes(pathname)) {
 			const { locked, accounts } = this.props;
-			console.log('accounts', accounts.toJS());
+
 			if (!locked && !accounts.size) {
 				this.props.history.push(AUTHORIZATION);
 			}

@@ -107,11 +107,12 @@
 
 .wallet-footer {
 	position: relative;
-	min-height: 210px;
 	padding: 2.5em;
 	background-color: #e8e8e8;
 	box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
-
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 	.last-transaction {
 		position: relative;
 		padding: 1.8em;
@@ -178,13 +179,17 @@
 				}
 			}
 		}
+
+		& + .footer-actions {
+			margin-top: 1.5em;
+		}
 	}
 
 	.footer-actions {
 		align-items: center;
 		justify-content: space-between;
 		display: flex;
-		margin-top: 1.5em;
+		margin-top: auto;
 
 		.btn-wrap {
 			button {
