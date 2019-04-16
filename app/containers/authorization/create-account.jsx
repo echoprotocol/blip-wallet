@@ -22,6 +22,7 @@ class CreateAccount extends React.Component {
 			hint1: '',
 			hint2: '',
 			hint3: '',
+			hint4: '',
 			timeout: null,
 		};
 	}
@@ -96,10 +97,10 @@ class CreateAccount extends React.Component {
 	isSuccess() {
 		const { form } = this.props;
 		const {
-			hint1, hint2, hint3,
+			hint1, hint2, hint3, hint4,
 		} = this.state;
 
-		return [hint1, hint2, hint3].every((hint) => hint === 'active')
+		return [hint1, hint2, hint3, hint4].every((hint) => hint === 'active')
 			&& !form.get('accountName').error
 			&& !form.get('loading');
 	}
@@ -109,7 +110,7 @@ class CreateAccount extends React.Component {
 			error, isVisible, form, intl,
 		} = this.props;
 		const {
-			hint1, hint2, hint3,
+			hint1, hint2, hint3, hint4,
 		} = this.state;
 
 		const isSuccess = this.isSuccess();
@@ -158,6 +159,7 @@ class CreateAccount extends React.Component {
 										<div className={`hint ${hint1}`}><FormattedMessage id="account.create.hint1" /></div>
 										<div className={`hint ${hint2}`}><FormattedMessage id="account.create.hint2" /></div>
 										<div className={`hint ${hint3}`}><FormattedMessage id="account.create.hint3" /></div>
+										<div className={`hint ${hint4}`}><FormattedMessage id="account.create.hint4" /></div>
 									</div>
 								</div>
 

@@ -55,6 +55,7 @@
 			"hint1": "- must be 1-63 characters long",
 			"hint2": "- must start with latin letter",
 			"hint3": "- may contain only lowercase letters, digits and hyphen",
+			"hint4": "- account name should end with a lowercase letter or digit",
 			"button": "Create account",
 			"loading": "New account is now creating",
 			"error": {

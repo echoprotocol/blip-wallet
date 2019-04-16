@@ -44,6 +44,7 @@ class ValidateAccountHelper {
 				hint1: '',
 				hint2: '',
 				hint3: '',
+				hint4: '',
 			};
 		}
 
@@ -57,6 +58,12 @@ class ValidateAccountHelper {
 			hints.hint3 = '';
 		} else {
 			hints.hint3 = 'active';
+		}
+
+		if (!/[a-z0-9]$/.test(accountName)) {
+			hints.hint4 = '';
+		} else {
+			hints.hint4 = 'active';
 		}
 
 		return hints;
