@@ -115,9 +115,9 @@ export const setLastTransaction = () => async (dispatch, getState) => {
 	accounts = accounts.map((name, id) => getState().echoCache.getIn(['fullAccounts', id]));
 
 	const account = accounts.sort((a, b) => {
-		a = Number(a.getIn(['history', '0', 'id']).slice(OPERATION_ID_PREFIX.length));
-		b = Number(b.getIn(['history', '0', 'id']).slice(OPERATION_ID_PREFIX.length));
-		return a < b ? 1 : -1;
+		a = (a.getIn(['history', '0', 'id']) || OPERATION_ID_PREFIX).slice(OPERATION_ID_PREFIX.length);
+		b = (b.getIn(['history', '0', 'id']) || OPERATION_ID_PREFIX).slice(OPERATION_ID_PREFIX.length);
+		return Number(a) < Number(b) ? 1 : -1;
 	}).first();
 
 	const transaction = await formatTransaction(
