@@ -23,6 +23,7 @@ build.develop:
       - node_modules
   script:
     - npm config set unsafe-perm true
+    - rm -rf node_modules/node-sass
     - npm i
     - npm run build-web
     - rm -rf /home/frontend
@@ -42,6 +43,7 @@ build.master:
       - node_modules
   script:
     - npm config set unsafe-perm true
+    - rm -rf node_modules/node-sass
     - npm i
     - npm run build-web
     - rm -rf /home/frontend
@@ -62,6 +64,7 @@ build.package-linux:
       - node_modules
   script:
     - npm config set unsafe-perm true
+    - rm -rf node_modules/node-sass
     - npm i
     - DEBUG_PROD=true npm run package-linux
   only:
@@ -87,6 +90,7 @@ build.package-win:
       - node_modules
   script:
     - npm config set unsafe-perm true
+    - rm -rf node_modules/node-sass
     - npm i
     - DEBUG_PROD=true npm run package-win
   only:
@@ -111,6 +115,7 @@ build.package-mac:
       - node_modules
   script:
     - npm config set unsafe-perm true
+    - rm -rf node_modules/node-sass
     - npm i
     - DEBUG_PROD=true npm run package-mac
   only:
