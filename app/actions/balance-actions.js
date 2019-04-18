@@ -1,3 +1,5 @@
+import { Map } from 'immutable';
+
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions';
 import WalletReducer from '../reducers/wallet-reducer';
@@ -22,6 +24,17 @@ export const reset = () => (dispatch) => {
 };
 
 /**
+ *  @method clear
+ *
+ *  Set default value by field
+ *
+ *  @param {String} field
+ */
+export const clear = (field) => (dispatch) => {
+	dispatch(WalletReducer.actions.clear({ field }));
+};
+
+/**
  *  @method updateBalance
  *
  * 	Update asset ids and balance ids for all accounts
@@ -38,9 +51,9 @@ export const updateBalance = () => async (dispatch, getState) => {
 
 	await Services.getEcho().api.getObjects(objectIds);
 
-	dispatch(reset());
+	dispatch(clear('balances'));
 
-	let balances = getState().wallet.get('balances');
+	let balances = new Map({});
 
 	selectedAccounts.forEach((account) => {
 		Object.entries(account.balances).forEach(([assetId, balanceId]) => {

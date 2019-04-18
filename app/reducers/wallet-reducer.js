@@ -27,6 +27,13 @@ export default createModule({
 				return state;
 			},
 		},
+		clear: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.field, DEFAULT_FIELDS.get(payload.field));
+
+				return state;
+			},
+		},
 		reset: {
 			reducer: (state) => {
 				state = DEFAULT_FIELDS;
