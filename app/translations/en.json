@@ -10,7 +10,7 @@
 		"passwordLabel": "Enter Password",
 		"repeatLabel": "Repeat Password",
 		"createPassword": "Create Password",
-		"repeatError": "Repeat password correctly",
+		"repeatError": "Password does not match",
 		"title": "Create Password",
 		"hint1":"English alphabet from 8 to 32 characters",
 		"hint2":"One uppercase letter",
