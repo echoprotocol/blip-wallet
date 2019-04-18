@@ -78,7 +78,7 @@
 				"name": "Account name",
 				"hint1": "Save your WIF key.",
 				"hint2": "You will need it in case of restoring",
-				"hint3": "or exporting this account.",
+				"hint3": "or importing this account.",
 				"button": "Copy WIF to clipboard",
 				"copied": "WIF is copied to clipboard"
 			},
