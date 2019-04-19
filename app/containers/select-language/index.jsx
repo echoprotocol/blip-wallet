@@ -62,7 +62,7 @@ class SelectLanguage extends React.Component {
 					<h3><FormattedMessage id="language.title" /></h3>
 
 					<Dropdown
-						className="dropdown-lang"
+						className="dropdown-lang pink"
 						onSelect={(key) => this.onSelect(key)}
 					>
 						<div className="dropdown-label">

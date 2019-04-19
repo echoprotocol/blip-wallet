@@ -91,10 +91,13 @@ class ImportAccount extends React.Component {
 							animationOut="fadeOutLeft"
 							isVisible={isVisible}
 						>
-							<div className="line-label"><FormattedMessage id="account.import.name" /></div>
+							<div className="line-label">
+								<span className="line-label-text"><FormattedMessage id="account.import.name" /></span>
+							</div>
 							<div className="line-content">
 								<div className="field">
 									<Input
+										className="pink"
 										placeholder={placeholderName}
 										ref={(input) => { this.nameInput = input; }}
 										error={!!signInForm.get('accountNameError')}
@@ -127,11 +130,13 @@ class ImportAccount extends React.Component {
 							animationInDelay={50}
 							isVisible={isVisible}
 						>
-							<div className="line-label"><FormattedMessage id="account.import.wif" /></div>
+							<div className="line-label">
+								<span className="line-label-text"><FormattedMessage id="account.import.wif" /></span>
+							</div>
 							<div className="line-content">
 								<div className="field">
 									<Input
-										className="password"
+										className="password pink"
 										placeholder={placeholderWIF}
 										error={!!signInForm.get('wifError')}
 										loading={false}

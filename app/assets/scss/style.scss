@@ -21,10 +21,13 @@
 @import 'components/form';
 @import 'components/dropdown';
 @import 'components/checkbox';
+@import 'components/input-dropdown';
 
+@import 'pages/page';
 @import 'pages/auth';
 @import 'pages/welcome';
 @import 'pages/select-lang';
 @import 'pages/restore-password';
 @import 'pages/unlock-wallet';
 @import 'pages/wallet';
+@import 'pages/send';

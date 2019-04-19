@@ -114,6 +114,7 @@ class CreateAccount extends React.Component {
 			<div className="form-wrap">
 				<div className="form-content">
 					<div className="lines">
+
 						<Animated
 							className="line"
 							animationIn="fadeInRight"
@@ -121,12 +122,12 @@ class CreateAccount extends React.Component {
 							isVisible={isVisible}
 						>
 							<div className="line-label">
-								<FormattedMessage id="account.create.name" />
+								<span className="line-label-text"><FormattedMessage id="account.create.name" /></span>
 							</div>
 							<div className="line-content">
 								<div className="field">
 									<Input
-										className={classnames({ success: isSuccess })}
+										className={classnames('pink', { success: isSuccess })}
 										placeholder={placeholder}
 										ref={(input) => { this.nameInput = input; }}
 										error={error}
@@ -167,7 +168,7 @@ class CreateAccount extends React.Component {
 						>
 
 							<div className="line-label">
-								<FormattedMessage id="account.create.avatar" />
+								<span className="line-label-text"><FormattedMessage id="account.create.avatar" /></span>
 							</div>
 							<div className="line-content">
 								<div className="avatar-box">

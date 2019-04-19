@@ -15,7 +15,11 @@
 		padding: 0 50px 0 30px;
 
 		&.left {
-			padding: 0 2em 0 4em;
+			padding: 0 2em 0 3.3em;
+		}
+
+		&.right {
+			padding: 0 3.3em 0 2em;
 		}
 	}
 
@@ -126,6 +130,14 @@
 			visibility: hidden;
 			opacity: 0;
 			transition: none;
+		}
+	}
+
+	&.white {
+		&.disabled {
+			border: 1px solid #e8e8ea;
+			background-color: #e8e8ea;
+			color: rgba(#3f4a52, 0.4);
 		}
 	}
 }

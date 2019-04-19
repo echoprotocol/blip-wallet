@@ -42,7 +42,6 @@ export const LOCAL_NODE = 'local';
 export const RANDOM_SIZE = 2048;
 export const ECHORANDKEY_SIZE = 47;
 
-export const KEY_CODE_ENTER = 13;
 export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
 
@@ -67,3 +66,9 @@ export const LOCK_TIMER_EVENTS = [
 	'MSPointerDown',
 	'MSPointerMove',
 ];
+
+export const KEY_CODE_ENTER = 13;
+export const KEY_CODE_SPACE = 32;
+export const KEY_CODE_TAB = 9;
+export const KEY_CODE_ARROW_UP = 38;
+export const KEY_CODE_ARROW_DOWN = 40;

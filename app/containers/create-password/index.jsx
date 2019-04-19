@@ -139,7 +139,9 @@ class CreatePassword extends React.Component {
 						>
 							<div className="line">
 								<div className="line-label">
-									<FormattedMessage id="createPassword.passwordLabel" />
+									<span className="line-label-text">
+										<FormattedMessage id="createPassword.passwordLabel" />
+									</span>
 								</div>
 								<div className="line-content">
 									<div className="field">
@@ -151,7 +153,7 @@ class CreatePassword extends React.Component {
 													name="password"
 													error={!!error}
 													value={password}
-													className="password"
+													className="password pink"
 													onKeyDown={(e) => this.onKeyDown(e)}
 													disabled={loading}
 													type={showPas ? 'text' : 'password'}
@@ -176,7 +178,9 @@ class CreatePassword extends React.Component {
 							</div>
 							<div className="line">
 								<div className="line-label">
-									<FormattedMessage id="createPassword.repeatLabel" />
+									<span className="line-label-text">
+										<FormattedMessage id="createPassword.repeatLabel" />
+									</span>
 								</div>
 								<div className="line-content">
 									<div className="field">
@@ -187,7 +191,7 @@ class CreatePassword extends React.Component {
 													error={!!repeatError}
 													name="repeatPassword"
 													value={repeatPassword}
-													className="password"
+													className="password pink"
 													disabled={loading}
 													onKeyDown={(e) => this.onKeyDown(e)}
 													type={showRepeatPas ? 'text' : 'password'}

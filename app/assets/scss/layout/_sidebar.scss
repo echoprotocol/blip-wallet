@@ -10,6 +10,12 @@
 	transition: opacity 0.3s, transform 0.3s ease;
 	transition-delay: 0.2s;
 
+	.btn-return {
+		position: absolute;
+		top: 2.4em;
+		left: calc(27px + 0.5vw);
+	}
+
 	&-wrap {
 		@include min-vw(1400) {
 			width: 300px;
@@ -20,6 +26,8 @@
 		width: 255px;
 		height: 100%;
 		overflow: hidden;
+
+
 	}
 
 	&.right {

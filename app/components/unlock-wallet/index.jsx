@@ -151,7 +151,7 @@ class UnlockWallet extends React.Component {
 								<Input
 									placeholder={placeholder}
 									ref={(input) => { this.unlockInput = input; }}
-									className="password"
+									className="password pink"
 									error={!!form.get('error')}
 									loading={false}
 									type={showPas ? 'text' : 'password'}

@@ -4,9 +4,6 @@
 	display: flex;
 
 	.form-content {
-		@include min-vw(1400) {
-			margin-right: 105px;
-		}
 		flex-direction: column;
 		justify-content: center;
 		position: relative;
@@ -43,9 +40,9 @@
 		&-label {
 			@include source-regular();
 			@include min-vw(1400) {
-				min-width: 112px;
 				line-height: 60px;
 			}
+			position: relative;
 			margin-right: 1.9em;
 			color: #fff;
 			font-size: 1.6em;
@@ -53,6 +50,11 @@
 			line-height: 44px;
 			text-align: right;
 			white-space: nowrap;
+
+			&-text {
+				position: absolute;
+				right: 0;
+			}
 		}
 
 		&-content {

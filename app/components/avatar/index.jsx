@@ -23,6 +23,7 @@ class Avatar extends React.Component {
 		this.updateAvatarSize();
 		this.updateAccountName();
 		window.addEventListener('resize', this.listener);
+		window.addEventListener('load', this.listener);
 	}
 
 

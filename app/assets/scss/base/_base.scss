@@ -35,6 +35,15 @@ a {
 	-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
+ul {
+	margin: 0;
+	padding: 0;
+
+	li {
+		list-style-type: none;
+	}
+}
+
 .avatar-image {
 	@include min-vw(1400) {
 		min-width: 60px;

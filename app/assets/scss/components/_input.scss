@@ -9,20 +9,11 @@
 	}
 	height: 44px;
 	padding: 0 14px;
-	border: 1px solid #bfaaeb;
 	border-radius: 3px;
-	background-color: #bfaaeb;
 	font-size: 16px;
 	transition: background-color $speed ease, color $speed, border $speed ease;
 
-	&:hover {
-		border: 1px solid #cdbaf5;
-		background-color: #cdbaf5;
-	}
-
 	&:focus {
-		border: 1px solid #fff;
-		background-color: #fff;
 		outline: none;
 	}
 }
@@ -36,15 +27,13 @@
 	position: relative;
 	display: flex;
 
-	input {
+	& > input {
 		@include input();
 		@include source-semibold();
 		@include hardware-accel();
-		color: #33353f;
 		letter-spacing: 0.017em;
 
 		&::placeholder {
-			color: #624d9a;
 			line-height: 44px;
 		}
 	}
@@ -99,28 +88,118 @@
 	}
 }
 
-.hints {
-	@include source-regular();
-	@include max-vh(900) {
-		margin-top: 0.8em;
-		font-size: 1.3em;
-	}
-	margin-top: 1.2em;
-	color: #b89bf5;
-	font-size: 1.4em;
-	letter-spacing: 0;
-	line-height: 1.4em;
+// &.pink
+.input.pink {
+	input {
+		border: 1px solid #bfaaeb;
+		background-color: #bfaaeb;
+		color: #33353f;
 
-	.hint {
-		transition: color $speed ease;
+		&::placeholder {
+			color: #624d9a;
+
+		}
+
+		&:hover {
+			border: 1px solid #cdbaf5;
+			background-color: #cdbaf5;
+		}
+
+		&:focus {
+			border: 1px solid #fff;
+			background-color: #fff;
+		}
 	}
 
-	.active {
+	&.error {
+		input,
+		input:hover,
+		input:focus {
+			border-color: #ff5484;
+		}
+	}
+
+	& + .error-message {
+		background-color: #4e4275;
+		color: #ff5b5b;
+	}
+
+	& + .hints,
+	& +  .error-message + .hints {
+		color: #b89bf5;
+
+		.active {
+			color: #fff;
+		}
+
+		.error {
+			color: #e94436;
+		}
+	}
+}
+// &.white
+.input.white {
+	input {
+		border: 1px solid #a8abb7;
+		background-color: transparent;
+		color: #3f4a52;
+
+		&::placeholder {
+			color: rgba(#3f4a52, 0.5);
+		}
+
+		&:hover {
+			border: 1px solid rgba(#919298, 0.91);
+			background-color: #fff;
+		}
+
+		&:focus {
+			border: 1px solid #737d83;
+			background-color: #fff;
+		}
+	}
+
+	&.error {
+		input,
+		input:hover,
+		input:focus {
+			border-color: rgba(#e94436, 0.9);
+		}
+	}
+
+	& + .error-message {
+		background-color: rgba(#e94436, 0.9);
 		color: #fff;
 	}
 
-	.error {
-		color: #e94436;
+	& + .hints,
+	& +  .error-message + .hints {
+		color: #5b5c63;
+
+		.active {
+			color: #3f4a52;
+		}
+
+		.error {
+			color: #e94436;
+		}
+	}
+}
+
+.hints {
+	@include source-regular();
+
+	@include min-vw(1400) {
+		font-size: 16px;
+		line-height: 22px;
+	}
+	margin-top: 0.8em;
+	font-size: 14px;
+	letter-spacing: 0;
+	line-height: 20px;
+
+	.hint {
+		transition: color $speed ease;
 	}
 }
 
@@ -151,15 +230,6 @@ form {
 	}
 }
 
-// State error
-
-.error {
-	input,
-	input:hover,
-	input:focus {
-		border-color: #ff5484;
-	}
-}
 
 .error-message {
 	@include source-regular();
@@ -169,8 +239,6 @@ form {
 	margin: 3px 5px 0 0;
 	padding: 5px 10px;
 	border-radius: 3px;
-	background-color: #4e4275;
-	color: #ff5b5b;
 	font-size: 13px;
 }
 

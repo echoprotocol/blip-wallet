@@ -1,0 +1,47 @@
+.page-in-scroll {
+	position: relative;
+	height: 100vh;
+}
+
+.page-in-wrap {
+	@include min-vw(1400) {
+		padding: 40px 50px;
+	}
+
+	padding: 40px 35px;
+
+	.title{
+		@include source-semibold();
+		height: 30px;
+		color: #33353f;
+		font-size: 1.3em;
+		letter-spacing: 0.2em;
+		line-height: 30px;
+	}
+
+	.form-wrap {
+		flex-direction: column;
+		justify-content: center;
+		display: flex;
+		margin: 4em 0 2em;
+		padding: 65px 0;
+		background-color: #e8e8ea;
+
+		.line-label {
+			@include source-semibold();
+			color: #3f4a52;
+		}
+	}
+
+	.page-in-action {
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		height: 140px;
+
+		button {
+			padding-right: 3em;
+			padding-left: 3em;
+		}
+	}
+}
