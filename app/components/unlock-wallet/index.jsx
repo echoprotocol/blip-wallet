@@ -10,7 +10,7 @@ import blipLogo from '../../assets/images/blip-logo.svg';
 import { validateUnlock, setValue } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
 import { UNLOCK, RESTORE_PASSWORD } from '../../constants/routes-constants';
-import { setValue as setValueToForm } from '../../actions/form-actions';
+import { clearForm, setValue as setValueToForm } from '../../actions/form-actions';
 import { FORM_UNLOCK } from '../../constants/form-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 
@@ -27,11 +27,14 @@ class UnlockWallet extends React.Component {
 		};
 
 		this.onClickForgotPassword = this.onClickForgotPassword.bind(this);
-
 	}
 
 	componentDidMount() {
 		this.unlockInput.focus();
+	}
+
+	componentWillUnmount() {
+		this.props.clearForm();
 	}
 
 	async onClickForgotPassword(e) {
@@ -214,6 +217,7 @@ UnlockWallet.propTypes = {
 	startAnimation: PropTypes.func.isRequired,
 	validateUnlock: PropTypes.func.isRequired,
 	unlockWallet: PropTypes.func.isRequired,
+	clearForm: PropTypes.func.isRequired,
 	setValueToForm: PropTypes.func.isRequired,
 	intl: intlShape.isRequired,
 	form: PropTypes.object.isRequired,
@@ -231,6 +235,6 @@ export default withRouter(injectIntl(connect(
 		unlockWallet: (value) => dispatch(setValue('locked', value)),
 		setValueToForm: (form, value) => dispatch(setValueToForm(FORM_UNLOCK, form, value)),
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
-
+		clearForm: () => dispatch(clearForm()),
 	}),
 )(UnlockWallet)));
