@@ -106,7 +106,7 @@ class Settings extends React.Component {
 	}
 
 	renderAccounts() {
-		const { accounts, open } = this.props;
+		const { open, accounts } = this.props;
 		const { selectedAccounts } = this.state;
 
 		const result = [];
@@ -175,9 +175,17 @@ class Settings extends React.Component {
 		);
 	}
 
-	renderArchivedAssets() {
-		const { open } = this.props;
+	renderHiddenAssets() {
+		const { hiddenAssets, changeVisibilityAsset } = this.props;
+		let { assets } = this.props;
 		const { activeIndex } = this.state;
+
+		if (!assets) {
+			return null;
+		}
+
+		assets = assets.filter((asset) => hiddenAssets.has(asset.id));
+
 		return (
 			<React.Fragment>
 				<Animated
@@ -189,42 +197,26 @@ class Settings extends React.Component {
 						<FormattedMessage id="wallet.archived" />
 					</div>
 					<div className="archive-table">
-						<div className="line">
-							<div className="col">
-								<div className="line sub">
-									<div className="coin">ZHCN</div>
-									<div className="balance">34234</div>
+						{assets.map((ass, key) => (
+							<div className="line" key={key.toString()}>
+								<div className="col">
+									<div className="line sub">
+										<div className="coin">{ass.symbol}</div>
+										<div className="balance">{ass.amount}</div>
+									</div>
+									<div className="line sub">
+										<div className="type">asset</div>
+									</div>
 								</div>
-								<div className="line sub">
-									<div className="type">erc20 token</div>
-								</div>
-							</div>
-							<div className="col">
-								<Button
-									className="btn-inversed"
-									content="Unarchive"
-								/>
-							</div>
-						</div>
-						<div className="line">
-							<div className="col">
-								<div className="line sub">
-									<div className="coin">Echo</div>
-									<div className="balance">23489238794.003234523445234452344523445234234234</div>
-								</div>
-								<div className="line sub">
-									<div className="type">asset</div>
+								<div className="col">
+									<Button
+										onClick={() => changeVisibilityAsset(ass.id)}
+										className="btn-inversed"
+										content="Unarchive"
+									/>
 								</div>
 							</div>
-							<div className="col">
-								<Button
-									disabled={!open}
-									className="btn-inversed"
-									content="Unarchive"
-								/>
-							</div>
-						</div>
-
+						))}
 					</div>
 
 				</Animated>
@@ -245,7 +237,7 @@ class Settings extends React.Component {
 						}
 					</div>
 					{
-						!activeIndex ? this.renderFilterByAccounts() : this.renderArchivedAssets()
+						!activeIndex ? this.renderFilterByAccounts() : this.renderHiddenAssets()
 					}
 				</div>
 
@@ -258,9 +250,12 @@ class Settings extends React.Component {
 Settings.propTypes = {
 	open: PropTypes.bool.isRequired,
 	accounts: PropTypes.object.isRequired,
+	assets: PropTypes.array.isRequired,
+	hiddenAssets: PropTypes.object.isRequired,
 	saveSelectedAccounts: PropTypes.func.isRequired,
 	updateBalance: PropTypes.func.isRequired,
 	toggleSettings: PropTypes.func.isRequired,
+	changeVisibilityAsset: PropTypes.func.isRequired,
 };
 
 export default Settings;

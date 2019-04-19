@@ -1,6 +1,7 @@
 import Blockchain from './blockchain';
 import UserStorageService from './user-storage-service';
 import Emitter from './emitter';
+import LocalStrorageService from './localstorage-service';
 
 class Services {
 
@@ -9,6 +10,7 @@ class Services {
 		this.crypto = null;
 		this.userStorageService = null;
 		this.emitter = null;
+		this.localStorage = null;
 	}
 
 	getEcho() {
@@ -45,6 +47,16 @@ class Services {
 		this.emitter = new Emitter();
 
 		return this.emitter;
+	}
+
+	getLocalStorage() {
+		if (this.localStorage) {
+			return this.localStorage;
+		}
+
+		this.localStorage = new LocalStrorageService();
+
+		return this.localStorage;
 	}
 
 }

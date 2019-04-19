@@ -1,9 +1,10 @@
 import { createModule } from 'redux-modules';
-import { Map } from 'immutable';
+import { Map, Set } from 'immutable';
 
 const DEFAULT_FIELDS = Map({
 	balances: new Map({}),
 	transaction: new Map({}),
+	hiddenAssets: new Set(),
 });
 
 export default createModule({

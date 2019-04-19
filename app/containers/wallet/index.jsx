@@ -3,7 +3,12 @@ import Immutable from 'immutable';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import { CACHE_MAPS } from 'echojs-lib';
 
-import { saveSelectedAccounts, updateBalance } from '../../actions/balance-actions';
+import {
+	changeVisabilityAssets,
+	initHiddenAssets,
+	saveSelectedAccounts,
+	updateBalance,
+} from '../../actions/balance-actions';
 import { setLastTransaction } from '../../actions/transaction-actions';
 import Wallet from '../../components/wallet';
 
@@ -49,6 +54,7 @@ const balanceSelector = createImmutableSelector(
 export default connect(
 	(state) => ({
 		accounts: state.global.get('accounts'),
+		hiddenAssets: state.wallet.get('hiddenAssets'),
 		language: state.global.get('language'),
 		currentNode: state.global.get('currentNode'),
 		balances: balanceSelector(state),
@@ -60,5 +66,7 @@ export default connect(
 		updateBalance: () => dispatch(updateBalance()),
 		setTransaction: () => dispatch(setLastTransaction()),
 		saveSelectedAccounts: (accounts) => dispatch(saveSelectedAccounts(accounts)),
+		changeVisabilityAssets: (value) => dispatch(changeVisabilityAssets(value)),
+		initHiddenAssets: () => dispatch(initHiddenAssets()),
 	}),
 )(Wallet);

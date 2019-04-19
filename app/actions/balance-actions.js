@@ -1,5 +1,4 @@
-import { Map } from 'immutable';
-
+import { Set, Map } from 'immutable';
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions';
 import WalletReducer from '../reducers/wallet-reducer';
@@ -96,4 +95,35 @@ export const saveSelectedAccounts = (selectedAccounts) => async (dispatch, getSt
 	});
 
 	dispatch(setGlobal('accounts', stateAccounts));
+};
+
+/**
+ *
+ * @returns {Function}
+ */
+export const initHiddenAssets = () => (dispatch) => {
+	const localStorage = Services.getLocalStorage();
+
+	const hiddenAssets = new Set(localStorage.getData('hiddenAssets'));
+
+	dispatch(setValue('hiddenAssets', hiddenAssets));
+};
+
+/**
+ *
+ * @param {String} id
+ * @returns {Function}
+ */
+export const changeVisabilityAssets = (id) => async (dispatch, getState) => {
+	let hiddenAssets = new Set(getState().wallet.get('hiddenAssets'));
+	const localStorage = Services.getLocalStorage();
+
+	if (hiddenAssets.has(id)) {
+		hiddenAssets = hiddenAssets.delete(id);
+	} else {
+		hiddenAssets = hiddenAssets.add(id);
+	}
+
+	localStorage.setData('hiddenAssets', hiddenAssets);
+	dispatch(setValue('hiddenAssets', hiddenAssets));
 };

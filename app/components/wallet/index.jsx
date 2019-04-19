@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-
 import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import LastTransaction from './last-transaction';
-
 
 class Wallet extends React.Component {
 
@@ -24,6 +22,7 @@ class Wallet extends React.Component {
 
 	componentDidMount() {
 		this.updateLastTransaction();
+		this.props.initHiddenAssets();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -72,6 +71,7 @@ class Wallet extends React.Component {
 			const amount = FormatHelper.accumulateBalances(amounts);
 
 			assets.push({
+				id: asset.id,
 				amount: FormatHelper.formatAmount(amount, asset.precision),
 				symbol: asset.symbol,
 			});
@@ -135,27 +135,38 @@ class Wallet extends React.Component {
 		});
 	}
 
-	renderAssets() {
-		const { balances } = this.props;
+	changeVisibilityAsset(id) {
+		this.props.changeVisabilityAssets(id);
+	}
 
-		const assets = this.getAssets(balances);
+	renderAssets() {
+		const { balances, hiddenAssets } = this.props;
+
+		let assets = this.getAssets(balances);
 
 		if (!assets) {
 			return null;
 		}
 
+		assets = assets.filter((asset) => !hiddenAssets.has(asset.id));
+
 		return assets.map((asset, index) => {
 			const key = index;
+			const { id } = asset;
 
 			return (
 				<div className="balance-item" key={key}> {/* add class hide */}
-					{/* <div className="balance-item-header">
-											<div className="wrap">
-												<Button className="balance-item-close" content={
-													<Icon className="icon-close-big" />
-												} />
-											</div>
-										</div> */}
+					<div className="balance-item-header">
+						<div className="wrap">
+							<Button
+								className="balance-item-close"
+								content={
+									<Icon className="icon-close-big" />
+								}
+								onClick={() => this.changeVisibilityAsset(id)}
+							/>
+						</div>
+					</div>
 					<div className="line">
 						<div className="balance-title">{asset.symbol}</div>
 						<div className="balance-type">asset</div>
@@ -171,7 +182,7 @@ class Wallet extends React.Component {
 
 	render() {
 		const {
-			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction,
+			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction, hiddenAssets,
 		} = this.props;
 
 		const { showSettings } = this.state;
@@ -256,6 +267,9 @@ class Wallet extends React.Component {
 						accounts={accounts}
 						saveSelectedAccounts={saveAccounts}
 						updateBalance={updBalance}
+						assets={this.getAssets(balances) || []}
+						hiddenAssets={hiddenAssets}
+						changeVisibilityAsset={(id) => this.changeVisibilityAsset(id)}
 					/>
 
 				</div>
@@ -267,6 +281,7 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = {
 	accounts: PropTypes.object.isRequired,
+	hiddenAssets: PropTypes.object.isRequired,
 	language: PropTypes.string.isRequired,
 	transaction: PropTypes.object.isRequired,
 	histories: PropTypes.object.isRequired,
@@ -275,6 +290,8 @@ Wallet.propTypes = {
 	setTransaction: PropTypes.func.isRequired,
 	updateBalance: PropTypes.func.isRequired,
 	saveSelectedAccounts: PropTypes.func.isRequired,
+	initHiddenAssets: PropTypes.func.isRequired,
+	changeVisabilityAssets: PropTypes.func.isRequired,
 };
 
 export default Wallet;
