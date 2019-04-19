@@ -17,13 +17,14 @@ import AccountImported from '../account-imported';
 import { startAnimation } from '../../actions/animation-actions';
 
 import { AUTHORIZATION } from '../../constants/routes-constants';
+import { changeActiveTabIndex } from '../../actions/auth-actions';
 
 class Authorization extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeIndex: 0,
+			activeIndex: this.props.activeTabIndex,
 
 			wif: '',
 			accountName: '',
@@ -47,6 +48,8 @@ class Authorization extends React.Component {
 		this.setState({
 			activeIndex: active,
 		});
+
+		this.props.changeActiveTabIndex(active);
 	}
 
 	goForward(accountName, wif) {
@@ -176,14 +179,18 @@ class Authorization extends React.Component {
 
 Authorization.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
+	activeTabIndex: PropTypes.number.isRequired,
 	startAnimation: PropTypes.func.isRequired,
+	changeActiveTabIndex: PropTypes.func.isRequired,
 };
 
 export default connect(
 	(state) => ({
 		isVisible: state.animation.getIn([AUTHORIZATION, 'isVisible']),
+		activeTabIndex: state.auth.get('activeTabIndex'),
 	}),
 	(dispatch) => ({
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		changeActiveTabIndex: (value) => dispatch(changeActiveTabIndex(value)),
 	}),
 )(Authorization);
