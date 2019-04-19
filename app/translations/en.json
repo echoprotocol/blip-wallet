@@ -30,7 +30,7 @@
 	"account": {
 		"import": {
 			"title": "Import account",
-			"description": "You can import any Echo account here",
+			"description": "Please specify your WIF key. It was provided during account creation.",
 			"name": "Account name",
 			"name.placeholder": "Account name",
 			"wif": "WIF key",
