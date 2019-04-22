@@ -82,34 +82,33 @@ class ImportAccount extends React.Component {
 		const placeholderWIF = intl.formatMessage({ id: 'account.import.wif.placeholder' });
 
 		return (
-			<div className="form-wrap">
-				<div className="form-content">
-					<div className="lines">
-						<Animated
-							className="line"
-							animationIn="fadeInRight"
-							animationOut="fadeOutLeft"
-							isVisible={isVisible}
-						>
-							<div className="line-label">
-								<span className="line-label-text"><FormattedMessage id="account.import.name" /></span>
-							</div>
-							<div className="line-content">
-								<div className="field">
-									<Input
-										className="pink"
-										placeholder={placeholderName}
-										ref={(input) => { this.nameInput = input; }}
-										error={!!signInForm.get('accountNameError')}
-										loading={false}
-										fluid
-										name="accountName"
-										value={accountName.value}
-										onChange={(e) => this.onChange(e)}
-										onKeyPress={(e) => this.onKeyPress(e)}
-									/>
-									{
-										signInForm.get('accountNameError')
+			<div className="form-content">
+				<div className="lines">
+					<Animated
+						className="line"
+						animationIn="fadeInRight"
+						animationOut="fadeOutLeft"
+						isVisible={isVisible}
+					>
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="account.import.name" /></span>
+						</div>
+						<div className="line-content">
+							<div className="field">
+								<Input
+									className="pink"
+									placeholder={placeholderName}
+									ref={(input) => { this.nameInput = input; }}
+									error={!!signInForm.get('accountNameError')}
+									loading={false}
+									fluid
+									name="accountName"
+									value={accountName.value}
+									onChange={(e) => this.onChange(e)}
+									onKeyPress={(e) => this.onKeyPress(e)}
+								/>
+								{
+									signInForm.get('accountNameError')
 										&& (
 											<div className="error-message">
 												<FormattedMessage
@@ -118,50 +117,50 @@ class ImportAccount extends React.Component {
 												/>
 											</div>
 										)
-									}
-								</div>
+								}
+							</div>
 
-							</div>
-						</Animated>
-						<Animated
-							className="line"
-							animationIn="fadeInRight"
-							animationOut="fadeOutLeft"
-							animationInDelay={50}
-							isVisible={isVisible}
-						>
-							<div className="line-label">
-								<span className="line-label-text"><FormattedMessage id="account.import.wif" /></span>
-							</div>
-							<div className="line-content">
-								<div className="field">
-									<Input
-										className="password pink"
-										placeholder={placeholderWIF}
-										error={!!signInForm.get('wifError')}
-										loading={false}
-										fluid
-										name="wif"
-										value={wif.value}
-										onChange={(e) => this.onChange(e)}
-										type={showPas ? 'text' : 'password'}
-										onKeyPress={(e) => this.onKeyPress(e)}
-										icon={(
-											<Button
-												tabIndex="-1"
-												className={
-													classnames(
-														'icon-eye',
-														{ enable: showPas },
-														{ disabled: !showPas },
-													)
-												}
-												onClick={() => this.setState({ showPas: !showPas })}
-											/>
-										)}
-									/>
-									{
-										signInForm.get('wifError')
+						</div>
+					</Animated>
+					<Animated
+						className="line"
+						animationIn="fadeInRight"
+						animationOut="fadeOutLeft"
+						animationInDelay={50}
+						isVisible={isVisible}
+					>
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="account.import.wif" /></span>
+						</div>
+						<div className="line-content">
+							<div className="field">
+								<Input
+									className="password pink"
+									placeholder={placeholderWIF}
+									error={!!signInForm.get('wifError')}
+									loading={false}
+									fluid
+									name="wif"
+									value={wif.value}
+									onChange={(e) => this.onChange(e)}
+									type={showPas ? 'text' : 'password'}
+									onKeyPress={(e) => this.onKeyPress(e)}
+									icon={(
+										<Button
+											tabIndex="-1"
+											className={
+												classnames(
+													'icon-eye',
+													{ enable: showPas },
+													{ disabled: !showPas },
+												)
+											}
+											onClick={() => this.setState({ showPas: !showPas })}
+										/>
+									)}
+								/>
+								{
+									signInForm.get('wifError')
 										&& (
 											<div className="error-message">
 												<FormattedMessage
@@ -170,41 +169,40 @@ class ImportAccount extends React.Component {
 												/>
 											</div>
 										)
-									}
-									<div className="hints">
-										<div className="hint"><FormattedMessage id="account.import.description" /></div>
-									</div>
+								}
+								<div className="hints">
+									<div className="hint"><FormattedMessage id="account.import.description" /></div>
 								</div>
 							</div>
-						</Animated>
-					</div>
-					<div className="form-action">
-						<div className="line">
-							<div className="line-label" />
-							<div className="line-content">
-								<Animated
-									className="btns-wrap"
-									animationIn="fadeInRight"
-									animationOut="fadeOutLeft"
-									animationInDelay={100}
-									isVisible={isVisible}
-								>
-									<Button
-										disabled={!this.isSuccess()}
-										className="btn-primary"
-										onClick={() => this.onImport()}
-										content={<span className="text"><FormattedMessage id="account.import.button" /></span>}
-									/>
-
-								</Animated>
-							</div>
 						</div>
+					</Animated>
+				</div>
+				<div className="form-action">
+					<div className="line">
+						<div className="line-label" />
+						<div className="line-content">
+							<Animated
+								className="btns-wrap"
+								animationIn="fadeInRight"
+								animationOut="fadeOutLeft"
+								animationInDelay={100}
+								isVisible={isVisible}
+							>
+								<Button
+									disabled={!this.isSuccess()}
+									className="btn-primary"
+									onClick={() => this.onImport()}
+									content={<span className="text"><FormattedMessage id="account.import.button" /></span>}
+								/>
 
+							</Animated>
+						</div>
 					</div>
 
 				</div>
 
 			</div>
+
 		);
 	}
 

@@ -1,6 +1,14 @@
 .auth-tabs {
 	width: 100%;
 
+	.form-wrap {
+		@include max-vh(780) {
+			max-height: calc(100vh - 127px);
+		}
+		max-height: calc(100vh - 16vh - 1px);
+
+	}
+
 	.menu {
 		@include min-vw(1400) {
 			margin: 0 0 0 17vw;
@@ -104,10 +112,6 @@
 		border-top: 1px solid rgba(#b89bf5, 0.4);
 	}
 
-	.inner {
-		width: 100%;
-	}
-
 	.form-wrap {
 		.avatar-box {
 			@include source-regular();
@@ -121,6 +125,10 @@
 			color: #b89bf5;
 			font-size: 1.4em;
 			line-height: 1.4em;
+		}
+
+		.ps__rail-x  {
+			display: none !important; // fix react-perfect-scrollbar
 		}
 	}
 }
@@ -142,4 +150,69 @@
 	height: 16vh;
 	min-height: 126px;
 	padding: 0 0 24px 50px;
+}
+
+.registrator {
+	z-index: 2;
+
+	.balance {
+		margin-right: 5px;
+		color: #43d7ad;
+	}
+
+	.dropdown {
+		display: inline-block;
+
+		&.pink:not(.show) {
+			.dropdown-toggle {
+				&:focus {
+					@include onBtnFocus(2px, 2px, 0px, rgba(#cbcbcb, 0.65));
+				}
+
+				&:hover,
+				&:active,
+				&:focus {
+					border: 0;
+				}
+			}
+		}
+
+		.dropdown-toggle {
+			height: auto;
+			margin: 0 0 0 2px;
+			padding: 0 14px 0 3px;
+			border: 0;
+			color: #fff;
+			font-size: initial;
+			line-height: 20px;
+
+			&:before {
+				margin-top: 2px;
+			}
+
+			&:hover,
+			&:active,
+			&:focus {
+				border: 0;
+				background-color: transparent;
+			}
+
+			.carret {
+				position: relative;
+				margin-left: 5px;
+
+				&:after,
+				&:before {
+					left: 0;
+				}
+			}
+		}
+
+		.dropdown-menu {
+			right: 0;
+			left: auto !important; // fix react-bootstrap
+			width: 200px;
+		}
+
+	}
 }

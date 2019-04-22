@@ -1,7 +1,9 @@
 .form-wrap {
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 	display: flex;
+	width: 100%;
 
 	.form-content {
 		flex-direction: column;
@@ -25,12 +27,12 @@
 
 	.lines {
 		@include min-vh(680) {
-			height: calc(68vh - 1px);
-			padding: 20vh 0 0;
+			min-height: calc(68vh - 1px);
+			padding: 20vh 0 40px;
 		}
 		flex-direction: column;
 		display: flex;
-		padding: 56px 0;
+		padding: 56px 0 40px;
 	}
 
 	.line {

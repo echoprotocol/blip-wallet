@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 
+import Registrator from './registrator';
 import { FORM_SIGN_UP } from '../../constants/form-constants';
 import { clearForm, setFormValue, toggleLoading } from '../../actions/form-actions';
 import { registerAccount, validateCreateAccount } from '../../actions/account-actions';
@@ -111,34 +112,33 @@ class CreateAccount extends React.Component {
 
 		return (
 
-			<div className="form-wrap">
-				<div className="form-content">
-					<div className="lines">
-
-						<Animated
-							className="line"
-							animationIn="fadeInRight"
-							animationOut="fadeOutLeft"
-							isVisible={isVisible}
-						>
-							<div className="line-label">
-								<span className="line-label-text"><FormattedMessage id="account.create.name" /></span>
-							</div>
-							<div className="line-content">
-								<div className="field">
-									<Input
-										className={classnames('pink', { success: isSuccess })}
-										placeholder={placeholder}
-										ref={(input) => { this.nameInput = input; }}
-										error={error}
-										loading={form.get('loading')}
-										fluid
-										value={form.get('accountName').value}
-										onChange={(e) => this.onChange(e)}
-										onKeyPress={(e) => this.onKeyPress(e)}
-									/>
-									{
-										form.get('accountName').error
+			<div className="form-content">
+				<div className="lines">
+					{false && <Registrator isVisible={isVisible} />}
+					<Animated
+						className="line"
+						animationIn="fadeInRight"
+						animationOut="fadeOutLeft"
+						isVisible={isVisible}
+					>
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="account.create.name" /></span>
+						</div>
+						<div className="line-content">
+							<div className="field">
+								<Input
+									className={classnames('pink', { success: isSuccess })}
+									placeholder={placeholder}
+									ref={(input) => { this.nameInput = input; }}
+									error={error}
+									loading={form.get('loading')}
+									fluid
+									value={form.get('accountName').value}
+									onChange={(e) => this.onChange(e)}
+									onKeyPress={(e) => this.onKeyPress(e)}
+								/>
+								{
+									form.get('accountName').error
 										&& (
 											<div className="error-message">
 												<FormattedMessage
@@ -147,66 +147,65 @@ class CreateAccount extends React.Component {
 												/>
 											</div>
 										)
-									}
-									<div className="hints">
-										<div className={`hint ${hint1}`}><FormattedMessage id="account.create.hint1" /></div>
-										<div className={`hint ${hint2}`}><FormattedMessage id="account.create.hint2" /></div>
-										<div className={`hint ${hint3}`}><FormattedMessage id="account.create.hint3" /></div>
-										<div className={`hint ${hint4}`}><FormattedMessage id="account.create.hint4" /></div>
-									</div>
+								}
+								<div className="hints">
+									<div className={`hint ${hint1}`}><FormattedMessage id="account.create.hint1" /></div>
+									<div className={`hint ${hint2}`}><FormattedMessage id="account.create.hint2" /></div>
+									<div className={`hint ${hint3}`}><FormattedMessage id="account.create.hint3" /></div>
+									<div className={`hint ${hint4}`}><FormattedMessage id="account.create.hint4" /></div>
 								</div>
-
 							</div>
 
-						</Animated>
-						<Animated
-							className="line"
-							animationIn="fadeInRight"
-							animationOut="fadeOutLeft"
-							animationInDelay={50}
-							isVisible={isVisible}
-						>
-
-							<div className="line-label">
-								<span className="line-label-text"><FormattedMessage id="account.create.avatar" /></span>
-							</div>
-							<div className="line-content">
-								<div className="avatar-box">
-									<Avatar accountName={isSuccess ? form.get('accountName').value : ''} />
-									<div className="avatar-desciption">
-										<FormattedMessage id="account.create.avatar.description" />
-									</div>
-								</div>
-
-							</div>
-						</Animated>
-					</div>
-					<div className="form-action">
-						<div className="line">
-							<div className="line-label" />
-							<div className="line-content">
-								<Animated
-									className="btns-wrap"
-									animationIn="fadeInRight"
-									animationOut="fadeOutLeft"
-									animationInDelay={100}
-									isVisible={isVisible}
-								>
-									<Button
-										disabled={!isSuccess}
-										className="btn-primary"
-										onClick={() => this.onCreate()}
-										content={<span className="text"><FormattedMessage id="account.create.button" /></span>}
-									/>
-								</Animated>
-							</div>
 						</div>
 
+					</Animated>
+					<Animated
+						className="line"
+						animationIn="fadeInRight"
+						animationOut="fadeOutLeft"
+						animationInDelay={50}
+						isVisible={isVisible}
+					>
+
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="account.create.avatar" /></span>
+						</div>
+						<div className="line-content">
+							<div className="avatar-box">
+								<Avatar accountName={isSuccess ? form.get('accountName').value : ''} />
+								<div className="avatar-desciption">
+									<FormattedMessage id="account.create.avatar.description" />
+								</div>
+							</div>
+
+						</div>
+					</Animated>
+				</div>
+				<div className="form-action">
+					<div className="line">
+						<div className="line-label" />
+						<div className="line-content">
+							<Animated
+								className="btns-wrap"
+								animationIn="fadeInRight"
+								animationOut="fadeOutLeft"
+								animationInDelay={100}
+								isVisible={isVisible}
+							>
+								<Button
+									disabled={!isSuccess}
+									className="btn-primary"
+									onClick={() => this.onCreate()}
+									content={<span className="text"><FormattedMessage id="account.create.button" /></span>}
+								/>
+							</Animated>
+						</div>
 					</div>
 
 				</div>
 
 			</div>
+
 		);
 	}
 

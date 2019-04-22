@@ -6,7 +6,7 @@ import { Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
-
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import CreateAccount from './create-account';
 
 import ImportAccount from './import-account';
@@ -138,7 +138,7 @@ class Authorization extends React.Component {
 						}
 					</div>
 					<div className="segment tab">
-						<div className="inner">
+						<PerfectScrollbar className="form-wrap">
 							{
 								activeIndex
 									? (
@@ -154,7 +154,7 @@ class Authorization extends React.Component {
 										/>
 									)
 							}
-						</div>
+						</PerfectScrollbar>
 					</div>
 				</div>
 			</div>
