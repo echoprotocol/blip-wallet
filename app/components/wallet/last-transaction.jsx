@@ -37,18 +37,18 @@ class LastTransaction extends React.Component {
 	render() {
 		const { intl, language, transaction } = this.props;
 
-		const title = intl.formatMessage({ id: 'wallet.transaction.title' });
-
 		if (!transaction.size) {
 			return null;
 		}
+
+		const title = intl.formatMessage({ id: 'wallet.transaction.title' });
 
 		return (
 			<div className="last-transaction">
 				<div className="label">{title}</div>
 				<div className="line">
 					<span className="date">
-						{FormatHelper.transformDate(transaction.get('timestamp'), language, 'DD MMM, HH:mm')}
+						{FormatHelper.getLocaleTransformDate(transaction.get('timestamp'), language, 'DD MMM hh:mm')}
 					</span>
 					<span className="action">
 						{transaction.get('name') && <FormattedMessage id={transaction.get('name')} />}

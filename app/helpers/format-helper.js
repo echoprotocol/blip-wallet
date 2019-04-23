@@ -70,10 +70,35 @@ export default class FormatHelper {
 	 * @param {String} date
 	 * @param {String} language
 	 * @param {String} formatter
+	 * @returns {string}
+	 */
+	static getTransformDate(date, language, formatter) {
+		return moment.utc(date).local().locale(language).format(formatter);
+	}
+
+	/**
+	 *
+	 * @param {String} date
+	 * @param {String} language
+	 * @param {String} formatter
 	 * @returns {String}
 	 */
-	static transformDate(date, language, formatter) {
-		return moment.utc(date).local().locale(language).format(formatter);
+	static getLocaleTransformDate(date, language, formatter) {
+		let localeFormatter = formatter;
+		if (language === 'ru') {
+			localeFormatter = localeFormatter.replace('hh', 'HH');
+		} else {
+			localeFormatter = localeFormatter.replace('HH', 'hh').replace('MMM', 'MMM.');
+		}
+
+		let transformDate = FormatHelper.getTransformDate(date, language, localeFormatter);
+
+		if (language !== 'ru') {
+			const [ap] = moment.utc(date).format('a').split('');
+			transformDate = `${transformDate} ${ap}.m.`;
+		}
+
+		return transformDate;
 	}
 
 }
