@@ -1,3 +1,4 @@
+
 class LocalStorageService {
 
 	/**
@@ -6,7 +7,7 @@ class LocalStorageService {
 	 * @returns {any}
 	 */
 	getData(key) {
-		const data = JSON.parse(localStorage.getItem(key) || '[]');
+		const data = JSON.parse(localStorage.getItem(key) || '{}');
 		return data;
 	}
 

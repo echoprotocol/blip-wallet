@@ -135,8 +135,9 @@ class Wallet extends React.Component {
 		});
 	}
 
-	changeVisibilityAsset(id) {
-		this.props.changeVisabilityAssets(id);
+	changeVisibilityAsset(idAsset) {
+		const { currentNode } = this.props;
+		this.props.toggleVisibiltyAsset(idAsset, currentNode);
 	}
 
 	renderAssets() {
@@ -188,6 +189,7 @@ class Wallet extends React.Component {
 		const { showSettings } = this.state;
 
 		const balance = this.getBalance(balances);
+
 
 		return (
 			<div
@@ -291,7 +293,7 @@ Wallet.propTypes = {
 	updateBalance: PropTypes.func.isRequired,
 	saveSelectedAccounts: PropTypes.func.isRequired,
 	initHiddenAssets: PropTypes.func.isRequired,
-	changeVisabilityAssets: PropTypes.func.isRequired,
+	toggleVisibiltyAsset: PropTypes.func.isRequired,
 };
 
 export default Wallet;

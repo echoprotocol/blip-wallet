@@ -1,4 +1,4 @@
-import { Set, Map } from 'immutable';
+import { Map, Set } from 'immutable';
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions';
 import WalletReducer from '../reducers/wallet-reducer';
@@ -103,26 +103,37 @@ export const saveSelectedAccounts = (selectedAccounts) => async (dispatch, getSt
  */
 export const initHiddenAssets = () => (dispatch) => {
 	const localStorage = Services.getLocalStorage();
-
-	const hiddenAssets = new Set(localStorage.getData('hiddenAssets'));
-
+	const dataFromStorage = localStorage.getData('hiddenAssets');
+	let hiddenAssets = new Map({});
+	Object.keys(dataFromStorage).forEach((key) => {
+		hiddenAssets = hiddenAssets.set(key, new Set(dataFromStorage[key]));
+	});
 	dispatch(setValue('hiddenAssets', hiddenAssets));
 };
 
 /**
  *
- * @param {String} id
+ * @param {String} idAsset
+ * @param {String} idNetwork
  * @returns {Function}
  */
-export const changeVisabilityAssets = (id) => async (dispatch, getState) => {
-	let hiddenAssets = new Set(getState().wallet.get('hiddenAssets'));
+export const toggleVisibiltyAsset = (idAsset, idNetwork) => async (dispatch, getState) => {
+	let hiddenAssets = getState().wallet.get('hiddenAssets');
+
+	if (!hiddenAssets.has(idNetwork)) {
+		hiddenAssets = hiddenAssets.set(idNetwork, new Set());
+	}
+
+	let networkHiddenAssets = hiddenAssets.get(idNetwork);
 	const localStorage = Services.getLocalStorage();
 
-	if (hiddenAssets.has(id)) {
-		hiddenAssets = hiddenAssets.delete(id);
+	if (networkHiddenAssets.has(idAsset)) {
+		networkHiddenAssets = networkHiddenAssets.delete(idAsset);
 	} else {
-		hiddenAssets = hiddenAssets.add(id);
+		networkHiddenAssets = networkHiddenAssets.add(idAsset);
 	}
+
+	hiddenAssets = hiddenAssets.set(idNetwork, networkHiddenAssets);
 
 	localStorage.setData('hiddenAssets', hiddenAssets);
 	dispatch(setValue('hiddenAssets', hiddenAssets));
