@@ -82,7 +82,7 @@
                 "Account name should end with a lowercase letter or digit.": "Должно заканчиваться маленькой буквой или цифрой.",
                 "Each account segment should end with a letter or digit.": "Сегменты должны заканчиваться буквой или цифрой.",
                 "Each account segment should be longer.": "Сегменты должны быть длиннее",
-                "Account already exist": "Такой аккаунт уже есть",
+                "Account already exists": "Такой аккаунт уже есть",
                 "Connection error": "Ошибка соединения"
             }
         },

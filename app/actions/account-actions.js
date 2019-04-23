@@ -40,11 +40,11 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 		const result = await Services.getEcho().api.lookupAccounts(accountName);
 
 		if (result.find((i) => i[0] === accountName)) {
-			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exist'));
+			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exists'));
 		}
 	} catch (err) {
 
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exist'));
+		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exists'));
 
 		console.warn(err.message || err);
 	} finally {
