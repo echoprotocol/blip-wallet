@@ -21,12 +21,17 @@ class UnlockWallet extends React.Component {
 		super(props);
 
 		this.state = {
+			prevFocusTarget: null,
 			showPas: false,
 			password: '',
 			valid: false,
+			focused: false,
 		};
 
 		this.onClickForgotPassword = this.onClickForgotPassword.bind(this);
+		this.onTogglePrivacy = this.onTogglePrivacy.bind(this);
+		this.changeFocusTarget = this.changeFocusTarget.bind(this);
+		this.renderPrivacyEyeBlur = this.renderPrivacyEyeBlur.bind(this);
 	}
 
 	componentDidMount() {
@@ -46,6 +51,10 @@ class UnlockWallet extends React.Component {
 	}
 
 	onTogglePrivacy() {
+		if (this.state.prevFocusTarget) {
+			this[this.state.prevFocusTarget].focus();
+		}
+
 		const { showPas } = this.state;
 		this.setState({ showPas: !showPas });
 	}
@@ -92,11 +101,24 @@ class UnlockWallet extends React.Component {
 		}
 	}
 
+	changeFocusTarget(e) {
+		if (e.target.name === 'eye') {
+			this.setState({ focused: true });
+			return;
+		}
+		this.setState({
+			prevFocusTarget: e.target.name,
+			focused: false,
+		});
+	}
+
 	renderPrivacyEye() {
 		const { showPas } = this.state;
 		return (
 			<Button
 				tabIndex="-1"
+				name="eye"
+				onBlur={() => this.renderPrivacyEyeBlur()}
 				className={
 					classnames(
 						'icon-eye',
@@ -109,8 +131,14 @@ class UnlockWallet extends React.Component {
 		);
 	}
 
+	renderPrivacyEyeBlur() {
+		this.setState({ focused: false });
+	}
+
 	render() {
-		const { showPas, password, valid } = this.state;
+		const {
+			showPas, password, valid, focused,
+		} = this.state;
 		const { isVisible, form, intl } = this.props;
 
 		const placeholder = intl.formatMessage({ id: 'unlock.placeholder' });
@@ -118,7 +146,12 @@ class UnlockWallet extends React.Component {
 		const link = intl.formatMessage({ id: 'unlock.link' });
 
 		return (
-			<div className="unlock-page">
+			<div
+				role="presentation"
+				className="unlock-page"
+				onFocus={this.changeFocusTarget}
+				onClick={this.changeFocusTarget}
+			>
 				<Animated
 					className="blip-logo"
 					animationIn="fadeInRight"
@@ -151,9 +184,15 @@ class UnlockWallet extends React.Component {
 								<Input
 									placeholder={placeholder}
 									ref={(input) => { this.unlockInput = input; }}
-									className="password pink"
+									className={
+										classnames(
+											'password pink',
+											{ focused },
+										)
+									}
 									error={!!form.get('error')}
 									loading={false}
+									name="unlockInput"
 									type={showPas ? 'text' : 'password'}
 									icon={this.renderPrivacyEye()}
 									fluid
