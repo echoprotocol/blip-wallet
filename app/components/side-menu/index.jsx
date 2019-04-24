@@ -8,7 +8,7 @@ import { Sidebar, Button, Icon } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import { startAnimation } from '../../actions/animation-actions';
-import { UNLOCK, WALLET } from '../../constants/routes-constants';
+import { UNLOCK, WALLET, HISTORY } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
 
@@ -73,7 +73,7 @@ class SideMenu extends React.Component {
 									}
 								</FormattedMessage>
 							</li>
-							<li>
+							<li className={classnames({ active: pathname === HISTORY })}>
 								<FormattedMessage id="wallet.menu.history">
 									{
 										(content) => (

@@ -1,6 +1,19 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
 
 export const OPERATION_ID_PREFIX = '1.11.';
+export const ASSET_TYPE = 'ASSET';
+export const TOKEN_TYPE = 'TOKEN';
+// TEMP: remove after all types wiil be implemented by echodb
+export const OPERATION_TYPES = [
+	'TRANSFER',
+	'ACCOUNT_CREATE',
+	'ACCOUNT_UPDATE',
+	'ACCOUNT_WHITELIST',
+	'ACCOUNT_UPGRADE',
+	'ACCOUNT_TRANSFER',
+	'CONTRACT_CREATE',
+	'CONTRACT_CALL',
+];
 
 export const OPTION_TYPES = {
 	ACCOUNT: 'account',

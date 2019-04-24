@@ -15,10 +15,10 @@ class LastTransaction extends React.Component {
 		return BN(value).div(BN(10).pow(precision)).toFixed(precision);
 	}
 
-	renderParticipant(field, account) {
+	renderParticipant(field, accounts) {
 		const networkId = Services.getUserStorage().getNetworkId();
 
-		const name = account !== field.get('id') ? (
+		const name = !accounts.has(field.get('id')) ? (
 			<a target="_blank" href={`${EXPLORER_URL[networkId]}${field.get('link')}`}>
 				{field.get('value')}
 			</a>
@@ -35,7 +35,9 @@ class LastTransaction extends React.Component {
 	}
 
 	render() {
-		const { intl, language, transaction } = this.props;
+		const {
+			intl, language, transaction, accounts,
+		} = this.props;
 
 		const title = intl.formatMessage({ id: 'wallet.transaction.title' });
 
@@ -66,8 +68,8 @@ class LastTransaction extends React.Component {
 					</div>
 				</div>
 				<div className="line">
-					{transaction.get('from') && this.renderParticipant(transaction.get('from'), transaction.get('account'))}
-					{transaction.get('subject') && this.renderParticipant(transaction.get('subject'), transaction.get('account'))}
+					{transaction.get('from') && this.renderParticipant(transaction.get('from'), accounts)}
+					{transaction.get('subject') && this.renderParticipant(transaction.get('subject'), accounts)}
 				</div>
 			</div>
 		);
@@ -79,6 +81,7 @@ LastTransaction.propTypes = {
 	intl: intlShape.isRequired,
 	language: PropTypes.string.isRequired,
 	transaction: PropTypes.object.isRequired,
+	accounts: PropTypes.object.isRequired,
 };
 
 export default injectIntl(LastTransaction);

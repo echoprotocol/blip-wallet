@@ -226,7 +226,7 @@ class Wallet extends React.Component {
 					</PerfectScrollbar>
 
 					<div className="wallet-footer">
-						<LastTransaction transaction={transaction} language={language} />
+						<LastTransaction transaction={transaction} language={language} accounts={accounts} />
 						<div className="footer-actions">
 							<div className="btn-wrap btns-2">
 								<Button

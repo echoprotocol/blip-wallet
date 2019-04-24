@@ -5,6 +5,7 @@ export const CREATE_PASSWORD = '/create-password';
 export const RESTORE_PASSWORD = '/restore-password';
 export const SELECT_LANGUAGE = '/select-language';
 export const WALLET = '/wallet';
+export const HISTORY = '/history';
 export const SEND = '/send';
 export const UNLOCK = 'unlock';
 export const PAGE404 = '/page404';
@@ -17,9 +18,8 @@ export const PUBLIC_ROUTES = [
 ];
 
 export const LOCKED_ROUTES = [
-	ACCOUNT_CREATED, AUTHORIZATION,
-	ACCOUNT_IMPORTED, WALLET, SEND,
+	ACCOUNT_CREATED, AUTHORIZATION,	ACCOUNT_IMPORTED, WALLET, HISTORY, SEND,
 ];
 
 
-export const SIDE_MENU_ROUTES = [WALLET, SEND];
+export const SIDE_MENU_ROUTES = [WALLET, HISTORY, SEND];
