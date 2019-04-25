@@ -48,7 +48,7 @@ class ValidateAccountHelper {
 			};
 		}
 
-		if (!/^[~a-z]/.test(accountName)) {
+		if (!/^[~\w]/.test(accountName)) {
 			hints.hint2 = '';
 		} else {
 			hints.hint2 = 'active';
