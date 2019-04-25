@@ -21,10 +21,9 @@ import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Services from '../services';
 import {
-	SELECT_LANGUAGE, CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
+	CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
-import LanguageService from '../services/language';
 
 import { lockApp } from '../actions/global-actions';
 
@@ -56,19 +55,8 @@ class App extends React.Component {
 		}
 
 		const { pathname } = this.props.history.location;
-		const language = LanguageService.getCurrentLanguage();
 
 		let routed = false;
-
-		if (!routed && !language && ![SELECT_LANGUAGE].includes(pathname)) {
-			this.props.history.push(SELECT_LANGUAGE);
-			routed = true;
-		}
-
-		if (!routed && language && [SELECT_LANGUAGE].includes(pathname)) {
-			this.props.history.push(CREATE_PASSWORD);
-			routed = true;
-		}
 
 		if (!routed && [CREATE_PASSWORD].includes(pathname)) {
 

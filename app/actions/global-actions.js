@@ -3,7 +3,7 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { AUTHORIZATION, UNLOCK, SELECT_LANGUAGE } from '../constants/routes-constants';
+import { AUTHORIZATION, UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
@@ -212,6 +212,6 @@ export const clearWalletData = () => async (dispatch, getState) => {
 	dispatch(setValue('accounts', new Map({})));
 
 	await dispatch(startAnimation(pathname, false));
-	history.push(SELECT_LANGUAGE);
+	history.push(CREATE_PASSWORD);
 
 };

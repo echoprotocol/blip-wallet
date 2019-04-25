@@ -8,7 +8,7 @@ class LanguageService {
 
 	static getCurrentLanguage() {
 
-		const locale = localStorage.getItem('locale');
+		const locale = localStorage.getItem('locale') || this.getDefaultLanguage();
 
 		return locale;
 	}
