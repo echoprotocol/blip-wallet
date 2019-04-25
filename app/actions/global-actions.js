@@ -9,6 +9,7 @@ import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
+import { initTokens, subscribeTokens } from './balance-actions'; // eslint-disable-line import/no-cycle
 
 /**
  *  @method setValue
@@ -42,6 +43,7 @@ export const initAccounts = () => async (dispatch, getState) => {
 	await Services.getEcho().api.getFullAccounts(accounts.map(({ id }) => id));
 
 	dispatch(setValue('accounts', accountsStore));
+	await dispatch(subscribeTokens());
 };
 
 /**
@@ -101,6 +103,7 @@ export const createDB = (form, password) => async (dispatch) => {
 
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		await dispatch(initAccounts());
+		await dispatch(initTokens());
 		resolve();
 	});
 
@@ -142,6 +145,7 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 
 		if (correctPassword) {
 			await dispatch(initAccounts());
+			await dispatch(initTokens());
 			return resolve({ result: true });
 		}
 

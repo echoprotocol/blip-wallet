@@ -60,6 +60,7 @@ export default connect(
 		balances: balanceSelector(state),
 		transaction: state.wallet.get('transaction'),
 		histories: historySelector(state),
+		tokens: state.wallet.get('tokens'),
 	}),
 
 	(dispatch) => ({

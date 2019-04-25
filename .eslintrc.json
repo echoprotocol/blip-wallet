@@ -3,13 +3,11 @@
   "env": {
 	"browser": true
   },
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "configs/webpack.config.eslint.js"
-      }
-    }
-  },
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
   "rules": {
     "import/no-named-as-default-member": 0,
     "import/no-extraneous-dependencies": 0,
@@ -20,8 +18,8 @@
     "react/jsx-filename-extension": 0,
     "react/jsx-indent": [2, "tab"],
 	"react/jsx-indent-props": [2, "tab"],
-	"react/jsx-one-expression-per-line": "none",
-	"react/destructuring-assignment": "never",
+	"react/jsx-one-expression-per-line": 0,
+	"react/destructuring-assignment": 0,
     "padded-blocks": [
       "error",
       {

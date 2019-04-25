@@ -16,6 +16,7 @@ import { signTransaction } from './sign-actions';
 
 import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
+import { subscribeTokens } from './balance-actions';
 
 /**
  * @method validateCreateAccount
@@ -76,6 +77,8 @@ const addAccount = (id, name) => async (dispatch, getState) => {
 	dispatch(setValueGlobal('accounts', accounts));
 
 	await Services.getEcho().api.getFullAccounts([id]);
+
+	dispatch(subscribeTokens());
 };
 
 /**
@@ -308,4 +311,12 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 	}
 
 	return true;
+};
+
+export const removeAllAccounts = () => (dispatch) => {
+	dispatch(subscribeTokens()); // call after accounts is changed
+};
+
+export const logoutAccount = () => (dispatch) => {
+	dispatch(subscribeTokens()); // call after accounts is changed
 };

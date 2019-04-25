@@ -1,7 +1,10 @@
-import { Map, Set } from 'immutable';
+import { Set, Map, fromJS } from 'immutable';
 import Services from '../services';
-import { setValue as setGlobal } from './global-actions';
+import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
 import WalletReducer from '../reducers/wallet-reducer';
+import { getBalances } from '../services/queries/balances';
+// import { TOKEN_TYPE } from '../constants/graphql-constants';
+// import FormatHelper from '../helpers/format-helper';
 
 /**
  *  @method setValue
@@ -20,6 +23,42 @@ export const setValue = (field, value) => (dispatch) => {
  */
 export const reset = () => (dispatch) => {
 	dispatch(WalletReducer.actions.reset());
+};
+
+/**
+ *
+ * @returns {Function}
+ */
+export const initTokens = () => async (dispatch, getState) => {
+	const accounts = [...getState().global.get('accounts').keys()];
+
+	if (!accounts.length) {
+		return false;
+	}
+
+	const tokens = await getBalances(accounts);
+
+	if (!tokens || !tokens.data.getBalances.length) {
+		return false;
+	}
+
+	dispatch(setValue('tokens', fromJS(tokens.data.getBalances)));
+
+	return true;
+};
+
+/**
+ *
+ * @returns {Function}
+ */
+export const subscribeTokens = () => async (dispatch, getState) => {
+	await dispatch(initTokens());
+
+	const source = getState().wallet.get('tokens');
+	const accounts = [...getState().global.get('accounts').keys()];
+	const emitter = Services.getEmitter();
+
+	emitter.emit('subscribeTokens', accounts, source);
 };
 
 /**
