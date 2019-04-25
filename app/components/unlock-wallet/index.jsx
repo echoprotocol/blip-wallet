@@ -45,6 +45,7 @@ class UnlockWallet extends React.Component {
 	async onClickForgotPassword(e) {
 		e.preventDefault();
 
+		this.props.setValueToForm('error', null);
 		await this.props.startAnimation(UNLOCK, false);
 		this.props.history.push(RESTORE_PASSWORD);
 
