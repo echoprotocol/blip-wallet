@@ -6,7 +6,7 @@ import UserStorageService from '../services/user-storage-service';
 import { AUTHORIZATION, UNLOCK, SELECT_LANGUAGE } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
-import { NETWORKS } from '../constants/global-constants';
+import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
 
@@ -91,7 +91,9 @@ export const initApp = (store) => async (dispatch) => {
  * 	@param {String} password
  */
 export const createDB = (form, password) => async (dispatch) => {
-	try {
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'restorePassword.loading' }));
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseCreateDB = new Promise(async (resolve) => {
 		dispatch(setValueToForm(form, 'loading', true));
 		const userStorage = Services.getUserStorage();
 		await userStorage.deleteDB(password);
@@ -99,14 +101,18 @@ export const createDB = (form, password) => async (dispatch) => {
 
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		await dispatch(initAccounts());
+		resolve();
+	});
+
+	try {
+		await Promise.all([promiseCreateDB, promiseLoader]);
 		dispatch(setValue('locked', false));
 		history.push(AUTHORIZATION);
-		return true;
 	} catch (err) {
 		console.error(err);
-		return false;
 	} finally {
 		dispatch(setValueToForm(form, 'loading', false));
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
 };
 

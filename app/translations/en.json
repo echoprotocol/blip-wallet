@@ -21,7 +21,8 @@
 		"title": "Your Password cannot be restored",
 		"description": "You can clear your account data from Blip and set a new password. If you do, you will lose access to the accounts you&apos;ve logged into. You will need to log into them again, after you have set a&nbsp;new&nbsp;password.",
 		"checkboxLabel": "I understand that Blip does not store backups of my account keys, and I will lose access to them by clearing my account data.",
-		"btn": "Clear Blip Data"
+		"btn": "Clear Blip Data",
+		"loading": " "
 	},
 	"global": {
 		"loading": "Loading data"
