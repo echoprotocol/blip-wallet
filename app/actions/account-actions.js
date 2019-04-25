@@ -236,7 +236,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
 
 			if (!accountId) {
-				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'This WIF does not exist'));
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
 				return false;
 			}
 
@@ -249,7 +249,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			const account = await Services.getEcho().api.getObject(accountId);
 
 			if (account.name !== accountName) {
-				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Account name and WIF does not match'));
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'This WIF does not exist'));
 				return false;
 			}
 
@@ -272,7 +272,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
 
 			if (!accountId) {
-				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'This WIF does not exist'));
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
 				return false;
 			}
 

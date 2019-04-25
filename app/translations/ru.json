@@ -51,8 +51,8 @@
                 "WIF should not be empty": "WIF не должен быть пустым",
                 "WIF must be 8 characters or more": "Длина WIF должны быть больше 8 символов",
                 "Connection error": "Ошибка соединения",
+                "Invalid WIF": "Невалидный WIF ",
                 "This WIF does not exist": "Такой WIF не существует",
-                "Account name and WIF does not match": "Имя учетной записи и WIF не совпадают",
                 "WIF already added": "Этот WIF уже добавлен",
                 "WIF is not active key.": "WIF не является active ключём",
                 "This account does not exist": "Такого аккаунта не существует"
