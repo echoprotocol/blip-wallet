@@ -104,6 +104,7 @@
 		"placeholder": "Enter Password",
 		"button": "Unlock",
 		"link": "Forgot password?",
+		"loading": " ",
 		"error": {
 			"Please, enter correct password": "Please, enter correct password"
 		}

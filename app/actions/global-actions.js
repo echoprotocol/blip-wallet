@@ -125,31 +125,42 @@ export const createDB = (form, password) => async (dispatch) => {
  * 	@param {String} password
  */
 export const validateUnlock = (form, password) => async (dispatch) => {
-	try {
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'unlock.loading' }));
+
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseValidateUnlock = new Promise(async (resolve) => {
 		dispatch(setValueToForm(form, 'loading', true));
 
 		const userStorage = Services.getUserStorage();
 		const doesDBExist = await userStorage.doesDBExist();
 
-		if (!doesDBExist) { return false; }
+		if (!doesDBExist) {
+			return resolve({ result: false, action: null });
+		}
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		const correctPassword = await userStorage.isMasterPassword(password);
 
 		if (correctPassword) {
-
 			await dispatch(initAccounts());
-
-			return true;
+			return resolve({ result: true });
 		}
-		dispatch(setValueToForm(form, 'error', 'Please, enter correct password'));
-		return false;
+
+		return resolve({ result: false, action: () => dispatch(setValueToForm(form, 'error', 'Please, enter correct password')) });
+	});
+
+	try {
+		const resultValidateUnlock = await Promise.all([promiseValidateUnlock, promiseLoader]);
+		if (!resultValidateUnlock[0].result && resultValidateUnlock[0].action) {
+			resultValidateUnlock[0].action();
+		}
+		return resultValidateUnlock[0].result;
 	} catch (err) {
 		console.error(err);
 		return false;
 	} finally {
 		dispatch(setValueToForm(form, 'loading', false));
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
-
 };
 
 export const lockApp = () => async (dispatch, getState) => {
