@@ -66,6 +66,18 @@
 				"Each account segment should be longer.": "Each account segment should be longer.",
 				"Account already exists": "Account already exists",
 				"Connection error": "Connection error"
+			},
+			"registrator": {
+				"title": "Registration type",
+				"public": {
+					"title": "Public registrator",
+					"hint": "Registration is free, but delegation to participate in the consensus will be granted to the account that will register a new one."
+				},
+				"account": {
+					"title": "Register with an existing account",
+					"hint1": "will be charged upon new account creation from the following account:",
+					"hint2": "A small fee will be charged upon new account creation from one of your Blip accounts. Please, make sure that you have a positive balance at one of the accounts attached to Blip."
+				}
 			}
 
 		},

@@ -5,11 +5,17 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
+import { CACHE_MAPS } from 'echojs-lib';
+import Immutable from 'immutable';
 
 import Registrator from './registrator';
 import { FORM_SIGN_UP } from '../../constants/form-constants';
-import { clearForm, setFormValue, toggleLoading } from '../../actions/form-actions';
+import {
+	clearForm, setFormValue, toggleLoading, setInValue,
+} from '../../actions/form-actions';
 import { registerAccount, validateCreateAccount } from '../../actions/account-actions';
+import { loadRegistrators, changeRegistratorAccount } from '../../actions/auth-actions';
 import ValidateAccountHelper from '../../helpers/validate-account-helper';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 import Avatar from '../../components/avatar';
@@ -30,6 +36,10 @@ class CreateAccount extends React.Component {
 
 	componentDidMount() {
 		this.nameInput.focus();
+
+		if (this.props.accounts.size) {
+			this.props.loadRegistrators();
+		}
 	}
 
 	componentWillUnmount() {
@@ -98,9 +108,14 @@ class CreateAccount extends React.Component {
 			&& !form.get('loading');
 	}
 
+	selectAccount(id, name) {
+		this.nameInput.focus();
+		this.props.changeRegistratorAccount(id, name);
+	}
+
 	render() {
 		const {
-			error, isVisible, form, intl,
+			error, isVisible, form, intl, accounts, registrators,
 		} = this.props;
 		const {
 			hint1, hint2, hint3, hint4,
@@ -114,7 +129,17 @@ class CreateAccount extends React.Component {
 
 			<div className="form-content">
 				<div className="lines">
-					{false && <Registrator isVisible={isVisible} />}
+					{
+						accounts.size ? (
+							<Registrator
+								isVisible={isVisible}
+								registrators={registrators}
+								form={form.get('registrator')}
+								changeRegistrator={(id, name) => this.selectAccount(id, name)}
+								setIn={this.props.setInValue}
+							/>
+						) : null
+					}
 					<Animated
 						className="line"
 						animationIn="fadeInRight"
@@ -213,11 +238,16 @@ class CreateAccount extends React.Component {
 CreateAccount.propTypes = {
 	error: PropTypes.bool,
 	form: PropTypes.object.isRequired,
+	accounts: PropTypes.object.isRequired,
+	registrators: PropTypes.object.isRequired,
 	intl: intlShape.isRequired,
 	goForward: PropTypes.func.isRequired,
 	setFormValue: PropTypes.func.isRequired,
 	toggleLoading: PropTypes.func.isRequired,
 	registerAccount: PropTypes.func.isRequired,
+	loadRegistrators: PropTypes.func.isRequired,
+	changeRegistratorAccount: PropTypes.func.isRequired,
+	setInValue: PropTypes.func.isRequired,
 	clearForm: PropTypes.func.isRequired,
 	validateAccount: PropTypes.func.isRequired,
 	isVisible: PropTypes.bool.isRequired,
@@ -227,9 +257,31 @@ CreateAccount.defaultProps = {
 	error: false,
 };
 
+
+const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
+
+const positiveBalanceAccounts = createImmutableSelector(
+	(state) => state.global.get('accounts'),
+	(state) => state.echoCache.get(CACHE_MAPS.FULL_ACCOUNTS),
+	(state) => state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
+	(accounts, fullAccounts, objectsById) => accounts.filter((name, id) => {
+		const account = fullAccounts.get(id);
+
+		if (!account || !account.get('balances') || account.get('id') !== account.get('lifetime_referrer')) {
+			return false;
+		}
+
+		return account.get('balances').find(
+			(stats, assetId) => objectsById.getIn([stats, 'balance']) && objectsById.get(assetId),
+		);
+	}),
+);
+
 export default injectIntl(connect(
 	(state) => ({
 		form: state.form.get(FORM_SIGN_UP),
+		accounts: state.global.get('accounts'),
+		registrators: positiveBalanceAccounts(state),
 	}),
 	(dispatch) => ({
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_SIGN_UP, field, value)),
@@ -237,5 +289,8 @@ export default injectIntl(connect(
 		registerAccount: () => dispatch(registerAccount()),
 		clearForm: () => dispatch(clearForm(FORM_SIGN_UP)),
 		validateAccount: (form, name) => dispatch(validateCreateAccount(form, name)),
+		loadRegistrators: () => dispatch(loadRegistrators()),
+		changeRegistratorAccount: (id, name) => dispatch(changeRegistratorAccount(id, name)),
+		setInValue: (field, params) => dispatch(setInValue(FORM_SIGN_UP, field, params)),
 	}),
 )(CreateAccount));

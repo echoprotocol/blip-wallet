@@ -23,6 +23,11 @@ const DEFAULT_FORM_FIELDS = {
 			value: '',
 			error: null,
 		},
+		registrator: {
+			public: true,
+			account: null,
+			fee: null,
+		},
 	}),
 	[FORM_SIGN_IN]: Map({
 		accountNameError: '',

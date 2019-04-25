@@ -31,6 +31,7 @@ export const EXPLORER_URL = {
 export const ECHO_ASSET_ID = '1.3.0';
 export const ECHO_ASSET_PRECISION = 5;
 export const ECHO_ASSET_SYMBOL = 'ECHO';
+export const ECHO_PROXY_TO_SELF_ACCOUNT = '1.2.5';
 
 export const DISCONNECT_STATUS = 'disconnect';
 export const CONNECT_STATUS = 'connect';

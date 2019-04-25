@@ -131,3 +131,15 @@ export const setLastTransaction = () => async (dispatch, getState) => {
 
 	dispatch(set('transaction', transaction));
 };
+
+/**
+ * Get transaction fee
+ * @returns {Function}
+ */
+export const getOperationFee = async (type, transaction) => {
+	let tr = Services.getEcho().api.createTransaction();
+	tr = tr.addOperation(type, transaction);
+	tr = await tr.setRequiredFees();
+
+	return tr.operations[0][1].fee.amount;
+};

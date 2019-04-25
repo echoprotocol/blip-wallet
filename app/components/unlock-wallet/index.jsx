@@ -274,6 +274,6 @@ export default withRouter(injectIntl(connect(
 		unlockWallet: (value) => dispatch(setValue('locked', value)),
 		setValueToForm: (form, value) => dispatch(setValueToForm(FORM_UNLOCK, form, value)),
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
-		clearForm: () => dispatch(clearForm()),
+		clearForm: () => dispatch(clearForm(FORM_UNLOCK)),
 	}),
 )(UnlockWallet)));
