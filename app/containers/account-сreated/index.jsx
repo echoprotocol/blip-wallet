@@ -9,7 +9,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { withRouter } from 'react-router';
 
 import { startAnimation } from '../../actions/animation-actions';
-import { ACCOUNT_CREATED, SELECT_LANGUAGE } from '../../constants/routes-constants';
+import { ACCOUNT_CREATED, WALLET } from '../../constants/routes-constants';
 import Avatar from '../../components/avatar';
 
 class AccountCreated extends React.Component {
@@ -59,7 +59,7 @@ class AccountCreated extends React.Component {
 						</p>
 						<Button
 							className="btn-primary arrow"
-							onClick={() => history.push(SELECT_LANGUAGE)}
+							onClick={() => history.push(WALLET)}
 							content={(
 								<React.Fragment>
 									<div className="text"><FormattedMessage id="account.created.button" /></div>

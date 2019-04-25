@@ -10,6 +10,7 @@ import GlobalReducer from '../reducers/global-reducer';
 
 import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
+import { TIME_LOADING } from '../constants/global-constants';
 
 /**
  * @method validateCreateAccount
@@ -78,19 +79,17 @@ const addAccount = (id, name) => async (dispatch, getState) => {
  * Account registration
  */
 export const registerAccount = () => async (dispatch, getState) => {
-
-	const accountName = getState().form.getIn([FORM_SIGN_UP, 'accountName']);
-
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.create.loading' }));
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseRegisterAccount = new Promise(async (resolve) => {
+		const accountName = getState().form.getIn([FORM_SIGN_UP, 'accountName']);
 
-	if (!Services.getEcho().isConnected) {
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Connection error'));
-		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+		if (!Services.getEcho().isConnected) {
+			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Connection error'));
+			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 
-		return false;
-	}
-
-	try {
+			return resolve(false);
+		}
 
 		const wif = CryptoService.generateWIF();
 
@@ -108,7 +107,13 @@ export const registerAccount = () => async (dispatch, getState) => {
 		await userStorage.addAccount(Account.create(accountData.id, accountName.value));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
-		return { wif, accountName: accountName.value };
+		return resolve({ wif, accountName: accountName.value });
+	});
+
+
+	try {
+		const resultRegisterAccount = await Promise.all([promiseRegisterAccount, promiseLoader]);
+		return resultRegisterAccount[0];
 	} catch (err) {
 		dispatch(setFormError(FORM_SIGN_UP, 'accountName', err.message || err));
 
