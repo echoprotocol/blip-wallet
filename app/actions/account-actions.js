@@ -145,7 +145,7 @@ export const registerAccount = () => async (dispatch, getState) => {
 
 			if (BN(fee).gt(balance.amount)) {
 				dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Insufficient funds'));
-				return false;
+				return resolve(false);
 			}
 
 			const tx = Services.getEcho().api.createTransaction();
