@@ -17,10 +17,6 @@
 		&.left {
 			padding: 0 2em 0 3.3em;
 		}
-
-		&.right {
-			padding: 0 3.3em 0 2em;
-		}
 	}
 
 	.arrow-right {
@@ -304,9 +300,6 @@
 	@include btn();
 	@include onBtnFocus(50px, 2px, 4px, rgba(#43d7ad, 0.45));
 	@include source-semibold();
-	@include min-vw(1400) {
-		height: 56px;
-	}
 	align-items: center;
 	display: flex;
 	height: 38px;
@@ -341,7 +334,6 @@
 
 .btn-settings {
 	@include btn();
-
 	@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
 	position: relative;
 	padding: 0;
@@ -349,15 +341,33 @@
 	background-color: transparent;
 }
 
+.btn-close {
+	@include btn();
+	@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
+	@include iconmoon();
+	width: 34px;
+	height: 34px;
+	border: 0;
+	background-color: transparent;
+	color: #afa5cc;
+
+	&:after {
+		content: '\e903';
+		font-size: 18px;
+	}
+}
+
 .btn-inversed {
 	@include onBtnFocus(24px, 2px, 4px, rgba(#7158ad, 1));
 	@include source-semibold();
+	height: 38px;
 	padding: 6px 16px;
 	border: 2px solid #d9c7fd;
 	border-radius: 24px;
 	background-color: transparent;
 	color: #d9c7fd;
 	font-size: 1.5em;
+	line-height: 0;
 	white-space: nowrap;
 }
 

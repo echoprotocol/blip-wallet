@@ -1,0 +1,58 @@
+.sidebar-settings {
+	@include min-vw(1000) {
+		width: 480px;
+	}
+	@include min-vw(1400) {
+		width: 520px;
+	}
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 100%;
+	width: 420px;
+	height: 100%;
+	border-right: 1px solid #4d4175;
+	background-color: #5e4b98;
+
+	.head {
+		height: 60px;
+		padding: 22px 30px 0;
+
+		.btn-inversed {
+			padding: 0 30px;
+		}
+
+		.btn-close {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+		}
+	}
+
+	.body {
+		height: calc(100vh - 138px);
+		padding: 40px 30px 0
+	}
+
+	.footer {
+		padding: 0 30px 22px;
+	}
+
+	&.filter {
+		.body {
+			.field {
+				margin-bottom: 24px;
+			}
+		}
+
+		.footer {
+			.btn-primary {
+				@include min-vw(1400) {
+					padding: 0 60px;
+				}
+				padding: 0 30px;
+			}
+		}
+	}
+
+}

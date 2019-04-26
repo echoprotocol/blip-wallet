@@ -17,10 +17,6 @@
 		width: 100vw;
 		min-height: 100vh;
 		background-color: #f1f1f1;
-
-		&:not(.wallet) {
-			overflow: hidden;
-		}
 	}
 }
 
@@ -36,9 +32,4 @@
 			background-color: transparent;
 		}
 	}
-}
-
-.page-scroll {
-	position: relative;
-	height: 100vh;
 }

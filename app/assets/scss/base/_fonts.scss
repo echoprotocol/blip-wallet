@@ -1,4 +1,5 @@
 $source: '../fonts/SourceSansPro' !default;
+$heebo: '../fonts/heebo' !default;
 $icomoon: '../fonts/Icomoon' !default;
 
 // SourceSansPro Regular
@@ -49,4 +50,24 @@ $icomoon: '../fonts/Icomoon' !default;
 	url('#{$icomoon}/icomoon.ttf?e11wn4') format('truetype'),
 	url('#{$icomoon}/icomoon.woff?e11wn4') format('woff'),
 	url('#{$icomoon}/icomoon.svg?e11wn4#icomoon') format('svg');
+}
+
+
+// Heebo Regular
+@font-face {
+	font-family: 'heebo-regular';
+	font-style: normal;
+	font-weight: normal;
+	src: url('#{$heebo}/regular/heebo.eot');
+	src: url('#{$heebo}/regular/heebo.woff2') format('woff2'),
+	url('#{$heebo}/regular/heebo.woff') format('woff'),
+	url('#{$heebo}/regular/heebo.ttf') format('truetype'),
+	url('#{$heebo}/regular/heebo.svg#heebo')
+	format('svg');
+}
+
+@mixin heebo-regular {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-family: 'heebo-regular';
 }

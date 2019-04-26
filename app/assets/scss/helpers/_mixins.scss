@@ -68,7 +68,22 @@
 		}
 	}
 }
+@mixin onIconFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
+	@include hardware-accel();
+	position: relative;
 
+	&:after {
+		content: '';
+		position: absolute;
+		top: -($outerBorderWidth + $innerBorderWidth);
+		right: -($outerBorderWidth + $innerBorderWidth);
+		bottom: -($outerBorderWidth + $innerBorderWidth);
+		left: -($outerBorderWidth + $innerBorderWidth);
+		border: $outerBorderWidth solid $color;
+		border-radius: $angular + 2px;
+		transition: border-color $speed;
+	}
+}
 @mixin onCheckboxFocus($color) {
 	@include hardware-accel();
 	box-shadow:
@@ -113,3 +128,18 @@
 		background-size: cover;
 	}
 }
+
+@mixin iconmoon() {
+	display: inline-block;
+	font-family: 'icomoon' !important;
+	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1;
+	text-transform: none;
+	speak: none;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+};

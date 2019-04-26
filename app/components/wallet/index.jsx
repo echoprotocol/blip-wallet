@@ -193,12 +193,12 @@ class Wallet extends React.Component {
 			<div
 				className={
 					classnames(
-						'wallet-page-wrap',
+						'page-wrap',
 						{ open: showSettings },
 					)
 				}
 			>
-				<div className="wallet page">
+				<div className="page">
 					<PerfectScrollbar className="page-scroll">
 						<div className="wallet-wrap">
 							<div className="title"><FormattedMessage id="wallet.balance" /></div>
@@ -225,7 +225,7 @@ class Wallet extends React.Component {
 						</div>
 					</PerfectScrollbar>
 
-					<div className="wallet-footer">
+					<div className="page-footer">
 						<LastTransaction transaction={transaction} language={language} accounts={accounts} />
 						<div className="footer-actions">
 							<div className="btn-wrap btns-2">

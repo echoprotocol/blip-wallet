@@ -7,6 +7,21 @@
 	}
 }
 
+.dropdown-wrap {
+	.dropdown-label {
+		@include source-regular();
+		@include min-vw(1400) {
+			font-size: 16px;
+			line-height: 22px;
+		}
+		margin-bottom: 0.8em;
+		color: #afa5cc;
+		font-size: 14px;
+		letter-spacing: 0;
+		line-height: 20px;
+	}
+}
+
 .dropdown-toggle {
 	@include min-vw(1400) {
 		height: 60px;

@@ -1,3 +1,39 @@
+.page-wrap {
+	overflow: hidden;
+
+	.page {
+		flex-direction: column;
+		display: flex;
+		height: 100vh;
+		transition: transform 0.2s;
+
+		.title {
+			@include source-semibold();
+			color: #33353f;
+			font-size: 1.3em;
+			text-transform: uppercase;
+		}
+	}
+
+	&.open {
+		.page {
+			@include min-vw(1000) {
+				transform: translateX(-480px);
+			}
+			@include min-vw(1400) {
+				transform: translateX(-520px);
+			}
+			transform: translateX(-420px);
+		}
+	}
+}
+
+.page-scroll {
+	flex: 1;
+	position: relative;
+	height: 100vh;
+}
+
 .page-in-scroll {
 	position: relative;
 	height: 100vh;

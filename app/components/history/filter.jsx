@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
-import { Animated } from 'react-animated-css';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import MultiDropdown from '../multi-dropdown';
+import AccountsMultiDropdown from '../accounts-multi-dropdown';
+import TransactionsMultiDropdown from '../transition-multi-dropdown';
+
 
 import { ASSET_TYPE } from '../../constants/transaction-constants';
 
@@ -56,38 +58,36 @@ class Filter extends React.Component {
 	}
 
 	render() {
-		const { filter } = this.props;
+		// const { filter } = this.props;
 
 		return (
-			<div className="wallet-settings">
-				<div className="settings-tabs">
-					<PerfectScrollbar className="segment tab accounts-filter">
-						<Animated isVisible animationIn="fadeIn">
-							<div className="select-accounts">
-								<div className="title">ASSETS/TOKENS</div>
-								<div className="accounts-list">
-									{filter.get('coins') && filter.get('coins').map((coin, i) => this.renderCoin(coin, i))}
-								</div>
-							</div>
-							<div className="select-accounts">
-								<div className="title">OPERATION TYPES</div>
-								<div className="accounts-list">
-									{filter.get('types') && filter.get('types').map((type, i) => this.renderOperation(type, i))}
-								</div>
-							</div>
-							<div className="select-accounts">
-								<div className="title">ACCOUNTS</div>
-								<div className="accounts-list">
-									{filter.get('accounts') && filter.get('accounts').map((account, i) => this.renderAccount(account, i))}
-								</div>
-							</div>
-						</Animated>
-					</PerfectScrollbar>
-					<Animated isVisible animationIn="fadeIn" className="segment action">
-						<Button className="btn-primary">
-							<span className="text">Reset filters</span>
-						</Button>
-					</Animated>
+			<div className="sidebar-settings filter">
+				<div className="head">
+					<Button className="btn-inversed">
+						<span className="text">Set to default</span>
+					</Button>
+					<Button className="btn-close" />
+				</div>
+				<div className="body">
+					<div className="field">
+						<AccountsMultiDropdown label="Accounts" />
+					</div>
+					<div className="field">
+						<TransactionsMultiDropdown label="Transaction type" />
+					</div>
+					<div className="field">
+						<MultiDropdown label="Asset" />
+					</div>
+					{/*
+						{filter.get('coins') && filter.get('coins').map((coin, i) => this.renderCoin(coin, i))}
+						{filter.get('types') && filter.get('types').map((type, i) => this.renderOperation(type, i))}
+						{filter.get('accounts') && filter.get('accounts').map((account, i) => this.renderAccount(account, i))}
+					*/}
+				</div>
+				<div className="footer">
+					<Button className="btn-primary">
+						<span className="text">Apply & close</span>
+					</Button>
 				</div>
 			</div>
 		);
@@ -96,7 +96,7 @@ class Filter extends React.Component {
 }
 
 Filter.propTypes = {
-	filter: PropTypes.object.isRequired,
+	// filter: PropTypes.object.isRequired,
 	toggleChecked: PropTypes.func.isRequired,
 };
 

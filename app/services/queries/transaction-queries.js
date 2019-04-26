@@ -4,7 +4,7 @@ import client from '../graphql';
 
 export const getHistoryByAccounts = (accounts, assets, tokens, operations) => {
 	const GET_HISTORY = gql`
-	query($accounts: [AccountId!]!, $assets: [String!], $tokens: [ContractId!], $operations: [OperationIdType!]) {
+	query($accounts: [AccountId!]!, $assets: [AssetId!], $tokens: [ContractId!], $operations: [OperationIdEnum!]) {
 		getHistory(from: $accounts, assets: $assets, tokens: $tokens, operations: $operations) {
 			items {
 				id,
@@ -31,7 +31,6 @@ export const getCoinsByAccounts = (accounts) => {
 	query($accounts: [AccountId!]!) {
 		getBalances(accounts: $accounts) {
 			type,
-			asset,
 			contract {
 				id,
 				token {
