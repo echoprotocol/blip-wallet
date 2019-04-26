@@ -65,8 +65,6 @@ class CreateAccount extends React.Component {
 
 		const hints = ValidateAccountHelper.accountNameHints(value);
 
-		this.setState(hints);
-
 		if (Object.values(hints).every((hint) => hint === 'active')) {
 			toggle('loading', true);
 			this.setState({
@@ -77,6 +75,8 @@ class CreateAccount extends React.Component {
 		} else {
 			toggle('loading', false);
 		}
+
+		setTimeout(() => this.setState(hints), 300);
 	}
 
 	async onCreate() {
@@ -180,9 +180,7 @@ class CreateAccount extends React.Component {
 									<div className={`hint ${hint4}`}><FormattedMessage id="account.create.hint4" /></div>
 								</div>
 							</div>
-
 						</div>
-
 					</Animated>
 					<Animated
 						className="line"
@@ -196,8 +194,17 @@ class CreateAccount extends React.Component {
 							<span className="line-label-text"><FormattedMessage id="account.create.avatar" /></span>
 						</div>
 						<div className="line-content">
-							<div className="avatar-box">
-								<Avatar accountName={isSuccess ? form.get('accountName').value : ''} />
+							<div className={
+								classnames('avatar-box',
+									{ fadeOut: !isSuccess && form.get('accountName').value.length },
+									{ visible: form.get('accountName').error })
+							}
+							>
+								<Avatar
+									reset={!form.get('accountName').value.length}
+									loading={form.get('loading')}
+									accountName={isSuccess ? form.get('accountName').value : ''}
+								/>
 								<div className="avatar-desciption">
 									<FormattedMessage id="account.create.avatar.description" />
 								</div>
@@ -243,7 +250,6 @@ CreateAccount.propTypes = {
 	intl: intlShape.isRequired,
 	goForward: PropTypes.func.isRequired,
 	setFormValue: PropTypes.func.isRequired,
-	toggleLoading: PropTypes.func.isRequired,
 	registerAccount: PropTypes.func.isRequired,
 	loadRegistrators: PropTypes.func.isRequired,
 	changeRegistratorAccount: PropTypes.func.isRequired,
@@ -251,6 +257,7 @@ CreateAccount.propTypes = {
 	clearForm: PropTypes.func.isRequired,
 	validateAccount: PropTypes.func.isRequired,
 	isVisible: PropTypes.bool.isRequired,
+	toggleLoading: PropTypes.func.isRequired,
 };
 
 CreateAccount.defaultProps = {
@@ -285,10 +292,10 @@ export default injectIntl(connect(
 	}),
 	(dispatch) => ({
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_SIGN_UP, field, value)),
-		toggleLoading: (field, value) => dispatch(toggleLoading(FORM_SIGN_UP, field, value)),
 		registerAccount: () => dispatch(registerAccount()),
 		clearForm: () => dispatch(clearForm(FORM_SIGN_UP)),
 		validateAccount: (form, name) => dispatch(validateCreateAccount(form, name)),
+		toggleLoading: (field, value) => dispatch(toggleLoading(FORM_SIGN_UP, field, value)),
 		loadRegistrators: () => dispatch(loadRegistrators()),
 		changeRegistratorAccount: (id, name) => dispatch(changeRegistratorAccount(id, name)),
 		setInValue: (field, params) => dispatch(setInValue(FORM_SIGN_UP, field, params)),

@@ -68,7 +68,6 @@ export default createModule({
 		setFormValue: {
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.form, 'error'], null);
-
 				const field = state.getIn([payload.form, payload.field]);
 
 				state = state.setIn([payload.form, payload.field], Object.assign({}, field, {

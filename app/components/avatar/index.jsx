@@ -7,12 +7,15 @@ import avatar from '../../assets/images/default-avatar.svg';
 
 class Avatar extends React.Component {
 
+	static updateAccountName(props) {
+		return { accountName: props.accountName };
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			avatarSize: null,
-			timeout: null,
 			accountName: '',
 		};
 
@@ -21,30 +24,28 @@ class Avatar extends React.Component {
 
 	componentDidMount() {
 		this.updateAvatarSize();
-		this.updateAccountName();
 		window.addEventListener('resize', this.listener);
 		window.addEventListener('load', this.listener);
 	}
 
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.listener);
-	}
-
-	getSnapshotBeforeUpdate(prevProps) {
-		const { timeout } = this.state;
-		const { accountName } = this.props;
-
-		if (prevProps.accountName !== accountName) {
-			clearTimeout(timeout);
-			this.setState({ timeout: setTimeout(() => this.updateAccountName(), 300) });
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { accountName } = prevState;
+		const { reset } = nextProps;
+		if (accountName !== nextProps.accountName || (nextProps.reset && !reset)) {
+			return Avatar.updateAccountName(nextProps);
 		}
-
 		return null;
 	}
 
-	updateAccountName() {
-		this.setState({ accountName: this.props.accountName });
+	shouldComponentUpdate(nextProps) {
+		if (nextProps.reset) return true;
+		if (nextProps.loading) return false;
+		if (this.state.accountName === nextProps.accountName) return false;
+		return true;
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.listener);
 	}
 
 	updateAvatarSize() {
@@ -74,11 +75,15 @@ class Avatar extends React.Component {
 Avatar.propTypes = {
 	accountName: PropTypes.string,
 	round: PropTypes.bool,
+	loading: PropTypes.bool,
+	reset: PropTypes.bool,
 };
 
 Avatar.defaultProps = {
 	accountName: '',
 	round: false,
+	loading: false,
+	reset: false,
 };
 
 export default Avatar;
