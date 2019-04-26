@@ -10,6 +10,12 @@ export const OPTION_TYPES = {
 	STRING: 'string',
 };
 
+export const TRANSFER_KEYS = {
+	transfer: 'from',
+	contract: 'registrar',
+	48: 'registrar',
+};
+
 export const OPERATIONS = {
 	transfer: {
 		value: OPERATIONS_IDS.TRANSFER,

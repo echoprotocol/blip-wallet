@@ -7,6 +7,7 @@ import {
 	FORM_CREATE_PASSWORD,
 	FORM_UNLOCK,
 	FORM_SIGN_UP,
+	FORM_SEND,
 } from '../constants/form-constants';
 
 const DEFAULT_FIELDS = Map({
@@ -33,6 +34,31 @@ const DEFAULT_FORM_FIELDS = {
 		accountNameError: '',
 		wifError: '',
 	}),
+	[FORM_SEND]: Map({
+		from: {
+			value: '',
+			error: null,
+		},
+		to: {
+			value: '',
+			error: null,
+		},
+		isCheckLoading: false,
+		amount: {
+			value: '',
+			error: null,
+		},
+		fee: {
+			value: '',
+			error: null,
+		},
+		selectedBalance: '',
+		selectedFeeBalance: '',
+		minAmount: {
+			amount: '',
+			symbol: '',
+		},
+	}),
 };
 
 export default createModule({
@@ -42,6 +68,7 @@ export default createModule({
 		[FORM_UNLOCK]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_UNLOCK]),
 		[FORM_SIGN_UP]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_UP]),
 		[FORM_SIGN_IN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_IN]),
+		[FORM_SEND]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SEND]),
 	}),
 	transformations: {
 		set: {

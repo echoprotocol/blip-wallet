@@ -6,6 +6,7 @@ import { CACHE_MAPS } from 'echojs-lib';
 import {
 	toggleVisibiltyAsset,
 	initHiddenAssets,
+	initTokens,
 	saveSelectedAccounts,
 	updateBalance,
 } from '../../actions/balance-actions';
@@ -69,5 +70,6 @@ export default connect(
 		saveSelectedAccounts: (accounts) => dispatch(saveSelectedAccounts(accounts)),
 		toggleVisibiltyAsset: (idAsset, idNetwork) => dispatch(toggleVisibiltyAsset(idAsset, idNetwork)),
 		initHiddenAssets: () => dispatch(initHiddenAssets()),
+		updateTokens: () => dispatch(initTokens()),
 	}),
 )(Wallet);

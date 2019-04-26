@@ -3,8 +3,7 @@ import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
 import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
-// import { TOKEN_TYPE } from '../constants/graphql-constants';
-// import FormatHelper from '../helpers/format-helper';
+import { TOKEN_TYPE } from '../constants/graphql-constants';
 
 /**
  *  @method setValue
@@ -42,7 +41,7 @@ export const initTokens = () => async (dispatch, getState) => {
 		return false;
 	}
 
-	dispatch(setValue('tokens', fromJS(tokens.data.getBalances)));
+	dispatch(setValue('tokens', fromJS(tokens.data.getBalances.filter((t) => t.type === TOKEN_TYPE))));
 
 	return true;
 };

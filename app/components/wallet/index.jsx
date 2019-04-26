@@ -10,6 +10,7 @@ import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import LastTransaction from './last-transaction';
+import { SEND } from '../../constants/routes-constants';
 import { TOKEN_TYPE } from '../../constants/graphql-constants';
 
 class Wallet extends React.Component {
@@ -24,6 +25,7 @@ class Wallet extends React.Component {
 	componentDidMount() {
 		this.updateLastTransaction();
 		this.props.initHiddenAssets();
+		this.props.updateTokens();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -311,6 +313,7 @@ class Wallet extends React.Component {
 									content={
 										<span className="text"><FormattedMessage id="wallet.send" /></span>
 									}
+									onClick={() => this.props.history.push(SEND)}
 								/>
 								<Button
 									className="btn-gray"
@@ -364,12 +367,14 @@ Wallet.propTypes = {
 	transaction: PropTypes.object.isRequired,
 	histories: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 	tokens: PropTypes.object.isRequired,
 	currentNode: PropTypes.string.isRequired,
 	setTransaction: PropTypes.func.isRequired,
 	updateBalance: PropTypes.func.isRequired,
 	saveSelectedAccounts: PropTypes.func.isRequired,
 	initHiddenAssets: PropTypes.func.isRequired,
+	updateTokens: PropTypes.func.isRequired,
 	toggleVisibiltyAsset: PropTypes.func.isRequired,
 };
 

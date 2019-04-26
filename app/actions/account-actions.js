@@ -5,7 +5,13 @@ import BN from 'bignumber.js';
 import Services from '../services';
 import CryptoService from '../services/crypto-service';
 import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
-import { ECHO_PROXY_TO_SELF_ACCOUNT, ECHO_ASSET_ID, TIME_LOADING } from '../constants/global-constants';
+import {
+	ECHO_PROXY_TO_SELF_ACCOUNT,
+	ECHO_ASSET_ID,
+	TIME_LOADING,
+	GLOBAL_ID_1,
+	EXPIRATION_INFELICITY,
+} from '../constants/global-constants';
 import { setFormError, toggleLoading, setValue } from './form-actions';
 import { setValue as setValueGlobal } from './global-actions';
 import { getOperationFee } from './transaction-actions';
@@ -150,6 +156,13 @@ export const registerAccount = () => async (dispatch, getState) => {
 
 			const tx = Services.getEcho().api.createTransaction();
 			tx.addOperation(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+
+			const dynamicGlobalChainData = await Services.getEcho().api.getObject(GLOBAL_ID_1, true);
+
+			const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
+
+			tx.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
+
 			await signTransaction(account, tx);
 			await tx.broadcast();
 		}

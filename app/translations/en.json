@@ -344,5 +344,21 @@
 			"from": "From",
 			"subject": "To"
 		}
+	},
+
+	"send": {
+		"loading": "Transaction in processing",
+		"title": "SEND TRANSACTION",
+		"button": "Send transaction",
+		"from": "From",
+		"to": "To",
+		"to.placeholder": "Receiver",
+		"amount": "Amount",
+		"amount.title": "Minimal amount is",
+		"fee": "Fee",
+		"fee.title": "Generated automatically based on amount",
+		"dropdown.input.placeholder": "Asset or token name",
+		"dropdown.assets": "Assets",
+		"dropdown.tokens": "Tokens"
 	}
 }
