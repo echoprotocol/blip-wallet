@@ -1,5 +1,5 @@
 import { createModule } from 'redux-modules';
-import { Map, List, Set } from 'immutable';
+import { Map, List } from 'immutable';
 
 const DEFAULT_FIELDS = Map({
 	balances: new Map({}),
@@ -13,7 +13,8 @@ const DEFAULT_FIELDS = Map({
 			accounts: null,
 		}),
 	}),
-	hiddenAssets: new Set(),
+	tokens: new List([]),
+	hiddenAssets: new Map({}),
 });
 
 export default createModule({

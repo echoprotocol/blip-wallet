@@ -3,7 +3,6 @@ export const ACCOUNT_CREATED = '/account-created';
 export const ACCOUNT_IMPORTED = '/account-imported';
 export const CREATE_PASSWORD = '/create-password';
 export const RESTORE_PASSWORD = '/restore-password';
-export const SELECT_LANGUAGE = '/select-language';
 export const WALLET = '/wallet';
 export const HISTORY = '/history';
 export const SEND = '/send';
@@ -14,7 +13,7 @@ export const INDEX_ROUTE = '/';
 export const PUBLIC_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
 	ACCOUNT_IMPORTED, CREATE_PASSWORD,
-	RESTORE_PASSWORD, SELECT_LANGUAGE, PAGE404,
+	RESTORE_PASSWORD, PAGE404,
 ];
 
 export const LOCKED_ROUTES = [

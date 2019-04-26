@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import Immutable from 'immutable';
+import Immutable, { Set } from 'immutable';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import { CACHE_MAPS } from 'echojs-lib';
 
 import {
-	changeVisabilityAssets,
+	toggleVisibiltyAsset,
 	initHiddenAssets,
 	saveSelectedAccounts,
 	updateBalance,
@@ -54,19 +54,20 @@ const balanceSelector = createImmutableSelector(
 export default connect(
 	(state) => ({
 		accounts: state.global.get('accounts'),
-		hiddenAssets: state.wallet.get('hiddenAssets'),
+		hiddenAssets: state.wallet.get('hiddenAssets').get(state.global.get('currentNode')) || new Set(),
 		language: state.global.get('language'),
 		currentNode: state.global.get('currentNode'),
 		balances: balanceSelector(state),
 		transaction: state.wallet.get('transaction'),
 		histories: historySelector(state),
+		tokens: state.wallet.get('tokens'),
 	}),
 
 	(dispatch) => ({
 		updateBalance: () => dispatch(updateBalance()),
 		setTransaction: () => dispatch(setLastTransaction()),
 		saveSelectedAccounts: (accounts) => dispatch(saveSelectedAccounts(accounts)),
-		changeVisabilityAssets: (value) => dispatch(changeVisabilityAssets(value)),
+		toggleVisibiltyAsset: (idAsset, idNetwork) => dispatch(toggleVisibiltyAsset(idAsset, idNetwork)),
 		initHiddenAssets: () => dispatch(initHiddenAssets()),
 	}),
 )(Wallet);

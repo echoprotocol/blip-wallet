@@ -31,6 +31,7 @@ export const EXPLORER_URL = {
 export const ECHO_ASSET_ID = '1.3.0';
 export const ECHO_ASSET_PRECISION = 5;
 export const ECHO_ASSET_SYMBOL = 'ECHO';
+export const ECHO_PROXY_TO_SELF_ACCOUNT = '1.2.5';
 
 export const DISCONNECT_STATUS = 'disconnect';
 export const CONNECT_STATUS = 'connect';
@@ -54,6 +55,7 @@ export const EN_LOCALE = 'en';
 export const RU_LOCALE = 'ru';
 
 export const LOCK_TIMEOUT = 3 * 60 * 1000; // 3 min
+export const TIME_LOADING = 1000; // 1s
 export const LOCK_TIMER_EVENTS = [
 	// 'mousemove',
 	'keydown',

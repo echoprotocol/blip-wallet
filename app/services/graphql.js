@@ -8,6 +8,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import {
 	HTTP_LINK, WS_LINK, OPERATION_DEFINITION, SUBSCRIPTION,
 } from '../constants/graphql-constants';
+import { MAX_RETRIES } from '../constants/global-constants';
 
 const cache = new InMemoryCache();
 
@@ -17,13 +18,16 @@ const wsLink = new WebSocketLink({
 	uri: WS_LINK,
 	options: {
 		reconnect: true,
+		reconnectionAttempts: MAX_RETRIES,
 	},
 });
 
 const link = split(
 	({ query }) => {
 		const { kind, operation } = getMainDefinition(query);
-		return kind === OPERATION_DEFINITION && operation === SUBSCRIPTION;
+		return (
+			kind === OPERATION_DEFINITION && operation === SUBSCRIPTION
+		);
 	},
 	wsLink,
 	httpLink,

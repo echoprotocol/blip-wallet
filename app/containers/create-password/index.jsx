@@ -21,6 +21,7 @@ class CreatePassword extends React.Component {
 		super(props);
 
 		this.state = {
+			prevFocusTarget: null,
 			showPas: false,
 			showRepeatPas: false,
 			password: '',
@@ -31,8 +32,14 @@ class CreatePassword extends React.Component {
 			hint2: '',
 			hint3: '',
 			hint4: '',
+			focused: '',
 		};
-
+		this.eye = React.createRef();
+		this.repeatPassword = React.createRef();
+		this.password = React.createRef();
+		this.onTogglePrivacy = this.onTogglePrivacy.bind(this);
+		this.changeFocusTarget = this.changeFocusTarget.bind(this);
+		this.renderPrivacyEyeBlur = this.renderPrivacyEyeBlur.bind(this);
 	}
 
 	componentWillUnmount() {
@@ -90,19 +97,39 @@ class CreatePassword extends React.Component {
 	}
 
 	onTogglePrivacy(pas, a) {
+		if (this.state.prevFocusTarget && this[this.state.prevFocusTarget.name]) {
+			this[this.state.prevFocusTarget.name].current.focus();
+		}
 		if (a) {
 			this.setState({ showPas: !pas });
 
 		} else {
 			this.setState({ showRepeatPas: !pas });
 		}
-
 	}
 
-	renderPrivacyEye(pas, a) {
+	changeFocusTarget(e) {
+		if (e.target.name === this.eye.current.props.name && this.state.prevFocusTarget && this.state.prevFocusTarget.parentNode === e.target.parentNode) {
+			this.setState((prevState) => ({ focused: prevState.prevFocusTarget.name }));
+			return;
+		}
+
+		this.setState({
+			prevFocusTarget: e.target,
+			focused: '',
+		});
+	}
+
+	renderPrivacyEyeBlur() {
+		this.setState({ focused: '' });
+	}
+
+	renderPrivacyEye(pas, isInputPassword) {
 		return (
 			<Button
 				tabIndex="-1"
+				name="eye"
+				ref={this.eye}
 				className={
 					classnames(
 						'icon-eye',
@@ -110,27 +137,31 @@ class CreatePassword extends React.Component {
 						{ disabled: !pas },
 					)
 				}
-				onClick={() => this.onTogglePrivacy(pas, a)}
+				onBlur={() => this.renderPrivacyEyeBlur()}
+				onClick={() => this.onTogglePrivacy(pas, isInputPassword)}
 			/>
 		);
 	}
 
 	render() {
 		const { error, loading, isVisible } = this.props;
-
 		const {
 			showPas, showRepeatPas,
 			hint1, hint2, hint3, hint4, repeatError,
-			password, repeatPassword, hintsError,
+			password, repeatPassword, hintsError, focused,
 		} = this.state;
 
 		return (
 
-			<div className="page">
+			<div
+				className="page"
+				role="presentation"
+				onFocus={this.changeFocusTarget}
+				onClick={this.changeFocusTarget}
+			>
 				<Header />
 				<div className="form-wrap">
 					<div className="form-content">
-
 						<Animated
 							animationIn="fadeInRightBig"
 							animationOut="fadeOutLeft"
@@ -149,11 +180,16 @@ class CreatePassword extends React.Component {
 											{(placeholder) => (
 												<Input
 													placeholder={placeholder}
-													ref={(input) => { this.nameInput = input; }}
+													ref={this.password}
 													name="password"
 													error={!!error}
 													value={password}
-													className="password pink"
+													className={
+														classnames(
+															'password pink',
+															{ focused: focused === 'password' },
+														)
+													}
 													onKeyDown={(e) => this.onKeyDown(e)}
 													disabled={loading}
 													type={showPas ? 'text' : 'password'}
@@ -189,9 +225,15 @@ class CreatePassword extends React.Component {
 												<Input
 													placeholder={placeholder}
 													error={!!repeatError}
+													ref={this.repeatPassword}
 													name="repeatPassword"
 													value={repeatPassword}
-													className="password pink"
+													className={
+														classnames(
+															'password pink',
+															{ focused: focused === 'repeatPassword' },
+														)
+													}
 													disabled={loading}
 													onKeyDown={(e) => this.onKeyDown(e)}
 													type={showRepeatPas ? 'text' : 'password'}

@@ -9,7 +9,8 @@ import blipLogo from '../../assets/images/blip-logo.svg';
 import { startAnimation } from '../../actions/animation-actions';
 import { clearWalletData } from '../../actions/global-actions';
 import {
-	RESTORE_PASSWORD, SELECT_LANGUAGE, UNLOCK,
+	CREATE_PASSWORD,
+	RESTORE_PASSWORD, UNLOCK,
 } from '../../constants/routes-constants';
 
 
@@ -39,7 +40,7 @@ class RestorePassword extends React.Component {
 	async onClearData() {
 		await this.props.clearWalletData();
 		await this.props.startAnimation(RESTORE_PASSWORD, false);
-		this.props.history.push(SELECT_LANGUAGE);
+		this.props.history.push(CREATE_PASSWORD);
 	}
 
 	async returnFunction() {

@@ -7,6 +7,8 @@ import { FormattedMessage } from 'react-intl';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import Avatar from '../avatar';
+import { TOKEN_TYPE } from '../../constants/graphql-constants';
+import FormatHelper from '../../helpers/format-helper';
 
 class Settings extends React.Component {
 
@@ -177,7 +179,7 @@ class Settings extends React.Component {
 
 	renderHiddenAssets() {
 		const { hiddenAssets, changeVisibilityAsset } = this.props;
-		let { assets } = this.props;
+		let { assets, tokens } = this.props;
 		const { activeIndex } = this.state;
 
 		if (!assets) {
@@ -185,6 +187,57 @@ class Settings extends React.Component {
 		}
 
 		assets = assets.filter((asset) => hiddenAssets.has(asset.id));
+
+		if (tokens) {
+			tokens = tokens.filter((token) => hiddenAssets.has(token.getIn(['contract', 'id'])));
+
+			const tokensArray = [];
+
+			tokens.forEach((balance) => {
+				if (
+					balance.get('type') === TOKEN_TYPE
+					&& !tokensArray.find((t) => balance.getIn(['contract', 'id']) === t.getIn(['contract', 'id']))
+				) {
+					tokensArray.push(balance);
+				}
+			});
+
+			tokens = tokensArray.map((token, id) => {
+				const key = `${id}token`;
+
+				const amounts = tokens.reduce((arr, balance) => {
+					if (balance.getIn(['contract', 'id']) === token.getIn(['contract', 'id'])) {
+						arr.push(balance.get('amount'));
+					}
+					return arr;
+				}, []);
+
+				const amount = FormatHelper.accumulateBalances(amounts);
+
+				const amountResult = FormatHelper.formatAmount(amount, parseInt(token.getIn(['contract', 'token', 'decimals']), 10));
+
+				return (
+					<div className="line" key={key}>
+						<div className="col">
+							<div className="line sub">
+								<div className="coin">{token.getIn(['contract', 'token', 'symbol'])}</div>
+								<div className="balance">{amountResult}</div>
+							</div>
+							<div className="line sub">
+								<div className="type">{`${token.getIn(['contract', 'type'])} token`}</div>
+							</div>
+						</div>
+						<div className="col">
+							<Button
+								onClick={() => changeVisibilityAsset(token.getIn(['contract', 'id']))}
+								className="btn-inversed"
+								content="Unarchive"
+							/>
+						</div>
+					</div>
+				);
+			});
+		}
 
 		return (
 			<React.Fragment>
@@ -197,12 +250,12 @@ class Settings extends React.Component {
 						<FormattedMessage id="wallet.archived" />
 					</div>
 					<div className="archive-table">
-						{assets.map((ass, key) => (
+						{assets.map((asset, key) => (
 							<div className="line" key={key.toString()}>
 								<div className="col">
 									<div className="line sub">
-										<div className="coin">{ass.symbol}</div>
-										<div className="balance">{ass.amount}</div>
+										<div className="coin">{asset.symbol}</div>
+										<div className="balance">{asset.amount}</div>
 									</div>
 									<div className="line sub">
 										<div className="type">asset</div>
@@ -210,13 +263,13 @@ class Settings extends React.Component {
 								</div>
 								<div className="col">
 									<Button
-										onClick={() => changeVisibilityAsset(ass.id)}
+										onClick={() => changeVisibilityAsset(asset.id)}
 										className="btn-inversed"
 										content="Unarchive"
 									/>
 								</div>
 							</div>
-						))}
+						)).concat(tokens)}
 					</div>
 
 				</Animated>
@@ -251,6 +304,7 @@ Settings.propTypes = {
 	open: PropTypes.bool.isRequired,
 	accounts: PropTypes.object.isRequired,
 	assets: PropTypes.array.isRequired,
+	tokens: PropTypes.any.isRequired,
 	hiddenAssets: PropTypes.object.isRequired,
 	saveSelectedAccounts: PropTypes.func.isRequired,
 	updateBalance: PropTypes.func.isRequired,

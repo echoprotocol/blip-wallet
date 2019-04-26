@@ -85,7 +85,7 @@ class Blockchain {
 
 		this.local.cache.redux.store = this.store;
 
-		this.api = this.local.api;
+		this._overrideApi(this.local);
 
 		this.remote.disconnect();
 	}
@@ -99,13 +99,18 @@ class Blockchain {
 
 		this.remote.cache.redux.store = this.store;
 
-		this.api = this.remote.api;
+		this._overrideApi(this.remote);
 
 		this.local.disconnect();
 	}
 
 	setNetworkGroup(network) {
 		this.network = network;
+	}
+
+	_overrideApi(node) {
+		this.api = node.api;
+		this.api.createTransaction = node.createTransaction.bind(node);
 	}
 
 	async _createConnection(instance, node) {
@@ -131,7 +136,7 @@ class Blockchain {
 	async _localStart(store) {
 		await this._createConnection(this.local, LOCAL_NODE);
 
-		this.api = this.local.api;
+		this._overrideApi(this.local);
 
 		this.local.subscriber.setStatusSubscribe(DISCONNECT_STATUS, () => this._localDisconnectCb());
 		this.local.subscriber.setStatusSubscribe(CONNECT_STATUS, () => this.emitter.emit('setIsConnected', this.isConnected));
@@ -142,7 +147,7 @@ class Blockchain {
 	async _remoteStart(store) {
 		await this._createConnection(this.remote, REMOTE_NODE);
 
-		this.api = this.remote.api;
+		this._overrideApi(this.remote);
 
 		this.remote.subscriber.setStatusSubscribe(DISCONNECT_STATUS, () => this._remoteDisconnectCb());
 		this.remote.subscriber.setStatusSubscribe(CONNECT_STATUS, () => this.emitter.emit('setIsConnected', this.isConnected));
@@ -163,7 +168,7 @@ class Blockchain {
 
 		this.remote.cache.removeRedux();
 
-		this.api = this.local.api;
+		this._overrideApi(this.local);
 
 		return true;
 	}
@@ -181,7 +186,7 @@ class Blockchain {
 
 		this.local.cache.removeRedux();
 
-		this.api = this.remote.api;
+		this._overrideApi(this.remote);
 
 		return true;
 	}

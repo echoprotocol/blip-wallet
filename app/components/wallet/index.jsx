@@ -10,6 +10,7 @@ import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import LastTransaction from './last-transaction';
+import { TOKEN_TYPE } from '../../constants/graphql-constants';
 
 class Wallet extends React.Component {
 
@@ -26,16 +27,11 @@ class Wallet extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { accounts, updateBalance: updBalance, histories } = this.props;
-		const { accounts: prevAccounts } = prevProps;
+		const { updateBalance, histories } = this.props;
 
 		if (!histories.equals(prevProps.histories)) {
 			this.updateLastTransaction();
-			updBalance();
-		}
-
-		if (!accounts.equals(prevAccounts)) {
-			updBalance();
+			updateBalance();
 		}
 	}
 
@@ -103,11 +99,11 @@ class Wallet extends React.Component {
 	getFraction(balance) {
 		if (balance) {
 			if (balance.split('.')[1]) {
-				return balance.split('.')[1];
+				return `.${balance.split('.')[1]}`;
 			}
 		}
 
-		return '00000';
+		return '';
 	}
 
 	sortAssets(assets) {
@@ -118,6 +114,19 @@ class Wallet extends React.Component {
 
 			if (a.symbol < b.symbol) { return -1; }
 			if (a.symbol > b.symbol) { return 1; }
+
+			return 0;
+		});
+	}
+
+	sortTokens(tokens) {
+		return tokens.sort((a, b) => {
+			if (!a || !b) {
+				return 0;
+			}
+
+			if (a.getIn(['contract', 'token', 'symbol']) < b.getIn(['contract', 'token', 'symbol'])) { return -1; }
+			if (a.getIn(['contract', 'token', 'symbol']) > b.getIn(['contract', 'token', 'symbol'])) { return 1; }
 
 			return 0;
 		});
@@ -135,12 +144,77 @@ class Wallet extends React.Component {
 		});
 	}
 
-	changeVisibilityAsset(id) {
-		this.props.changeVisabilityAssets(id);
+	changeVisibilityAsset(idAsset) {
+		const { currentNode } = this.props;
+		this.props.toggleVisibiltyAsset(idAsset, currentNode);
+	}
+
+	renderTokens() {
+		const {
+			tokens, accounts, hiddenAssets,
+		} = this.props;
+
+		if (!tokens) {
+			return null;
+		}
+
+		const tokensArray = [];
+
+		tokens.forEach((balance) => {
+			if (
+				balance.get('type') === TOKEN_TYPE
+				&& !tokensArray.find((t) => balance.getIn(['contract', 'id']) === t.getIn(['contract', 'id']))
+				&& accounts.getIn([balance.getIn(['account', 'id']), 'selected'])
+				&& !hiddenAssets.has(balance.getIn(['contract', 'id']))
+			) {
+				tokensArray.push(balance);
+			}
+		});
+
+		return this.sortTokens(tokensArray).map((token, id) => {
+			const key = `${id}token`;
+
+			const amounts = tokens.reduce((arr, balance) => {
+				if (balance.getIn(['contract', 'id']) === token.getIn(['contract', 'id']) && accounts.getIn([balance.getIn(['account', 'id']), 'selected'])) {
+					arr.push(balance.get('amount'));
+				}
+				return arr;
+			}, []);
+
+			const amount = FormatHelper.accumulateBalances(amounts);
+
+			const amountResult = FormatHelper.formatAmount(amount, parseInt(token.getIn(['contract', 'token', 'decimals']), 10));
+
+			return (
+				<div className="balance-item" key={key}>
+					<div className="balance-item-header">
+						<div className="wrap">
+							<Button
+								className="balance-item-close"
+								content={
+									<Icon className="icon-close-big" />
+								}
+								onClick={() => this.changeVisibilityAsset(token.getIn(['contract', 'id']))}
+							/>
+						</div>
+					</div>
+					<div className="line">
+						<div className="balance-title">{token.getIn(['contract', 'token', 'symbol'])}</div>
+						<div className="balance-type">{`${token.getIn(['contract', 'type'])} token`}</div>
+					</div>
+					<div className="balance">
+						<span className="integer">{amountResult ? `${amountResult.split('.')[0]}` : '0'}</span>
+						<span className="fractional">{this.getFraction(amountResult)}</span>
+					</div>
+				</div>
+			);
+		});
 	}
 
 	renderAssets() {
-		const { balances, hiddenAssets } = this.props;
+		const {
+			balances, hiddenAssets,
+		} = this.props;
 
 		let assets = this.getAssets(balances);
 
@@ -172,7 +246,7 @@ class Wallet extends React.Component {
 						<div className="balance-type">asset</div>
 					</div>
 					<div className="balance">
-						<span className="integer">{asset.amount ? `${asset.amount.split('.')[0]}.` : '0.'}</span>
+						<span className="integer">{asset.amount ? `${asset.amount.split('.')[0]}` : '0'}</span>
 						<span className="fractional">{this.getFraction(asset.amount)}</span>
 					</div>
 				</div>
@@ -182,12 +256,15 @@ class Wallet extends React.Component {
 
 	render() {
 		const {
-			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction, hiddenAssets,
+			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction, hiddenAssets, tokens: stateTokens,
 		} = this.props;
 
 		const { showSettings } = this.state;
 
 		const balance = this.getBalance(balances);
+
+		const assets = this.renderAssets();
+		const tokens = this.renderTokens();
 
 		return (
 			<div
@@ -206,7 +283,7 @@ class Wallet extends React.Component {
 								<div className="balance-info">
 									<div className="balance">
 										<span className="coins">
-											<span className="int">{balance ? `${balance.split('.')[0]}.` : '0.'}</span>
+											<span className="int">{balance ? `${balance.split('.')[0]}` : '0.'}</span>
 											<span className="fraction">{this.getFraction(balance)} </span>
 										</span>
 										<span className="currency">{ECHO_ASSET_SYMBOL}</span>
@@ -219,7 +296,7 @@ class Wallet extends React.Component {
 									</div>
 								</div>
 								<div className="balances-list">
-									{this.renderAssets()}
+									{assets ? assets.concat(tokens) : tokens}
 								</div>
 							</div>
 						</div>
@@ -270,6 +347,7 @@ class Wallet extends React.Component {
 						assets={this.getAssets(balances) || []}
 						hiddenAssets={hiddenAssets}
 						changeVisibilityAsset={(id) => this.changeVisibilityAsset(id)}
+						tokens={stateTokens}
 					/>
 
 				</div>
@@ -286,12 +364,13 @@ Wallet.propTypes = {
 	transaction: PropTypes.object.isRequired,
 	histories: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
+	tokens: PropTypes.object.isRequired,
 	currentNode: PropTypes.string.isRequired,
 	setTransaction: PropTypes.func.isRequired,
 	updateBalance: PropTypes.func.isRequired,
 	saveSelectedAccounts: PropTypes.func.isRequired,
 	initHiddenAssets: PropTypes.func.isRequired,
-	changeVisabilityAssets: PropTypes.func.isRequired,
+	toggleVisibiltyAsset: PropTypes.func.isRequired,
 };
 
 export default Wallet;

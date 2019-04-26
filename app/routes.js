@@ -3,7 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import App from './containers/app';
 import Authorization from './containers/authorization';
 import accountCreated from './containers/account-сreated';
-import selectLanguage from './containers/select-language';
 import accountImported from './containers/account-imported';
 import CreatePassword from './containers/create-password';
 import RestorePassword from './containers/restore-password';
@@ -16,7 +15,7 @@ import Page404 from './components/page404/page404';
 import {
 	AUTHORIZATION, CREATE_PASSWORD,
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
-	ACCOUNT_IMPORTED, SELECT_LANGUAGE,
+	ACCOUNT_IMPORTED,
 	INDEX_ROUTE, WALLET, HISTORY, SEND,
 } from './constants/routes-constants';
 
@@ -24,10 +23,9 @@ import {
 export default () => (
 	<App>
 		<Switch>
-			<Redirect exact from={INDEX_ROUTE} to={SELECT_LANGUAGE} />
+			<Redirect exact from={INDEX_ROUTE} to={CREATE_PASSWORD} />
 			<Route exact path={CREATE_PASSWORD} component={CreatePassword} />
 			<Route exact path={RESTORE_PASSWORD} component={RestorePassword} />
-			<Route exact path={SELECT_LANGUAGE} component={selectLanguage} />
 			<Route exact path={AUTHORIZATION} component={Authorization} />
 			<Route exact path={ACCOUNT_CREATED} component={accountCreated} />
 			<Route exact path={ACCOUNT_IMPORTED} component={accountImported} />

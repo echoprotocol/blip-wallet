@@ -1,15 +1,22 @@
-import { PrivateKey } from 'echojs-lib';
+import { PrivateKey, OPERATIONS_IDS } from 'echojs-lib';
+import bs58 from 'bs58';
+import BN from 'bignumber.js';
 
 import Services from '../services';
 import CryptoService from '../services/crypto-service';
 import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
+import { ECHO_PROXY_TO_SELF_ACCOUNT, ECHO_ASSET_ID, TIME_LOADING } from '../constants/global-constants';
 import { setFormError, toggleLoading, setValue } from './form-actions';
 import { setValue as setValueGlobal } from './global-actions';
+import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
 
+import { signTransaction } from './sign-actions';
+
 import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
+import { subscribeTokens } from './balance-actions';
 
 /**
  * @method validateCreateAccount
@@ -40,11 +47,11 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 		const result = await Services.getEcho().api.lookupAccounts(accountName);
 
 		if (result.find((i) => i[0] === accountName)) {
-			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exist'));
+			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exists'));
 		}
 	} catch (err) {
 
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exist'));
+		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exists'));
 
 		console.warn(err.message || err);
 	} finally {
@@ -70,6 +77,8 @@ const addAccount = (id, name) => async (dispatch, getState) => {
 	dispatch(setValueGlobal('accounts', accounts));
 
 	await Services.getEcho().api.getFullAccounts([id]);
+
+	dispatch(subscribeTokens());
 };
 
 /**
@@ -78,19 +87,18 @@ const addAccount = (id, name) => async (dispatch, getState) => {
  * Account registration
  */
 export const registerAccount = () => async (dispatch, getState) => {
-
-	const accountName = getState().form.getIn([FORM_SIGN_UP, 'accountName']);
-
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.create.loading' }));
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseRegisterAccount = new Promise(async (resolve) => {
+		const accountName = getState().form.getIn([FORM_SIGN_UP, 'accountName']);
+		const registrator = getState().form.getIn([FORM_SIGN_UP, 'registrator']);
 
-	if (!Services.getEcho().isConnected) {
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Connection error'));
-		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+		if (!Services.getEcho().isConnected) {
+			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Connection error'));
+			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 
-		return false;
-	}
-
-	try {
+			return resolve(false);
+		}
 
 		const wif = CryptoService.generateWIF();
 
@@ -98,7 +106,53 @@ export const registerAccount = () => async (dispatch, getState) => {
 
 		const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
-		await Services.getEcho().api.registerAccount(accountName.value, publicKey, publicKey, publicKey, echoRandKey);
+		if (registrator.public) {
+			await Services.getEcho().api.registerAccount(accountName.value, publicKey, publicKey, publicKey, echoRandKey);
+		} else {
+			const account = await Services.getEcho().api.getAccountByName(registrator.account);
+
+			const options = {
+				ed_key: bs58.decode(echoRandKey.slice(3)).toString('hex'),
+				registrar: account.id,
+				referrer: account.id,
+				referrer_percent: 0,
+				name: accountName.value,
+				owner: {
+					weight_threshold: 1,
+					account_auths: [],
+					key_auths: [[publicKey, 1]],
+					address_auths: [],
+				},
+				active: {
+					weight_threshold: 1,
+					account_auths: [],
+					key_auths: [[publicKey, 1]],
+					address_auths: [],
+				},
+				options: {
+					memo_key: publicKey,
+					voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
+					delegating_account: account.id,
+					num_witness: 0,
+					num_committee: 0,
+					votes: [],
+					extensions: [],
+				},
+			};
+
+			const [balance] = await Services.getEcho().api.getAccountBalances(account.id, [ECHO_ASSET_ID]);
+			const fee = await getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+
+			if (BN(fee).gt(balance.amount)) {
+				dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Insufficient funds'));
+				return resolve(false);
+			}
+
+			const tx = Services.getEcho().api.createTransaction();
+			tx.addOperation(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+			await signTransaction(account, tx);
+			await tx.broadcast();
+		}
 
 		const accountData = await Services.getEcho().api.getAccountByName(accountName.value);
 
@@ -108,7 +162,13 @@ export const registerAccount = () => async (dispatch, getState) => {
 		await userStorage.addAccount(Account.create(accountData.id, accountName.value));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
-		return { wif, accountName: accountName.value };
+		return resolve({ wif, accountName: accountName.value });
+	});
+
+
+	try {
+		const resultRegisterAccount = await Promise.all([promiseRegisterAccount, promiseLoader]);
+		return resultRegisterAccount[0];
 	} catch (err) {
 		dispatch(setFormError(FORM_SIGN_UP, 'accountName', err.message || err));
 
@@ -192,7 +252,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			const account = await Services.getEcho().api.getObject(accountId);
 
 			if (account.name !== accountName) {
-				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
+				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'This WIF does not exist'));
 				return false;
 			}
 
@@ -251,4 +311,12 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 	}
 
 	return true;
+};
+
+export const removeAllAccounts = () => (dispatch) => {
+	dispatch(subscribeTokens()); // call after accounts is changed
+};
+
+export const logoutAccount = () => (dispatch) => {
+	dispatch(subscribeTokens()); // call after accounts is changed
 };

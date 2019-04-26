@@ -237,3 +237,15 @@ export const updateFilter = (filter, index) => (dispatch) => {
 	dispatch(WalletReducer.actions.toggleFilter({ filter, index }));
 	dispatch(getFilteredHistory());
 };
+
+/**
+ * Get transaction fee
+ * @returns {Function}
+ */
+export const getOperationFee = async (type, transaction) => {
+	let tr = Services.getEcho().api.createTransaction();
+	tr = tr.addOperation(type, transaction);
+	tr = await tr.setRequiredFees();
+
+	return tr.operations[0][1].fee.amount;
+};

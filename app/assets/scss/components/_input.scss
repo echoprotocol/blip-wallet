@@ -51,6 +51,7 @@
 		}
 	}
 
+
 	&.disabled {
 		input {
 			border-color: #7d65be;
@@ -90,6 +91,12 @@
 
 // &.pink
 .input.pink {
+	&.focused {
+		input {
+			border: 1px solid #fff;
+			background-color: #fff;
+		}
+	}
 	input {
 		border: 1px solid #bfaaeb;
 		background-color: #bfaaeb;
@@ -139,6 +146,12 @@
 }
 // &.white
 .input.white {
+	&.focused {
+		input {
+			border: 1px solid #fff;
+			background-color: #fff;
+		}
+	}
 	input {
 		border: 1px solid #a8abb7;
 		background-color: transparent;

@@ -65,3 +65,14 @@ export const toggleLoading = (form, field, loading) => (dispatch) => {
 export const clearForm = (form) => (dispatch) => {
 	dispatch(FormReducer.actions.clearForm({ form }));
 };
+
+/**
+ * Set in value params by field
+ * @param form
+ * @param field
+ * @param params
+ * @returns {Function}
+ */
+export const setInValue = (form, field, params) => (dispatch) => {
+	dispatch(FormReducer.actions.setIn({ form, field, params }));
+};

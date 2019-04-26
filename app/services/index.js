@@ -1,7 +1,9 @@
 import Blockchain from './blockchain';
 import UserStorageService from './user-storage-service';
 import Emitter from './emitter';
+import Graphql from './graphql';
 import LocalStrorageService from './localstorage-service';
+import TokenSubscribe from './token-subscribe';
 
 class Services {
 
@@ -10,7 +12,9 @@ class Services {
 		this.crypto = null;
 		this.userStorageService = null;
 		this.emitter = null;
+		this.graphql = null;
 		this.localStorage = null;
+		this.tokenSubscribe = null;
 	}
 
 	getEcho() {
@@ -49,6 +53,17 @@ class Services {
 		return this.emitter;
 	}
 
+	getGraphql() {
+
+		if (this.graphql) {
+			return this.graphql;
+		}
+
+		this.graphql = Graphql;
+
+		return this.graphql;
+	}
+
 	getLocalStorage() {
 		if (this.localStorage) {
 			return this.localStorage;
@@ -57,6 +72,16 @@ class Services {
 		this.localStorage = new LocalStrorageService();
 
 		return this.localStorage;
+	}
+
+	getTokenSubscribe() {
+		if (this.tokenSubscribe) {
+			return this.tokenSubscribe;
+		}
+
+		this.tokenSubscribe = new TokenSubscribe(this.getEmitter(), this.getGraphql());
+
+		return this.tokenSubscribe;
 	}
 
 }

@@ -3,12 +3,13 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { AUTHORIZATION, UNLOCK, SELECT_LANGUAGE } from '../constants/routes-constants';
+import { AUTHORIZATION, UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
-import { NETWORKS } from '../constants/global-constants';
+import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
+import { initTokens, subscribeTokens } from './balance-actions'; // eslint-disable-line import/no-cycle
 
 /**
  *  @method setValue
@@ -42,6 +43,7 @@ export const initAccounts = () => async (dispatch, getState) => {
 	await Services.getEcho().api.getFullAccounts(accounts.map(({ id }) => id));
 
 	dispatch(setValue('accounts', accountsStore));
+	await dispatch(subscribeTokens());
 };
 
 /**
@@ -91,7 +93,9 @@ export const initApp = (store) => async (dispatch) => {
  * 	@param {String} password
  */
 export const createDB = (form, password) => async (dispatch) => {
-	try {
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'restorePassword.loading' }));
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseCreateDB = new Promise(async (resolve) => {
 		dispatch(setValueToForm(form, 'loading', true));
 		const userStorage = Services.getUserStorage();
 		await userStorage.deleteDB(password);
@@ -99,14 +103,19 @@ export const createDB = (form, password) => async (dispatch) => {
 
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		await dispatch(initAccounts());
+		await dispatch(initTokens());
+		resolve();
+	});
+
+	try {
+		await Promise.all([promiseCreateDB, promiseLoader]);
 		dispatch(setValue('locked', false));
 		history.push(AUTHORIZATION);
-		return true;
 	} catch (err) {
 		console.error(err);
-		return false;
 	} finally {
 		dispatch(setValueToForm(form, 'loading', false));
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
 };
 
@@ -119,31 +128,43 @@ export const createDB = (form, password) => async (dispatch) => {
  * 	@param {String} password
  */
 export const validateUnlock = (form, password) => async (dispatch) => {
-	try {
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'unlock.loading' }));
+
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseValidateUnlock = new Promise(async (resolve) => {
 		dispatch(setValueToForm(form, 'loading', true));
 
 		const userStorage = Services.getUserStorage();
 		const doesDBExist = await userStorage.doesDBExist();
 
-		if (!doesDBExist) { return false; }
+		if (!doesDBExist) {
+			return resolve({ result: false, action: null });
+		}
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		const correctPassword = await userStorage.isMasterPassword(password);
 
 		if (correctPassword) {
-
 			await dispatch(initAccounts());
-
-			return true;
+			await dispatch(initTokens());
+			return resolve({ result: true });
 		}
-		dispatch(setValueToForm(form, 'error', 'Please, enter correct password'));
-		return false;
+
+		return resolve({ result: false, action: () => dispatch(setValueToForm(form, 'error', 'Please, enter correct password')) });
+	});
+
+	try {
+		const resultValidateUnlock = await Promise.all([promiseValidateUnlock, promiseLoader]);
+		if (!resultValidateUnlock[0].result && resultValidateUnlock[0].action) {
+			resultValidateUnlock[0].action();
+		}
+		return resultValidateUnlock[0].result;
 	} catch (err) {
 		console.error(err);
 		return false;
 	} finally {
 		dispatch(setValueToForm(form, 'loading', false));
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
-
 };
 
 export const lockApp = () => async (dispatch, getState) => {
@@ -191,6 +212,6 @@ export const clearWalletData = () => async (dispatch, getState) => {
 	dispatch(setValue('accounts', new Map({})));
 
 	await dispatch(startAnimation(pathname, false));
-	history.push(SELECT_LANGUAGE);
+	history.push(CREATE_PASSWORD);
 
 };

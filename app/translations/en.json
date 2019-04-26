@@ -21,7 +21,8 @@
 		"title": "Your Password cannot be restored",
 		"description": "You can clear your account data from Blip and set a new password. If you do, you will lose access to the accounts you&apos;ve logged into. You will need to log into them again, after you have set a&nbsp;new&nbsp;password.",
 		"checkboxLabel": "I understand that Blip does not store backups of my account keys, and I will lose access to them by clearing my account data.",
-		"btn": "Clear Blip Data"
+		"btn": "Clear Blip Data",
+		"loading": " "
 	},
 	"global": {
 		"loading": "Loading data"
@@ -63,8 +64,20 @@
 				"Account name should end with a letter or digit.": "Account name should end with a letter or digit.",
 				"Each account segment should end with a letter or digit.": "Each account segment should end with a letter or digit.",
 				"Each account segment should be longer.": "Each account segment should be longer.",
-				"Account already exist": "Account already exist",
+				"Account already exists": "Account already exists",
 				"Connection error": "Connection error"
+			},
+			"registrator": {
+				"title": "Registration type",
+				"public": {
+					"title": "Public registrator",
+					"hint": "Registration is free, but delegation to participate in the consensus will be granted to the account that will register a new one."
+				},
+				"account": {
+					"title": "Register with an existing account",
+					"hint1": "will be charged upon new account creation from the following account:",
+					"hint2": "A small fee will be charged upon new account creation from one of your Blip accounts. Please, make sure that you have a positive balance at one of the accounts attached to Blip."
+				}
 			}
 
 		},
@@ -91,6 +104,7 @@
 		"placeholder": "Enter Password",
 		"button": "Unlock",
 		"link": "Forgot password?",
+		"loading": " ",
 		"error": {
 			"Please, enter correct password": "Please, enter correct password"
 		}
@@ -103,9 +117,9 @@
 		"receive": "Receive",
         "filter": "If you have more than one account, your accounts balances will be displayed together. You can filter your balances by account.",
         "select": "Select accounts",
-        "archived": "You can hide/show assets if you are bored watching them. Echo is a proto-asset (Alpha and Omega. The beginning and the end). You can’t hide it.",
+        "archived": "You can hide/show balances if you are bored watching them. Echo is a proto-asset (Alpha and Omega. The beginning and the end). You can’t hide it.",
         "filtert": "Filter by accounts",
-        "archivedt": "Archived assets",
+        "archivedt": "Archived balances",
         "Remote node": "Remote node",
         "Local node": "Local node",
         "save": "Save changes",
