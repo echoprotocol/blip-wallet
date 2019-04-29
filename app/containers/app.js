@@ -20,6 +20,8 @@ import TranslateHelper from '../helpers/translate-helper';
 import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Services from '../services';
+import Modal from './modal';
+
 import {
 	CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
 } from '../constants/routes-constants';
@@ -131,7 +133,10 @@ class App extends React.Component {
 							? (
 								<Unlock />
 							) : (
-								<React.Fragment>{children}</React.Fragment>
+								<React.Fragment>
+									{children}
+									<Modal />
+								</React.Fragment>
 							) }
 
 

@@ -8,6 +8,8 @@ export const SEND = '/send';
 export const UNLOCK = 'unlock';
 export const PAGE404 = '/page404';
 export const INDEX_ROUTE = '/';
+export const MANAGE_ACCOUNTS = '/manage-accounts';
+
 
 export const PUBLIC_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
@@ -18,7 +20,8 @@ export const PUBLIC_ROUTES = [
 export const LOCKED_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
 	ACCOUNT_IMPORTED, WALLET, SEND,
+	MANAGE_ACCOUNTS,
 ];
 
 
-export const SIDE_MENU_ROUTES = [WALLET, SEND];
+export const SIDE_MENU_ROUTES = [WALLET, SEND, MANAGE_ACCOUNTS];

@@ -123,6 +123,7 @@
 					opacity: 0;
 				}
 			}
+
 			&.visible {
 				.avatar-image {
 					opacity: 1;
@@ -143,9 +144,9 @@
 			line-height: 1.4em;
 		}
 
-		.ps__rail-x  {
-			display: none !important; // fix react-perfect-scrollbar
-		}
+		// .ps__rail-x  {
+		// display: none !important; // fix react-perfect-scrollbar
+		// }
 	}
 }
 

@@ -13,6 +13,8 @@
 @import 'layout/dimmer';
 @import 'layout/grid';
 @import 'layout/sidebar';
+@import 'layout/sidebar-settings';
+@import 'layout/modal';
 
 @import 'components/button';
 @import 'components/link';
@@ -23,6 +25,8 @@
 @import 'components/checkbox';
 @import 'components/radio';
 @import 'components/input-dropdown';
+@import 'components/multi-dropdown';
+@import 'components/modal-backup';
 
 @import 'pages/page';
 @import 'pages/auth';
@@ -31,4 +35,6 @@
 @import 'pages/restore-password';
 @import 'pages/unlock-wallet';
 @import 'pages/wallet';
+@import 'pages/history';
 @import 'pages/send';
+@import 'pages/manage-accounts';

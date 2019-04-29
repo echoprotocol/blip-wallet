@@ -28,9 +28,9 @@
 	.lines {
 		@include min-vh(680) {
 			min-height: calc(68vh - 1px);
-			padding: 20vh 0 40px;
 		}
 		flex-direction: column;
+		justify-content: center;
 		display: flex;
 		padding: 56px 0 40px;
 	}

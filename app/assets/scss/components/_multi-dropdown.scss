@@ -1,51 +1,18 @@
-.input.input-dropdown {
-	border: 1px solid #a8abb7;
+.multi-dropdown {
 	border-radius: 3px;
 	background-color: transparent;
-	color: #3f4a52;
 	transition: background-color $speed ease, color $speed, border $speed ease;
 
 	.title {
 		line-height: initial;
 	}
 
-	&:hover {
-		border: 1px solid rgba(#919298, 1);
-	}
-
-
-	&.focus {
-		border: 1px solid #737d83;
-		background-color: #fff;
-	}
-
-	& > input {
-		&::placeholder {
-			color: rgba(#3f4a52, 0.5);
-		}
-
-		&:disabled {
-			background-color: transparent;
-		}
-	}
-
-	& > input,
 	.dropdown-toggle {
 		width: 100%;
-		border: 0;
 		background-color: transparent;
-
-		&:focus,
-		&:hover,
-		&:active {
-			border: 0;
-
-		}
 	}
 
-	.dropdown {
-		width: 120px;
-
+	&.dropdown {
 		&.show {
 			.dropdown-toggle {
 				.carret {
@@ -77,6 +44,8 @@
 		}
 
 		.dropdown-toggle {
+			font-size: 16px;
+
 			&:hover {
 				.carret {
 					&:after {
@@ -123,7 +92,6 @@
 		.dropdown-menu {
 			@include source-regular();
 			left: 1px !important; // fix react-bootstrap
-			width: 220px;
 			margin-top: 6px;
 			border-radius: 4px;
 			background-color: #fff;
@@ -131,30 +99,52 @@
 			font-size: 16px;
 
 			input {
-				width: 100%;
-				height: 50px;
-				padding: 0 15px;
-				border: 0;
-				border-bottom: 1px solid rgba(#737d83, .5);
-				background-color: transparent;
+				&[type='text'] {
+					width: 100%;
+					height: 50px;
+					padding: 0 15px;
+					border: 0;
+					border-bottom: 1px solid rgba(#737d83, .5);
+					background-color: transparent;
 
-				&::placeholder {
-					color: rgba(#8d8d8d, 0.5);
+					&::placeholder {
+						color: rgba(#8d8d8d, 0.5);
 
+					}
+
+					&:focus {
+						outline: none;
+					}
 				}
 
-				&:focus {
-					outline: none;
+
+				&[type='checkbox']:checked + label {
+					&:after {
+						left: 16px;
+					}
 				}
+
+				&[type='checkbox']:focus + label {
+					background-color: rgba(#e8e8ea, 0.56);
+				}
+
 			}
 
-			a {
-				display: block;
+			label {
+				align-items: center;
+				display: flex;
+				height: 34px;
 				margin: 0 12px 2px 0;
 				padding: 5px 13px;
 				border-radius: 3px;
 				color: #3f4a52;
+				font-size: initial;
 				transition: background-color 0.3s;
+
+				&:before,
+				&:after {
+					left: 13px;
+				}
 
 				&.active {
 					color: #8d8d8d;
@@ -164,8 +154,8 @@
 					background-color: rgba(#e8e8ea, 0.56);
 				}
 
-				&:focus {
-					background-color: rgba(#e8e8ea, 0.56);
+				.label-text {
+					margin-left: 34px;
 				}
 			}
 
@@ -174,7 +164,23 @@
 				padding: 8px 13px;
 				font-size: 14px;
 				text-transform: uppercase;
+			}
 
+			.avatar-image {
+				width: 24px;
+				min-width: 24px;
+				height: 24px;
+				margin-left: 30px;
+
+				& + .label-text {
+					margin-left: 11px;
+				}
+			}
+		}
+
+		.checkbox {
+			&:first-child {
+				margin-top: 10px;
 			}
 		}
 

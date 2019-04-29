@@ -282,7 +282,7 @@ class Settings extends React.Component {
 		const { activeIndex } = this.state;
 
 		return (
-			<div className="wallet-settings">
+			<div className="sidebar-settings">
 				<div className="settings-tabs">
 					<div className="menu">
 						{

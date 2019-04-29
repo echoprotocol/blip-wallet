@@ -54,86 +54,82 @@ class RestorePassword extends React.Component {
 		const { isVisible } = this.props;
 
 		return (
-			<div className="restore-page page">
+			<div className="restore-page">
+				<Animated
+					className="restore-back"
+					animationIn="fadeInRightBig"
+					animationOut="fadeOutLeft"
+					isVisible={isVisible}
+				>
+					<Button
+						className="btn-return arrow left"
+						onClick={() => this.returnFunction()}
+						content={(
+							<React.Fragment>
+								<div className="text">Return</div>
+								<Icon className="arrow-left" />
+							</React.Fragment>
+						)}
+					/>
+				</Animated>
+				<Animated
+					className="restore-logo-wrap"
+					animationIn="fadeInRightBig"
+					animationOut="fadeOutLeft"
+					isVisible={isVisible}
+				>
+					<img className="blip-logo" src={blipLogo} alt="" />
+				</Animated>
 
-				<div className="restore-wrap">
+				<div className="restore-info">
 					<Animated
-						className="restore-back"
 						animationIn="fadeInRightBig"
 						animationOut="fadeOutLeft"
 						isVisible={isVisible}
 					>
-						<Button
-							className="btn-return arrow left"
-							onClick={() => this.returnFunction()}
-							content={(
-								<React.Fragment>
-									<div className="text">Return</div>
-									<Icon className="arrow-left" />
-								</React.Fragment>
-							)}
-						/>
+						<h1>
+							<FormattedMessage id="restorePassword.title" />
+						</h1>
 					</Animated>
 					<Animated
-						className="restore-logo-wrap"
 						animationIn="fadeInRightBig"
 						animationOut="fadeOutLeft"
-						isVisible={isVisible}
-					>
-						<img className="blip-logo" src={blipLogo} alt="" />
-					</Animated>
-
-					<div className="restore-info">
-						<Animated
-							animationIn="fadeInRightBig"
-							animationOut="fadeOutLeft"
-							isVisible={isVisible}
-						>
-							<h1>
-								<FormattedMessage id="restorePassword.title" />
-							</h1>
-						</Animated>
-						<Animated
-							animationIn="fadeInRightBig"
-							animationOut="fadeOutLeft"
-							animationInDelay={80}
-							isVisible={isVisible}
-						>
-							<p>
-								<FormattedHTMLMessage id="restorePassword.description" />
-							</p>
-						</Animated>
-
-					</div>
-					<Animated
-						className="clear-container"
-						animationIn="fadeIn"
-						animationOut="fadeOut"
 						animationInDelay={80}
 						isVisible={isVisible}
 					>
-						<div className="checkbox">
-							<input onChange={this.onChange} checked={this.state.checked} type="checkbox" id="clear-data" />
-							<label htmlFor="clear-data" className="checkbox-label">
-								<div className="label-text">
-									<FormattedMessage id="restorePassword.checkboxLabel" />
-								</div>
-							</label>
-						</div>
-						<Button
-							className="btn-white"
-							disabled={!this.state.checked}
-							fluid
-							onClick={this.onClearData}
-							content={(
-								<React.Fragment>
-									<div className="text"><FormattedMessage id="restorePassword.btn" /></div>
-								</React.Fragment>
-							)}
-						/>
+						<p>
+							<FormattedHTMLMessage id="restorePassword.description" />
+						</p>
 					</Animated>
-				</div>
 
+				</div>
+				<Animated
+					className="clear-container"
+					animationIn="fadeIn"
+					animationOut="fadeOut"
+					animationInDelay={80}
+					isVisible={isVisible}
+				>
+					<div className="checkbox">
+						<input onChange={this.onChange} checked={this.state.checked} type="checkbox" id="clear-data" />
+						<label htmlFor="clear-data" className="checkbox-label">
+							<div className="label-text">
+								<FormattedMessage id="restorePassword.checkboxLabel" />
+							</div>
+						</label>
+					</div>
+					<Button
+						className="btn-white"
+						disabled={!this.state.checked}
+						fluid
+						onClick={this.onClearData}
+						content={(
+							<React.Fragment>
+								<div className="text"><FormattedMessage id="restorePassword.btn" /></div>
+							</React.Fragment>
+						)}
+					/>
+				</Animated>
 			</div>
 		);
 	}

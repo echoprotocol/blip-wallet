@@ -17,10 +17,6 @@
 		&.left {
 			padding: 0 2em 0 3.3em;
 		}
-
-		&.right {
-			padding: 0 3.3em 0 2em;
-		}
 	}
 
 	.arrow-right {
@@ -304,9 +300,6 @@
 	@include btn();
 	@include onBtnFocus(50px, 2px, 4px, rgba(#43d7ad, 0.45));
 	@include source-semibold();
-	@include min-vw(1400) {
-		height: 56px;
-	}
 	align-items: center;
 	display: flex;
 	height: 38px;
@@ -341,24 +334,184 @@
 
 .btn-settings {
 	@include btn();
-
 	@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
 	position: relative;
+	width: 50px;
+	height: 40px;
 	padding: 0;
 	border: 0;
 	background-color: transparent;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: 5px;
+		right: 10px;
+		bottom: 5px;
+		left: 10px;
+		border: 2px solid transparent;
+		border-radius: 50%;
+		transition: border-color 0.3s;
+	}
+}
+
+.btn-close {
+	@include btn();
+	@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
+	@include iconmoon();
+	width: 34px;
+	height: 34px;
+	border: 0;
+	background-color: transparent;
+	color: #afa5cc;
+
+	&:after {
+		content: '\e903';
+		font-size: 18px;
+	}
 }
 
 .btn-inversed {
 	@include onBtnFocus(24px, 2px, 4px, rgba(#7158ad, 1));
 	@include source-semibold();
+	height: 38px;
 	padding: 6px 16px;
 	border: 2px solid #d9c7fd;
 	border-radius: 24px;
 	background-color: transparent;
 	color: #d9c7fd;
-	font-size: 1.5em;
+	font-size: 1.4em;
+	line-height: 0;
 	white-space: nowrap;
+}
+
+.btn-modal {
+	@include onBtnFocus(50px, 2px, 2px, rgba(#fff, 0.3));
+	@include source-semibold();
+	@include min-vw(1400) {
+		height: 56px;
+	}
+	height: 38px;
+	padding: 6px 3em;
+	border: 1px solid rgba(#a8aab7, 0.4);
+	border-radius: 50px;
+	background-color: transparent;
+	color: rgba(#fff, 0.8);
+	font-size: 1.4em;
+	line-height: 0;
+	white-space: nowrap;
+	transition: border .3s, color .3s;
+
+	&:hover {
+		border: 1px solid rgba(#a8aab7, 0.66);
+	}
+
+	&:active {
+		color: rgba(#fff, 0.5);
+	}
+}
+
+.btn-modal-close {
+	@include onBtnFocus(2px, 2px, 2px, rgba(#fff, 0.3));
+	width: 50px;
+	height: 50px;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	color: rgba(#fff, 0.5);
+	font-size: 20px;
+	transition: color 0.3s;
+
+	&:hover {
+		color: rgba(#fff , 0.8);
+	}
+
+	&:active {
+		color: rgba(#fff , 0.4);
+	}
+}
+
+.btn-link {
+	@include source-regular();
+	border: 0;
+	background-color: transparent;
+	color: #7158ad;
+	font-size: 16px;
+	transition: color .3s;
+
+	&.gray {
+		color: #898f95;
+
+		&:hover {
+			color: #676767;
+		}
+
+		&:active {
+			color: rgba(#898f95, 0.7);
+		}
+	}
+
+	&:hover {
+		color: #7d64bc;
+	}
+
+	&:active {
+		color: #a596cd;
+	}
+
+	&:focus {
+		span {
+			@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
+
+			&:before {
+				right: -10px;
+				left: -10px;
+				border: 2px solid rgba(#7158ad, 0.35);
+			}
+
+		}
+	}
+
+	span {
+		@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
+		position: relative;
+		display: block;
+
+		&:before {
+			right: -10px;
+			left: -10px;
+		}
+
+	}
+}
+
+.btn-square {
+	@include onBtnFocus(3px, 2px, 2px, rgba(#43d7ad, 0.45));
+	@include btn();
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: 1px solid #43d7ad;
+	border-radius: 3px;
+	background-color: #43d7ad;
+	color: #000;
+	transition: color 0.3s, border 0.3s, background-color 0.3s, width 0.3s;
+
+	&:hover {
+		border: 1px solid #59ebc1;
+		background-color: #59ebc1;
+	}
+
+	&:active {
+		border: 1px solid #43d7ad;
+		background-color: #43d7ad;
+	}
+
+	&.disabled {
+		border: 1px solid #8f77c5;
+		background-color: transparent;
+		color: #a78edc;
+	}
 }
 
 .btn-wrap {

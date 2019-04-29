@@ -1,16 +1,11 @@
-i.icon {
-	display: inline-block;
-	font-family: 'icomoon' !important;
-	font-size: 1em;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	line-height: 1;
-	text-transform: none;
-	speak: none;
 
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+
+i.icon {
+	@include iconmoon();
+}
+
+.icon-spinner:before {
+	content: "\e900";
 }
 
 .copy:before {
@@ -23,16 +18,46 @@ i.icon {
 	font-size: 14px;
 }
 
-.icon-close-big:before {
-	content: '\e903';
-}
-
 .arrow-left {
 	transform: rotate(180deg);
 
 	&:before {
 		content: '\e902';
-		color: #d9c7fd;
 		font-size: 14px;
 	}
+}
+
+.arrow-direction {
+	&.left {
+		transform: rotate(180deg);
+	}
+
+	&:before {
+		content: "\e90a";
+		color: #9ba0a4;
+	}
+}
+
+.icon-close-big:before {
+	content: '\e903';
+}
+
+.icon-account:before {
+	content: "\e904";
+}
+
+.icon-info:before {
+	content: "\e906";
+}
+
+.icon-contract:before {
+	content: "\e907";
+}
+
+.icon-receive-trans:before {
+	content: "\e908";
+}
+
+.icon-send-trans:before {
+	content: "\e909";
 }

@@ -18,7 +18,7 @@ class Avatar extends React.Component {
 			avatarSize: null,
 			accountName: '',
 		};
-
+		this.imageRef = React.createRef();
 		this.listener = this.updateAvatarSize.bind(this);
 	}
 
@@ -37,10 +37,10 @@ class Avatar extends React.Component {
 		return null;
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 		if (nextProps.reset) return true;
 		if (nextProps.loading) return false;
-		if (this.state.accountName === nextProps.accountName) return false;
+		if (this.state.accountName === nextProps.accountName && this.state.avatarSize === nextState.avatarSize) return false;
 		return true;
 	}
 
@@ -49,7 +49,7 @@ class Avatar extends React.Component {
 	}
 
 	updateAvatarSize() {
-		const avatarSize = document.getElementsByClassName('avatar-image')[0].offsetHeight;
+		const avatarSize = this.imageRef.current.offsetHeight;
 		if (avatarSize !== this.state.avatarSize) {
 			this.setState({ avatarSize });
 		}
@@ -58,9 +58,8 @@ class Avatar extends React.Component {
 	render() {
 		const { round } = this.props;
 		const { avatarSize, accountName } = this.state;
-
 		return (
-			<div className={classnames('avatar-image', { round })}>
+			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
 				{
 					!accountName ? <img src={avatar} alt="avatar" /> : (
 						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />

@@ -1,3 +1,46 @@
+.page-wrap {
+	overflow: hidden;
+
+	.page {
+		flex-direction: column;
+		display: flex;
+		height: 100vh;
+		transition: transform 0.2s;
+
+		.title-wrap {
+			align-items: center;
+			justify-content: space-between;
+			display: flex;
+		}
+
+		.title {
+			@include source-semibold();
+			color: #33353f;
+			font-size: 1.3em;
+			letter-spacing: 1.4px;
+			text-transform: uppercase;
+		}
+	}
+
+	&.open {
+		.page {
+			@include min-vw(1000) {
+				transform: translateX(-480px);
+			}
+			@include min-vw(1400) {
+				transform: translateX(-520px);
+			}
+			transform: translateX(-420px);
+		}
+	}
+}
+
+.page-scroll {
+	flex: 1;
+	position: relative;
+	height: 100vh;
+}
+
 .page-in-scroll {
 	position: relative;
 	height: 100vh;
@@ -42,6 +85,123 @@
 		button {
 			padding-right: 3em;
 			padding-left: 3em;
+		}
+	}
+}
+
+.page-footer {
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative;
+	display: flex;
+	padding: 2.5em;
+	background-color: #e8e8e8;
+	box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+
+	.last-transaction {
+		position: relative;
+		padding: 1.8em;
+		border: 1px solid #bcbcbc;
+		border-radius: 4px;
+
+		.label {
+			@include source-semibold();
+			position: absolute;
+			top: 0;
+			margin: -0.5em 0 0 -10px;
+			padding: 0 10px;
+			background-color: #e8e8e8;
+			font-size: 1.2em;
+			letter-spacing: 0.2em;
+			line-height: 1;
+			text-transform: uppercase;
+		}
+
+		.line {
+			@include source-regular();
+			display: flex;
+			color: #5b5c63;
+
+			.date {
+				margin-right: 4em;
+				font-size: 1.4em;
+			}
+
+			.action {
+				font-size: 1.4em;
+			}
+
+			.balance {
+				@include source-semibold();
+				margin-left: auto;
+				color: #3f4a52;
+				font-size: inherit;
+
+				.coins {
+					margin-right: 5px;
+					font-size: 2.1em;
+				}
+
+				.currency {
+					font-size: 1.6em;
+				}
+			}
+
+			.action-info {
+				color: #8e8e97;
+				font-size: 1.4em;
+
+				& + .action-info {
+					margin-left: 4em;
+				}
+
+				.action-label {
+					margin-right: 5px;
+				}
+
+				a {
+					color: #7158ad;
+				}
+			}
+		}
+
+		& + .footer-actions {
+			margin-top: 1.5em;
+		}
+	}
+
+	.footer-actions {
+		align-items: center;
+		justify-content: space-between;
+		display: flex;
+		margin-top: auto;
+
+		.btn-wrap {
+			button {
+				width: 100%;
+				min-width: 140px;
+				max-width: 10em;
+			}
+		}
+
+		.footer-info {
+			@include source-regular();
+			font-size: 1.4em;
+			text-align: right;
+
+			.mode {
+				margin-bottom: 6px;
+				color: #8e8e97;
+			}
+
+			.sync {
+				color: #5b5c63;
+
+				.percent {
+					@include source-semibold();
+					color: #33353f;
+				}
+			}
 		}
 	}
 }

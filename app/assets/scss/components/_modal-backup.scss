@@ -1,0 +1,53 @@
+.backup-list {
+	.backup-item {
+		padding: 20px 40px;
+		background-color: rgba(#565468, 0.4);
+
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+
+		.key {
+			color: #fff;
+			font-size: 1.5em;
+			line-height: 32px;
+			white-space: nowrap;
+
+			&-wrap {
+				@include source-regular();
+
+				&:not(:last-child) {
+					margin-bottom: 18px;
+				}
+			}
+
+			&-label {
+				margin-bottom: 8px;
+				color: #565468;
+				font-size: 1.3em;
+			}
+
+			&-action {
+				justify-content: space-between;
+				display: flex;
+			}
+
+		}
+	}
+}
+
+.modal-header {
+	.modal-title {
+		.account-name {
+			margin-right: 5px;
+			color: #43d7ad;
+		}
+	}
+}
+
+.modal-footer {
+	.btn-inversed.gray {
+		padding-right: 30px;
+		padding-left: 30px;
+	}
+}
