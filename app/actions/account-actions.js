@@ -225,41 +225,40 @@ const validateImportAccount = async (accountName) => {
  * @param wif
  */
 export const importAccount = (accountName, wif) => async (dispatch) => {
-
-	const accountNameError = await validateImportAccount(accountName);
-	const wifError = ValidateAccountHelper.validateWIF(wif);
-
-	if (accountNameError || wifError) {
-		dispatch(setValue(FORM_SIGN_IN, 'accountNameError', accountNameError));
-		dispatch(setValue(FORM_SIGN_IN, 'wifError', wifError));
-		return false;
-	}
-
-	if (!Services.getEcho().isConnected) {
-		dispatch(setValue(FORM_SIGN_IN, 'accountNameError', 'Connection error'));
-		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
-
-		return false;
-	}
-
-	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.import.loading' }));
+	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseImportAccount = new Promise(async (resolve) => {
+		const accountNameError = await validateImportAccount(accountName);
+		const wifError = ValidateAccountHelper.validateWIF(wif);
 
 
-	try {
+		if (accountNameError || wifError) {
+			dispatch(setValue(FORM_SIGN_IN, 'accountNameError', accountNameError));
+			dispatch(setValue(FORM_SIGN_IN, 'wifError', wifError));
+			return resolve(false);
+		}
+
+		if (!Services.getEcho().isConnected) {
+			dispatch(setValue(FORM_SIGN_IN, 'accountNameError', 'Connection error'));
+			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+
+			return resolve(false);
+		}
+
+		dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.import.loading' }));
 		if (CryptoService.isWIF(wif)) {
+
 			const active = PrivateKey.fromWif(wif).toPublicKey().toString();
 
 			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
 
 			if (!accountId) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
-				return false;
 			}
 
 			const userStorage = Services.getUserStorage();
 			if (await userStorage.isWIFAdded(wif, accountId)) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF already added'));
-				return false;
+				return resolve(false);
 			}
 
 			const account = await Services.getEcho().api.getObject(accountId);
@@ -275,7 +274,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 
 			if (!activeKey) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF is not active key.'));
-				return false;
+				return resolve(false);
 			}
 
 			const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
@@ -302,28 +301,32 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 
 			if (!hasKey) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF is not active key.'));
-				return false;
+				return resolve(false);
 			}
 
 			const userStorage = Services.getUserStorage();
 			if (await userStorage.isWIFAdded(wif, accountId)) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'WIF already added'));
-				return false;
+				return resolve(false);
 			}
 
 			await dispatch(addAccount(accountId, accountName));
 			await userStorage.addAccount(Account.create(accountId, accountName));
 			await userStorage.addKey(Key.create(hasKey[0], wif, accountId));
 		}
+
+		return resolve(true);
+	});
+
+	try {
+		const resultImportAccount = await Promise.all([promiseImportAccount, promiseLoader]);
+		return resultImportAccount[0];
 	} catch (err) {
 		dispatch(setValue(FORM_SIGN_IN, 'accountNameError', err.message || err));
-
 		return false;
 	} finally {
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
-
-	return true;
 };
 
 export const removeAllAccounts = () => (dispatch) => {
