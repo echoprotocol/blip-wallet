@@ -95,7 +95,7 @@ class Send extends React.Component {
 			assetId = ECHO_ASSET_ID;
 		}
 
-		const asset = balances.find((b) => b.assetId === assetId);
+		const asset = balances.find((b) => b.assetId === assetId) || form.get('echoAsset');
 
 		const { value: validatedValue, error } = ValidateSendHelper.amountInput(value, {
 			precision: precision || asset.precision,
@@ -151,13 +151,20 @@ class Send extends React.Component {
 		return form.get('to').value && !form.get('to').error && !form.get('isCheckLoading');
 	}
 
+	isTransactionValidate() {
+		const { form } = this.props;
+		return form.get('to').value && !form.get('to').error
+			&& form.get('amount').value && !form.get('amount').error
+			&& form.get('fee').value && !form.get('fee').error;
+	}
+
 	render() {
 		const {
 			accounts, form, balances, tokens, loading, intl, hiddenAssets,
 		} = this.props;
 		const { from } = this.state;
 
-		const fromAccountName = accounts && (accounts.getIn([from, 'name']) || [...accounts.values()][0].get('name'));
+		const fromAccountName = accounts && (accounts.getIn([form.get('from').value, 'name']) || [...accounts.values()][0].get('name'));
 
 		const amountTitle = intl.formatMessage({ id: 'send.amount.title' });
 		const feeTitle = intl.formatMessage({ id: 'send.fee.title' });
@@ -194,7 +201,7 @@ class Send extends React.Component {
 													const key = id;
 
 													return (
-														<Dropdown.Item key={key} eventKey={id} onClick={(() => this.setState({ from: id }))}>
+														<Dropdown.Item key={key} eventKey={id} onClick={(() => this.props.setFormValue('from', id))}>
 															{accounts.getIn([id, 'name'])}
 														</Dropdown.Item>
 													);
@@ -272,6 +279,7 @@ class Send extends React.Component {
 														account: from || [...accounts.keys()][0],
 														balances,
 														tokens,
+														from: form.get('from').value,
 														hiddenAssets,
 													}}
 													disable={!!loading}
@@ -307,6 +315,8 @@ class Send extends React.Component {
 														data={{
 															account: from || [...accounts.keys()][0],
 															balances,
+															tokens,
+															from: form.get('from').value,
 															hiddenAssets,
 														}}
 														value={form.get('fee').value}
@@ -333,7 +343,7 @@ class Send extends React.Component {
 												</div>
 											)}
 											onClick={() => this.onSend()}
-											disabled={!form.get('amount').value || !form.get('to').value || !this.isSuccessCheckAccount() || !!loading}
+											disabled={!this.isTransactionValidate() || !this.isSuccessCheckAccount() || !!loading}
 										/>
 									)
 								}
