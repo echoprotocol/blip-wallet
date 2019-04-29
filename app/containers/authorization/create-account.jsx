@@ -152,7 +152,7 @@ class CreateAccount extends React.Component {
 						<div className="line-content">
 							<div className="field">
 								<Input
-									className={classnames('pink', { success: isSuccess })}
+									className={classnames('pink')}
 									placeholder={placeholder}
 									ref={(input) => { this.nameInput = input; }}
 									error={error}
