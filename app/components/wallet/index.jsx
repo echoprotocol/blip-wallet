@@ -147,8 +147,7 @@ class Wallet extends React.Component {
 	}
 
 	changeVisibilityAsset(idAsset) {
-		const { currentNode } = this.props;
-		this.props.toggleVisibiltyAsset(idAsset, currentNode);
+		this.props.toggleVisibiltyAsset(idAsset);
 	}
 
 	renderTokens() {

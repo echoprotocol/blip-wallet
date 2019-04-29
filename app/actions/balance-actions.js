@@ -152,10 +152,10 @@ export const initHiddenAssets = () => (dispatch) => {
 /**
  *
  * @param {String} idAsset
- * @param {String} idNetwork
  * @returns {Function}
  */
-export const toggleVisibiltyAsset = (idAsset, idNetwork) => async (dispatch, getState) => {
+export const toggleVisibiltyAsset = (idAsset) => async (dispatch, getState) => {
+	const idNetwork = Services.getUserStorage().getNetworkId();
 	let hiddenAssets = getState().wallet.get('hiddenAssets');
 
 	if (!hiddenAssets.has(idNetwork)) {
