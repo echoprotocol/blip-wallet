@@ -83,7 +83,7 @@ Avatar.defaultProps = {
 	accountName: '',
 	round: false,
 	loading: false,
-	reset: false,
+	reset: true,
 };
 
 export default Avatar;
