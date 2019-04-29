@@ -23,7 +23,6 @@ class CreatePassword extends React.Component {
 		this.state = {
 			prevFocusTarget: null,
 			showPas: false,
-			showRepeatPas: false,
 			password: '',
 			repeatPassword: '',
 			repeatError: false,
@@ -96,16 +95,12 @@ class CreatePassword extends React.Component {
 
 	}
 
-	onTogglePrivacy(pas, a) {
+	onTogglePrivacy(pas) {
 		if (this.state.prevFocusTarget && this[this.state.prevFocusTarget.name]) {
 			this[this.state.prevFocusTarget.name].current.focus();
 		}
-		if (a) {
-			this.setState({ showPas: !pas });
 
-		} else {
-			this.setState({ showRepeatPas: !pas });
-		}
+		this.setState({ showPas: !pas });
 	}
 
 	changeFocusTarget(e) {
@@ -146,7 +141,7 @@ class CreatePassword extends React.Component {
 	render() {
 		const { error, loading, isVisible } = this.props;
 		const {
-			showPas, showRepeatPas,
+			showPas,
 			hint1, hint2, hint3, hint4, repeatError,
 			password, repeatPassword, hintsError, focused,
 		} = this.state;
@@ -236,8 +231,8 @@ class CreatePassword extends React.Component {
 													}
 													disabled={loading}
 													onKeyDown={(e) => this.onKeyDown(e)}
-													type={showRepeatPas ? 'text' : 'password'}
-													icon={this.renderPrivacyEye(showRepeatPas)}
+													type={showPas ? 'text' : 'password'}
+													icon={this.renderPrivacyEye(showPas)}
 													fluid
 													onChange={(e) => this.onChange(e)}
 												/>
