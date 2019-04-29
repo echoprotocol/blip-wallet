@@ -4,7 +4,7 @@
 	.page {
 		flex-direction: column;
 		display: flex;
-		height: 100vh;
+		height: calc(100vh - 34px);
 		transition: transform 0.2s;
 
 		.title-wrap {
@@ -38,12 +38,12 @@
 .page-scroll {
 	flex: 1;
 	position: relative;
-	height: 100vh;
+	height: calc(100vh - 34px);
 }
 
 .page-in-scroll {
 	position: relative;
-	height: 100vh;
+	height: calc(100vh - 34px);
 }
 
 .page-in-wrap {
