@@ -7,48 +7,49 @@ import avatar from '../../assets/images/default-avatar.svg';
 
 class Avatar extends React.Component {
 
+	static updateAccountName(props) {
+		return { accountName: props.accountName };
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			avatarSize: null,
-			timeout: null,
 			accountName: '',
 		};
-
+		this.imageRef = React.createRef();
 		this.listener = this.updateAvatarSize.bind(this);
 	}
 
 	componentDidMount() {
 		this.updateAvatarSize();
-		this.updateAccountName();
 		window.addEventListener('resize', this.listener);
 		window.addEventListener('load', this.listener);
 	}
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { accountName } = prevState;
+		const { reset } = nextProps;
+		if (accountName !== nextProps.accountName || (nextProps.reset && !reset)) {
+			return Avatar.updateAccountName(nextProps);
+		}
+		return null;
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextProps.reset) return true;
+		if (nextProps.loading) return false;
+		if (this.state.accountName === nextProps.accountName && this.state.avatarSize === nextState.avatarSize) return false;
+		return true;
+	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.listener);
 	}
 
-	getSnapshotBeforeUpdate(prevProps) {
-		const { timeout } = this.state;
-		const { accountName } = this.props;
-
-		if (prevProps.accountName !== accountName) {
-			clearTimeout(timeout);
-			this.setState({ timeout: setTimeout(() => this.updateAccountName(), 300) });
-		}
-
-		return null;
-	}
-
-	updateAccountName() {
-		this.setState({ accountName: this.props.accountName });
-	}
-
 	updateAvatarSize() {
-		const avatarSize = document.getElementsByClassName('avatar-image')[0].offsetHeight;
+		const avatarSize = this.imageRef.current.offsetHeight;
 		if (avatarSize !== this.state.avatarSize) {
 			this.setState({ avatarSize });
 		}
@@ -57,9 +58,8 @@ class Avatar extends React.Component {
 	render() {
 		const { round } = this.props;
 		const { avatarSize, accountName } = this.state;
-
 		return (
-			<div className={classnames('avatar-image', { round })}>
+			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
 				{
 					!accountName ? <img src={avatar} alt="avatar" /> : (
 						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
@@ -74,11 +74,15 @@ class Avatar extends React.Component {
 Avatar.propTypes = {
 	accountName: PropTypes.string,
 	round: PropTypes.bool,
+	loading: PropTypes.bool,
+	reset: PropTypes.bool,
 };
 
 Avatar.defaultProps = {
 	accountName: '',
 	round: false,
+	loading: false,
+	reset: true,
 };
 
 export default Avatar;

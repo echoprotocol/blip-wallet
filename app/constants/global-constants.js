@@ -31,7 +31,9 @@ export const EXPLORER_URL = {
 export const ECHO_ASSET_ID = '1.3.0';
 export const ECHO_ASSET_PRECISION = 5;
 export const ECHO_ASSET_SYMBOL = 'ECHO';
+export const GLOBAL_ID_1 = '2.1.0';
 export const ECHO_PROXY_TO_SELF_ACCOUNT = '1.2.5';
+export const CONTRACT_ID = '1.16';
 
 export const DISCONNECT_STATUS = 'disconnect';
 export const CONNECT_STATUS = 'connect';
@@ -50,6 +52,9 @@ export const CONNECTION_TIMEOUT = 5000;
 export const MAX_RETRIES = 999999999;
 export const PING_TIMEOUT = 7000;
 export const PING_INTERVAL = 7000;
+
+export const BROADCAST_LIMIT = 20 * 1000;
+export const EXPIRATION_INFELICITY = 5 * 60;
 
 export const EN_LOCALE = 'en';
 export const RU_LOCALE = 'ru';
@@ -74,3 +79,9 @@ export const KEY_CODE_SPACE = 32;
 export const KEY_CODE_TAB = 9;
 export const KEY_CODE_ARROW_UP = 38;
 export const KEY_CODE_ARROW_DOWN = 40;
+
+export const MEMO_FEE_KEYS = {
+	WIF: '5KGG3tFb5F4h3aiUSKNnKeDcNbL5y1ZVXQXVqpWVMYhW82zBrNb',
+	PUBLIC_MEMO_FROM: 'ECHO7WBUN97NJfSXbDVDqLDQDKu8FasTb7YBdpbWoJF3RYo6qYY6aX',
+	PUBLIC_MEMO_TO: 'ECHO7WBUN97NJfSXbDVDqLDQDKu8FasTb7YBdpbWoJF3RYo6qYY6aX',
+};

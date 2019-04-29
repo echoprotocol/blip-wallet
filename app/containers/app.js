@@ -20,12 +20,15 @@ import TranslateHelper from '../helpers/translate-helper';
 import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Services from '../services';
+import Modal from './modal';
+
 import {
 	CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 
 import { lockApp } from '../actions/global-actions';
+import { FORM_CREATE_PASSWORD } from '../constants/form-constants';
 
 addLocaleData([...localeEn, ...localeRu]);
 
@@ -54,9 +57,27 @@ class App extends React.Component {
 			return false;
 		}
 
+		const { loadingCreatePass } = this.props;
+
+		if (loadingCreatePass) {
+			return false;
+		}
+
 		const { pathname } = this.props.history.location;
 
 		let routed = false;
+
+
+		if (!routed && LOCKED_ROUTES.includes(pathname)) {
+			const userStorage = Services.getUserStorage();
+
+			const doesDBExist = await userStorage.doesDBExist();
+
+			if (!doesDBExist) {
+				routed = true;
+				this.props.history.push(CREATE_PASSWORD);
+			}
+		}
 
 		if (!routed && [CREATE_PASSWORD].includes(pathname)) {
 
@@ -131,7 +152,10 @@ class App extends React.Component {
 							? (
 								<Unlock />
 							) : (
-								<React.Fragment>{children}</React.Fragment>
+								<React.Fragment>
+									{children}
+									<Modal />
+								</React.Fragment>
 							) }
 
 
@@ -160,6 +184,7 @@ App.propTypes = {
 	lock: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 	accounts: PropTypes.object.isRequired,
+	loadingCreatePass: PropTypes.bool.isRequired,
 	locked: PropTypes.bool,
 	inited: PropTypes.bool,
 };
@@ -176,6 +201,7 @@ export default connect(
 		loading: state.global.get('loading'),
 		locked: state.global.get('locked'),
 		accounts: state.global.get('accounts'),
+		loadingCreatePass: state.form.getIn([FORM_CREATE_PASSWORD, 'loading']),
 		pathname: state.router.location.pathname,
 	}),
 	(dispatch) => ({

@@ -8,6 +8,7 @@ import WalletReducer from './wallet-reducer';
 import FormReducer from './form-reducer';
 import GlobalReducer from './global-reducer';
 import AuthReducer from './auth-reducer';
+import ModalReducer from './modal-reducer';
 
 
 export default function createRootReducer(history) {
@@ -17,6 +18,7 @@ export default function createRootReducer(history) {
 		animation: AnimationReducer.reducer,
 		auth: AuthReducer.reducer,
 		wallet: WalletReducer.reducer,
+		modal: ModalReducer.reducer,
 		router: connectRouter(history),
 		echoCache: echoReducer(),
 	});

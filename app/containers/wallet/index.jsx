@@ -6,11 +6,13 @@ import { CACHE_MAPS } from 'echojs-lib';
 import {
 	toggleVisibiltyAsset,
 	initHiddenAssets,
+	initTokens,
 	saveSelectedAccounts,
 	updateBalance,
 } from '../../actions/balance-actions';
 import { setLastTransaction } from '../../actions/transaction-actions';
 import Wallet from '../../components/wallet';
+import Services from '../../services';
 
 const filteredHistories = createSelector(
 	(state) => state.global.get('accounts').filter((a) => a.get('selected')),
@@ -54,7 +56,7 @@ const balanceSelector = createImmutableSelector(
 export default connect(
 	(state) => ({
 		accounts: state.global.get('accounts'),
-		hiddenAssets: state.wallet.get('hiddenAssets').get(state.global.get('currentNode')) || new Set(),
+		hiddenAssets: state.wallet.get('hiddenAssets').get(Services.getUserStorage().getNetworkId()) || new Set(),
 		language: state.global.get('language'),
 		currentNode: state.global.get('currentNode'),
 		balances: balanceSelector(state),
@@ -67,7 +69,8 @@ export default connect(
 		updateBalance: () => dispatch(updateBalance()),
 		setTransaction: () => dispatch(setLastTransaction()),
 		saveSelectedAccounts: (accounts) => dispatch(saveSelectedAccounts(accounts)),
-		toggleVisibiltyAsset: (idAsset, idNetwork) => dispatch(toggleVisibiltyAsset(idAsset, idNetwork)),
+		toggleVisibiltyAsset: (idAsset) => dispatch(toggleVisibiltyAsset(idAsset)),
 		initHiddenAssets: () => dispatch(initHiddenAssets()),
+		updateTokens: () => dispatch(initTokens()),
 	}),
 )(Wallet);

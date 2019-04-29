@@ -117,6 +117,23 @@
 			@include source-regular();
 			align-items: center;
 			display: flex;
+
+			&.fadeOut {
+				.avatar-image {
+					opacity: 0;
+				}
+			}
+
+			&.visible {
+				.avatar-image {
+					opacity: 1;
+				}
+			}
+
+			.avatar-image {
+				opacity: 1;
+				transition: opacity .1s;
+			}
 		}
 
 		.avatar-desciption {
@@ -127,9 +144,9 @@
 			line-height: 1.4em;
 		}
 
-		.ps__rail-x  {
-			display: none !important; // fix react-perfect-scrollbar
-		}
+		// .ps__rail-x  {
+		// display: none !important; // fix react-perfect-scrollbar
+		// }
 	}
 }
 

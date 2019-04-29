@@ -4,35 +4,18 @@ import { Animated } from 'react-animated-css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
-import { Sidebar, Button, Icon } from 'semantic-ui-react';
+import { Sidebar, Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
-import { startAnimation } from '../../actions/animation-actions';
-import { UNLOCK, WALLET, HISTORY } from '../../constants/routes-constants';
+import { WALLET, MANAGE_ACCOUNTS, HISTORY } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
 
 
 class SideMenu extends React.Component {
 
-	goForward(path) {
-		const { history } = this.props;
-
-		setTimeout(() => {
-			history.push(path);
-		}, 200);
-	}
-
-	async lock() {
-
-		this.props.startAnimation(this.props.pathname, false);
-		this.props.lock(true);
-
-		setTimeout(() => {
-			this.props.startAnimation(UNLOCK, true);
-
-		}, 200);
-
+	lock() {
+		this.props.lock();
 	}
 
 
@@ -49,17 +32,6 @@ class SideMenu extends React.Component {
 						isVisible={!locked}
 						className="visible"
 					>
-						<Button
-							className="btn-return arrow right"
-							onClick={() => this.returnFunction()}
-							content={(
-								<React.Fragment>
-									<div className="text">Return</div>
-									<Icon className="arrow-right" />
-								</React.Fragment>
-							)}
-						/>
-
 						<ul className="sidebar-nav">
 							<li className={classnames({ active: pathname === WALLET })}>
 								<FormattedMessage id="wallet.menu.mywallet">
@@ -85,7 +57,7 @@ class SideMenu extends React.Component {
 									}
 								</FormattedMessage>
 							</li>
-							<li>
+							<li className={classnames({ active: pathname === MANAGE_ACCOUNTS })}>
 								<FormattedMessage id="wallet.menu.manage">
 									{
 										(content) => (
@@ -132,10 +104,8 @@ class SideMenu extends React.Component {
 
 SideMenu.propTypes = {
 	pathname: PropTypes.string.isRequired,
-	history: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
 	lock: PropTypes.func.isRequired,
-	startAnimation: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
@@ -145,6 +115,5 @@ export default withRouter(connect(
 	}),
 	(dispatch) => ({
 		lock: () => dispatch(lockApp()),
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
 	}),
 )(SideMenu));

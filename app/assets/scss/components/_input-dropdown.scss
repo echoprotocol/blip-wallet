@@ -10,18 +10,26 @@
 	}
 
 	&:hover {
-		border: 1px solid rgba(#919298, 0.91);
-		background-color: #fff;
+		border: 1px solid rgba(#919298, 1);
 	}
+
 
 	&.focus {
 		border: 1px solid #737d83;
 		background-color: #fff;
 	}
 
+	&.error {
+		border-color: rgba(#e94436, 0.9);
+	}
+
 	& > input {
 		&::placeholder {
 			color: rgba(#3f4a52, 0.5);
+		}
+
+		&:disabled {
+			background-color: transparent;
 		}
 	}
 
@@ -185,7 +193,17 @@
 		}
 	}
 
+	& + .error-message {
+		background-color: rgba(#e94436, 0.9);
+		color: #fff;
+	}
+
+	& + .error-message + .hints,
 	& + .hints {
 		color: #5b5c63;
+	}
+
+	.no-results {
+		padding: 15px;
 	}
 }

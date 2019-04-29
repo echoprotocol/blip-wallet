@@ -97,6 +97,7 @@
 			background-color: #fff;
 		}
 	}
+
 	input {
 		border: 1px solid #bfaaeb;
 		background-color: #bfaaeb;
@@ -144,6 +145,7 @@
 		}
 	}
 }
+
 // &.white
 .input.white {
 	&.focused {
@@ -152,6 +154,7 @@
 			background-color: #fff;
 		}
 	}
+
 	input {
 		border: 1px solid #a8abb7;
 		background-color: transparent;
@@ -162,8 +165,7 @@
 		}
 
 		&:hover {
-			border: 1px solid rgba(#919298, 0.91);
-			background-color: #fff;
+			border: 1px solid rgba(#838590, 1);
 		}
 
 		&:focus {

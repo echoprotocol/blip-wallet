@@ -3,13 +3,13 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { AUTHORIZATION, UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
+import { UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
-import { initTokens, subscribeTokens } from './balance-actions'; // eslint-disable-line import/no-cycle
+import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
 
 /**
  *  @method setValue
@@ -104,18 +104,19 @@ export const createDB = (form, password) => async (dispatch) => {
 		await userStorage.setScheme(UserStorageService.SCHEMES.AUTO, password);
 		await dispatch(initAccounts());
 		await dispatch(initTokens());
+		await dispatch(updateBalance());
 		resolve();
 	});
 
 	try {
 		await Promise.all([promiseCreateDB, promiseLoader]);
 		dispatch(setValue('locked', false));
-		history.push(AUTHORIZATION);
 	} catch (err) {
 		console.error(err);
 	} finally {
-		dispatch(setValueToForm(form, 'loading', false));
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+		await dispatch(startAnimation(CREATE_PASSWORD, false));
+		dispatch(setValueToForm(form, 'loading', false));
 	}
 };
 
@@ -146,6 +147,7 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 		if (correctPassword) {
 			await dispatch(initAccounts());
 			await dispatch(initTokens());
+			await dispatch(updateBalance());
 			return resolve({ result: true });
 		}
 
