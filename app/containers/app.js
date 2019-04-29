@@ -67,6 +67,18 @@ class App extends React.Component {
 
 		let routed = false;
 
+
+		if (!routed && LOCKED_ROUTES.includes(pathname)) {
+			const userStorage = Services.getUserStorage();
+
+			const doesDBExist = await userStorage.doesDBExist();
+
+			if (!doesDBExist) {
+				routed = true;
+				this.props.history.push(CREATE_PASSWORD);
+			}
+		}
+
 		if (!routed && [CREATE_PASSWORD].includes(pathname)) {
 
 			routed = true;
