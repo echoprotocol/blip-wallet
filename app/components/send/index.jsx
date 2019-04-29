@@ -167,7 +167,6 @@ class Send extends React.Component {
 		const fromAccountName = accounts && (accounts.getIn([form.get('from').value, 'name']) || [...accounts.values()][0].get('name'));
 
 		const amountTitle = intl.formatMessage({ id: 'send.amount.title' });
-		const feeTitle = intl.formatMessage({ id: 'send.fee.title' });
 
 		const placeholderAmount = intl.formatMessage({ id: 'send.dropdown.input.placeholder.amount' });
 		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
@@ -306,7 +305,6 @@ class Send extends React.Component {
 													<InputDropdown
 														title={content}
 														name="fee"
-														hints={[feeTitle]}
 														disable
 														globalLoading={!!loading}
 														errorText={form.get('fee').error}
@@ -315,7 +313,6 @@ class Send extends React.Component {
 														data={{
 															account: from || [...accounts.keys()][0],
 															balances,
-															tokens,
 															from: form.get('from').value,
 															hiddenAssets,
 														}}
