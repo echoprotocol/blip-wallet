@@ -38,8 +38,6 @@ class InputDropdown extends React.Component {
 	}
 
 	componentDidMount() {
-		const { assetsList, tokensList } = this.getSymbols();
-		this.setState({ assetsList, tokensList });
 		document.addEventListener('mousedown', this.handleClickOutside);
 		return null;
 	}
@@ -58,6 +56,13 @@ class InputDropdown extends React.Component {
 
 		if (opened && (opened !== prevOpened)) {
 			this.searchInput.focus();
+		}
+
+		const { from } = this.props.data;
+		const { from: prevFrom } = prevProps.data;
+
+		if (from !== prevFrom) {
+			this.setDropdownBalances();
 		}
 	}
 
@@ -177,6 +182,11 @@ class InputDropdown extends React.Component {
 		this.setState({ focus });
 	}
 
+	setDropdownBalances() {
+		const { assetsList, tokensList } = this.getSymbols();
+		this.setState({ assetsList, tokensList });
+	}
+
 	getSymbols() {
 		const assetsList = [];
 		const tokensList = [];
@@ -186,14 +196,15 @@ class InputDropdown extends React.Component {
 		}
 
 		const {
-			account, balances, tokens,
+			account, balances, tokens, from,
 		} = this.props.data;
 
+		const activeAccountId = from || account;
 		let { hiddenAssets } = this.props.data;
 		hiddenAssets = hiddenAssets || [];
 
 		balances.mapEntries(([balanceId, { accountId, symbol, assetId }]) => {
-			if (accountId === account && !hiddenAssets.includes(assetId)) {
+			if (accountId === activeAccountId && !hiddenAssets.includes(assetId)) {
 				if (symbol === ECHO_ASSET_SYMBOL) {
 					assetsList.unshift({ text: symbol, value: balanceId, active: false });
 					return null;
@@ -207,7 +218,7 @@ class InputDropdown extends React.Component {
 
 		if (tokens) {
 			tokens.forEach((token) => {
-				if (account === token.getIn(['account', 'id']) && !hiddenAssets.includes(token.getIn(['contract', 'id']))) {
+				if (activeAccountId === token.getIn(['account', 'id']) && !hiddenAssets.includes(token.getIn(['contract', 'id']))) {
 					tokensList.push({
 						text: token.getIn(['contract', 'token', 'symbol']),
 						value: token.getIn(['contract', 'id']),

@@ -58,6 +58,10 @@ const DEFAULT_FORM_FIELDS = {
 			amount: '',
 			symbol: '',
 		},
+		echoAsset: {
+			symbol: '',
+			precision: '',
+		},
 	}),
 };
 

@@ -3,6 +3,7 @@
 import path from 'path';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 	template: `${__dirname}/../app/index.web.html`,
@@ -99,9 +100,7 @@ export default {
 			{
 				test: /^((?!\.global).)*\.(scss|sass)$/,
 				use: [
-					{
-						loader: 'style-loader',
-					},
+					MiniCssExtractPlugin.loader,
 					{
 						loader: 'css-loader',
 						options: {
@@ -153,6 +152,7 @@ export default {
 		extensions: ['.js', '.jsx', '.json'],
 	},
 	plugins: [
+		new MiniCssExtractPlugin(),
 		new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['dist'] }),
 		HTMLWebpackPluginConfig,
 	],

@@ -400,7 +400,6 @@
 		"amount": "Amount",
 		"amount.title": "Minimal amount is",
 		"fee": "Fee",
-		"fee.title": "Generated automatically based on amount",
 		"dropdown": {
 			"input.placeholder.amount": "Asset or token name",
 			"input.placeholder.fee": "Asset name",
