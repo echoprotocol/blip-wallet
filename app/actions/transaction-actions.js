@@ -4,9 +4,13 @@ import { validators, CACHE_MAPS } from 'echojs-lib';
 import WalletReducer from '../reducers/wallet-reducer';
 
 import {
-	OPERATION_ID_PREFIX, ASSET_TYPE, TOKEN_TYPE, OPERATION_TYPES,
-	OPTION_TYPES, OPERATIONS,
+	OPERATION_ID_PREFIX, OPTION_TYPES, OPERATIONS,
+	CONTRACT_TYPES, CONTRACT_RESULT_TYPE_0, CONTRACT_RESULT_EXCEPTED_NONE,
 } from '../constants/transaction-constants';
+import { ASSET_TYPE, TOKEN_TYPE, DEFAULT_HISTORY_COUNT } from '../constants/graphql-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION } from '../constants/global-constants';
+
+import { setValue } from './global-actions';
 import Services from '../services';
 import { getHistoryByAccounts, getCoinsByAccounts } from '../services/queries/transaction-queries';
 
@@ -18,6 +22,27 @@ import { getHistoryByAccounts, getCoinsByAccounts } from '../services/queries/tr
  */
 export const set = (field, value) => (dispatch) => {
 	dispatch(WalletReducer.actions.set({ field, value }));
+};
+
+
+/**
+ * Set params by field
+ * @param field
+ * @param params
+ * @returns {Function}
+ */
+export const setIn = (field, params) => (dispatch) => {
+	dispatch(WalletReducer.actions.setIn({ field, params }));
+};
+
+/**
+ * Set params by field
+ * @param field
+ * @param params
+ * @returns {Function}
+ */
+export const mergeIn = (field, params) => (dispatch) => {
+	dispatch(WalletReducer.actions.mergeIn({ field, params }));
 };
 
 /**
@@ -39,15 +64,14 @@ export const clear = (field) => (dispatch) => {
  *  @param {Number} type
  *  @param {Immutable.Map} operation
  *  @param {String} blockNumber
+ *  @param {String} resultId
  *  @params {String[]} [accounts]
  */
-export const formatTransaction = async (type, operation, blockNumber, accounts = []) => {
+export const formatTransaction = async (type, operation, blockNumber, resultId, accounts = []) => {
 	if (!operation.size || !blockNumber) {
 		return new Map({});
 	}
 
-	// const [type, operation] = transaction.get('op');
-	// const [, result] = transaction.get('result');
 	const block = await Services.getEcho().api.getBlock(blockNumber);
 	const feeAsset = await Services.getEcho().api.getObject(operation.getIn(['fee', 'asset_id']));
 
@@ -58,6 +82,7 @@ export const formatTransaction = async (type, operation, blockNumber, accounts =
 	}
 
 	const object = {
+		type,
 		name,
 		timestamp: block.timestamp,
 		fee: {
@@ -66,6 +91,12 @@ export const formatTransaction = async (type, operation, blockNumber, accounts =
 			symbol: feeAsset.symbol,
 		},
 	};
+
+	if (CONTRACT_TYPES.includes(type)) {
+		const result = await Services.getEcho().api.getContractResult(resultId);
+		object.code = operation.get('code');
+		object.status = result[0] === CONTRACT_RESULT_TYPE_0 ? result[1].exec_res.excepted === CONTRACT_RESULT_EXCEPTED_NONE : true;
+	}
 
 	options = Object.entries(options).map(async ([key, value]) => {
 		if (!value) { return value; }
@@ -153,6 +184,7 @@ export const setLastTransaction = () => async (dispatch, getState) => {
 		transaction.getIn(['op', '0']),
 		transaction.getIn(['op', '1']),
 		transaction.get('block_num'),
+		transaction.getIn(['result', '1']),
 		[account.get('id')],
 	);
 
@@ -163,55 +195,184 @@ export const setLastTransaction = () => async (dispatch, getState) => {
  * Get transactions history by selected accounts
  * @returns {Function}
  */
-export const getFilteredHistory = () => async (dispatch, getState) => {
-	let accounts = getState().global.get('accounts');
-	let filter = getState().wallet.getIn(['history', 'filter']);
-
-	if (!accounts.size) {
-		dispatch(clear('history'));
-		return;
-	}
-
-	if (!filter.get('accounts')) {
-		filter = filter.set('accounts', accounts.map((a) => a.set('selected', true)).toList());
-	}
-
-	accounts = accounts.reduce((arr, name, id) => ([...arr, id]), []);
-
-	if (!filter.get('coins')) {
-		let coins = await getCoinsByAccounts(['1.2.177']); //	accounts
-		coins = coins.map((i) => ({ ...i, selected: true }));
-		filter = filter.set('coins', fromJS(coins));
-	}
-
-	if (!filter.get('types')) {
-		filter = filter.set('types', fromJS(OPERATION_TYPES.map((type) => ({ type, selected: true }))));
-	}
+const getFilteredHistory = (offset = 0, count = DEFAULT_HISTORY_COUNT) => async (dispatch, getState) => {
+	const filter = getState().wallet.getIn(['history', 'filter']);
 
 	const selectedAccounts = filter.get('accounts')
 		.filter((a) => a.get('selected'))
-		.reduce((arr, name, id) => ([...arr, id]), []);
+		.reduce((arr, a) => ([...arr, a.get('id')]), []);
 	const assets = filter.get('coins')
-		.filter((c) => (c.get('type') === ASSET_TYPE && c.get('selected'))); // TODO: EDIT
+		.filter((c) => (c.get('type') === ASSET_TYPE && c.get('selected')))
+		.reduce((arr, c) => [...arr, c.getIn(['asset', 'id'])], []);
 	const tokens = filter.get('coins')
 		.filter((c) => (c.get('type') === TOKEN_TYPE && c.get('selected')))
 		.reduce((arr, c) => [...arr, c.getIn(['contract', 'id'])], []);
 	const operations = filter.get('types')
 		.filter((o) => o.get('selected'))
-		.reduce((arr, o) => [...arr, o.get('type')], []);
+		.reduce((arr, o) => [...arr, o.get('type').toUpperCase()], []);
 
 	const { items, total } = await getHistoryByAccounts(
-		['1.2.177'], //	selectedAccounts
-		assets.length ? assets : undefined,
-		tokens.length ? tokens : undefined,
-		operations.length ? operations : undefined,
+		selectedAccounts,
+		assets,
+		tokens,
+		operations,
+		offset,
+		count,
 	);
-	const blockNumber = '1057924'; // TODO: EDIT
 
-	let transactions = items.map(({ id, body }) => formatTransaction(Number(id), fromJS(body), blockNumber, selectedAccounts));
+	let transactions = items.map(({
+		id, body, transaction, result,
+	}) => formatTransaction(
+		Number(id),
+		fromJS(body),
+		transaction.block.round,
+		result,
+		selectedAccounts,
+	));
 	transactions = await Promise.all(transactions);
 
-	dispatch(set('history', fromJS({ transactions, total, filter })));
+	return { transactions: fromJS(transactions), total };
+};
+
+/**
+ * Save filters in db
+ * @returns {Function}
+ */
+const saveHistoryFilter = (filter) => {
+	const localStorage = Services.getLocalStorage();
+	localStorage.setData('historyFilter', filter);
+};
+
+/**
+ * Set default history filters
+ * @returns {Function}
+ */
+export const setDefaultFilters = () => async (dispatch, getState) => {
+	let accounts = getState().global.get('accounts');
+	let filter = getState().wallet.getIn(['history', 'filter']);
+
+	filter = filter.set('accounts', accounts.map((a, id) => a.set('id', id).set('selected', true)).toList());
+
+	accounts = accounts.reduce((arr, name, id) => ([...arr, id]), []);
+
+	let coins = await getCoinsByAccounts(accounts);
+	if (!coins.length) {
+		coins.push({
+			type: ASSET_TYPE,
+			asset: {
+				id: ECHO_ASSET_ID,
+				symbol: ECHO_ASSET_SYMBOL,
+				precision: ECHO_ASSET_PRECISION,
+			},
+			contract: null,
+		});
+	}
+
+	coins = coins.map((i) => ({ ...i, selected: true }));
+	filter = filter.set('coins', fromJS(coins));
+
+	filter = filter.set('types', fromJS(Object.keys(OPERATIONS).map((type) => ({
+		type,
+		name: OPERATIONS[type].name,
+		selected: true,
+	}))));
+
+	dispatch(setIn('history', { filter }));
+	saveHistoryFilter(filter);
+};
+
+/**
+ * Update history filters
+ * @returns {Function}
+ */
+const updateFilters = (filter) => async (dispatch, getState) => {
+	let accounts = getState().global.get('accounts');
+
+	const newAccounts = accounts
+		.filter((a, id) => !filter.get('accounts').find((acc) => acc.get('id') === id))
+		.map((a, id) => a.set('id', id).set('selected', true))
+		.toList();
+
+	if (newAccounts.size) {
+		filter = filter.set('accounts', filter.get('accounts').concat(newAccounts));
+	}
+
+	filter = filter.set('accounts', filter.get('accounts').filter((a) => accounts.has(a.get('id'))));
+
+	accounts = accounts.reduce((arr, name, id) => ([...arr, id]), []);
+
+	const coins = await getCoinsByAccounts(accounts);
+	if (!coins.length) {
+		coins.push({
+			type: ASSET_TYPE,
+			asset: {
+				id: ECHO_ASSET_ID,
+				symbol: ECHO_ASSET_SYMBOL,
+				precision: ECHO_ASSET_PRECISION,
+			},
+			contract: null,
+		});
+	}
+
+	const newCoins = fromJS(coins)
+		.filter((coin) => !filter.get('coins').find((c) => (
+			c.get('type') === coin.get('type') && c.getIn(['asset', 'id']) === coin.getIn(['asset', 'id']) && c.getIn(['contract', 'id']) === coin.getIn(['contract', 'id'])
+		)))
+		.map((i) => i.set('selected', true));
+
+	if (newCoins.size) {
+		filter = filter.set('coins', filter.get('coins').concat(fromJS(newCoins)));
+	}
+
+	filter = filter.set('coins', filter.get('coins').filter((coin) => fromJS(coins).find((c) => (
+		c.get('type') === coin.get('type') && c.getIn(['asset', 'id']) === coin.getIn(['asset', 'id']) && c.getIn(['contract', 'id']) === coin.getIn(['contract', 'id'])
+	))));
+
+	dispatch(setIn('history', { filter }));
+	saveHistoryFilter(filter);
+};
+
+/**
+ * Load history
+ * @returns {Function}
+ */
+export const loadTransactions = () => async (dispatch, getState) => {
+	dispatch(setValue('loading', 'history.loading'));
+
+	try {
+		const accounts = getState().global.get('accounts');
+
+		if (!accounts.size) {
+			dispatch(clear('history'));
+			return;
+		}
+
+		const filter = fromJS(Services.getLocalStorage().getData('historyFilter'));
+
+		if (filter.isEmpty() || (!filter.get('accounts') && !filter.get('coins') && !filter.get('types'))) {
+			await dispatch(setDefaultFilters());
+		} else {
+			await dispatch(updateFilters(filter));
+		}
+
+		const { transactions, total } = await dispatch(getFilteredHistory());
+		dispatch(setIn('history', { transactions, total }));
+	} catch (e) {
+		console.warn(e);
+	} finally {
+		dispatch(setValue('loading', ''));
+	}
+};
+
+/**
+ * Load more transactions
+ * @returns {Function}
+ */
+export const loadMoreTransactions = () => async (dispatch, getState) => {
+	const { size } = getState().wallet.getIn(['history', 'transactions']);
+
+	const { transactions, total } = await dispatch(getFilteredHistory(size));
+	dispatch(mergeIn('history', { transactions, total }));
 };
 
 /**
@@ -228,14 +389,52 @@ export const toggleTransactionDetails = (index) => (dispatch) => {
 /**
  * Update transactions filter and transactions
  *
- * @param {String} filter
- * @param {Number} index
+ * @param accounts
+ * @param coins
+ * @param types
  *
  * @returns {Function}
  */
-export const updateFilter = (filter, index) => (dispatch) => {
-	dispatch(WalletReducer.actions.toggleFilter({ filter, index }));
-	dispatch(getFilteredHistory());
+export const saveFilters = (accounts, coins, types) => async (dispatch, getState) => {
+	let filter = getState().wallet.getIn(['history', 'filter']);
+	filter = filter.set('accounts', accounts);
+	filter = filter.set('coins', coins);
+	filter = filter.set('types', types);
+
+	dispatch(setIn('history', { filter }));
+	saveHistoryFilter(filter);
+
+	dispatch(setValue('loading', 'history.loading'));
+
+	try {
+		const { transactions, total } = await dispatch(getFilteredHistory());
+		dispatch(setIn('history', { transactions, total }));
+	} catch (e) {
+		console.warn(e);
+	} finally {
+		dispatch(setValue('loading', ''));
+	}
+
+};
+
+/**
+ * Reset transactions filter and update transactions
+ *
+ * @returns {Function}
+ */
+export const resetFilters = () => async (dispatch) => {
+	dispatch(setValue('loading', 'history.loading'));
+
+	try {
+		await dispatch(setDefaultFilters());
+		const { transactions, total } = await dispatch(getFilteredHistory());
+		dispatch(setIn('history', { transactions, total }));
+	} catch (e) {
+		console.warn(e);
+	} finally {
+		dispatch(setValue('loading', ''));
+	}
+
 };
 
 /**

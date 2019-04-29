@@ -46,7 +46,7 @@ class LastTransaction extends React.Component {
 		const title = intl.formatMessage({ id: 'wallet.transaction.title' });
 
 		return (
-			<div className="last-transaction">
+			<div className="last-transaction" tabIndex="0" role="button" onClick={this.props.click} onKeyPress={this.props.click}>
 				<div className="label">{title}</div>
 				<div className="line">
 					<span className="date">
@@ -82,6 +82,7 @@ LastTransaction.propTypes = {
 	language: PropTypes.string.isRequired,
 	transaction: PropTypes.object.isRequired,
 	accounts: PropTypes.object.isRequired,
+	click: PropTypes.func.isRequired,
 };
 
 export default injectIntl(LastTransaction);

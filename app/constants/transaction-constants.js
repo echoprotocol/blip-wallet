@@ -3,17 +3,6 @@ import { OPERATIONS_IDS } from 'echojs-lib';
 export const OPERATION_ID_PREFIX = '1.11.';
 export const ASSET_TYPE = 'ASSET';
 export const TOKEN_TYPE = 'TOKEN';
-// TEMP: remove after all types wiil be implemented by echodb
-export const OPERATION_TYPES = [
-	'TRANSFER',
-	'ACCOUNT_CREATE',
-	'ACCOUNT_UPDATE',
-	'ACCOUNT_WHITELIST',
-	'ACCOUNT_UPGRADE',
-	'ACCOUNT_TRANSFER',
-	'CONTRACT_CREATE',
-	'CONTRACT_CALL',
-];
 
 export const OPTION_TYPES = {
 	ACCOUNT: 'account',
@@ -22,6 +11,22 @@ export const OPTION_TYPES = {
 	NUMBER: 'number',
 	STRING: 'string',
 };
+
+export const CONTRACT_TYPES = [
+	OPERATIONS_IDS.CREATE_CONTRACT,
+	OPERATIONS_IDS.CALL_CONTRACT,
+	OPERATIONS_IDS.CONTRACT_TRANSFER,
+];
+
+export const ACCOUNT_TYPES = [
+	OPERATIONS_IDS.ACCOUNT_CREATE,
+	OPERATIONS_IDS.ACCOUNT_UPDATE,
+	OPERATIONS_IDS.ACCOUNT_UPGRADE,
+];
+
+export const CONTRACT_RESULT_TYPE_0 = 0;
+export const CONTRACT_RESULT_TYPE_1 = 1;
+export const CONTRACT_RESULT_EXCEPTED_NONE = 'None';
 
 export const TRANSFER_KEYS = {
 	transfer: 'from',
@@ -248,19 +253,19 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	asset_update_bitasset: {
+	asset_bitasset_update: {
 		value: OPERATIONS_IDS.ASSET_UPDATE_BITASSET,
-		name: 'operations.asset_update_bitasset.title',
+		name: 'operations.asset_bitasset_update.title',
 		options: {
 			from: {
 				field: 'issuer',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.asset_update_bitasset.from',
+				label: 'operations.asset_bitasset_update.from',
 			},
 			subject: {
 				field: 'asset_to_update',
 				type: OPTION_TYPES.ASSET,
-				label: 'operations.asset_update_bitasset.subject',
+				label: 'operations.asset_bitasset_update.subject',
 			},
 			amount: null,
 			asset: null,

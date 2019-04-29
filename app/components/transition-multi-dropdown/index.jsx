@@ -4,6 +4,8 @@ import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import _ from 'lodash';
 import classnames from 'classnames';
+import { FormattedMessage } from 'react-intl';
+
 import {
 	KEY_CODE_TAB,
 	KEY_CODE_ARROW_DOWN,
@@ -20,24 +22,6 @@ class TransactionMultiDropdown extends React.Component {
 		this.state = {
 			opened: false,
 			focus: false,
-			dropdownData: [
-				{
-					text: 'Account1',
-					active: true,
-					id: '0',
-				},
-
-				{
-					text: 'Account2',
-					active: false,
-					id: '2',
-				},
-				{
-					text: 'Account3',
-					active: false,
-					id: '3',
-				},
-			],
 		};
 
 		this.setMenuRef = this.setMenuRef.bind(this);
@@ -144,6 +128,15 @@ class TransactionMultiDropdown extends React.Component {
 		return null;
 	}
 
+	onItemToggle(e, key) {
+		e.preventDefault();
+		this.props.toggle(key);
+	}
+
+	onSearch(e) {
+		e.preventDefault();
+		this.props.search(e.target.value);
+	}
 
 	setMenuRef(node) {
 		this.menuRef = node;
@@ -170,8 +163,11 @@ class TransactionMultiDropdown extends React.Component {
 	}
 
 	render() {
-		const { opened, dropdownData, focus } = this.state;
-		const { hints, label } = this.props;
+		const { opened, focus } = this.state;
+		const {
+			label, info, placeholder, types,
+		} = this.props;
+
 		return (
 			<div className="dropdown-wrap">
 				{
@@ -193,7 +189,7 @@ class TransactionMultiDropdown extends React.Component {
 							onClick={() => this.toggleDropdown()}
 							variant="Info"
 						>
-							<span className="dropdown-toggle-text">ECHO</span>
+							{!!info && (<span className="dropdown-toggle-text">{info}</span>)}
 							<span className="carret" />
 						</Dropdown.Toggle>
 
@@ -201,55 +197,39 @@ class TransactionMultiDropdown extends React.Component {
 
 							<input
 								type="text"
-								placeholder="Asset or token name"
+								placeholder={placeholder}
+								onInput={(e) => this.onSearch(e)}
 								onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
 								onKeyDown={(e) => { this.onInputKeyDown(e); }}
 								ref={(node) => { this.searchInput = node; }}
 							/>
 							<PerfectScrollbar className="input-dropdown-scroll">
 								{
-									dropdownData.map(({
-										text, value, active, id,
-									}, i) => (
-										<div className="checkbox" key={id}>
+									types && types.size ? types.map((item, i) => (
+										<div className="checkbox" key={item.get('type')}>
 											<input
 												ref={(ref) => { this.refList[i] = ref; }}
-												className={classnames({ active })}
 												tabIndex={0}
-												onKeyPress={
-													(e) => {
-														this.onItemKeyPress(e, text, value);
-														e.preventDefault();
-													}
-												}
+												onKeyPress={(e) => this.onItemToggle(e, i)}
+												onChange={() => {}}
 												onKeyDown={(e) => this.onKeyDown(e, i)}
 												type="checkbox"
 												name="multi-select"
-												id={`tr-${id}`}
+												id={`tr-${item.get('type')}`}
+												checked={item.get('selected')}
 											/>
 
-											<label htmlFor={`tr-${id}`}>
+											<label htmlFor={`tr-${item.get('type')}`} onClick={(e) => this.onItemToggle(e, i)}>
 												<span className="label-text">
-													{text}
+													<FormattedMessage id={item.get('name')} />
 												</span>
 											</label>
 										</div>
-									))
+									)) : (<div>No Results</div>)
 								}
 							</PerfectScrollbar>
 						</Dropdown.Menu>
 					</Dropdown>
-
-					<div className="hints">
-						{
-							!!hints.length && hints.map((hint) => (
-								<div key={hint} className="hint">
-									{hint}
-								</div>
-							))
-						}
-
-					</div>
 				</div>
 			</div>
 		);
@@ -258,13 +238,19 @@ class TransactionMultiDropdown extends React.Component {
 }
 
 TransactionMultiDropdown.propTypes = {
-	hints: PropTypes.array,
 	label: PropTypes.string,
+	info: PropTypes.string,
+	placeholder: PropTypes.string,
+	types: PropTypes.object,
+	toggle: PropTypes.func.isRequired,
+	search: PropTypes.func.isRequired,
 };
 
 TransactionMultiDropdown.defaultProps = {
-	hints: [],
 	label: '',
+	info: '',
+	placeholder: '',
+	types: null,
 };
 
 export default TransactionMultiDropdown;

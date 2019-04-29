@@ -1,92 +1,248 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+
 import MultiDropdown from '../multi-dropdown';
 import AccountsMultiDropdown from '../accounts-multi-dropdown';
 import TransactionsMultiDropdown from '../transition-multi-dropdown';
 
-
-import { ASSET_TYPE } from '../../constants/transaction-constants';
+import { ASSET_TYPE, TOKEN_TYPE } from '../../constants/transaction-constants';
 
 class Filter extends React.Component {
 
-	onToggleChecked(e, type, key) {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			accounts: null,
+			coins: null,
+			types: null,
+			search: {
+				account: {
+					value: null,
+					timeout: null,
+				},
+				type: {
+					value: null,
+					timeout: null,
+				},
+				coin: {
+					value: null,
+					timeout: null,
+				},
+			},
+		};
+	}
+
+	componentDidMount() {
+		this.updateFilters();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (!prevProps.filter.equals(this.props.filter)) {
+			this.updateFilters();
+		}
+	}
+
+	componentWillUnmount() {
+		this.clear();
+	}
+
+	onToggleChecked(type, key) {
+		this.setState((prevState) => {
+			const item = prevState[type].get(key);
+			const list = prevState[type].set(key, item.set('selected', !item.get('selected')));
+
+			return { [type]: list };
+		});
+	}
+
+	onSearch(type, value) {
+		clearTimeout(this.state.search[type].timeout);
+
+		const timeout = setTimeout(() => {
+			this.setState((prevState) => ({
+				search: {
+					...prevState.search,
+					[type]: {
+						...prevState.search[type],
+						value,
+					},
+				},
+			}));
+		}, 300);
+
+		this.setState((prevState) => ({
+			search: {
+				...prevState.search,
+				[type]: {
+					...prevState.search[type],
+					timeout,
+				},
+			},
+		}));
+	}
+
+	onReset(e) {
 		e.preventDefault();
-		this.props.toggleChecked(type, key);
+		this.props.reset();
 	}
 
-
-	renderCoin(coin, key) {
-		return (
-			<div className="account" key={key}>
-				<div className="checkbox transparent">
-					<input type="checkbox" checked={coin.get('selected')} onChange={() => {}} />
-					<label htmlFor="checkbox" className="checkbox-label" onClick={(e) => this.onToggleChecked(e, 'coins', key)}>
-						<span className="label-account-name">
-							{coin.get('type') === ASSET_TYPE ? coin.get('asset') : coin.getIn(['contract', 'token', 'symbol'])}
-						</span>
-					</label>
-				</div>
-			</div>
-		);
+	onClose(e) {
+		e.preventDefault();
+		this.props.close();
 	}
 
-	renderOperation(operation, key) {
-		return (
-			<div className="account" key={key}>
-				<div className="checkbox transparent">
-					<input type="checkbox" checked={operation.get('selected')} onChange={() => {}} />
-					<label htmlFor="checkbox" className="checkbox-label" onClick={(e) => this.onToggleChecked(e, 'types', key)}>
-						<span className="label-account-name">{operation.get('type')}</span>
-					</label>
-				</div>
-			</div>
-		);
+	onApply(e) {
+		e.preventDefault();
+
+		const { accounts, coins, types } = this.state;
+		this.props.apply(accounts, coins, types);
 	}
 
-	renderAccount(account, key) {
-		return (
-			<div className="account" key={key}>
-				<div className="checkbox transparent">
-					<input type="checkbox" checked={account.get('selected')} onChange={() => {}} />
-					<label htmlFor="checkbox" className="checkbox-label" onClick={(e) => this.onToggleChecked(e, 'accounts', key)}>
-						<span className="label-account-name">{account.get('name')}</span>
-					</label>
-				</div>
-			</div>
-		);
+	getInfo(type) {
+		const list = this.state[type];
+
+		if (!list) {
+			return '';
+		}
+
+		const { intl } = this.props;
+		const selected = list.filter((i) => i.get('selected'));
+
+		if (list.size !== selected.size) {
+			return intl.formatMessage({ id: `history.filter.${type}.selected` }, { size: selected.size });
+		}
+
+		return intl.formatMessage({ id: `history.filter.${type}.all` });
 	}
+
+	getAccountList(search, list) {
+		if (!list || !search) {
+			return list;
+		}
+
+		search = search.toLowerCase();
+
+		return list.filter((i) => i.get('name').toLowerCase().includes(search));
+	}
+
+	getTypeList(search, list) {
+		if (!list || !search) {
+			return list;
+		}
+
+		const { intl } = this.props;
+		search = search.toLowerCase();
+
+		return list.filter((i) => intl.formatMessage({ id: i.get('name') }).toLowerCase().includes(search));
+	}
+
+	getCoinList(search, list) {
+		if (!list) {
+			return list;
+		}
+
+		if (search) {
+			search = search.toLowerCase();
+
+			list = list.filter((i) => {
+				const symbol = i.get('type') === ASSET_TYPE ? i.getIn(['asset', 'symbol']) : i.getIn(['contract', 'token', 'symbol']);
+				return symbol.toLowerCase().includes(search);
+			});
+		}
+
+		return list.size ? [
+			{
+				id: 0,
+				title: this.props.intl.formatMessage({ id: 'history.filter.coins.assets' }),
+				list: list.filter((c) => c.get('type') === ASSET_TYPE),
+			},
+			{
+				id: 1,
+				title: this.props.intl.formatMessage({ id: 'history.filter.coins.tokens' }),
+				list: list.filter((c) => c.get('type') === TOKEN_TYPE),
+			},
+		] : null;
+	}
+
+	getUpdatedList(prev, next) {
+		if (!prev || !next) {
+			return null;
+		}
+
+		const diff = next.filter((i) => !prev.includes(i));
+		return prev.concat(diff);
+	}
+
+	updateFilters() {
+		const { filter } = this.props;
+		let { accounts, coins, types } = this.state;
+
+		accounts = accounts || filter.get('accounts');
+		coins = coins || filter.get('coins');
+		types = types || filter.get('types');
+
+		this.setState({
+			accounts: this.getUpdatedList(accounts, filter.get('accounts')),
+			coins: this.getUpdatedList(coins, filter.get('coins')),
+			types: this.getUpdatedList(types, filter.get('types')),
+		});
+	}
+
+	clear() {}
 
 	render() {
-		// const { filter } = this.props;
+		const {
+			accounts, coins, types, search,
+		} = this.state;
+
+		const { intl } = this.props;
 
 		return (
 			<div className="sidebar-settings filter">
 				<div className="head">
-					<Button className="btn-inversed">
-						<span className="text">Set to default</span>
+					<Button className="btn-inversed" onClick={(e) => this.onReset(e)}>
+						<span className="text"><FormattedMessage id="history.filter.buttons.reset" /></span>
 					</Button>
-					<Button className="btn-close" />
+					<Button className="btn-close" onClick={(e) => this.onClose(e)} />
 				</div>
 				<div className="body">
 					<div className="field">
-						<AccountsMultiDropdown label="Accounts" />
+						<AccountsMultiDropdown
+							label={intl.formatMessage({ id: 'history.filter.accounts.label' })}
+							info={this.getInfo('accounts')}
+							placeholder={intl.formatMessage({ id: 'history.filter.accounts.placeholder' })}
+							accounts={this.getAccountList(search.account.value, accounts)}
+							toggle={(key) => this.onToggleChecked('accounts', key)}
+							search={(value) => this.onSearch('account', value)}
+						/>
 					</div>
 					<div className="field">
-						<TransactionsMultiDropdown label="Transaction type" />
+						<TransactionsMultiDropdown
+							label={intl.formatMessage({ id: 'history.filter.types.label' })}
+							info={this.getInfo('types')}
+							placeholder={intl.formatMessage({ id: 'history.filter.types.placeholder' })}
+							types={this.getTypeList(search.type.value, types)}
+							toggle={(key) => this.onToggleChecked('types', key)}
+							search={(value) => this.onSearch('type', value)}
+						/>
 					</div>
 					<div className="field">
-						<MultiDropdown label="Asset" />
+						<MultiDropdown
+							label={intl.formatMessage({ id: 'history.filter.coins.label' })}
+							info={this.getInfo('coins')}
+							placeholder={intl.formatMessage({ id: 'history.filter.coins.placeholder' })}
+							coins={this.getCoinList(search.coin.value, coins)}
+							toggle={(value) => this.onToggleChecked('coins', coins.indexOf(value))}
+							search={(value) => this.onSearch('coin', value)}
+						/>
 					</div>
-					{/*
-						{filter.get('coins') && filter.get('coins').map((coin, i) => this.renderCoin(coin, i))}
-						{filter.get('types') && filter.get('types').map((type, i) => this.renderOperation(type, i))}
-						{filter.get('accounts') && filter.get('accounts').map((account, i) => this.renderAccount(account, i))}
-					*/}
 				</div>
 				<div className="footer">
-					<Button className="btn-primary">
-						<span className="text">Apply & close</span>
+					<Button className="btn-primary" onClick={(e) => this.onApply(e)}>
+						<span className="text"><FormattedMessage id="history.filter.buttons.apply" /></span>
 					</Button>
 				</div>
 			</div>
@@ -96,8 +252,11 @@ class Filter extends React.Component {
 }
 
 Filter.propTypes = {
-	// filter: PropTypes.object.isRequired,
-	toggleChecked: PropTypes.func.isRequired,
+	intl: intlShape.isRequired,
+	filter: PropTypes.object.isRequired,
+	reset: PropTypes.func.isRequired,
+	close: PropTypes.func.isRequired,
+	apply: PropTypes.func.isRequired,
 };
 
-export default Filter;
+export default injectIntl(Filter);

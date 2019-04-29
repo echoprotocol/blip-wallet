@@ -21,24 +21,6 @@ class AccountsMultiDropdown extends React.Component {
 		this.state = {
 			opened: false,
 			focus: false,
-			dropdownData: [
-				{
-					text: 'Account1',
-					active: true,
-					id: '0',
-				},
-
-				{
-					text: 'Account2',
-					active: false,
-					id: '2',
-				},
-				{
-					text: 'Account3',
-					active: false,
-					id: '3',
-				},
-			],
 		};
 
 		this.setMenuRef = this.setMenuRef.bind(this);
@@ -145,6 +127,15 @@ class AccountsMultiDropdown extends React.Component {
 		return null;
 	}
 
+	onItemToggle(e, key) {
+		e.preventDefault();
+		this.props.toggle(key);
+	}
+
+	onSearch(e) {
+		e.preventDefault();
+		this.props.search(e.target.value);
+	}
 
 	setMenuRef(node) {
 		this.menuRef = node;
@@ -171,8 +162,11 @@ class AccountsMultiDropdown extends React.Component {
 	}
 
 	render() {
-		const { opened, dropdownData, focus } = this.state;
-		const { hints, label } = this.props;
+		const { opened, focus } = this.state;
+		const {
+			label, info, placeholder, accounts,
+		} = this.props;
+
 		return (
 			<div className="dropdown-wrap">
 				{
@@ -191,12 +185,10 @@ class AccountsMultiDropdown extends React.Component {
 					>
 						<Dropdown.Toggle
 
-							onClick={() => this.toggleDropdown()}
+							onClick={(k) => this.toggleDropdown(k)}
 							variant="Info"
 						>
-							<span className="dropdown-toggle-text">
-                                Accounts selected: 1
-							</span>
+							{!!info && (<span className="dropdown-toggle-text">{info}</span>)}
 							<span className="carret" />
 						</Dropdown.Toggle>
 
@@ -204,57 +196,41 @@ class AccountsMultiDropdown extends React.Component {
 							<Dropdown.Menu role="menu" alignRight>
 								<input
 									type="text"
-									placeholder="Asset or token name"
+									placeholder={placeholder}
+									onInput={(e) => this.onSearch(e)}
 									onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
 									onKeyDown={(e) => { this.onInputKeyDown(e); }}
 									ref={(node) => { this.searchInput = node; }}
 								/>
 								<PerfectScrollbar className="input-dropdown-scroll">
 									{
-										dropdownData.map(({
-											text, value, active, id,
-										}, i) => (
-											<div className="checkbox" key={id}>
+										accounts && accounts.size ? accounts.map((a, i) => (
+											<div className="checkbox" key={a.get('id')}>
 												<input
 													ref={(ref) => { this.refList[i] = ref; }}
-													className={classnames({ active })}
 													tabIndex={0}
-													onKeyPress={
-														(e) => {
-															this.onItemKeyPress(e, text, value);
-															e.preventDefault();
-														}
-													}
 													onKeyDown={(e) => this.onKeyDown(e, i)}
+													onKeyPress={(e) => this.onItemToggle(e, i)}
+													onChange={() => {}}
 													type="checkbox"
 													name="multi-select"
-													id={`ac-${id}`}
+													id={`ac-${a.get('id')}`}
+													checked={a.get('selected')}
 												/>
 
-												<label htmlFor={`ac-${id}`}>
-													<Avatar accountName={text} />
+												<label htmlFor={`ac-${a.get('id')}`} onClick={(e) => this.onItemToggle(e, i)}>
+													<Avatar accountName={a.get('name')} />
 													<span className="label-text">
-														{text}
+														{a.get('name')}
 													</span>
 												</label>
 											</div>
-										))
+										)) : (<div>No Results</div>)
 									}
 								</PerfectScrollbar>
 							</Dropdown.Menu>
 						)}
 					</Dropdown>
-
-					<div className="hints">
-						{
-							!!hints.length && hints.map((hint) => (
-								<div key={hint} className="hint">
-									{hint}
-								</div>
-							))
-						}
-
-					</div>
 				</div>
 			</div>
 		);
@@ -263,13 +239,19 @@ class AccountsMultiDropdown extends React.Component {
 }
 
 AccountsMultiDropdown.propTypes = {
-	hints: PropTypes.array,
 	label: PropTypes.string,
+	info: PropTypes.string,
+	placeholder: PropTypes.string,
+	accounts: PropTypes.object,
+	toggle: PropTypes.func.isRequired,
+	search: PropTypes.func.isRequired,
 };
 
 AccountsMultiDropdown.defaultProps = {
-	hints: [],
 	label: '',
+	info: '',
+	placeholder: '',
+	accounts: null,
 };
 
 export default AccountsMultiDropdown;

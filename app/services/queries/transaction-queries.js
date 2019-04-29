@@ -2,13 +2,19 @@ import gql from 'graphql-tag';
 
 import client from '../graphql';
 
-export const getHistoryByAccounts = (accounts, assets, tokens, operations) => {
+export const getHistoryByAccounts = (accounts, assets, tokens, operations, offset, count) => {
 	const GET_HISTORY = gql`
-	query($accounts: [AccountId!]!, $assets: [AssetId!], $tokens: [ContractId!], $operations: [OperationIdEnum!]) {
-		getHistory(from: $accounts, assets: $assets, tokens: $tokens, operations: $operations) {
+	query($accounts: [AccountId!]!, $assets: [AssetId!], $tokens: [ContractId!], $operations: [OperationIdEnum!], $offset: Int, $count: Int) {
+		getHistory(accounts: $accounts, assets: $assets, tokens: $tokens, operations: $operations, offset: $offset, count: $count) {
 			items {
 				id,
-				body
+				body,
+				transaction {
+					block {
+						round
+					}
+				},
+				result
 			},
 			total
 		}
@@ -22,6 +28,8 @@ export const getHistoryByAccounts = (accounts, assets, tokens, operations) => {
 			assets,
 			tokens,
 			operations,
+			offset,
+			count,
 		},
 	}).then(({ data }) => data.getHistory);
 };
@@ -31,6 +39,11 @@ export const getCoinsByAccounts = (accounts) => {
 	query($accounts: [AccountId!]!) {
 		getBalances(accounts: $accounts) {
 			type,
+			asset {
+				id,
+				symbol,
+				precision
+			},
 			contract {
 				id,
 				token {

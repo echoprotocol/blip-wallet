@@ -124,7 +124,8 @@
         "link": "Забыли пароль?",
         "error": {
             "Please, enter correct password": "Неверный пароль"
-        }
+        },
+        "loading": " "
     },
 
     "wallet": {
@@ -152,12 +153,56 @@
         }
     },
 
+    "history": {
+        "loading": "Загрузка транзакций",
+        "table": {
+            "title": "Моя история",
+			"type": "Тип",
+			"age": "Дата",
+			"from": "Отправитель",
+			"to": "Получатель",
+			"amount": "Сумма",
+			"fee": "Комиссия",
+            "status": {
+                "title": "Статус",
+                "success": "Успех",
+                "fail": "Неудача"
+            },
+            "bytecode": "Байткод"
+		},
+		"filter": {
+			"accounts": {
+				"label": "Аккаунты",
+				"placeholder": "Имя аккаунта",
+                "selected": "Аккаунты выбраны: {size}",
+                "all": "Все аккаунты"
+			},
+			"coins": {
+				"label": "Валюты",
+				"placeholder": "Имя ассета или токена",
+				"assets": "Ассеты",
+				"tokens": "Токены",
+                "selected": "Валюты выбраны: {size}",
+                "all": "Все валюты"
+			},
+			"types": {
+				"label": "Типы транзакций",
+				"placeholder": "Тип транзакции",
+                "selected": "Транзакции выбраны: {size}",
+                "all": "Все транзакции"
+			},
+			"buttons": {
+				"apply": "Применить и закрыть",
+				"reset": "Установить по умолчанию"
+			}
+		}
+	},
+
     "operations": {
 		"transfer": {
-            "title": {
-    			"sent": "Перевод отправлен",
-    			"received": "Перевод получен"
-            },
+            "title": "Перевод",
+            "title.sent": "Перевод отправлен",
+            "title.received": "Перевод получен",
 			"from": "Отправитель",
 			"subject": "Получатель"
 		},
@@ -185,7 +230,7 @@
             "subject": "Аккаунт"
         },
         "account_update": {
-            "title": "Обновить аккаунт",
+            "title": "Аккаунт обновлен",
             "from": "Аккаунт"
         },
         "account_whitelist": {
@@ -194,7 +239,7 @@
             "subject": "Аккаунт"
         },
         "account_upgrade": {
-            "title": "Обновить аккаунт",
+            "title": "Аккаунт улучшен",
             "from": "Аккаунт для обновления"
         },
         "account_transfer": {
@@ -212,7 +257,7 @@
             "from": "Издатель",
             "subject": "Актив"
         },
-        "asset_update_bitasset": {
+        "asset_bitasset_update": {
             "title": "Обновить SmartCoin",
             "from": "Издатель",
             "subject": "Актив"

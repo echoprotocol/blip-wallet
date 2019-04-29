@@ -10,7 +10,7 @@ import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import LastTransaction from './last-transaction';
-import { SEND } from '../../constants/routes-constants';
+import { SEND, HISTORY } from '../../constants/routes-constants';
 import { TOKEN_TYPE } from '../../constants/graphql-constants';
 
 class Wallet extends React.Component {
@@ -304,7 +304,7 @@ class Wallet extends React.Component {
 					</PerfectScrollbar>
 
 					<div className="page-footer">
-						<LastTransaction transaction={transaction} language={language} accounts={accounts} />
+						<LastTransaction transaction={transaction} language={language} accounts={accounts} click={() => this.props.history.push(HISTORY)} />
 						<div className="footer-actions">
 							<div className="btn-wrap btns-2">
 								<Button

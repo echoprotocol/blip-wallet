@@ -79,5 +79,24 @@ export default createModule({
 				return state;
 			},
 		},
+		mergeIn: {
+			reducer: (state, { payload }) => {
+				Object.keys(payload.params).forEach((field) => {
+					let param = state.getIn([payload.field, field]);
+
+					if (List.isList(param)) {
+						param = param.concat(payload.params[field]);
+					} else if (Map.isMap(param)) {
+						param = param.merge(payload.params[field]);
+					} else {
+						param = payload.params[field];
+					}
+
+					state = state.setIn([payload.field, field], param);
+				});
+
+				return state;
+			},
+		},
 	},
 });

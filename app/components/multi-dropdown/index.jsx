@@ -9,6 +9,7 @@ import {
 	KEY_CODE_ARROW_DOWN,
 	KEY_CODE_ARROW_UP,
 } from '../../constants/global-constants';
+import { ASSET_TYPE } from '../../constants/transaction-constants';
 
 class MultiDropdown extends React.Component {
 
@@ -20,50 +21,6 @@ class MultiDropdown extends React.Component {
 		this.state = {
 			opened: false,
 			focus: false,
-			dropdownData: [
-				{
-					id: 0,
-					title: 'Assets',
-					list: [
-						{
-							text: 'ECHO',
-							value: '0',
-							active: true,
-							id: '0',
-						},
-						{
-							text: 'BTC (Bitcoin)',
-							value: '0',
-							active: false,
-							id: '1',
-						},
-					],
-				},
-				{
-					id: 1,
-					title: 'Tokens',
-					list: [
-						{
-							text: 'AND (ANDREYCOIN)',
-							value: '0',
-							active: false,
-							id: '2',
-						},
-						{
-							text: 'SDRF',
-							value: '0',
-							active: false,
-							id: '3',
-						},
-						{
-							text: 'SDFV',
-							value: '0',
-							active: false,
-							id: '4',
-						},
-					],
-				},
-			],
 		};
 
 		this.setMenuRef = this.setMenuRef.bind(this);
@@ -187,6 +144,15 @@ class MultiDropdown extends React.Component {
 		return null;
 	}
 
+	onItemToggle(e, coin) {
+		e.preventDefault();
+		this.props.toggle(coin);
+	}
+
+	onSearch(e) {
+		e.preventDefault();
+		this.props.search(e.target.value);
+	}
 
 	setMenuRef(node) {
 		this.menuRef = node;
@@ -212,9 +178,46 @@ class MultiDropdown extends React.Component {
 
 	}
 
+	renderElement(coin, index, i) {
+		const id = coin.get('type') === ASSET_TYPE ? coin.getIn(['asset', 'id']) : coin.getIn(['contract', 'id']);
+		const symbol = coin.get('type') === ASSET_TYPE ? coin.getIn(['asset', 'symbol']) : coin.getIn(['contract', 'token', 'symbol']);
+
+		return (
+			<div className="checkbox" key={id}>
+				<input
+					ref={(ref) => {
+						if (ref) {
+							if (!this.refList[index]) {
+								this.refList[index] = [];
+							}
+							this.refList[index][i] = ref;
+						}
+					}}
+					tabIndex={0}
+					onKeyDown={(e) => this.onKeyDown(e, index, i)}
+					onKeyPress={(e) => this.onItemToggle(e, coin)}
+					onChange={() => {}}
+					type="checkbox"
+					name="multi-select"
+					id={`id-${id}`}
+					checked={coin.get('selected')}
+				/>
+
+				<label htmlFor={`id-${id}`} onClick={(e) => this.onItemToggle(e, coin)}>
+					<span className="label-text">
+						{symbol}
+					</span>
+				</label>
+			</div>
+		);
+	}
+
 	render() {
-		const { opened, dropdownData, focus } = this.state;
-		const { hints, label } = this.props;
+		const { opened, focus } = this.state;
+		const {
+			label, info, placeholder, coins,
+		} = this.props;
+
 		return (
 			<div className="dropdown-wrap">
 				{
@@ -236,7 +239,7 @@ class MultiDropdown extends React.Component {
 							onClick={() => this.toggleDropdown()}
 							variant="Info"
 						>
-							<span className="dropdown-toggle-text">ECHO</span>
+							{!!info && (<span className="dropdown-toggle-text">{info}</span>)}
 							<span className="carret" />
 						</Dropdown.Toggle>
 
@@ -244,73 +247,28 @@ class MultiDropdown extends React.Component {
 
 							<input
 								type="text"
-								placeholder="Asset or token name"
+								placeholder={placeholder}
+								onInput={(e) => this.onSearch(e)}
 								onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
 								onKeyDown={(e) => { this.onInputKeyDown(e); }}
 								ref={(node) => { this.searchInput = node; }}
 							/>
 							<PerfectScrollbar className="input-dropdown-scroll">
 								{
-									dropdownData.map((elem, index) => (
-										elem.list.length
-												&& (
-
-													<div className={elem.title.toLowerCase()} key={elem.title}>
-														<div className="title">{elem.title}</div>
-														{
-															elem.list.map(({
-																text, value, active, id,
-															}, i) => (
-																<div className="checkbox" key={id}>
-																	<input
-
-																		ref={(ref) => {
-																			if (ref) {
-																				if (!this.refList[index]) {
-																					this.refList[index] = [];
-																				}
-																				this.refList[index][i] = ref;
-																			}
-																		}}
-																		className={classnames({ active })}
-																		tabIndex={0}
-																		onKeyPress={
-																			(e) => {
-																				this.onItemKeyPress(e, text, value);
-																				e.preventDefault();
-																			}
-																		}
-																		onKeyDown={(e) => this.onKeyDown(e, index, i)}
-																		type="checkbox"
-																		name="multi-select"
-																		id={`id-${id}`}
-																	/>
-
-																	<label htmlFor={`id-${id}`}>
-																		<span className="label-text">	{text}
-																		</span>
-																	</label>
-																</div>
-															))
-														}
-													</div>
-												)
-									))
+									coins && coins.length ? coins.map((elem, index) => (
+										elem.list.size ? (
+											<div className={elem.title.toLowerCase()} key={elem.title}>
+												<div className="title">{elem.title}</div>
+												{
+													elem.list.map((c, i) => this.renderElement(c, index, i))
+												}
+											</div>
+										) : null
+									)) : (<div>No Results</div>)
 								}
 							</PerfectScrollbar>
 						</Dropdown.Menu>
 					</Dropdown>
-
-					<div className="hints">
-						{
-							!!hints.length && hints.map((hint) => (
-								<div key={hint} className="hint">
-									{hint}
-								</div>
-							))
-						}
-
-					</div>
 				</div>
 			</div>
 		);
@@ -319,14 +277,19 @@ class MultiDropdown extends React.Component {
 }
 
 MultiDropdown.propTypes = {
-	hints: PropTypes.array,
 	label: PropTypes.string,
-
+	info: PropTypes.string,
+	placeholder: PropTypes.string,
+	coins: PropTypes.array,
+	toggle: PropTypes.func.isRequired,
+	search: PropTypes.func.isRequired,
 };
 
 MultiDropdown.defaultProps = {
-	hints: [],
 	label: '',
+	info: '',
+	placeholder: '',
+	coins: null,
 };
 
 export default MultiDropdown;

@@ -2,7 +2,13 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import History from '../../components/history';
-import { getFilteredHistory, toggleTransactionDetails, updateFilter } from '../../actions/transaction-actions';
+import {
+	loadTransactions,
+	loadMoreTransactions,
+	toggleTransactionDetails,
+	saveFilters,
+	resetFilters,
+} from '../../actions/transaction-actions';
 
 export default injectIntl(connect(
 	(state) => ({
@@ -11,8 +17,10 @@ export default injectIntl(connect(
 		history: state.wallet.get('history'),
 	}),
 	(dispatch) => ({
-		getFilteredHistory: () => dispatch(getFilteredHistory()),
+		loadTransactions: () => dispatch(loadTransactions()),
+		loadMoreTransactions: () => dispatch(loadMoreTransactions()),
 		toggleTransactionDetails: (key) => dispatch(toggleTransactionDetails(key)),
-		updateFilter: (filter, key) => dispatch(updateFilter(filter, key)),
+		saveFilters: (accounts, coins, types) => dispatch(saveFilters(accounts, coins, types)),
+		resetFilters: () => dispatch(resetFilters()),
 	}),
 )(History));
