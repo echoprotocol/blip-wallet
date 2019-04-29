@@ -28,6 +28,7 @@ import {
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 
 import { lockApp } from '../actions/global-actions';
+import { FORM_CREATE_PASSWORD } from '../constants/form-constants';
 
 addLocaleData([...localeEn, ...localeRu]);
 
@@ -53,6 +54,12 @@ class App extends React.Component {
 	async checkLocation() {
 
 		if (!this.props.inited) {
+			return false;
+		}
+
+		const { loadingCreatePass } = this.props;
+
+		if (loadingCreatePass) {
 			return false;
 		}
 
@@ -165,6 +172,7 @@ App.propTypes = {
 	lock: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 	accounts: PropTypes.object.isRequired,
+	loadingCreatePass: PropTypes.bool.isRequired,
 	locked: PropTypes.bool,
 	inited: PropTypes.bool,
 };
@@ -181,6 +189,7 @@ export default connect(
 		loading: state.global.get('loading'),
 		locked: state.global.get('locked'),
 		accounts: state.global.get('accounts'),
+		loadingCreatePass: state.form.getIn([FORM_CREATE_PASSWORD, 'loading']),
 		pathname: state.router.location.pathname,
 	}),
 	(dispatch) => ({

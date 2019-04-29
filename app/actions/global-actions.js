@@ -3,7 +3,7 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { AUTHORIZATION, UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
+import { UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
@@ -111,12 +111,12 @@ export const createDB = (form, password) => async (dispatch) => {
 	try {
 		await Promise.all([promiseCreateDB, promiseLoader]);
 		dispatch(setValue('locked', false));
-		history.push(AUTHORIZATION);
 	} catch (err) {
 		console.error(err);
 	} finally {
-		dispatch(setValueToForm(form, 'loading', false));
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+		await dispatch(startAnimation(CREATE_PASSWORD, false));
+		dispatch(setValueToForm(form, 'loading', false));
 	}
 };
 
