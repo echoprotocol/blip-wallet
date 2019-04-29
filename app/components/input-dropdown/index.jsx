@@ -185,10 +185,15 @@ class InputDropdown extends React.Component {
 			return assetsList;
 		}
 
-		const { account, balances, tokens } = this.props.data;
+		const {
+			account, balances, tokens,
+		} = this.props.data;
 
-		balances.mapEntries(([balanceId, { accountId, symbol }]) => {
-			if (accountId === account) {
+		let { hiddenAssets } = this.props.data;
+		hiddenAssets = hiddenAssets || [];
+
+		balances.mapEntries(([balanceId, { accountId, symbol, assetId }]) => {
+			if (accountId === account && !hiddenAssets.includes(assetId)) {
 				if (symbol === ECHO_ASSET_SYMBOL) {
 					assetsList.unshift({ text: symbol, value: balanceId, active: false });
 					return null;
@@ -202,7 +207,7 @@ class InputDropdown extends React.Component {
 
 		if (tokens) {
 			tokens.forEach((token) => {
-				if (account === token.getIn(['account', 'id'])) {
+				if (account === token.getIn(['account', 'id']) && !hiddenAssets.includes(token.getIn(['contract', 'id']))) {
 					tokensList.push({
 						text: token.getIn(['contract', 'token', 'symbol']),
 						value: token.getIn(['contract', 'id']),
@@ -260,12 +265,11 @@ class InputDropdown extends React.Component {
 			opened, focus, assetsList, tokensList, currentVal, search,
 		} = this.state;
 		const {
-			title, hints, disable, errorText, value: inputValue, name, intl,
+			title, hints, disable, errorText, value: inputValue, name, intl, placeholder,
 		} = this.props;
 
 		const assetsTitle = intl.formatMessage({ id: 'send.dropdown.assets' });
 		const tokensTitle = intl.formatMessage({ id: 'send.dropdown.tokens' });
-		const placeholder = intl.formatMessage({ id: 'send.dropdown.input.placeholder' });
 
 		const dropdownData = [
 			{
@@ -410,6 +414,7 @@ InputDropdown.propTypes = {
 	disable: PropTypes.bool,
 	globalLoading: PropTypes.bool,
 	errorText: PropTypes.string,
+	placeholder: PropTypes.string,
 	value: PropTypes.any,
 	hints: PropTypes.array,
 	path: PropTypes.object,
@@ -426,6 +431,7 @@ InputDropdown.defaultProps = {
 	disable: false,
 	globalLoading: false,
 	errorText: '',
+	placeholder: '',
 	value: '',
 	path: null,
 	setValue: null,

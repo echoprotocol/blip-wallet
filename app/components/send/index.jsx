@@ -153,7 +153,7 @@ class Send extends React.Component {
 
 	render() {
 		const {
-			accounts, form, balances, tokens, loading, intl,
+			accounts, form, balances, tokens, loading, intl, hiddenAssets,
 		} = this.props;
 		const { from } = this.state;
 
@@ -161,6 +161,9 @@ class Send extends React.Component {
 
 		const amountTitle = intl.formatMessage({ id: 'send.amount.title' });
 		const feeTitle = intl.formatMessage({ id: 'send.fee.title' });
+
+		const placeholderAmount = intl.formatMessage({ id: 'send.dropdown.input.placeholder.amount' });
+		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
 
 		return (
 			<div className="send page">
@@ -270,10 +273,12 @@ class Send extends React.Component {
 														account: from || [...accounts.keys()][0],
 														balances,
 														tokens,
+														hiddenAssets,
 													}}
 													disable={!!loading}
 													globalLoading={!!loading}
 													setFee={this.props.setFeeFormValue}
+													placeholder={placeholderAmount}
 												/>
 											)
 										}
@@ -301,9 +306,14 @@ class Send extends React.Component {
 														errorText={form.get('amount').error}
 														setValue={(field, value) => this.props.setValue(FORM_SEND, field, value)}
 														path={{ field: 'selectedFeeBalance' }}
-														data={{ account: from || [...accounts.keys()][0], balances, tokens }}
+														data={{
+															account: from || [...accounts.keys()][0],
+															balances,
+															hiddenAssets,
+														}}
 														value={form.get('fee').value}
 														setFee={this.props.setFeeFormValue}
+														placeholder={placeholderFee}
 													/>
 												</div>
 											</React.Fragment>
@@ -345,6 +355,7 @@ Send.propTypes = {
 	accounts: PropTypes.object,
 	balances: PropTypes.object,
 	tokens: PropTypes.object,
+	hiddenAssets: PropTypes.object,
 	setValue: PropTypes.func.isRequired,
 	setFormValue: PropTypes.func.isRequired,
 	setFormError: PropTypes.func.isRequired,
@@ -360,6 +371,7 @@ Send.defaultProps = {
 	accounts: null,
 	balances: null,
 	tokens: null,
+	hiddenAssets: null,
 };
 
 export default injectIntl(Send);
