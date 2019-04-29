@@ -8,6 +8,7 @@ import {
 	toggleTransactionDetails,
 	saveFilters,
 	resetFilters,
+	setNewTransaction,
 } from '../../actions/transaction-actions';
 
 export default injectIntl(connect(
@@ -22,5 +23,6 @@ export default injectIntl(connect(
 		toggleTransactionDetails: (key) => dispatch(toggleTransactionDetails(key)),
 		saveFilters: (accounts, coins, types) => dispatch(saveFilters(accounts, coins, types)),
 		resetFilters: () => dispatch(resetFilters()),
+		setNewTransaction: (operation) => dispatch(setNewTransaction(operation)),
 	}),
 )(History));

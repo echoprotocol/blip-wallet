@@ -98,5 +98,14 @@ export default createModule({
 				return state;
 			},
 		},
+		addOperation: {
+			reducer: (state, { payload }) => {
+				const transactions = state.getIn(['history', 'transactions']);
+				state = state.setIn(['history', 'transactions'], new List([payload.operation]).concat(transactions));
+				state = state.setIn(['history', 'total'], state.getIn(['history', 'total']) + 1);
+
+				return state;
+			},
+		},
 	},
 });

@@ -15,6 +15,7 @@ import { EXPLORER_URL, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL } from '../../con
 import { CONTRACT_TYPES, ACCOUNT_TYPES } from '../../constants/transaction-constants';
 import FormatHelper from '../../helpers/format-helper';
 import Services from '../../services';
+import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
 
 import Filter from './filter';
 
@@ -26,10 +27,24 @@ class History extends React.Component {
 		this.state = {
 			open: false,
 		};
+
+		this.subscription = null;
 	}
 
 	componentDidMount() {
 		this.props.loadTransactions();
+		this.subscribe(this.props.history.get('filter'));
+	}
+
+	componentDidUpdate(prevProps) {
+		if (!prevProps.history.get('filter').equals(this.props.history.get('filter'))) {
+			this.unsubscribe();
+			this.subscribe(this.props.history.get('filter'));
+		}
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
 	}
 
 	onToggleTransactionDetails(e, key) {
@@ -85,6 +100,22 @@ class History extends React.Component {
 		}
 
 		return 'icon-send-trans';
+	}
+
+	subscribe(filter) {
+		this.subscription = newOperationSubscription(filter);
+
+		if (this.subscription) {
+			this.subscription = this.subscription.subscribe(({ data: { newOperation } }) => {
+				this.props.setNewTransaction(newOperation);
+			});
+		}
+	}
+
+	unsubscribe() {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	renderAmount(value = 0, precision = ECHO_ASSET_PRECISION) {
@@ -302,6 +333,7 @@ History.propTypes = {
 	saveFilters: PropTypes.func.isRequired,
 	resetFilters: PropTypes.func.isRequired,
 	loadMoreTransactions: PropTypes.func.isRequired,
+	setNewTransaction: PropTypes.func.isRequired,
 };
 
 export default History;

@@ -375,6 +375,30 @@ export const loadMoreTransactions = () => async (dispatch, getState) => {
 	dispatch(mergeIn('history', { transactions, total }));
 };
 
+
+/**
+ * Add new transaction
+ * @returns {Function}
+ */
+export const setNewTransaction = ({
+	id, body, transaction, result,
+}) => async (dispatch, getState) => {
+
+	const selectedAccounts = getState().wallet.getIn(['history', 'filter', 'accounts'])
+		.filter((a) => a.get('selected'))
+		.reduce((arr, a) => ([...arr, a.get('id')]), []);
+
+	const operation = await formatTransaction(
+		Number(id),
+		fromJS(body),
+		transaction.block.round,
+		result,
+		selectedAccounts,
+	);
+
+	dispatch(WalletReducer.actions.addOperation({ operation }));
+};
+
 /**
  * Get transactions details
  *
