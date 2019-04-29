@@ -15,7 +15,10 @@ export default injectIntl(connect(
 	(state) => ({
 		accounts: state.global.get('accounts'),
 		language: state.global.get('language'),
-		history: state.wallet.get('history'),
+		currentNode: state.global.get('currentNode'),
+		transactions: state.wallet.getIn(['history', 'transactions']),
+		filter: state.wallet.getIn(['history', 'filter']),
+		total: state.wallet.getIn(['history', 'total']),
 	}),
 	(dispatch) => ({
 		loadTransactions: () => dispatch(loadTransactions()),

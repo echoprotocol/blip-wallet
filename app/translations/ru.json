@@ -419,8 +419,11 @@
         "amount.title": "Минимальная сумма",
         "fee": "Комиссия",
         "fee.title": "Генерируется автоматически на основе суммы",
-        "dropdown.input.placeholder": "Имя ассета или токена",
-        "dropdown.assets": "Ассеты",
-        "dropdown.tokens": "Токены"
+        "dropdown": {
+            "input.placeholder.amount": "Имя ассета или токена",
+            "input.placeholder.fee": "Имя ассета",
+            "assets": "Ассеты",
+            "tokens": "Токены"
+        }
     }
 }

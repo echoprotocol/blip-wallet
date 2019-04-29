@@ -256,6 +256,18 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 	accounts = accounts.reduce((arr, name, id) => ([...arr, id]), []);
 
 	let coins = await getCoinsByAccounts(accounts);
+	coins = coins.reduce((arr, c) => {
+		if (c.type === ASSET_TYPE && arr.find((i) => i.asset && i.asset.id === c.asset.id)) {
+			return arr;
+		}
+
+		if (c.type === TOKEN_TYPE && arr.find((i) => i.contract && i.contract.id === c.contract.id)) {
+			return arr;
+		}
+
+		return [...arr, c];
+	}, []);
+
 	if (!coins.length) {
 		coins.push({
 			type: ASSET_TYPE,
@@ -301,7 +313,19 @@ const updateFilters = (filter) => async (dispatch, getState) => {
 
 	accounts = accounts.reduce((arr, name, id) => ([...arr, id]), []);
 
-	const coins = await getCoinsByAccounts(accounts);
+	let coins = await getCoinsByAccounts(accounts);
+	coins = coins.reduce((arr, c) => {
+		if (c.type === ASSET_TYPE && arr.find((i) => i.asset && i.asset.id === c.asset.id)) {
+			return arr;
+		}
+
+		if (c.type === TOKEN_TYPE && arr.find((i) => i.contract && i.contract.id === c.contract.id)) {
+			return arr;
+		}
+
+		return [...arr, c];
+	}, []);
+
 	if (!coins.length) {
 		coins.push({
 			type: ASSET_TYPE,

@@ -18,6 +18,7 @@ import Services from '../../services';
 import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
 
 import Filter from './filter';
+import Footer from '../footer';
 
 class History extends React.Component {
 
@@ -33,13 +34,13 @@ class History extends React.Component {
 
 	componentDidMount() {
 		this.props.loadTransactions();
-		this.subscribe(this.props.history.get('filter'));
+		this.subscribe(this.props.filter);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (!prevProps.history.get('filter').equals(this.props.history.get('filter'))) {
+		if (!prevProps.filter.equals(this.props.filter)) {
 			this.unsubscribe();
-			this.subscribe(this.props.history.get('filter'));
+			this.subscribe(this.props.filter);
 		}
 	}
 
@@ -50,7 +51,7 @@ class History extends React.Component {
 	onToggleTransactionDetails(e, key) {
 		e.preventDefault();
 
-		if (!CONTRACT_TYPES.includes(this.props.history.getIn(['transactions', key, 'type']))) {
+		if (!CONTRACT_TYPES.includes(this.props.transactions.getIn([key, 'type']))) {
 			return;
 		}
 
@@ -77,9 +78,9 @@ class History extends React.Component {
 	}
 
 	onLoadMore() {
-		const { history } = this.props;
+		const { transactions, total } = this.props;
 
-		if (!history.get('transactions').size || history.get('transactions').size === history.get('total')) {
+		if (!transactions.size || transactions.size === total) {
 			return;
 		}
 
@@ -255,7 +256,9 @@ class History extends React.Component {
 	}
 
 	render() {
-		const { history } = this.props;
+		const {
+			transactions, filter, history, currentNode,
+		} = this.props;
 		const { open } = this.state;
 
 		return (
@@ -265,7 +268,7 @@ class History extends React.Component {
 						<div className="transactions-wrap">
 							<div className="title"><FormattedMessage id="history.table.title" /></div>
 							{
-								history.get('transactions').size ? (
+								transactions.size ? (
 									<div className="table-transactions">
 										<div className="transaction-header">
 											<ul className="line">
@@ -279,7 +282,7 @@ class History extends React.Component {
 												<li />
 											</ul>
 										</div>
-										{history.get('transactions').map((tr, key) => this.renderTransaction(tr, key))}
+										{transactions.map((tr, key) => this.renderTransaction(tr, key))}
 									</div>
 								) : <div />
 							}
@@ -295,24 +298,11 @@ class History extends React.Component {
 						</div>
 					</PerfectScrollbar>
 					<div className="page-footer">
-						<div className="footer-actions">
-							<div className="btn-wrap">
-								<Button
-									className="btn-main"
-									content={
-										<span className="text"><FormattedMessage id="wallet.send" /></span>
-									}
-								/>
-							</div>
-							<div className="footer-info">
-								<div className="mode">Remote node</div>
-							</div>
-						</div>
-						<div className="loading-status" />
+						<Footer history={history} currentNode={currentNode} />
 					</div>
 
 					<Filter
-						filter={history.get('filter')}
+						filter={filter}
 						apply={(accounts, coins, types) => this.onApplyFilter(accounts, coins, types)}
 						reset={() => this.onResetFilter()}
 						close={() => this.onCloseFilter()}
@@ -328,12 +318,20 @@ History.propTypes = {
 	language: PropTypes.string.isRequired,
 	accounts: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
+	transactions: PropTypes.object.isRequired,
+	filter: PropTypes.object.isRequired,
+	total: PropTypes.number,
+	currentNode: PropTypes.string.isRequired,
 	loadTransactions: PropTypes.func.isRequired,
 	toggleTransactionDetails: PropTypes.func.isRequired,
 	saveFilters: PropTypes.func.isRequired,
 	resetFilters: PropTypes.func.isRequired,
 	loadMoreTransactions: PropTypes.func.isRequired,
 	setNewTransaction: PropTypes.func.isRequired,
+};
+
+History.defaultProps = {
+	total: null,
 };
 
 export default History;
