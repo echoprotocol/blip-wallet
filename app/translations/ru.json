@@ -377,5 +377,12 @@
         "dropdown.input.placeholder": "Имя ассета или токена",
         "dropdown.assets": "Ассеты",
         "dropdown.tokens": "Токены"
+    },
+
+    "backup": {
+        "info": "Backup info",
+        "public_key": "Public key",
+        "wif": "Private key",
+        "close": "Close"
     }
 }

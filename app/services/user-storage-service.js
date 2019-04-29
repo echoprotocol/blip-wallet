@@ -248,6 +248,23 @@ class UserStorageService {
 
 	/**
 	 *
+	 * @param {String} accountId
+	 * @param {Object?} params
+	 * @return {Promise.<Key>}
+	 */
+	async getAllWIFKeysForAccount(accountId, params) {
+
+		this.checkNetwork();
+
+		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
+		const networkId = this.getNetworkId();
+		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
+
+		return network.getAllKeys().filter((key) => key.accountId === accountId);
+	}
+
+	/**
+	 *
 	 * @param {String} publicKey
 	 * @param {Object?} params
 	 * @return {Promise.<Key>}
@@ -318,7 +335,7 @@ class UserStorageService {
 			network = Network.create([], []);
 		} else {
 			const rawNetwork = decryptedData.data.networks[networkId];
-			network = Network.create(rawNetwork.accounts.map((account) => Account.create(account.id, account.name, account.selected)), rawNetwork.keys.map((key) => Key.create(key.publicKey, key.wif, key.accountId)));
+			network = Network.create(rawNetwork.accounts.map((account) => Account.create(account.id, account.name, account.selected, account.primary)), rawNetwork.keys.map((key) => Key.create(key.publicKey, key.wif, key.accountId)));
 		}
 
 		decryptedData.data.networks[networkId] = network;

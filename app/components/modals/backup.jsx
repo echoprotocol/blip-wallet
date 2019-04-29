@@ -1,16 +1,58 @@
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Animated } from 'react-animated-css';
 import FocusTrap from 'focus-trap-react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { MODAL_BACKUP } from '../../constants/modal-constants';
-
 
 class BackupModal extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			keys: [],
+		};
+
+		this.isMounted = false;
+	}
+
+	componentDidMount() {
+		this.updateInfo();
+	}
+
+	componentDidUpdate() {
+		this.updateInfo();
+	}
+
+	componentWillUnmount() {
+		this.isMounted = true;
+	}
+
+	async updateInfo() {
+		const { account } = this.props;
+
+		if (!account) {
+			return false;
+		}
+
+		const keys = await this.props.getKeysByAccountId(account);
+
+		if (!this.isMounted) {
+			this.setState({ keys });
+		}
+
+		return true;
+
+	}
+
 	render() {
+
 		const { show } = this.props;
+
 		if (show) {
 			return (
 				<Animated
@@ -18,7 +60,6 @@ class BackupModal extends React.Component {
 					animationOut="fadeOut"
 					isVisible={show}
 					className="modal-overlay"
-
 				>
 					<PerfectScrollbar className="modal-scroll">
 						<FocusTrap>
@@ -33,28 +74,32 @@ class BackupModal extends React.Component {
 										/>
 
 										<div className="modal-title">
-											<span className="account-name">Dmitrysizy0909</span>
-											Backup info
+											<span className="account-name">{this.props.account ? this.props.account.get('name') : null}</span>
+											<FormattedMessage id="backup.info" />
 										</div>
 									</div>
 									<div className="modal-body">
 										<div className="backup-list">
-											<div className="backup-item">
-												<div className="key-wrap">
-													<div className="key-label">Public key</div>
-													<div className="key">ECHO5shQhzqWY11sVRtH5KCWiX4SpeFCvYuMKAm8sZA3cGRr4Q1EmV</div>
-												</div>
-												<div className="key-wrap">
-													<div className="key-label">WIF</div>
-													<div className="key-action">
-														<div className="key">5JXNJabXtvnvhgM2sUt4ZGh6XEu3iRiqU96NQBX2jqdAFyuKyCJ</div>
-														<Button
-															className="btn-square primary"
-															content={<Icon className="copy" />}
-														/>
+											{this.state.keys.map((key) => (
+												<div className="backup-item" key={key.publicKey}>
+													<div className="key-wrap">
+														<div className="key-label"><FormattedMessage id="backup.public_key" /></div>
+														<div className="key">{key.publicKey}</div>
+													</div>
+													<div className="key-wrap">
+														<div className="key-label"><FormattedMessage id="backup.wif" /></div>
+														<div className="key-action">
+															<div className="key">{key.wif}</div>
+															<CopyToClipboard text={key.wif}>
+																<Button
+																	className="btn-square primary"
+																	content={<Icon className="copy" />}
+																/>
+															</CopyToClipboard>
+														</div>
 													</div>
 												</div>
-											</div>
+											))}
 										</div>
 									</div>
 									<div className="modal-footer">
@@ -62,7 +107,7 @@ class BackupModal extends React.Component {
 											<Button
 												onClick={() => this.props.onClose(MODAL_BACKUP)}
 												className="btn-modal"
-												content="Close"
+												content={<FormattedMessage id="backup.close" />}
 											/>
 										</div>
 									</div>
@@ -81,11 +126,15 @@ class BackupModal extends React.Component {
 
 BackupModal.propTypes = {
 	show: PropTypes.bool,
+	account: PropTypes.object,
 	onClose: PropTypes.func.isRequired,
+	getKeysByAccountId: PropTypes.func,
 };
 
 BackupModal.defaultProps = {
 	show: false,
+	account: null,
+	getKeysByAccountId: null,
 };
 
 export default BackupModal;

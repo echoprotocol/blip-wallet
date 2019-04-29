@@ -360,5 +360,12 @@
 		"dropdown.input.placeholder": "Asset or token name",
 		"dropdown.assets": "Assets",
 		"dropdown.tokens": "Tokens"
+	},
+
+	"backup": {
+		"info": "Backup info",
+		"public_key": "Public key",
+		"wif": "WIF",
+		"close": "Close"
 	}
 }

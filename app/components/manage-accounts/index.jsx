@@ -14,11 +14,88 @@ class ManageAccounts extends React.Component {
 		this.state = {
 			showSettings: false,
 		};
+		this.onChangePrimaryAccount = this.onChangePrimaryAccount.bind(this);
+	}
+
+	onChangePrimaryAccount(indexAccount) {
+		const { changePrimaryAccount } = this.props;
+		changePrimaryAccount(indexAccount);
+	}
+
+
+	renderAccounts() {
+		const { accounts } = this.props;
+
+		return [...accounts.map((account, index) => (
+			<div className="account-item" key={account.get('name')}>
+				<div className="account-info">
+					<div className="avatar">
+						<Avatar accountName={account.get('name')} />
+					</div>
+					<div className={
+						classnames(
+							'name-wrap',
+							{ primary: account.get('primary') },
+						)
+					}
+					>
+						{account.get('primary')
+							? (
+								<React.Fragment>
+									<div className="name">{account.get('name')}</div>
+									<div className="name-label">Primary account</div>
+								</React.Fragment>
+							)
+							:							(
+								<React.Fragment>
+									<div className="name-label">Account name</div>
+									<div className="name">{account.get('name')}</div>
+								</React.Fragment>
+							)
+						}
+					</div>
+					<div className="settings">
+						<Dropdown className="white select-account">
+							<Dropdown.Toggle variant="info">
+								<span className="dot" />
+								<span className="dot" />
+								<span className="dot" />
+							</Dropdown.Toggle>
+
+							<Dropdown.Menu>
+								<div className="avatar-wrap">
+									<Avatar accountName={account.get('name')} />
+								</div>
+								<div className="account-name">{account.get('name')}</div>
+								<Dropdown.Item onClick={() => this.onChangePrimaryAccount(index)} eventKey={0}>
+                                    Set as primary
+								</Dropdown.Item>
+								<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP, { accountId: index })} eventKey={1}>
+                                    Backup info
+								</Dropdown.Item>
+								<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT)} eventKey={3}>
+                                    Logout
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown>
+					</div>
+				</div>
+				<div className="currency-wrap">
+					<div className="currency">Echo</div>
+					{account.get('primary') ? <div className="bonus">+ 0 assets</div> : null}
+				</div>
+				<div className="line">
+					<div className="balance">
+						<span className="integer" />
+						<span className="fractional" />
+					</div>
+				</div>
+			</div>
+		)).values()];
 	}
 
 	render() {
 		const { showSettings } = this.state;
-
 
 		return (
 			<div
@@ -42,142 +119,7 @@ class ManageAccounts extends React.Component {
 								/>
 							</div>
 							<div className="accounts-list">
-								<div className="account-item">
-									<div className="account-info">
-										<div className="avatar">
-											<Avatar accountName="Homerthegreat32" />
-										</div>
-										<div className="name-wrap primary">
-											<div className="name">Homerthegreat32</div>
-											<div className="name-label">Primary account</div>
-										</div>
-										<div className="settings">
-											<Dropdown className="white select-account">
-												<Dropdown.Toggle variant="info">
-													<span className="dot" />
-													<span className="dot" />
-													<span className="dot" />
-												</Dropdown.Toggle>
-
-												<Dropdown.Menu>
-													<div className="avatar-wrap">
-														<Avatar accountName="Homerthegreat32" />
-													</div>
-													<div className="account-name">Homerthegreat32</div>
-													<Dropdown.Item eventKey={0}>
-														Set as primary
-													</Dropdown.Item>
-													<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP)} eventKey={1}>
-														Backup info
-													</Dropdown.Item>
-													<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT)} eventKey={3}>
-														Logout
-													</Dropdown.Item>
-												</Dropdown.Menu>
-											</Dropdown>
-										</div>
-									</div>
-									<div className="currency-wrap">
-										<div className="currency">Echo</div>
-										<div className="bonus">+ 3 assets</div>
-									</div>
-									<div className="line">
-										<div className="balance">
-											<span className="integer">10 012</span>
-											<span className="fractional">.31235</span>
-										</div>
-									</div>
-								</div>
-								<div className="account-item">
-									<div className="account-info">
-										<div className="avatar">
-											<Avatar accountName="Homerthegreat3" />
-										</div>
-										<div className="name-wrap">
-											<div className="name-label">Account name</div>
-											<div className="name">Homerthegreat3</div>
-										</div>
-										<div className="settings">
-											<Dropdown className="white select-account">
-												<Dropdown.Toggle variant="info">
-													<span className="dot" />
-													<span className="dot" />
-													<span className="dot" />
-												</Dropdown.Toggle>
-
-												<Dropdown.Menu>
-													<div className="avatar-wrap">
-														<Avatar accountName="Homerthegreat3" />
-													</div>
-													<div className="account-name">Homerthegreat3</div>
-													<Dropdown.Item eventKey={0}>
-														Set as primary
-													</Dropdown.Item>
-													<Dropdown.Item eventKey={1}>
-														Backup info
-													</Dropdown.Item>
-													<Dropdown.Item eventKey={3}>
-														Logout
-													</Dropdown.Item>
-												</Dropdown.Menu>
-											</Dropdown>
-										</div>
-									</div>
-									<div className="currency-wrap">
-										<div className="currency">Echo</div>
-									</div>
-									<div className="line">
-										<div className="balance">
-											<span className="integer">10 012</span>
-											<span className="fractional">.31235</span>
-										</div>
-									</div>
-								</div>
-								<div className="account-item">
-									<div className="account-info">
-										<div className="avatar">
-											<Avatar accountName="Homerthegreat35" />
-										</div>
-										<div className="name-wrap">
-											<div className="name-label">Account name</div>
-											<div className="name">Homerthegreat35</div>
-										</div>
-										<div className="settings">
-											<Dropdown className="white select-account">
-												<Dropdown.Toggle variant="info">
-													<span className="dot" />
-													<span className="dot" />
-													<span className="dot" />
-												</Dropdown.Toggle>
-
-												<Dropdown.Menu>
-													<div className="avatar-wrap">
-														<Avatar accountName="Homerthegreat35" />
-													</div>
-													<div className="account-name">Homerthegreat35</div>
-													<Dropdown.Item eventKey={0}>
-														Set as primary
-													</Dropdown.Item>
-													<Dropdown.Item eventKey={1}>
-														Backup info
-													</Dropdown.Item>
-													<Dropdown.Item eventKey={3}>
-														Logout
-													</Dropdown.Item>
-												</Dropdown.Menu>
-											</Dropdown>
-										</div>
-									</div>
-									<div className="currency-wrap">
-										<div className="currency">Echo</div>
-									</div>
-									<div className="line">
-										<div className="balance">
-											<span className="integer">10 012</span>
-											<span className="fractional">.31235</span>
-										</div>
-									</div>
-								</div>
+								{this.renderAccounts()}
 							</div>
 							<div className="actions">
 								<div className="btn-wrap">
@@ -201,6 +143,8 @@ class ManageAccounts extends React.Component {
 
 ManageAccounts.propTypes = {
 	openModal: PropTypes.func.isRequired,
+	accounts: PropTypes.object.isRequired,
+	changePrimaryAccount: PropTypes.func.isRequired,
 };
 
 export default ManageAccounts;

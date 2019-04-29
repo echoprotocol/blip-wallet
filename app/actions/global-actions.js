@@ -37,6 +37,7 @@ export const initAccounts = () => async (dispatch, getState) => {
 		accounts.forEach((account) => {
 			mapAccounts.setIn([account.id, 'name'], account.name);
 			mapAccounts.setIn([account.id, 'selected'], account.selected);
+			mapAccounts.setIn([account.id, 'primary'], account.primary);
 		});
 	});
 

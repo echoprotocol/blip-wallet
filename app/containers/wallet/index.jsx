@@ -40,7 +40,7 @@ const historySelector = createImmutableSelector(
 	(accounts, histories) => accounts.mapKeys((accountId) => ([accountId, histories.get(accountId)])),
 );
 
-const balanceSelector = createImmutableSelector(
+export const balanceSelector = createImmutableSelector(
 	(state) => state.wallet.get('balances'),
 	(state) => filteredObjects(state),
 	(balances, objects) => balances.mapEntries(([statsId, assetId]) => ([

@@ -21,7 +21,7 @@ import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
 import Toolbar from '../components/toolbar';
 import Services from '../services';
-import Modal from './modal';
+import Modals from './modals';
 
 import {
 	CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
@@ -155,7 +155,7 @@ class App extends React.Component {
 							) : (
 								<React.Fragment>
 									{children}
-									<Modal />
+									<Modals />
 								</React.Fragment>
 							) }
 

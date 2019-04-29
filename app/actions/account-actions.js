@@ -13,7 +13,7 @@ import {
 	EXPIRATION_INFELICITY,
 } from '../constants/global-constants';
 import { setFormError, toggleLoading, setValue } from './form-actions';
-import { setValue as setValueGlobal } from './global-actions';
+import { setValue as setGlobal, setValue as setValueGlobal } from './global-actions';
 import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
@@ -73,12 +73,15 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
  *
  * @param id
  * @param name
+ * @param selected
+ * @param primary
  */
-const addAccount = (id, name) => async (dispatch, getState) => {
+const addAccount = (id, name, selected = true, primary) => async (dispatch, getState) => {
 	let accounts = getState().global.get('accounts');
 
 	accounts = accounts.setIn([id, 'name'], name);
-	accounts = accounts.setIn([id, 'selected'], true);
+	accounts = accounts.setIn([id, 'selected'], selected);
+	accounts = accounts.setIn([id, 'primary'], primary);
 
 	dispatch(setValueGlobal('accounts', accounts));
 
@@ -170,9 +173,10 @@ export const registerAccount = () => async (dispatch, getState) => {
 		const accountData = await Services.getEcho().api.getAccountByName(accountName.value);
 
 		const userStorage = Services.getUserStorage();
+		const accounts = await userStorage.getAllAccounts();
 
-		await dispatch(addAccount(accountData.id, accountName.value));
-		await userStorage.addAccount(Account.create(accountData.id, accountName.value));
+		await dispatch(addAccount(accountData.id, accountName.value, true, accounts.length === 0));
+		await userStorage.addAccount(Account.create(accountData.id, accountName.value, true, accounts.length === 1));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
 		return resolve({ wif, accountName: accountName.value });
@@ -328,6 +332,41 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
 };
+
+/**
+ *
+ * @param {String} idAccount
+ * @returns {Function}
+ */
+export const changePrimaryAccount = (indexAccount) => async (dispatch, getState) => {
+	console.log(indexAccount);
+
+	// Save to crypto store
+	const userStorage = Services.getUserStorage();
+	const accounts = await userStorage.getAllAccounts();
+
+	accounts.forEach((account, index) => {
+
+		console.log(accounts[index].id);
+
+		accounts[index].primary = !![indexAccount].includes(accounts[index].id);
+	});
+
+	await userStorage.updateAccounts(accounts);
+
+	// Save to redux
+	let stateAccounts = getState().global.get('accounts');
+	stateAccounts = stateAccounts.map((account, id) => {
+		if ([indexAccount].includes(id)) {
+			return account.set('primary', true);
+		}
+
+		return account.set('primary', false);
+	});
+
+	dispatch(setGlobal('accounts', stateAccounts));
+};
+
 
 export const removeAllAccounts = () => (dispatch) => {
 	dispatch(subscribeTokens()); // call after accounts is changed

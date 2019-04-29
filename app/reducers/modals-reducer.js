@@ -7,18 +7,21 @@ import { MODAL_BACKUP, MODAL_LOGOUT } from '../constants/modal-constants';
 const DEFAULT_FIELDS = Map({ show: false });
 
 const DEFAULT_MODAL_FIELDS = {
-	[MODAL_BACKUP]: Map({}),
+	[MODAL_BACKUP]: Map({
+		show: false,
+		accountId: null,
+	}),
 	[MODAL_LOGOUT]: Map({}),
 };
 export default createModule({
-	name: 'modal',
+	name: 'modals',
 	initialState: Map({
 		[MODAL_BACKUP]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_MODAL_FIELDS[MODAL_BACKUP]),
 		[MODAL_LOGOUT]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_MODAL_FIELDS[MODAL_BACKUP]),
 	}),
 	transformations: {
 		open: {
-			reducer: (state, { payload }) => state.setIn([payload.type, 'show'], true),
+			reducer: (state, { payload }) => state.setIn([payload.type, 'show'], true).setIn([payload.type, 'accountId'], payload.payload.accountId),
 		},
 		close: {
 			reducer: (state, { payload }) => state.setIn(
