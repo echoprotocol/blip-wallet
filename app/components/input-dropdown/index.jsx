@@ -291,11 +291,11 @@ class InputDropdown extends React.Component {
 		const isResultsExists = dropdownData.some((d) => d.list.length);
 
 		return (
-			<React.Fragment>
+			<div className="field">
 				<Input
 					name={name}
 					value={inputValue}
-					error={errorText}
+					error={!!errorText}
 					disabled={disable}
 					ref={(amountInput) => { this.amountInput = amountInput; }}
 					className={classnames('field input-dropdown', { focus })}
@@ -372,7 +372,7 @@ class InputDropdown extends React.Component {
 																}
 															</div>
 														) : ''
-												)) : <div>No results</div>
+												)) : <div className="no-results">No results</div>
 										}
 									</PerfectScrollbar>
 								</Dropdown.Menu>
@@ -380,6 +380,14 @@ class InputDropdown extends React.Component {
 						</div>
 					)}
 				/>
+				{
+					!!errorText
+					&& (
+						<div className="error-message">
+							{errorText}
+						</div>
+					)
+				}
 				<div className="hints">
 					{
 						!!hints.length && hints.map((hint) => (
@@ -390,7 +398,7 @@ class InputDropdown extends React.Component {
 					}
 
 				</div>
-			</React.Fragment>
+			</div>
 		);
 	}
 
