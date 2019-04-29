@@ -264,7 +264,6 @@ class Send extends React.Component {
 													value={form.get('amount').value}
 													hints={[`${amountTitle} ${form.get('minAmount').amount} ${form.get('minAmount').symbol}`]}
 													onChange={(e) => this.onAmountChange(e)}
-													error={!!form.get('amount').error}
 													errorText={form.get('amount').error}
 													setValue={(field, value) => this.props.setValue(field, value)}
 													onKeyPress={(e) => this.onKeyPress(e)}
@@ -302,8 +301,7 @@ class Send extends React.Component {
 														hints={[feeTitle]}
 														disable
 														globalLoading={!!loading}
-														error={!!form.get('amount').error}
-														errorText={form.get('amount').error}
+														errorText={form.get('fee').error}
 														setValue={(field, value) => this.props.setValue(FORM_SEND, field, value)}
 														path={{ field: 'selectedFeeBalance' }}
 														data={{
