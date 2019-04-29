@@ -4,7 +4,7 @@ import { Animated } from 'react-animated-css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
-import { Sidebar, Button, Icon } from 'semantic-ui-react';
+import { Sidebar, Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import { WALLET, MANAGE_ACCOUNTS } from '../../constants/routes-constants';
@@ -32,17 +32,6 @@ class SideMenu extends React.Component {
 						isVisible={!locked}
 						className="visible"
 					>
-						<Button
-							className="btn-return arrow right"
-							onClick={() => this.returnFunction()}
-							content={(
-								<React.Fragment>
-									<div className="text">Return</div>
-									<Icon className="arrow-right" />
-								</React.Fragment>
-							)}
-						/>
-
 						<ul className="sidebar-nav">
 							<li className={classnames({ active: pathname === WALLET })}>
 								<FormattedMessage id="wallet.menu.mywallet">
