@@ -19,6 +19,7 @@ import TranslateHelper from '../helpers/translate-helper';
 
 import SideMenu from '../components/side-menu';
 import Unlock from '../components/unlock-wallet';
+import Toolbar from '../components/toolbar';
 import Services from '../services';
 import Modal from './modal';
 
@@ -136,7 +137,7 @@ class App extends React.Component {
 						timeout={LOCK_TIMEOUT}
 						events={LOCK_TIMER_EVENTS}
 					/>
-
+					<Toolbar />
 					{ (PUBLIC_ROUTES.includes(pathname) || locked) && <div className="bg" />}
 
 					<div

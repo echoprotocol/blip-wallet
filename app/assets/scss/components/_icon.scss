@@ -61,3 +61,19 @@ i.icon {
 .icon-send-trans:before {
 	content: "\e909";
 }
+
+.win-zoom-out:before {
+	content: "\e910"
+}
+
+.win-zoom-in:before {
+	content: "\e90b"
+}
+
+.win-minimize:before {
+	content: "\e90f"
+}
+
+.win-close:before {
+	content: "\e90e";
+}

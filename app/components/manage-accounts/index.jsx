@@ -5,6 +5,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Dropdown } from 'react-bootstrap';
 import classnames from 'classnames';
 import Avatar from '../avatar';
+import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
 
 class ManageAccounts extends React.Component {
 
@@ -66,10 +67,10 @@ class ManageAccounts extends React.Component {
 													<Dropdown.Item eventKey={0}>
 														Set as primary
 													</Dropdown.Item>
-													<Dropdown.Item onClick={() => this.props.openModal()} eventKey={1}>
+													<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP)} eventKey={1}>
 														Backup info
 													</Dropdown.Item>
-													<Dropdown.Item eventKey={3}>
+													<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT)} eventKey={3}>
 														Logout
 													</Dropdown.Item>
 												</Dropdown.Menu>
