@@ -117,7 +117,7 @@
 		"receive": "Receive",
         "filter": "If you have more than one account, your accounts balances will be displayed together. You can filter your balances by account.",
         "select": "Select accounts",
-        "archived": "You can hide/show balances if you are bored watching them. Echo is a proto-asset (Alpha and Omega. The beginning and the end). You can’t hide it.",
+        "archived": "If you do not want some assets to be shown in the general list you can hide them from My Wallet page. To make them visible again click Unarchive button near the asset needed.",
         "filtert": "Filter by accounts",
         "archivedt": "Archived balances",
         "Remote node": "Remote node",
