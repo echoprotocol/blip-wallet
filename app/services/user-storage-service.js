@@ -232,6 +232,28 @@ class UserStorageService {
 
 	/**
 	 *
+	 * @param keys
+	 * @param params
+	 * @return {Promise.<void>}
+	 */
+	async removeKeys(keys, params) {
+		this.checkNetwork();
+
+		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
+		const networkId = this.getNetworkId();
+		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
+
+		const resultKeys = network.getAllKeys().filter((key) => !keys.includes(key.publicKey));
+
+		network.updateKeys(resultKeys);
+
+		await this.updateDB(decryptedData, params);
+
+		console.info(`[DB] Keys removed. Public Keys: ${JSON.stringify(keys)}. Network: ${networkId}`);
+	}
+
+	/**
+	 *
 	 * @param {Object} params
 	 * @return {Promise.<Array.String>}
 	 */

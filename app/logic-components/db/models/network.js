@@ -52,6 +52,16 @@ class Network {
 
 	/**
 	 *
+	 * @param {Key} keys
+	 * @returns {Network}
+	 */
+	updateKeys(keys) {
+		this.keys = keys;
+		return this;
+	}
+
+	/**
+	 *
 	 * @return {Array}
 	 */
 	getAllAccounts() {

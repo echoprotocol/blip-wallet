@@ -106,7 +106,7 @@ class ManageAccounts extends React.Component {
 									<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP, { accountId: index })} eventKey={1}>
 										Backup info
 									</Dropdown.Item>
-									<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT)} eventKey={3}>
+									<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT, { accountName: account.get('name'), accountId: index })} eventKey={3}>
 										Logout
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -162,6 +162,7 @@ class ManageAccounts extends React.Component {
 										content={
 											<span>Remove all accounts</span>
 										}
+										onClick={() => this.props.removeAllAccounts()}
 									/>
 								</div>
 							</div>
@@ -177,6 +178,7 @@ class ManageAccounts extends React.Component {
 
 ManageAccounts.propTypes = {
 	openModal: PropTypes.func.isRequired,
+	removeAllAccounts: PropTypes.func.isRequired,
 	accounts: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	changePrimaryAccount: PropTypes.func.isRequired,

@@ -11,7 +11,10 @@ const DEFAULT_MODAL_FIELDS = {
 		show: false,
 		accountId: null,
 	}),
-	[MODAL_LOGOUT]: Map({}),
+	[MODAL_LOGOUT]: Map({
+		accountId: '',
+		accountName: '',
+	}),
 };
 export default createModule({
 	name: 'modals',
@@ -21,7 +24,10 @@ export default createModule({
 	}),
 	transformations: {
 		open: {
-			reducer: (state, { payload }) => state.setIn([payload.type, 'show'], true).setIn([payload.type, 'accountId'], payload.payload.accountId),
+			reducer: (state, { payload }) => state
+				.setIn([payload.type, 'show'], true)
+				.setIn([payload.type, 'accountId'], payload.payload.accountId)
+				.setIn([payload.type, 'accountName'], payload.payload.accountName),
 		},
 		close: {
 			reducer: (state, { payload }) => state.setIn(

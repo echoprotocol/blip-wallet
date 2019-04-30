@@ -7,6 +7,7 @@ import LogoutModal from '../../components/modals/logout';
 import { closeModal } from '../../actions/modals-actions';
 
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
+import { logoutAccount } from '../../actions/account-actions';
 
 class Modals extends React.Component {
 
@@ -15,8 +16,9 @@ class Modals extends React.Component {
 	}
 
 	render() {
-
-		const { backup, showLogout } = this.props;
+		const {
+			showLogout, logout, backup, logoutForm,
+		} = this.props;
 
 		return (
 			<React.Fragment>
@@ -32,6 +34,9 @@ class Modals extends React.Component {
 				<LogoutModal
 					show={showLogout}
 					onClose={(modal) => this.onClose(modal)}
+					logout={logout}
+					accountId={logoutForm.get('accountId')}
+					accountName={logoutForm.get('accountName')}
 				/>
 			</React.Fragment>
 		);
@@ -41,21 +46,26 @@ class Modals extends React.Component {
 
 Modals.propTypes = {
 	closeModal: PropTypes.func.isRequired,
+	logout: PropTypes.func.isRequired,
 	backup: PropTypes.object,
+	logoutForm: PropTypes.object,
 	showLogout: PropTypes.bool,
 };
 
 Modals.defaultProps = {
 	backup: null,
+	logoutForm: null,
 	showLogout: false,
 };
 
 export default connect(
 	(state) => ({
 		backup: state.modals.getIn([MODAL_BACKUP]),
+		logoutForm: state.modals.getIn([MODAL_LOGOUT]),
 		showLogout: state.modals.getIn([MODAL_LOGOUT, 'show']),
 	}),
 	(dispatch) => ({
 		closeModal: (modal) => dispatch(closeModal(modal)),
+		logout: (id) => dispatch(logoutAccount(id)),
 	}),
 )(Modals);

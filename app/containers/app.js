@@ -24,7 +24,14 @@ import Services from '../services';
 import Modals from './modals';
 
 import {
-	CREATE_PASSWORD, AUTHORIZATION, PUBLIC_ROUTES, LOCKED_ROUTES, SIDE_MENU_ROUTES, RESTORE_PASSWORD, WALLET,
+	CREATE_PASSWORD,
+	AUTHORIZATION,
+	PUBLIC_ROUTES,
+	LOCKED_ROUTES,
+	SIDE_MENU_ROUTES,
+	RESTORE_PASSWORD,
+	WALLET,
+	MANAGE_ACCOUNTS,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 
@@ -105,7 +112,7 @@ class App extends React.Component {
 
 		}
 
-		if (!routed && [WALLET].includes(pathname)) {
+		if (!routed && [WALLET, MANAGE_ACCOUNTS].includes(pathname)) {
 			const { locked, accounts } = this.props;
 
 			if (!locked && !accounts.size) {

@@ -38,6 +38,13 @@ export default createModule({
 				return state;
 			},
 		},
+		clear: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.field, DEFAULT_FIELDS.get(payload.field));
+
+				return state;
+			},
+		},
 		remove: {
 			reducer: (state, { payload }) => {
 				state = state.deleteIn([payload.field, payload.param]);

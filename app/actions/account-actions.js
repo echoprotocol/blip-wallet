@@ -1,4 +1,4 @@
-import { PrivateKey, OPERATIONS_IDS } from 'echojs-lib';
+import { PrivateKey, OPERATIONS_IDS, CACHE_MAPS } from 'echojs-lib';
 import bs58 from 'bs58';
 import BN from 'bignumber.js';
 
@@ -17,6 +17,7 @@ import { setValue as setGlobal, setValue as setValueGlobal } from './global-acti
 import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
+import WalletReducer from '../reducers/wallet-reducer';
 
 import { signTransaction } from './sign-actions';
 
@@ -334,10 +335,66 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 	}
 };
 
+export const logoutAccount = (accountId) => async (dispatch, getState) => {
+	const fullAccount = getState().echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, accountId]);
+	const userStorage = Services.getUserStorage();
+
+	let storageAccounts = await userStorage.getAllAccounts();
+	let storageKeys = await userStorage.getAllPublicKeys();
+	const keys = fullAccount.getIn(['active', 'key_auths']);
+
+	storageAccounts = storageAccounts.filter((a) => a.id !== accountId);
+	storageKeys = storageKeys.filter((key) => keys.find(([k]) => k === key));
+
+	if (!storageAccounts.find((a) => a.primary) && storageAccounts.length) {
+		storageAccounts[0].primary = true;
+	}
+
+	await userStorage.updateAccounts(storageAccounts);
+	await userStorage.removeKeys(storageKeys);
+
+	let accounts = getState().global.get('accounts');
+	let balances = getState().wallet.get('balances');
+	let tokens = getState().wallet.get('tokens');
+	let hiddenAssets = getState().wallet.get('hiddenAssets');
+	let networkHiddenAssets = hiddenAssets.get(Services.getUserStorage().getNetworkId());
+
+	accounts = accounts.filter((a, id) => id !== accountId);
+
+	if (!accounts.find((a) => a.get('primary')) && accounts.size) {
+		accounts = accounts.setIn([[...accounts.keys()][0], 'primary'], true);
+	}
+
+	const accountBalances = [...fullAccount.get('balances').values()];
+
+	balances = balances.filter((b, id) => !accountBalances.includes(id));
+	tokens = tokens.filter((t) => t.getIn(['account', 'id']) !== accountId);
+
+	if (networkHiddenAssets) {
+		networkHiddenAssets = networkHiddenAssets.filter((id) => [...balances.values()].includes(id));
+		hiddenAssets = hiddenAssets.set(Services.getUserStorage().getNetworkId(), networkHiddenAssets);
+
+		const localStorage = Services.getLocalStorage();
+		localStorage.setData('hiddenAssets', hiddenAssets);
+
+		dispatch(WalletReducer.actions.clear({ field: 'hiddenAssets' }));
+		dispatch(WalletReducer.actions.set({ field: 'hiddenAssets', value: hiddenAssets }));
+	}
+
+	dispatch(GlobalReducer.actions.clear({ field: 'accounts' }));
+	dispatch(WalletReducer.actions.clear({ field: 'balances' }));
+	dispatch(WalletReducer.actions.clear({ field: 'tokens' }));
+
+	dispatch(GlobalReducer.actions.set({ field: 'accounts', value: accounts }));
+	dispatch(WalletReducer.actions.set({ field: 'balances', value: balances }));
+	dispatch(WalletReducer.actions.set({ field: 'tokens', value: tokens }));
+
+	dispatch(subscribeTokens());
+};
 /**
  *
- * @param {String} idAccount
  * @returns {Function}
+ * @param indexAccount
  */
 export const changePrimaryAccount = (indexAccount) => async (dispatch, getState) => {
 	// Save to crypto store
@@ -363,11 +420,10 @@ export const changePrimaryAccount = (indexAccount) => async (dispatch, getState)
 	dispatch(setGlobal('accounts', stateAccounts));
 };
 
+export const removeAllAccounts = () => (dispatch, getState) => {
+	const accounts = getState().global.get('accounts');
 
-export const removeAllAccounts = () => (dispatch) => {
-	dispatch(subscribeTokens()); // call after accounts is changed
-};
+	accounts.forEach((a, id) => dispatch(logoutAccount(id)));
 
-export const logoutAccount = () => (dispatch) => {
-	dispatch(subscribeTokens()); // call after accounts is changed
+	dispatch(subscribeTokens());
 };

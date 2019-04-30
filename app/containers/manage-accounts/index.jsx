@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 import ManageAccounts from '../../components/manage-accounts';
+
 import { openModal } from '../../actions/modals-actions';
 import { balanceSelector } from '../wallet';
-import { changePrimaryAccount } from '../../actions/account-actions';
+import { changePrimaryAccount, removeAllAccounts } from '../../actions/account-actions';
 
 export default connect(
 	(state) => ({
@@ -10,6 +11,7 @@ export default connect(
 		balances: balanceSelector(state),
 	}),
 	(dispatch) => ({
+		removeAllAccounts: () => dispatch(removeAllAccounts()),
 		changePrimaryAccount: (indexAccount) => dispatch(changePrimaryAccount(indexAccount)),
 		openModal: (modal, payload) => dispatch(openModal(modal, payload)),
 	}),

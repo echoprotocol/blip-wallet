@@ -9,8 +9,15 @@ import { MODAL_LOGOUT } from '../../constants/modal-constants';
 
 class LogoutModal extends React.Component {
 
+	logout() {
+		const { accountId } = this.props;
+
+		this.props.onClose(MODAL_LOGOUT);
+		this.props.logout(accountId);
+	}
+
 	render() {
-		const { show } = this.props;
+		const { show, accountName } = this.props;
 		if (show) {
 			return (
 				<Animated
@@ -38,7 +45,7 @@ class LogoutModal extends React.Component {
 									<div className="modal-body">
 										<div className="text">
                                             You are about to log out from the account
-											<span to="/" className="info"> Account_name</span>.
+											<span to="/" className="info"> {accountName}</span>.
                                             You will need this account WIF to log in again.
 										</div>
 
@@ -48,6 +55,7 @@ class LogoutModal extends React.Component {
 											<Button
 												className="btn-modal-primary"
 												content="Confirm"
+												onClick={() => this.logout()}
 											/>
 											<Button
 												onClick={() => this.props.onClose(MODAL_LOGOUT)}
@@ -72,10 +80,15 @@ class LogoutModal extends React.Component {
 LogoutModal.propTypes = {
 	show: PropTypes.bool,
 	onClose: PropTypes.func.isRequired,
+	logout: PropTypes.func.isRequired,
+	accountId: PropTypes.string,
+	accountName: PropTypes.string,
 };
 
 LogoutModal.defaultProps = {
 	show: false,
+	accountId: '',
+	accountName: '',
 };
 
 export default LogoutModal;
