@@ -2,14 +2,15 @@
 	align-items: center;
 	justify-content: center;
 	display: flex;
-	height: 100vh;
+	height: calc(100vh - 34px);
+	overflow: hidden;
 }
 
 .welcome-wrap {
 	@include max-vw(900) {
 		justify-content: space-between;
 	}
-	align-items: stretch;
+	align-items: flex-start;
 	justify-content: center;
 	display: flex;
 	padding: 40px;
@@ -24,12 +25,14 @@
 		margin-left: 100px;
 	}
 	width: 340px;
+	margin-top: 40px;
 	margin-left: 25px;
 	border-radius: 3px;
 	background-color: #dbd2f3;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.02);
 
 	.card-wrap {
+		@include source-regular();
 		display: flex;
 		padding-right: 38px;
 		padding-left: 34px;
@@ -82,7 +85,7 @@
 		}
 
 		.wif-wrap {
-			padding: 3em 0 4em;
+			padding: 5em 0 0;
 
 			.wif-label {
 				color: rgba(#000, 0.5);
@@ -90,12 +93,7 @@
 			}
 
 			.wif {
-				@include source-semibold();
 				margin: 8px 0 0;
-				font-size: 2.4em;
-				letter-spacing: 0.02em;
-				line-height: 1.21;
-				word-break: break-all;
 			}
 		}
 
@@ -140,7 +138,7 @@
 	}
 
 	.btn-primary {
-		margin: auto 0 30px;
+		margin: 10em 0 30px;
 	}
 
 	&.import {

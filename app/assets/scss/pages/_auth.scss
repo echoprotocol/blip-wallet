@@ -5,8 +5,12 @@
 		@include max-vh(780) {
 			max-height: calc(100vh - 127px);
 		}
-		max-height: calc(100vh - 16vh - 1px);
+		width: 100vw;
+		max-height: calc(100vh - 16vh - 35px);
 
+		.ps__rail-x {
+			display: none !important; // fix react-perfect-scrollbar
+		}
 	}
 
 	.menu {
@@ -108,7 +112,7 @@
 	}
 
 	.segment {
-		display: flex;
+		// display: flex;
 		border-top: 1px solid rgba(#b89bf5, 0.4);
 	}
 
@@ -143,10 +147,6 @@
 			font-size: 1.4em;
 			line-height: 1.4em;
 		}
-
-		// .ps__rail-x  {
-		// display: none !important; // fix react-perfect-scrollbar
-		// }
 	}
 }
 

@@ -168,6 +168,12 @@
 			border: 1px solid rgba(#838590, 1);
 		}
 
+		&:disabled {
+			border: 1px solid #a8abb7;
+			background-color: transparent;
+			color: #3f4a52;
+		}
+
 		&:focus {
 			border: 1px solid #737d83;
 			background-color: #fff;
@@ -296,6 +302,33 @@ form {
 			&.disabled {
 				background-image: url(../images/eye-disabled.svg);
 			}
+		}
+	}
+
+	&.wif {
+		.btn-square {
+			@include onBtnFocus(0, 0, 0, rgba(#000, 0));
+		}
+
+		&.focused {
+			input {
+				border: 1px solid #838590;
+				background-color: #fff;
+			}
+		}
+
+		input {
+			padding-right: 50px;
+		}
+
+		.copy-wrap {
+			align-items: center;
+			position: absolute;
+			top: 0;
+			right: 10px;
+			bottom: 0;
+			display: flex;
+			border: 0;
 		}
 	}
 }

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Animated } from 'react-animated-css';
 
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Input, Icon } from 'semantic-ui-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { withRouter } from 'react-router';
+import classnames from 'classnames';
 
 import { startAnimation } from '../../actions/animation-actions';
 import { ACCOUNT_CREATED, WALLET } from '../../constants/routes-constants';
@@ -19,6 +20,7 @@ class AccountCreated extends React.Component {
 
 		this.state = {
 			isVisibleWif: false,
+			focused: false,
 		};
 	}
 
@@ -26,9 +28,38 @@ class AccountCreated extends React.Component {
 		this.props.startAnimation(ACCOUNT_CREATED, true);
 	}
 
+	copyBlur() {
+		this.setState({ focused: false });
+	}
+
+	copyFocus() {
+		this.setState({ focused: true });
+	}
+
+	renderCopy(wif) {
+		const { isVisibleWif } = this.state;
+		return (
+			<div className="copy-wrap">
+				<CopyToClipboard text={wif}>
+					<Button
+						onFocus={() => this.copyFocus()}
+						onBlur={() => this.copyBlur()}
+						onClick={() => this.setState({ isVisibleWif: true })}
+						content={<Icon className="copy" />}
+						className={
+							classnames(
+								'btn-square primary',
+								{ copied: isVisibleWif },
+							)
+						}
+					/>
+				</CopyToClipboard>
+			</div>
+		);
+	}
 
 	render() {
-		const { isVisibleWif } = this.state;
+		const { isVisibleWif, focused } = this.state;
 		const {
 			wif, accountName, intl, history, isVisible,
 		} = this.props;
@@ -36,17 +67,16 @@ class AccountCreated extends React.Component {
 		const hint1 = intl.formatMessage({ id: 'account.created.wif.hint1' });
 		const hint2 = intl.formatMessage({ id: 'account.created.wif.hint2' });
 		const hint3 = intl.formatMessage({ id: 'account.created.wif.hint3' });
-		const wifButton = intl.formatMessage({ id: 'account.created.wif.button' });
 
 		return (
 			<div className="welcome-page page">
 				<div className="welcome-wrap">
 
 					<Animated
-						className="welcome-info"
 						animationIn="fadeInRight"
 						animationOut="fadeOutLeft"
 						isVisible={isVisible}
+						className="welcome-info"
 					>
 						<h1>
 							<FormattedMessage id="account.created.title1" />
@@ -55,6 +85,7 @@ class AccountCreated extends React.Component {
 						</h1>
 						<p>
 							<FormattedMessage id="account.created.description1" />
+							{' '}
 							<FormattedMessage id="account.created.description2" />
 						</p>
 						<Button
@@ -96,22 +127,23 @@ class AccountCreated extends React.Component {
 								<div className="wif-wrap">
 									<div className="wif-label">WIF</div>
 									<div className="wif">
-										{wif}
+										<Input
+											name="wif"
+											disabled
+											className={
+												classnames(
+													'white wif',
+													{ focused },
+												)
+											}
+											value={wif}
+											icon={this.renderCopy(wif)}
+											fluid
+										/>
+
 									</div>
 
 								</div>
-								<CopyToClipboard text={wif}>
-									<Button
-										className="btn-white"
-										onClick={() => this.setState({ isVisibleWif: true })}
-										content={(
-											<React.Fragment>
-												<Icon name="copy" />
-												<div className="text">{wifButton}</div>
-											</React.Fragment>
-										)}
-									/>
-								</CopyToClipboard>
 							</div>
 
 						</div>
