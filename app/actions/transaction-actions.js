@@ -56,6 +56,17 @@ export const clear = (field) => (dispatch) => {
 	dispatch(WalletReducer.actions.clear({ field }));
 };
 
+
+/**
+ * Clear params by field
+ * @param field
+ * @param params
+ * @returns {Function}
+ */
+export const clearIn = (field, params) => (dispatch) => {
+	dispatch(WalletReducer.actions.clearIn({ field, params }));
+};
+
 /**
  *  @method formatTransaction
  *
@@ -479,6 +490,7 @@ export const resetFilters = () => async (dispatch) => {
 	dispatch(setValue('loading', 'history.loading'));
 
 	try {
+		dispatch(clearIn('history', ['filter']));
 		await dispatch(setDefaultFilters());
 		const { transactions, total } = await dispatch(getFilteredHistory());
 		dispatch(setIn('history', { transactions, total }));

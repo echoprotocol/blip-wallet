@@ -45,6 +45,15 @@ export default createModule({
 				return state;
 			},
 		},
+		clearIn: {
+			reducer: (state, { payload }) => {
+				payload.params.forEach((field) => {
+					state = state.setIn([payload.field, field], DEFAULT_FIELDS.getIn([payload.field, field]));
+				});
+
+				return state;
+			},
+		},
 		reset: {
 			reducer: (state) => {
 				state = DEFAULT_FIELDS;
