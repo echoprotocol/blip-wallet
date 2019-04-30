@@ -34,7 +34,7 @@ const filteredObjects = createSelector(
 
 const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
 
-const historySelector = createImmutableSelector(
+export const historySelector = createImmutableSelector(
 	(state) => state.global.get('accounts').filter((a) => a.get('selected')),
 	(state) => filteredHistories(state),
 	(accounts, histories) => accounts.mapKeys((accountId) => ([accountId, histories.get(accountId)])),

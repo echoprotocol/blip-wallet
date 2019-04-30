@@ -20,6 +20,14 @@ class ManageAccounts extends React.Component {
 		this.onChangePrimaryAccount = this.onChangePrimaryAccount.bind(this);
 	}
 
+	componentDidUpdate(prevProps) {
+		const { updateBalance, histories } = this.props;
+
+		if (!histories.equals(prevProps.histories)) {
+			updateBalance();
+		}
+	}
+
 	onChangePrimaryAccount(indexAccount) {
 		const { changePrimaryAccount } = this.props;
 		changePrimaryAccount(indexAccount);
@@ -185,6 +193,8 @@ ManageAccounts.propTypes = {
 	balances: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	changePrimaryAccount: PropTypes.func.isRequired,
+	updateBalance: PropTypes.func.isRequired,
+	histories: PropTypes.object.isRequired,
 };
 
 export default ManageAccounts;
