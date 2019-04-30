@@ -293,7 +293,7 @@ export const send = () => async (dispatch, getState) => {
 	const accounts = getState().global.getIn(['accounts']);
 
 	const from = form.get('from');
-	const fromId = accounts.findKey((a) => a.get('name') === from.value) || [...accounts.keys()][0];
+	const fromId = accounts.findKey((a, id) => id === from.value) || [...accounts.keys()][0];
 	const fromName = from.value || [...accounts.values()][0].get('name');
 	const [fromAccount] = await Services.getEcho().api.getFullAccounts([fromName]);
 

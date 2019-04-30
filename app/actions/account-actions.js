@@ -419,10 +419,13 @@ export const changePrimaryAccount = (indexAccount) => async (dispatch, getState)
 	dispatch(setGlobal('accounts', stateAccounts));
 };
 
-export const removeAllAccounts = () => (dispatch, getState) => {
+export const removeAllAccounts = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts');
 
-	accounts.forEach((a, id) => dispatch(logoutAccount(id)));
+	for (let i = 0; i < accounts.size; i += 1) {
+		const index = [...accounts.keys()][i];
+		await dispatch(logoutAccount(index)); // eslint-disable-line no-await-in-loop
+	}
 
 	dispatch(subscribeTokens());
 };
