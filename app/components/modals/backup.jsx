@@ -17,7 +17,7 @@ class BackupModal extends React.Component {
 			keys: [],
 		};
 
-		this.isMounted = false;
+		this.mounted = false;
 	}
 
 	componentDidMount() {
@@ -29,7 +29,7 @@ class BackupModal extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.isMounted = true;
+		this.mounted = true;
 	}
 
 	async updateInfo() {
@@ -41,7 +41,7 @@ class BackupModal extends React.Component {
 
 		const keys = await this.props.getKeysByAccountId(account);
 
-		if (!this.isMounted) {
+		if (!this.mounted) {
 			this.setState({ keys });
 		}
 

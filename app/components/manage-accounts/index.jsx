@@ -6,6 +6,8 @@ import { Dropdown } from 'react-bootstrap';
 import classnames from 'classnames';
 import Avatar from '../avatar';
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
+import { ECHO_ASSET_ID } from '../../constants/global-constants';
+import FormatHelper from '../../helpers/format-helper';
 
 class ManageAccounts extends React.Component {
 
@@ -22,76 +24,108 @@ class ManageAccounts extends React.Component {
 		changePrimaryAccount(indexAccount);
 	}
 
+	getFraction(balance) {
+		if (balance) {
+			if (balance.split('.')[1]) {
+				return `.${balance.split('.')[1]}`;
+			}
+		}
+
+		return '';
+	}
+
+	getBalance(accountId) {
+		const { balances } = this.props;
+
+		const coreBalance = balances.find((b) => b.asset.get('id') === ECHO_ASSET_ID && b.owner === accountId);
+
+		if (!coreBalance) {
+			return false;
+		}
+
+		return FormatHelper.formatAmount(coreBalance.amount, coreBalance.asset.get('precision'));
+	}
+
+	getCustomAssetsCount(accountId) {
+		const { balances } = this.props;
+
+		return balances.filter((b) => b.asset.get('id') !== ECHO_ASSET_ID && b.owner === accountId).size;
+	}
 
 	renderAccounts() {
 		const { accounts } = this.props;
 
-		return [...accounts.map((account, index) => (
-			<div className="account-item" key={account.get('name')}>
-				<div className="account-info">
-					<div className="avatar">
-						<Avatar accountName={account.get('name')} />
-					</div>
-					<div className={
-						classnames(
-							'name-wrap',
-							{ primary: account.get('primary') },
-						)
-					}
-					>
-						{account.get('primary')
-							? (
-								<React.Fragment>
-									<div className="name">{account.get('name')}</div>
-									<div className="name-label">Primary account</div>
-								</React.Fragment>
-							)
-							:							(
-								<React.Fragment>
-									<div className="name-label">Account name</div>
-									<div className="name">{account.get('name')}</div>
-								</React.Fragment>
+		return [...accounts.map((account, index) => {
+			const amount = this.getBalance(index);
+			const customAssetsCount = this.getCustomAssetsCount(index);
+
+			return (
+				<div className="account-item" key={account.get('name')}>
+					<div className="account-info">
+						<div className="avatar">
+							<Avatar accountName={account.get('name')} />
+						</div>
+						<div className={
+							classnames(
+								'name-wrap',
+								{ primary: account.get('primary') },
 							)
 						}
-					</div>
-					<div className="settings">
-						<Dropdown className="white select-account">
-							<Dropdown.Toggle variant="info">
-								<span className="dot" />
-								<span className="dot" />
-								<span className="dot" />
-							</Dropdown.Toggle>
+						>
+							{account.get('primary')
+								? (
+									<React.Fragment>
+										<div className="name">{account.get('name')}</div>
+										<div className="name-label">Primary account</div>
+									</React.Fragment>
+								)
+								:							(
+									<React.Fragment>
+										<div className="name-label">Account name</div>
+										<div className="name">{account.get('name')}</div>
+									</React.Fragment>
+								)
+							}
+						</div>
+						<div className="settings">
+							<Dropdown className="white select-account">
+								<Dropdown.Toggle variant="info">
+									<span className="dot" />
+									<span className="dot" />
+									<span className="dot" />
+								</Dropdown.Toggle>
 
-							<Dropdown.Menu>
-								<div className="avatar-wrap">
-									<Avatar accountName={account.get('name')} />
-								</div>
-								<div className="account-name">{account.get('name')}</div>
-								<Dropdown.Item onClick={() => this.onChangePrimaryAccount(index)} eventKey={0}>
-                                    Set as primary
-								</Dropdown.Item>
-								<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP, { accountId: index })} eventKey={1}>
-                                    Backup info
-								</Dropdown.Item>
-								<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT)} eventKey={3}>
-                                    Logout
-								</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown>
+								<Dropdown.Menu>
+									<div className="avatar-wrap">
+										<Avatar accountName={account.get('name')} />
+									</div>
+									<div className="account-name">{account.get('name')}</div>
+									<Dropdown.Item onClick={() => this.onChangePrimaryAccount(index)} eventKey={0}>
+										Set as primary
+									</Dropdown.Item>
+									<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP, { accountId: index })} eventKey={1}>
+										Backup info
+									</Dropdown.Item>
+									<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT)} eventKey={3}>
+										Logout
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown>
+						</div>
+					</div>
+					<div className="currency-wrap">
+						<div className="currency">Echo</div>
+						{customAssetsCount ? <div className="bonus">{`+ ${customAssetsCount} assets`}</div> : ''}
+					</div>
+					<div className="line">
+						<div className="balance">
+							<span className="integer">{amount ? `${amount.split('.')[0]}` : '0'}</span>
+							<span className="fractional">{this.getFraction(amount)}</span>
+						</div>
 					</div>
 				</div>
-				<div className="currency-wrap">
-					<div className="currency">Echo</div>
-					{account.get('primary') ? <div className="bonus">+ 0 assets</div> : null}
-				</div>
-				<div className="line">
-					<div className="balance">
-						<span className="integer" />
-						<span className="fractional" />
-					</div>
-				</div>
-			</div>
-		)).values()];
+			);
+		}).values()];
 	}
 
 	render() {
@@ -144,6 +178,7 @@ class ManageAccounts extends React.Component {
 ManageAccounts.propTypes = {
 	openModal: PropTypes.func.isRequired,
 	accounts: PropTypes.object.isRequired,
+	balances: PropTypes.object.isRequired,
 	changePrimaryAccount: PropTypes.func.isRequired,
 };
 

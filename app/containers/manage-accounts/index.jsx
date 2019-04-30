@@ -4,7 +4,6 @@ import { openModal } from '../../actions/modals-actions';
 import { balanceSelector } from '../wallet';
 import { changePrimaryAccount } from '../../actions/account-actions';
 
-
 export default connect(
 	(state) => ({
 		accounts: state.global.get('accounts'),

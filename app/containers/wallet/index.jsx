@@ -49,6 +49,7 @@ export const balanceSelector = createImmutableSelector(
 			asset: objects.get(assetId),
 			amount: objects.getIn([statsId, 'balance']),
 			id: objects.getIn([statsId, 'id']),
+			owner: objects.getIn([statsId, 'owner']),
 		},
 	])),
 );

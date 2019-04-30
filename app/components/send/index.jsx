@@ -18,7 +18,6 @@ class Send extends React.Component {
 		super(props);
 
 		this.state = {
-			from: '',
 			timeout: null,
 			feeTimeout: null,
 		};
@@ -162,9 +161,8 @@ class Send extends React.Component {
 		const {
 			accounts, form, balances, tokens, loading, intl, hiddenAssets,
 		} = this.props;
-		const { from } = this.state;
 
-		const fromAccountName = accounts && (accounts.getIn([form.get('from').value, 'name']) || [...accounts.values()][0].get('name'));
+		const fromAccountName = accounts && (accounts.getIn([form.get('from').value, 'name']) || accounts.find((a) => a.get('primary')).get('name'));
 
 		const amountTitle = intl.formatMessage({ id: 'send.amount.title' });
 
@@ -275,10 +273,9 @@ class Send extends React.Component {
 													onKeyPress={(e) => this.onKeyPress(e)}
 													path={{ field: 'selectedBalance' }}
 													data={{
-														account: from || [...accounts.keys()][0],
 														balances,
 														tokens,
-														from: form.get('from').value,
+														from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
 														hiddenAssets,
 													}}
 													disable={!!loading}
@@ -311,9 +308,8 @@ class Send extends React.Component {
 														setValue={(field, value) => this.props.setValue(FORM_SEND, field, value)}
 														path={{ field: 'selectedFeeBalance' }}
 														data={{
-															account: from || [...accounts.keys()][0],
 															balances,
-															from: form.get('from').value,
+															from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
 															hiddenAssets,
 														}}
 														value={form.get('fee').value}

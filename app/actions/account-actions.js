@@ -176,7 +176,7 @@ export const registerAccount = () => async (dispatch, getState) => {
 		const accounts = await userStorage.getAllAccounts();
 
 		await dispatch(addAccount(accountData.id, accountName.value, true, accounts.length === 0));
-		await userStorage.addAccount(Account.create(accountData.id, accountName.value, true, accounts.length === 1));
+		await userStorage.addAccount(Account.create(accountData.id, accountName.value, true, accounts.length === 0));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
 		return resolve({ wif, accountName: accountName.value });
@@ -282,9 +282,10 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			}
 
 			const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
+			const accounts = await userStorage.getAllAccounts();
 
-			await dispatch(addAccount(accountId, accountName));
-			await userStorage.addAccount(Account.create(accountId, accountName));
+			await dispatch(addAccount(accountId, accountName, true, accounts.length === 0));
+			await userStorage.addAccount(Account.create(accountId, accountName, true, accounts.length === 0));
 			await userStorage.addKey(Key.create(publicKey, wif, accountId));
 		} else {
 			const active = CryptoService.getPublicKey(accountName, wif);
@@ -339,16 +340,11 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
  * @returns {Function}
  */
 export const changePrimaryAccount = (indexAccount) => async (dispatch, getState) => {
-	console.log(indexAccount);
-
 	// Save to crypto store
 	const userStorage = Services.getUserStorage();
 	const accounts = await userStorage.getAllAccounts();
 
 	accounts.forEach((account, index) => {
-
-		console.log(accounts[index].id);
-
 		accounts[index].primary = !![indexAccount].includes(accounts[index].id);
 	});
 

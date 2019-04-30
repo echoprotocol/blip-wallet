@@ -197,10 +197,10 @@ class InputDropdown extends React.Component {
 		}
 
 		const {
-			account, balances, tokens, from,
+			balances, tokens, from,
 		} = this.props.data;
 
-		const activeAccountId = from || account;
+		const activeAccountId = from;
 		let { hiddenAssets } = this.props.data;
 		hiddenAssets = hiddenAssets || [];
 
