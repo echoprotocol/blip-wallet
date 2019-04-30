@@ -180,6 +180,11 @@ export const setLastTransaction = () => async (dispatch, getState) => {
 
 	let transaction = account.getIn(['history', '0']);
 
+	if (!transaction) {
+		dispatch(clear('transaction'));
+		return;
+	}
+
 	transaction = await formatTransaction(
 		transaction.getIn(['op', '0']),
 		transaction.getIn(['op', '1']),
