@@ -5,6 +5,7 @@ import { Input, Button } from 'semantic-ui-react';
 import { Animated } from 'react-animated-css';
 import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import Header from '../../components/header';
 import ValidatePasswordHelper from '../../helpers/validate-password-helper';
@@ -149,13 +150,13 @@ class CreatePassword extends React.Component {
 		return (
 
 			<div
-				className="page"
+				className="page create-password-page"
 				role="presentation"
 				onFocus={this.changeFocusTarget}
 				onClick={this.changeFocusTarget}
 			>
 				<Header />
-				<div className="form-wrap">
+				<PerfectScrollbar className="form-wrap">
 					<div className="form-content">
 						<Animated
 							animationIn="fadeInRightBig"
@@ -284,7 +285,7 @@ class CreatePassword extends React.Component {
 							</div>
 						</div>
 					</div>
-				</div>
+				</PerfectScrollbar>
 			</div>
 		);
 	}
