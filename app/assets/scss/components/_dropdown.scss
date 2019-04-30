@@ -75,6 +75,11 @@
 	.scrollbar-container {
 		margin: 10px 2px 0;
 	}
+
+	.dropdown-item {
+		@include text-overflow();
+		max-width: 100%;
+	}
 }
 
 .dropdown-menu.show {
@@ -112,6 +117,8 @@
 	}
 
 	.dropdown-toggle-text {
+		@include text-overflow();
+		max-width: calc(100% - 80px);
 		margin: 0 auto 0 14px;
 	}
 }
@@ -224,15 +231,6 @@
 
 // &.white
 .dropdown.white {
-	&:not(.show) {
-		.dropdown-toggle:not(:active) {
-			&:focus {
-				@include onBtnFocus(4px, 2px, 1px, rgba(#cbcbcb, 0.65));
-				border: 1px solid #bfbfbf;
-			}
-		}
-	}
-
 	&.show {
 		.dropdown-toggle {
 			border: 1px solid #a8abb7;
@@ -294,6 +292,11 @@
 					@include triangle(top, rgba(#a2a3a9, 0.6));
 				}
 			}
+		}
+
+		&:focus {
+			border: 1px solid #737d83;
+			background-color: #fff;
 		}
 	}
 
