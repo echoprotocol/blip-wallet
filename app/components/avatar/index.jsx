@@ -30,17 +30,17 @@ class Avatar extends React.Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		const { accountName } = prevState;
-		const { reset } = nextProps;
-		if (accountName !== nextProps.accountName || (nextProps.reset && !reset)) {
+		if ((accountName !== nextProps.accountName && nextProps.accountName) || nextProps.reset) {
 			return Avatar.updateAccountName(nextProps);
 		}
 		return null;
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		if (nextProps.reset) return true;
 		if (nextProps.loading) return false;
-		if (this.state.accountName === nextProps.accountName && this.state.avatarSize === nextState.avatarSize) return false;
+		if (nextProps.accountName.length === 0) return false;
+		if (this.state.accountName === nextProps.accountName) return false;
 		return true;
 	}
 

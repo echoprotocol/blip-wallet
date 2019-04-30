@@ -62,6 +62,7 @@ class CreateAccount extends React.Component {
 			this.setState({
 				timeout: setTimeout(async () => {
 					await validate(FORM_SIGN_UP, value);
+					toggle('loading', false);
 				}, 300),
 			});
 		} else {
@@ -69,7 +70,7 @@ class CreateAccount extends React.Component {
 		}
 
 		setError(field, '');
-		setTimeout(() => this.setState(hints), 300);
+		this.setState(hints);
 	}
 
 	async onCreate() {
@@ -95,6 +96,7 @@ class CreateAccount extends React.Component {
 		const {
 			hint1, hint2, hint3, hint4,
 		} = this.state;
+
 
 		return [hint1, hint2, hint3, hint4].every((hint) => hint === 'active')
 			&& !form.get('accountNameError')

@@ -122,12 +122,6 @@
 			align-items: center;
 			display: flex;
 
-			&.fadeOut {
-				.avatar-image {
-					opacity: 0;
-				}
-			}
-
 			&.visible {
 				.avatar-image {
 					opacity: 1;
