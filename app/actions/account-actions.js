@@ -229,8 +229,16 @@ const validateImportAccount = async (accountName) => {
  * @param wif
  */
 export const importAccount = (accountName, wif) => async (dispatch) => {
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.import.loading' }));
 	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
 	const promiseImportAccount = new Promise(async (resolve) => {
+		if (!Services.getEcho().isConnected) {
+			dispatch(setValue(FORM_SIGN_IN, 'accountNameError', 'Connection error'));
+			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
+
+			return resolve(false);
+		}
+
 		const accountNameError = await validateImportAccount(accountName);
 		const wifError = ValidateAccountHelper.validateWIF(wif);
 
@@ -241,14 +249,6 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			return resolve(false);
 		}
 
-		if (!Services.getEcho().isConnected) {
-			dispatch(setValue(FORM_SIGN_IN, 'accountNameError', 'Connection error'));
-			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
-
-			return resolve(false);
-		}
-
-		dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.import.loading' }));
 		if (CryptoService.isWIF(wif)) {
 
 			const active = PrivateKey.fromWif(wif).toPublicKey().toString();
