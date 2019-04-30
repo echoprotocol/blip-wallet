@@ -8,6 +8,7 @@ import Avatar from '../avatar';
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
 import { ECHO_ASSET_ID } from '../../constants/global-constants';
 import FormatHelper from '../../helpers/format-helper';
+import { AUTHORIZATION } from '../../constants/routes-constants';
 
 class ManageAccounts extends React.Component {
 
@@ -150,6 +151,7 @@ class ManageAccounts extends React.Component {
 									content={
 										<span>+ Add account</span>
 									}
+									onClick={() => this.props.history.push(AUTHORIZATION)}
 								/>
 							</div>
 							<div className="accounts-list">
@@ -181,6 +183,7 @@ ManageAccounts.propTypes = {
 	removeAllAccounts: PropTypes.func.isRequired,
 	accounts: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 	changePrimaryAccount: PropTypes.func.isRequired,
 };
 

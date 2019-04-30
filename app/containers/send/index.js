@@ -12,6 +12,7 @@ import {
 } from '../../actions/transfer-actions';
 
 import Send from '../../components/send';
+import Services from '../../services';
 
 const filteredObjects = createSelector(
 	(state) => state.wallet.get('balances'),
@@ -45,7 +46,7 @@ export default connect(
 		balances: balanceSelector(state),
 		tokens: state.wallet.get('tokens'),
 		loading: state.global.get('loading'),
-		hiddenAssets: state.wallet.get('hiddenAssets').get(state.global.get('currentNode')),
+		hiddenAssets: state.wallet.get('hiddenAssets').get(Services.getUserStorage().getNetworkId()),
 	}),
 	(dispatch) => ({
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_SEND, field, value)),
