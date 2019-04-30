@@ -4,6 +4,8 @@
 	height: 34px;
 	background-color: #e1e1e4;
 	user-select: none;
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
 
 	.ios-btns {
 		align-items: center;
