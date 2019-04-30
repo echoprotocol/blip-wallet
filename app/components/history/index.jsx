@@ -50,8 +50,6 @@ class History extends React.Component {
 	}
 
 	onToggleTransactionDetails(e, key) {
-		e.preventDefault();
-
 		if (!CONTRACT_TYPES.includes(this.props.transactions.getIn([key, 'type']))) {
 			return;
 		}
