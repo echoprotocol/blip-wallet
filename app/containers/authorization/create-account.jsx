@@ -28,6 +28,7 @@ class CreateAccount extends React.Component {
 		this.state = {
 			...ValidateAccountHelper.accountNameHints(this.props.accountName),
 			timeout: null,
+			startCountAccounts: props.accounts.size,
 		};
 	}
 
@@ -110,10 +111,10 @@ class CreateAccount extends React.Component {
 
 	render() {
 		const {
-			error, isVisible, form, intl, accounts, registrators, accountName,
+			error, isVisible, form, intl, registrators, accountName,
 		} = this.props;
 		const {
-			hint1, hint2, hint3, hint4,
+			hint1, hint2, hint3, hint4, startCountAccounts,
 		} = this.state;
 
 		const isSuccess = this.isSuccess();
@@ -125,7 +126,7 @@ class CreateAccount extends React.Component {
 			<div className="form-content">
 				<div className="lines">
 					{
-						accounts.size ? (
+						startCountAccounts ? (
 							<Registrator
 								isVisible={isVisible}
 								registrators={registrators}
