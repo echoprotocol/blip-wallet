@@ -12,7 +12,7 @@ import {
 	GLOBAL_ID_1,
 	EXPIRATION_INFELICITY,
 } from '../constants/global-constants';
-import { setFormError, toggleLoading, setValue } from './form-actions';
+import { toggleLoading, setValue } from './form-actions';
 import { setValue as setGlobal, setValue as setValueGlobal } from './global-actions';
 import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
@@ -99,11 +99,11 @@ const addAccount = (id, name, selected = true, primary) => async (dispatch, getS
 export const registerAccount = (accountName) => async (dispatch, getState) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.create.loading' }));
 	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
-	const promiseRegisterAccount = new Promise(async (resolve) => {
+	const promiseRegisterAccount = new Promise(async (resolve, reject) => {
 		const registrator = getState().form.getIn([FORM_SIGN_UP, 'registrator']);
 
 		if (!Services.getEcho().isConnected) {
-			dispatch(setFormError(FORM_SIGN_UP, 'accountNameError', 'Connection error'));
+			dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Connection error'));
 			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 
 			return resolve(false);
@@ -115,71 +115,80 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 
 		const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
-		if (registrator.public) {
-			await Services.getEcho().api.registerAccount(accountName, publicKey, publicKey, publicKey, echoRandKey);
-		} else {
-			const account = await Services.getEcho().api.getAccountByName(registrator.account);
+		try {
+			if (registrator.public) {
+				await Services.getEcho().api.registerAccount(accountName, publicKey, publicKey, publicKey, echoRandKey);
+			} else {
+				const account = await Services.getEcho().api.getAccountByName(registrator.account);
 
-			const options = {
-				ed_key: bs58.decode(echoRandKey.slice(3)).toString('hex'),
-				registrar: account.id,
-				referrer: account.id,
-				referrer_percent: 0,
-				name: accountName,
-				owner: {
-					weight_threshold: 1,
-					account_auths: [],
-					key_auths: [[publicKey, 1]],
-					address_auths: [],
-				},
-				active: {
-					weight_threshold: 1,
-					account_auths: [],
-					key_auths: [[publicKey, 1]],
-					address_auths: [],
-				},
-				options: {
-					memo_key: publicKey,
-					voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
-					delegating_account: account.id,
-					num_witness: 0,
-					num_committee: 0,
-					votes: [],
-					extensions: [],
-				},
-			};
+				const options = {
+					ed_key: bs58.decode(echoRandKey.slice(3)).toString('hex'),
+					registrar: account.id,
+					referrer: account.id,
+					referrer_percent: 0,
+					name: accountName,
+					owner: {
+						weight_threshold: 1,
+						account_auths: [],
+						key_auths: [[publicKey, 1]],
+						address_auths: [],
+					},
+					active: {
+						weight_threshold: 1,
+						account_auths: [],
+						key_auths: [[publicKey, 1]],
+						address_auths: [],
+					},
+					options: {
+						memo_key: publicKey,
+						voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
+						delegating_account: account.id,
+						num_witness: 0,
+						num_committee: 0,
+						votes: [],
+						extensions: [],
+					},
+				};
 
-			const [balance] = await Services.getEcho().api.getAccountBalances(account.id, [ECHO_ASSET_ID]);
-			const fee = await getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+				const balance = getState().echoCache.getIn([
+					CACHE_MAPS.OBJECTS_BY_ID,
+					getState().echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, account.id, 'balances', ECHO_ASSET_ID]),
+					'balance',
+				]);
+				const fee = await getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);
 
-			if (BN(fee).gt(balance.amount)) {
-				dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Insufficient funds'));
-				return resolve(false);
+				if (BN(fee).gt(balance)) {
+					dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Insufficient funds'));
+					return resolve(false);
+				}
+
+				const tx = Services.getEcho().api.createTransaction();
+				tx.addOperation(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+
+				const dynamicGlobalChainData = await Services.getEcho().api.getObject(GLOBAL_ID_1, true);
+
+				const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
+
+				tx.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
+
+				await signTransaction(account, tx);
+				await tx.broadcast();
 			}
 
-			const tx = Services.getEcho().api.createTransaction();
-			tx.addOperation(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+			const accountData = await Services.getEcho().api.getAccountByName(accountName);
 
-			const dynamicGlobalChainData = await Services.getEcho().api.getObject(GLOBAL_ID_1, true);
+			const userStorage = Services.getUserStorage();
+			const accounts = await userStorage.getAllAccounts();
 
-			const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
+			await dispatch(addAccount(accountData.id, accountName, true, accounts.length === 0));
+			await userStorage.addAccount(Account.create(accountData.id, accountName, true, accounts.length === 0));
+			await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
-			tx.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
+			return resolve({ wif, accountName });
 
-			await signTransaction(account, tx);
-			await tx.broadcast();
+		} catch (e) {
+			return reject(e);
 		}
-
-		const accountData = await Services.getEcho().api.getAccountByName(accountName);
-
-		const userStorage = Services.getUserStorage();
-		const accounts = await userStorage.getAllAccounts();
-
-		await dispatch(addAccount(accountData.id, accountName, true, accounts.length === 0));
-		await userStorage.addAccount(Account.create(accountData.id, accountName, true, accounts.length === 0));
-		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
-
-		return resolve({ wif, accountName });
 	});
 
 
@@ -187,7 +196,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 		const resultRegisterAccount = await Promise.all([promiseRegisterAccount, promiseLoader]);
 		return resultRegisterAccount[0];
 	} catch (err) {
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', err.message || err));
+		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', err.message || err));
 
 		return null;
 	} finally {
