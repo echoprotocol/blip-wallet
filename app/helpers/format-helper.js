@@ -101,4 +101,19 @@ export default class FormatHelper {
 		return transformDate;
 	}
 
+	/**
+	 *
+	 * @param {String} date
+	 * @param {String} language
+	 * @param {String} formatter
+	 * @returns {String}
+	 */
+	static getLocaleDateFromNow(date, language, formatter) {
+		if (!moment.utc(date).isBefore(moment.utc().subtract(12, 'h'))) {
+			return moment.utc(date).local().locale(language).fromNow();
+		}
+
+		return FormatHelper.getLocaleTransformDate(date, language, formatter);
+	}
+
 }

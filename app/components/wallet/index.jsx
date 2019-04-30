@@ -9,9 +9,10 @@ import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
-import LastTransaction from './last-transaction';
-import { SEND } from '../../constants/routes-constants';
+import { HISTORY } from '../../constants/routes-constants';
 import { TOKEN_TYPE } from '../../constants/graphql-constants';
+import Footer from '../footer';
+import LastTransaction from './last-transaction';
 
 class Wallet extends React.Component {
 
@@ -257,7 +258,7 @@ class Wallet extends React.Component {
 
 	render() {
 		const {
-			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction, hiddenAssets, tokens: stateTokens,
+			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction, hiddenAssets, tokens: stateTokens, history,
 		} = this.props;
 
 		const { showSettings } = this.state;
@@ -304,32 +305,8 @@ class Wallet extends React.Component {
 					</PerfectScrollbar>
 
 					<div className="page-footer ">
-						<LastTransaction transaction={transaction} language={language} />
-						<div className="footer-actions">
-							<div className="btn-wrap btns-2">
-								<Button
-									className="btn-main"
-									content={
-										<span className="text"><FormattedMessage id="wallet.send" /></span>
-									}
-									onClick={() => this.props.history.push(SEND)}
-								/>
-								<Button
-									className="btn-gray"
-									content={
-										<span className="text"><FormattedMessage id="wallet.receive" /></span>
-									}
-								/>
-							</div>
-							<div className="footer-info">
-								<div className="mode"><FormattedMessage id={`wallet.${FormatHelper.capitalizeFirstLetter(currentNode)} node`} /></div>
-								{/* <div className="sync"> */}
-								{/*	Syncing with network: */}
-								{/*	<span className="percent">100%</span> */}
-								{/* </div> */}
-							</div>
-						</div>
-						<div className="loading-status" />
+						<LastTransaction transaction={transaction} language={language} accounts={accounts} click={() => history.push(HISTORY)} />
+						<Footer history={history} currentNode={currentNode} />
 					</div>
 					<div className="settings-wrap">
 						<Button

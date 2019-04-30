@@ -35,13 +35,17 @@ export const initTokens = () => async (dispatch, getState) => {
 		return false;
 	}
 
-	const tokens = await getBalances(accounts);
+	try {
+		const tokens = await getBalances(accounts);
 
-	if (!tokens || !tokens.data.getBalances.length) {
-		return false;
+		if (!tokens || !tokens.data.getBalances.length) {
+			return false;
+		}
+
+		dispatch(setValue('tokens', fromJS(tokens.data.getBalances.filter((t) => t.type === TOKEN_TYPE))));
+	} catch (e) {
+		console.log(e);
 	}
-
-	dispatch(setValue('tokens', fromJS(tokens.data.getBalances.filter((t) => t.type === TOKEN_TYPE))));
 
 	return true;
 };

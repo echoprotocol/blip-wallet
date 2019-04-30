@@ -38,8 +38,7 @@ class InputDropdown extends React.Component {
 	}
 
 	componentDidMount() {
-		const { assetsList, tokensList } = this.getSymbols();
-		this.setState({ assetsList, tokensList });
+		this.setDropdownBalances();
 		document.addEventListener('mousedown', this.handleClickOutside);
 		return null;
 	}
@@ -58,6 +57,13 @@ class InputDropdown extends React.Component {
 
 		if (opened && (opened !== prevOpened)) {
 			this.searchInput.focus();
+		}
+
+		const { from } = this.props.data;
+		const { from: prevFrom } = prevProps.data;
+
+		if (from !== prevFrom) {
+			this.setDropdownBalances();
 		}
 	}
 
@@ -177,6 +183,11 @@ class InputDropdown extends React.Component {
 		this.setState({ focus });
 	}
 
+	setDropdownBalances() {
+		const { assetsList, tokensList } = this.getSymbols();
+		this.setState({ assetsList, tokensList });
+	}
+
 	getSymbols() {
 		const assetsList = [];
 		const tokensList = [];
@@ -185,10 +196,16 @@ class InputDropdown extends React.Component {
 			return assetsList;
 		}
 
-		const { account, balances, tokens } = this.props.data;
+		const {
+			account, balances, tokens, from,
+		} = this.props.data;
 
-		balances.mapEntries(([balanceId, { accountId, symbol }]) => {
-			if (accountId === account) {
+		const activeAccountId = from || account;
+		let { hiddenAssets } = this.props.data;
+		hiddenAssets = hiddenAssets || [];
+
+		balances.mapEntries(([balanceId, { accountId, symbol, assetId }]) => {
+			if (accountId === activeAccountId && !hiddenAssets.includes(assetId)) {
 				if (symbol === ECHO_ASSET_SYMBOL) {
 					assetsList.unshift({ text: symbol, value: balanceId, active: false });
 					return null;
@@ -202,7 +219,7 @@ class InputDropdown extends React.Component {
 
 		if (tokens) {
 			tokens.forEach((token) => {
-				if (account === token.getIn(['account', 'id'])) {
+				if (activeAccountId === token.getIn(['account', 'id']) && !hiddenAssets.includes(token.getIn(['contract', 'id']))) {
 					tokensList.push({
 						text: token.getIn(['contract', 'token', 'symbol']),
 						value: token.getIn(['contract', 'id']),
@@ -260,12 +277,11 @@ class InputDropdown extends React.Component {
 			opened, focus, assetsList, tokensList, currentVal, search,
 		} = this.state;
 		const {
-			title, hints, disable, errorText, value: inputValue, name, intl,
+			title, hints, disable, errorText, value: inputValue, name, intl, placeholder,
 		} = this.props;
 
 		const assetsTitle = intl.formatMessage({ id: 'send.dropdown.assets' });
 		const tokensTitle = intl.formatMessage({ id: 'send.dropdown.tokens' });
-		const placeholder = intl.formatMessage({ id: 'send.dropdown.input.placeholder' });
 
 		const dropdownData = [
 			{
@@ -410,6 +426,7 @@ InputDropdown.propTypes = {
 	disable: PropTypes.bool,
 	globalLoading: PropTypes.bool,
 	errorText: PropTypes.string,
+	placeholder: PropTypes.string,
 	value: PropTypes.any,
 	hints: PropTypes.array,
 	path: PropTypes.object,
@@ -426,6 +443,7 @@ InputDropdown.defaultProps = {
 	disable: false,
 	globalLoading: false,
 	errorText: '',
+	placeholder: '',
 	value: '',
 	path: null,
 	setValue: null,

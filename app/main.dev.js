@@ -10,7 +10,9 @@
  *
  * @flow
  */
-import { app, BrowserWindow, shell } from 'electron';
+import {
+	app, BrowserWindow, shell, ipcMain,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -73,6 +75,7 @@ app.on('ready', async () => {
 		show: false,
 		width: 1024,
 		height: 728,
+		frame: false,
 	});
 
 	mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -108,4 +111,20 @@ app.on('ready', async () => {
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
 	new AppUpdater();
+});
+
+ipcMain.on('close-app', () => {
+	app.quit();
+});
+
+ipcMain.on('zoom-app', () => {
+	if (!mainWindow.isMaximized()) {
+		mainWindow.maximize();
+	} else {
+		mainWindow.unmaximize();
+	}
+});
+
+ipcMain.on('minimize-app', () => {
+	mainWindow.minimize();
 });

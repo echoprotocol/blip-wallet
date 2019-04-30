@@ -4,10 +4,12 @@ import { Animated } from 'react-animated-css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
-import { Sidebar, Button } from 'semantic-ui-react';
+import { Sidebar, Button, Icon } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
-import { WALLET, MANAGE_ACCOUNTS } from '../../constants/routes-constants';
+import {
+	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY,
+} from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
 
@@ -20,7 +22,7 @@ class SideMenu extends React.Component {
 
 
 	render() {
-		const { pathname, locked } = this.props;
+		const { pathname, locked, history } = this.props;
 
 		return (
 			<Sidebar direction="right">
@@ -32,6 +34,22 @@ class SideMenu extends React.Component {
 						isVisible={!locked}
 						className="visible"
 					>
+						{
+							pathname === SEND
+							&& (
+								<Button
+									className="btn-return arrow right"
+									onClick={() => history.goBack()}
+									content={(
+										<React.Fragment>
+											<div className="text">Return</div>
+											<Icon className="arrow-right" />
+										</React.Fragment>
+									)}
+								/>
+							)
+						}
+
 						<ul className="sidebar-nav">
 							<li className={classnames({ active: pathname === WALLET })}>
 								<FormattedMessage id="wallet.menu.mywallet">
@@ -40,18 +58,20 @@ class SideMenu extends React.Component {
 											<Button
 												className="sidebar-nav-link"
 												content={content}
+												onClick={() => history.push(WALLET)}
 											/>
 										)
 									}
 								</FormattedMessage>
 							</li>
-							<li>
+							<li className={classnames({ active: pathname === HISTORY })}>
 								<FormattedMessage id="wallet.menu.history">
 									{
 										(content) => (
 											<Button
 												className="sidebar-nav-link"
 												content={content}
+												onClick={() => history.push(HISTORY)}
 											/>
 										)
 									}
@@ -64,6 +84,7 @@ class SideMenu extends React.Component {
 											<Button
 												className="sidebar-nav-link"
 												content={content}
+												onClick={() => history.push(MANAGE_ACCOUNTS)}
 											/>
 										)
 									}
@@ -104,6 +125,7 @@ class SideMenu extends React.Component {
 
 SideMenu.propTypes = {
 	pathname: PropTypes.string.isRequired,
+	history: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
 	lock: PropTypes.func.isRequired,
 };

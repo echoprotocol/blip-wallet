@@ -239,6 +239,8 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 		dispatch(setFormValue(FORM_SEND, 'fee', resultFee.amount / (10 ** objectsById.getIn([options.fee.asset_id, 'precision']))));
 	} catch (err) {
 		console.warn(err);
+
+		dispatch(setFormError(FORM_SEND, 'fee', 'Fee is not calculated'));
 	}
 
 	return true;
@@ -293,15 +295,28 @@ export const send = () => async (dispatch, getState) => {
 	const from = form.get('from');
 	const fromId = accounts.findKey((a) => a.get('name') === from.value) || [...accounts.keys()][0];
 	const fromName = from.value || [...accounts.values()][0].get('name');
+	const [fromAccount] = await Services.getEcho().api.getFullAccounts([fromName]);
+
+	const objectIds = Object.entries(fromAccount.balances).reduce((arr, b) => [...arr, ...b], []);
+
+	await Services.getEcho().api.getObjects(objectIds);
 
 	const objectsById = getState().echoCache.get(CACHE_MAPS.OBJECTS_BY_ID);
 
-	const defaultSelected = objectsById
+	let defaultSelected = objectsById
 		.filter((o, id) => ValidateSendHelper.isAccountBalanceId(id))
-		.find((val) => val.get('asset_type') === ECHO_ASSET_ID)
-		.get('id');
+		.find((val) => val.get('asset_type') === ECHO_ASSET_ID && val.get('owner') === fromId);
+
+	defaultSelected = defaultSelected && defaultSelected.get('id');
+
 	const selectedBalance = getState().form.getIn([FORM_SEND, 'selectedBalance']) || defaultSelected;
 	const selectedFeeBalance = getState().form.getIn([FORM_SEND, 'selectedFeeBalance']) || defaultSelected;
+
+	if (!selectedBalance || !selectedFeeBalance) {
+		dispatch(setFormError(FORM_SEND, 'amount', 'Insufficient funds'));
+
+		return false;
+	}
 
 	let isToken = false;
 
@@ -340,7 +355,6 @@ export const send = () => async (dispatch, getState) => {
 			return false;
 		}
 
-		const [fromAccount] = await Services.getEcho().api.getFullAccounts([fromName]);
 		const [toAccount] = await Services.getEcho().api.getFullAccounts([to.value]);
 
 		let options = {};
@@ -464,7 +478,7 @@ export const send = () => async (dispatch, getState) => {
 	return null;
 };
 
-export const setMinAmount = () => (dispatch, getState) => {
+export const setMinAmount = () => async (dispatch, getState) => {
 	const objectsById = getState().echoCache.get(CACHE_MAPS.OBJECTS_BY_ID);
 
 	const defaultSelected = objectsById
@@ -472,10 +486,26 @@ export const setMinAmount = () => (dispatch, getState) => {
 		.find((val) => val.get('asset_type') === ECHO_ASSET_ID);
 
 	const selectedBalance = objectsById.get(getState().form.getIn([FORM_SEND, 'selectedBalance'])) || defaultSelected;
-	const asset = objectsById.get(selectedBalance.get('asset_type'));
 
-	const amount = new BN(1).div(10 ** asset.get('precision')).toString();
-	const symbol = asset.get('symbol');
+	let asset = null;
+	let symbol = '';
+	let precision = null;
+
+	if (!selectedBalance) {
+		asset = await Services.getEcho().api.getObject(ECHO_ASSET_ID);
+		({ symbol } = asset);
+		({ precision } = asset);
+
+		dispatch(setValue(FORM_SEND, 'echoAsset', { symbol, precision }));
+	} else {
+		asset = objectsById.get(selectedBalance.get('asset_type'));
+		symbol = asset.get('symbol');
+		precision = asset.get('precision');
+	}
+
+	const amount = new BN(1).div(10 ** precision).toString();
 
 	dispatch(setValue(FORM_SEND, 'minAmount', { amount, symbol }));
+
+	return true;
 };

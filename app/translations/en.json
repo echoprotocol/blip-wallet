@@ -135,12 +135,56 @@
 		}
 	},
 
+	"history": {
+		"loading": "Transactions are loading",
+		"table": {
+			"title": "My transitions",
+			"type": "Type",
+			"age": "Age",
+			"from": "From",
+			"to": "To",
+			"amount": "Amount",
+			"fee": "Fee",
+			"status": {
+                "title": "Status",
+                "success": "Success",
+                "fail": "Fail"
+            },
+			"bytecode": "Bytecode"
+		},
+		"filter": {
+			"accounts": {
+				"label": "Accounts",
+				"placeholder": "Account name",
+				"selected": "Accounts selected: {size}",
+				"all": "All accounts"
+			},
+			"coins": {
+				"label": "Currencies",
+				"placeholder": "Asset or token name",
+				"assets": "Assets",
+				"tokens": "Tokens",
+				"selected": "Currencies selected: {size}",
+				"all": "All currencies"
+			},
+			"types": {
+				"label": "Transaction types",
+				"placeholder": "Transaction type",
+				"selected": "Transactions selected: {size}",
+				"all": "All transactions"
+			},
+			"buttons": {
+				"apply": "Apply & close",
+				"reset": "Set to default"
+			}
+		}
+	},
+
 	"operations": {
 		"transfer": {
-			"title": {
-				"sent": "Transfer sent",
-				"received": "Transfer received"
-			},
+			"title": "Transfer",
+			"title.sent": "Transfer sent",
+			"title.received": "Transfer received",
 			"from": "From",
 			"subject": "To"
 		},
@@ -168,7 +212,7 @@
 			"subject": "Account"
 		},
 		"account_update": {
-			"title": "Update account",
+			"title": "Account updated",
 			"from": "Account"
 		},
 		"account_whitelist": {
@@ -177,7 +221,7 @@
 			"subject": "Account"
 		},
 		"account_upgrade": {
-			"title": "Upgrade Account",
+			"title": "Account upgraded",
 			"from": "Account to upgrade"
 		},
 		"account_transfer": {
@@ -195,7 +239,7 @@
 			"from": "Issuer",
 			"subject": "Asset"
 		},
-		"asset_update_bitasset": {
+		"asset_bitasset_update": {
 			"title": "Update SmartCoin",
 			"from": "Issuer",
 			"subject": "Asset"
@@ -235,7 +279,7 @@
 			"title": "Create witness",
 			"from": "Account"
 		},
-		"witness_create": {
+		"witness_update": {
 			"title": "Update witness",
 			"from": "Account",
 			"subject": "Witness"
@@ -356,10 +400,12 @@
 		"amount": "Amount",
 		"amount.title": "Minimal amount is",
 		"fee": "Fee",
-		"fee.title": "Generated automatically based on amount",
-		"dropdown.input.placeholder": "Asset or token name",
-		"dropdown.assets": "Assets",
-		"dropdown.tokens": "Tokens"
+		"dropdown": {
+			"input.placeholder.amount": "Asset or token name",
+			"input.placeholder.fee": "Asset name",
+			"assets": "Assets",
+			"tokens": "Tokens"
+		}
 	},
 
 	"backup": {

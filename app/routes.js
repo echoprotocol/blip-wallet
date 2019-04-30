@@ -9,6 +9,8 @@ import RestorePassword from './containers/restore-password';
 import ManageAccounts from './containers/manage-accounts';
 import Send from './containers/send';
 import Wallet from './containers/wallet';
+import History from './containers/history';
+
 import Page404 from './components/page404/page404';
 
 import {
@@ -16,7 +18,7 @@ import {
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED,
 	INDEX_ROUTE, WALLET, SEND,
-	MANAGE_ACCOUNTS,
+	MANAGE_ACCOUNTS, HISTORY,
 } from './constants/routes-constants';
 
 
@@ -30,6 +32,7 @@ export default () => (
 			<Route exact path={ACCOUNT_CREATED} component={accountCreated} />
 			<Route exact path={ACCOUNT_IMPORTED} component={accountImported} />
 			<Route exact path={WALLET} component={Wallet} />
+			<Route exact path={HISTORY} component={History} />
 			<Route exact path={MANAGE_ACCOUNTS} component={ManageAccounts} />
 			<Route exact path={SEND} component={Send} />
 			<Route exact path="*" component={Page404} />

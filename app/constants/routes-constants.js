@@ -4,6 +4,7 @@ export const ACCOUNT_IMPORTED = '/account-imported';
 export const CREATE_PASSWORD = '/create-password';
 export const RESTORE_PASSWORD = '/restore-password';
 export const WALLET = '/wallet';
+export const HISTORY = '/history';
 export const SEND = '/send';
 export const UNLOCK = 'unlock';
 export const PAGE404 = '/page404';
@@ -20,8 +21,8 @@ export const PUBLIC_ROUTES = [
 export const LOCKED_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
 	ACCOUNT_IMPORTED, WALLET, SEND,
-	MANAGE_ACCOUNTS,
+	MANAGE_ACCOUNTS, HISTORY,
 ];
 
 
-export const SIDE_MENU_ROUTES = [WALLET, SEND, MANAGE_ACCOUNTS];
+export const SIDE_MENU_ROUTES = [WALLET, SEND, MANAGE_ACCOUNTS, HISTORY];
