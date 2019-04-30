@@ -42,6 +42,7 @@ class Toolbar extends React.Component {
 
 		return (
 			<div className="toolbar">
+				<div className="draggable" />
 				<div className="win-btns">
 					<Button
 						className="btn-win-minimize"
@@ -78,6 +79,7 @@ class Toolbar extends React.Component {
 
 		return (
 			<div className="toolbar">
+				<div className="draggable before-ios-btns" />
 				<div className="ios-btns">
 					<Button
 						className="btn-ios-close"
@@ -86,13 +88,13 @@ class Toolbar extends React.Component {
 						)}
 						onClick={() => this.onCloseApp()}
 					/>
-					{/* ios-zoom can be disabled */}
 					<Button
 						className="btn-ios-minimize"
 						content={(
 							<img src={iosMinimize} alt="ios-minimize" className="ios-minimize" />
 						)}
 						onClick={() => this.onMinimizeApp()}
+						disabled={zoomed}
 					/>
 					<Button
 						className="btn-ios-zoom"
@@ -102,6 +104,7 @@ class Toolbar extends React.Component {
 						onClick={() => this.onZoomApp()}
 					/>
 				</div>
+				<div className="draggable" />
 			</div>
 		);
 	}
