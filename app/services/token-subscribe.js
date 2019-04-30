@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 
 import { balanceUpdated, newBalance } from './subscriptions/balances';
+import { ASSET_TYPE } from '../constants/graphql-constants';
 
 class TokenSubscribe {
 
@@ -31,7 +32,13 @@ class TokenSubscribe {
 
 		const nextupdate = (data) => {
 			const v = data.data.balanceUpdated;
-			const findIndex = source.findIndex((token) => token.getIn(['account', 'id']) === v.account.id && token.getIn(['contract', 'id']) === v.contract.id);
+			const findIndex = source.findIndex((token) => {
+				if (v.type === ASSET_TYPE) {
+					return false;
+				}
+
+				return token.getIn(['account', 'id']) === v.account.id && token.getIn(['contract', 'id']) === v.contract.id;
+			});
 			if (findIndex >= 0) {
 				source = source.delete(findIndex);
 			}

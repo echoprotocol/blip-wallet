@@ -297,11 +297,23 @@ class InputDropdown extends React.Component {
 		];
 
 		if (assetsList) {
-			dropdownData[0].list = assetsList.filter(({ text }) => text.toLowerCase().includes(search));
+			dropdownData[0].list = assetsList.filter(({ text }) => {
+				if (!text) {
+					return false;
+				}
+
+				return text.toLowerCase().includes(search);
+			});
 		}
 
 		if (tokensList) {
-			dropdownData[1].list = tokensList.filter(({ text }) => text.toLowerCase().includes(search));
+			dropdownData[1].list = tokensList.filter(({ text }) => {
+				if (!text) {
+					return false;
+				}
+
+				return text.toLowerCase().includes(search);
+			});
 		}
 
 		const isResultsExists = dropdownData.some((d) => d.list.length);
