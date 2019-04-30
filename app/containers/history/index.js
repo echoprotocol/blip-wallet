@@ -9,6 +9,7 @@ import {
 	saveFilters,
 	resetFilters,
 	setNewTransaction,
+	clear,
 } from '../../actions/transaction-actions';
 
 export default injectIntl(connect(
@@ -27,5 +28,6 @@ export default injectIntl(connect(
 		saveFilters: (accounts, coins, types) => dispatch(saveFilters(accounts, coins, types)),
 		resetFilters: () => dispatch(resetFilters()),
 		setNewTransaction: (operation) => dispatch(setNewTransaction(operation)),
+		clear: () => dispatch(clear('history')),
 	}),
 )(History));

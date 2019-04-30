@@ -46,6 +46,7 @@ class History extends React.Component {
 
 	componentWillUnmount() {
 		this.unsubscribe();
+		this.props.clear();
 	}
 
 	onToggleTransactionDetails(e, key) {
@@ -116,6 +117,7 @@ class History extends React.Component {
 	unsubscribe() {
 		if (this.subscription) {
 			this.subscription.unsubscribe();
+			this.subscription = null;
 		}
 	}
 
@@ -328,6 +330,7 @@ History.propTypes = {
 	resetFilters: PropTypes.func.isRequired,
 	loadMoreTransactions: PropTypes.func.isRequired,
 	setNewTransaction: PropTypes.func.isRequired,
+	clear: PropTypes.func.isRequired,
 };
 
 History.defaultProps = {
