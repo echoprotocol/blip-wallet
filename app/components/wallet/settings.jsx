@@ -240,7 +240,7 @@ class Settings extends React.Component {
 		}
 
 		return (
-			<React.Fragment>
+			<PerfectScrollbar className="archive-scroll">
 				<Animated
 					animationIn="fadeIn"
 					isVisible={!!activeIndex}
@@ -271,10 +271,8 @@ class Settings extends React.Component {
 							</div>
 						)).concat(tokens)}
 					</div>
-
 				</Animated>
-
-			</React.Fragment>
+			</PerfectScrollbar>
 		);
 	}
 
