@@ -38,6 +38,7 @@ class InputDropdown extends React.Component {
 	}
 
 	componentDidMount() {
+		this.setDropdownBalances();
 		document.addEventListener('mousedown', this.handleClickOutside);
 		return null;
 	}
