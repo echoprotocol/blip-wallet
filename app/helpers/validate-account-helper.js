@@ -54,7 +54,7 @@ class ValidateAccountHelper {
 			hints.hint2 = 'active';
 		}
 
-		if (!/^[~a-z0-9-]*$/.test(accountName)) {
+		if (!/^[~a-z0-9-.]*$/.test(accountName)) {
 			hints.hint3 = '';
 		} else {
 			hints.hint3 = 'active';
