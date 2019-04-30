@@ -20,10 +20,7 @@ const DEFAULT_FORM_FIELDS = {
 		error: null,
 	}),
 	[FORM_SIGN_UP]: Map({
-		accountName: {
-			value: '',
-			error: null,
-		},
+		accountNameError: '',
 		registrator: {
 			public: true,
 			account: null,

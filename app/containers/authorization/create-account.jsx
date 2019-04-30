@@ -12,7 +12,7 @@ import Immutable from 'immutable';
 import Registrator from './registrator';
 import { FORM_SIGN_UP } from '../../constants/form-constants';
 import {
-	clearForm, setFormValue, toggleLoading, setInValue,
+	toggleLoading, setInValue, setValue,
 } from '../../actions/form-actions';
 import { registerAccount, validateCreateAccount } from '../../actions/account-actions';
 import { loadRegistrators, changeRegistratorAccount } from '../../actions/auth-actions';
@@ -22,14 +22,11 @@ import Avatar from '../../components/avatar';
 
 class CreateAccount extends React.Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
-			hint1: '',
-			hint2: '',
-			hint3: '',
-			hint4: '',
+			...ValidateAccountHelper.accountNameHints(this.props.accountName),
 			timeout: null,
 		};
 	}
@@ -42,12 +39,6 @@ class CreateAccount extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
-		const { clearForm: reset } = this.props;
-
-		reset();
-	}
-
 	onChange(e) {
 		const { timeout } = this.state;
 
@@ -56,12 +47,13 @@ class CreateAccount extends React.Component {
 		}
 
 		const {
-			setFormValue: setForm, validateAccount: validate, toggleLoading: toggle,
+			setError, validateAccount: validate, toggleLoading: toggle,
 		} = this.props;
 
 		const { value } = e.target;
+		const field = e.target.name;
 
-		setForm('accountName', value);
+		this.props.onChange(field, value);
 
 		const hints = ValidateAccountHelper.accountNameHints(value);
 
@@ -76,13 +68,14 @@ class CreateAccount extends React.Component {
 			toggle('loading', false);
 		}
 
+		setError(field, '');
 		setTimeout(() => this.setState(hints), 300);
 	}
 
 	async onCreate() {
-		const { registerAccount: create, goForward } = this.props;
+		const { registerAccount: create, goForward, accountName } = this.props;
 
-		const createData = await create();
+		const createData = await create(accountName);
 
 		if (createData) {
 			goForward(createData.accountName, createData.wif);
@@ -104,7 +97,7 @@ class CreateAccount extends React.Component {
 		} = this.state;
 
 		return [hint1, hint2, hint3, hint4].every((hint) => hint === 'active')
-			&& !form.get('accountName').error
+			&& !form.get('accountNameError')
 			&& !form.get('loading');
 	}
 
@@ -115,7 +108,7 @@ class CreateAccount extends React.Component {
 
 	render() {
 		const {
-			error, isVisible, form, intl, accounts, registrators,
+			error, isVisible, form, intl, accounts, registrators, accountName,
 		} = this.props;
 		const {
 			hint1, hint2, hint3, hint4,
@@ -158,17 +151,18 @@ class CreateAccount extends React.Component {
 									error={error}
 									loading={form.get('loading')}
 									fluid
-									value={form.get('accountName').value}
+									name="accountName"
+									value={accountName}
 									onChange={(e) => this.onChange(e)}
 									onKeyPress={(e) => this.onKeyPress(e)}
 								/>
 								{
-									form.get('accountName').error
+									form.get('accountNameError')
 										&& (
 											<div className="error-message">
 												<FormattedMessage
-													id={`account.create.error.${form.get('accountName').error}`}
-													defaultMessage={form.get('accountName').error}
+													id={`account.create.error.${form.get('accountNameError')}`}
+													defaultMessage={form.get('accountNameError')}
 												/>
 											</div>
 										)
@@ -196,14 +190,14 @@ class CreateAccount extends React.Component {
 						<div className="line-content">
 							<div className={
 								classnames('avatar-box',
-									{ fadeOut: !isSuccess && form.get('accountName').value.length },
-									{ visible: form.get('accountName').error })
+									{ fadeOut: !isSuccess && accountName.length },
+									{ visible: form.get('accountNameError') })
 							}
 							>
 								<Avatar
-									reset={!form.get('accountName').value.length}
+									reset={!accountName.length}
 									loading={form.get('loading')}
-									accountName={isSuccess ? form.get('accountName').value : ''}
+									accountName={isSuccess ? accountName : ''}
 								/>
 								<div className="avatar-desciption">
 									<FormattedMessage id="account.create.avatar.description" />
@@ -243,21 +237,22 @@ class CreateAccount extends React.Component {
 
 }
 CreateAccount.propTypes = {
+	accountName: PropTypes.string.isRequired,
 	error: PropTypes.bool,
 	form: PropTypes.object.isRequired,
 	accounts: PropTypes.object.isRequired,
 	registrators: PropTypes.object.isRequired,
 	intl: intlShape.isRequired,
 	goForward: PropTypes.func.isRequired,
-	setFormValue: PropTypes.func.isRequired,
 	registerAccount: PropTypes.func.isRequired,
 	loadRegistrators: PropTypes.func.isRequired,
 	changeRegistratorAccount: PropTypes.func.isRequired,
 	setInValue: PropTypes.func.isRequired,
-	clearForm: PropTypes.func.isRequired,
 	validateAccount: PropTypes.func.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	toggleLoading: PropTypes.func.isRequired,
+	onChange: PropTypes.func.isRequired,
+	setError: PropTypes.func.isRequired,
 };
 
 CreateAccount.defaultProps = {
@@ -291,9 +286,8 @@ export default injectIntl(connect(
 		registrators: positiveBalanceAccounts(state),
 	}),
 	(dispatch) => ({
-		setFormValue: (field, value) => dispatch(setFormValue(FORM_SIGN_UP, field, value)),
-		registerAccount: () => dispatch(registerAccount()),
-		clearForm: () => dispatch(clearForm(FORM_SIGN_UP)),
+		setError: (field, value) => dispatch(setValue(FORM_SIGN_UP, `${field}Error`, value)),
+		registerAccount: (accountName) => dispatch(registerAccount(accountName)),
 		validateAccount: (form, name) => dispatch(validateCreateAccount(form, name)),
 		toggleLoading: (field, value) => dispatch(toggleLoading(FORM_SIGN_UP, field, value)),
 		loadRegistrators: () => dispatch(loadRegistrators()),

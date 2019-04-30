@@ -26,13 +26,25 @@ class Authorization extends React.Component {
 		this.state = {
 			activeIndex: this.props.activeTabIndex,
 
+			createAccount: {
+				accountName: '',
+			},
+			importAccount: {
+				wif: '',
+				accountName: '',
+			},
 			wif: '',
 			accountName: '',
 		};
+		this.onChangeFormData = this.onChangeFormData.bind(this);
 	}
 
 	componentWillUnmount() {
 		this.props.startAnimation(AUTHORIZATION, true);
+	}
+
+	onChangeFormData(form, field, value) {
+		this.setState((prevState) => ({ [form]: { ...prevState[form], [field]: value } }));
 	}
 
 	async setActiveTab(e, active) {
@@ -123,9 +135,9 @@ class Authorization extends React.Component {
 	}
 
 	renderAuth() {
-
-		const { activeIndex } = this.state;
+		const { activeIndex, importAccount, createAccount } = this.state;
 		const { isVisible } = this.props;
+
 		return (
 			<div className="page">
 				<div className="logo-wrap">
@@ -143,12 +155,17 @@ class Authorization extends React.Component {
 								activeIndex
 									? (
 										<ImportAccount
+											accountName={importAccount.accountName}
+											wif={importAccount.wif}
+											onChange={(field, value) => this.onChangeFormData('importAccount', field, value)}
 											goForward={(accountName, wif) => this.goForward(accountName, wif)}
 											isVisible={isVisible}
 										/>
 									)
 									: (
 										<CreateAccount
+											accountName={createAccount.accountName}
+											onChange={(field, value) => this.onChangeFormData('createAccount', field, value)}
 											goForward={(accountName, wif) => this.goForward(accountName, wif)}
 											isVisible={isVisible}
 										/>

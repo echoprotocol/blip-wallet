@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { importAccount } from '../../actions/account-actions';
-import { clearForm, setValue } from '../../actions/form-actions';
+import { setValue } from '../../actions/form-actions';
 import { FORM_SIGN_IN } from '../../constants/form-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 
@@ -16,14 +16,6 @@ class ImportAccount extends React.Component {
 		super(props);
 
 		this.state = {
-			wif: {
-				value: '',
-				error: '',
-			},
-			accountName: {
-				value: '',
-				error: '',
-			},
 			showPas: false,
 		};
 	}
@@ -33,30 +25,26 @@ class ImportAccount extends React.Component {
 		this.nameInput.focus();
 	}
 
-	componentWillUnmount() {
-		const { clearForm: reset } = this.props;
-
-		reset();
-	}
-
 	onChange(e) {
 		const { setError } = this.props;
 
 		const { value } = e.target;
 		const field = e.target.name;
 
-		this.setState({ [field]: { value, error: '' } });
+		this.props.onChange(field, value);
+
 		setError(field, '');
 	}
 
 	async onImport() {
-		const { importAccount: importAcc, goForward } = this.props;
-		const { accountName, wif } = this.state;
+		const {
+			importAccount: importAcc, goForward, accountName, wif,
+		} = this.props;
 
-		const isSuccess = await importAcc(accountName.value, wif.value);
+		const isSuccess = await importAcc(accountName, wif);
 
 		if (isSuccess) {
-			goForward(accountName.value);
+			goForward(accountName);
 		}
 	}
 
@@ -75,8 +63,10 @@ class ImportAccount extends React.Component {
 	}
 
 	render() {
-		const { isVisible, signInForm, intl } = this.props;
-		const { wif, accountName, showPas } = this.state;
+		const {
+			isVisible, signInForm, intl, wif, accountName,
+		} = this.props;
+		const { showPas } = this.state;
 
 		const placeholderName = intl.formatMessage({ id: 'account.import.name.placeholder' });
 		const placeholderWIF = intl.formatMessage({ id: 'account.import.wif.placeholder' });
@@ -103,7 +93,7 @@ class ImportAccount extends React.Component {
 									loading={false}
 									fluid
 									name="accountName"
-									value={accountName.value}
+									value={accountName}
 									onChange={(e) => this.onChange(e)}
 									onKeyPress={(e) => this.onKeyPress(e)}
 								/>
@@ -141,7 +131,7 @@ class ImportAccount extends React.Component {
 									loading={false}
 									fluid
 									name="wif"
-									value={wif.value}
+									value={wif}
 									onChange={(e) => this.onChange(e)}
 									type={showPas ? 'text' : 'password'}
 									onKeyPress={(e) => this.onKeyPress(e)}
@@ -208,13 +198,15 @@ class ImportAccount extends React.Component {
 
 }
 ImportAccount.propTypes = {
+	accountName: PropTypes.string.isRequired,
+	wif: PropTypes.string.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	signInForm: PropTypes.object.isRequired,
 	intl: intlShape.isRequired,
 	goForward: PropTypes.func.isRequired,
 	importAccount: PropTypes.func.isRequired,
 	setError: PropTypes.func.isRequired,
-	clearForm: PropTypes.func.isRequired,
+	onChange: PropTypes.func.isRequired,
 };
 
 export default injectIntl(connect(
@@ -224,6 +216,5 @@ export default injectIntl(connect(
 	(dispatch) => ({
 		importAccount: (accountName, wif) => dispatch(importAccount(accountName, wif)),
 		setError: (field, value) => dispatch(setValue(FORM_SIGN_IN, `${field}Error`, value)),
-		clearForm: () => dispatch(clearForm(FORM_SIGN_IN)),
 	}),
 )(ImportAccount));

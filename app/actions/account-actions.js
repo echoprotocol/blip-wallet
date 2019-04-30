@@ -37,14 +37,14 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 	const error = ValidateAccountHelper.validateAccountName(accountName);
 
 	if (error) {
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', error));
+		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', error));
 		dispatch(toggleLoading(form, false));
 
 		return false;
 	}
 
 	if (!Services.getEcho().isConnected) {
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Connection error'));
+		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Connection error'));
 		dispatch(toggleLoading(form, false));
 
 		return false;
@@ -54,11 +54,11 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 		const result = await Services.getEcho().api.lookupAccounts(accountName);
 
 		if (result.find((i) => i[0] === accountName)) {
-			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exists'));
+			dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Account already exists'));
 		}
 	} catch (err) {
 
-		dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Account already exists'));
+		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Account already exists'));
 
 		console.warn(err.message || err);
 	} finally {
@@ -96,15 +96,14 @@ const addAccount = (id, name, selected = true, primary) => async (dispatch, getS
  *
  * Account registration
  */
-export const registerAccount = () => async (dispatch, getState) => {
+export const registerAccount = (accountName) => async (dispatch, getState) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.create.loading' }));
 	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
 	const promiseRegisterAccount = new Promise(async (resolve) => {
-		const accountName = getState().form.getIn([FORM_SIGN_UP, 'accountName']);
 		const registrator = getState().form.getIn([FORM_SIGN_UP, 'registrator']);
 
 		if (!Services.getEcho().isConnected) {
-			dispatch(setFormError(FORM_SIGN_UP, 'accountName', 'Connection error'));
+			dispatch(setFormError(FORM_SIGN_UP, 'accountNameError', 'Connection error'));
 			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 
 			return resolve(false);
@@ -117,7 +116,7 @@ export const registerAccount = () => async (dispatch, getState) => {
 		const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
 		if (registrator.public) {
-			await Services.getEcho().api.registerAccount(accountName.value, publicKey, publicKey, publicKey, echoRandKey);
+			await Services.getEcho().api.registerAccount(accountName, publicKey, publicKey, publicKey, echoRandKey);
 		} else {
 			const account = await Services.getEcho().api.getAccountByName(registrator.account);
 
@@ -126,7 +125,7 @@ export const registerAccount = () => async (dispatch, getState) => {
 				registrar: account.id,
 				referrer: account.id,
 				referrer_percent: 0,
-				name: accountName.value,
+				name: accountName,
 				owner: {
 					weight_threshold: 1,
 					account_auths: [],
@@ -171,16 +170,16 @@ export const registerAccount = () => async (dispatch, getState) => {
 			await tx.broadcast();
 		}
 
-		const accountData = await Services.getEcho().api.getAccountByName(accountName.value);
+		const accountData = await Services.getEcho().api.getAccountByName(accountName);
 
 		const userStorage = Services.getUserStorage();
 		const accounts = await userStorage.getAllAccounts();
 
-		await dispatch(addAccount(accountData.id, accountName.value, true, accounts.length === 0));
-		await userStorage.addAccount(Account.create(accountData.id, accountName.value, true, accounts.length === 0));
+		await dispatch(addAccount(accountData.id, accountName, true, accounts.length === 0));
+		await userStorage.addAccount(Account.create(accountData.id, accountName, true, accounts.length === 0));
 		await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
 
-		return resolve({ wif, accountName: accountName.value });
+		return resolve({ wif, accountName });
 	});
 
 
