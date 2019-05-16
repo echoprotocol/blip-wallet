@@ -4,3 +4,5 @@ export const RESTART_PAUSE_MS = 5000;
 export const DIFF_TIME_SYNC_MS = 30000;
 export const SYNC_MONITOR_MS = 1000;
 export const RESTART_TIME_CHECKING_NODE_MS = 5000;
+export const CHAIN_MIN_RANGE_PORT = 3000;
+export const CHAIN_MAX_RANGE_PORT = 5000;

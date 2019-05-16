@@ -23,8 +23,22 @@ import rimraf from 'rimraf';
 import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
-import { DATA_DIR, SEED_NODE, RESTART_PAUSE_MS } from './constants/chain-constants';
+
+import {
+	DATA_DIR,
+	SEED_NODE,
+	RESTART_PAUSE_MS,
+	CHAIN_MIN_RANGE_PORT,
+	CHAIN_MAX_RANGE_PORT,
+} from './constants/chain-constants';
 import { NOTIFICATION_CONSENSUS_TITLE, NOTIFICATION_CONSENSUS_MESSAGE } from './constants/notification-constants';
+import {
+	APP_WINDOW_HEIGHT,
+	APP_WINDOW_WIDTH,
+	APP_WINDOW_MIN_HEIGHT,
+	APP_WINDOW_MIN_WIDTH,
+	TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS,
+} from './constants/global-constants';
 
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
@@ -96,7 +110,7 @@ app.on('before-quit', (event) => {
 
 		echoNode.stop();
 
-		setTimeout(() => { process.exit(0); }, 12000);
+		setTimeout(() => { process.exit(0); }, TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS);
 
 	} else {
 		process.exit(0);
@@ -151,10 +165,10 @@ app.on('ready', async () => {
 
 	mainWindow = new BrowserWindow({
 		show: false,
-		width: 1024,
-		height: 728,
-		minWidth: 1024,
-		minHeight: 728,
+		width: APP_WINDOW_WIDTH,
+		height: APP_WINDOW_HEIGHT,
+		minWidth: APP_WINDOW_MIN_WIDTH,
+		minHeight: APP_WINDOW_MIN_HEIGHT,
 		frame: false,
 	});
 
@@ -180,7 +194,7 @@ app.on('ready', async () => {
 			message: NOTIFICATION_CONSENSUS_MESSAGE,
 		});
 
-		const port = await getPort({ port: getPort.makeRange(3000, 5000) });
+		const port = await getPort({ port: getPort.makeRange(CHAIN_MIN_RANGE_PORT, CHAIN_MAX_RANGE_PORT) });
 
 		const countAttempts = {};
 		let startingError = false;
@@ -221,11 +235,10 @@ app.on('ready', async () => {
 
 		const startNode = (processId, params, accounts) => {
 
-			console.warn('startingError', startingError);
-
 			clearTimeout(restartTimer);
 
 			if (startingError) {
+				console.warn('startingError', startingError);
 				return false;
 			}
 
@@ -259,7 +272,7 @@ app.on('ready', async () => {
 		startNode(processCounterId += 1, options, []);
 
 		ipcMain.on('startNode', async (event, args) => {
-			console.log('STARTNODE ARGUMENTS', args);
+			console.info('START NODE ARGUMENTS', args);
 			tryStart(processCounterId += 1, options, args && args.accounts ? args.accounts : []);
 		});
 
