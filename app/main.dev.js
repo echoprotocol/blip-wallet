@@ -24,6 +24,7 @@ import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
 import { DATA_DIR, SEED_NODE, RESTART_PAUSE_MS } from './constants/chain-constants';
+import { NOTIFICATION_CONSENSUS_TITLE, NOTIFICATION_CONSENSUS_MESSAGE } from './constants/notification-constants';
 
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
@@ -175,8 +176,8 @@ app.on('ready', async () => {
 		}
 
 		notifier.notify({
-			title: 'Blip Wallet',
-			message: 'Please ... TODO:: ',
+			title: NOTIFICATION_CONSENSUS_TITLE,
+			message: NOTIFICATION_CONSENSUS_MESSAGE,
 		});
 
 		const port = await getPort({ port: getPort.makeRange(3000, 5000) });
