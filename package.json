@@ -59,6 +59,22 @@
   "build": {
     "productName": "BlipWallet",
     "appId": "org.develar.BlipWallet",
+    "extraFiles": [
+      {
+        "from": "resources/${os}/bin",
+        "to": "resources/bin",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "resources/icons",
+        "to": "resources/icons",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "files": [
       "app/dist/",
       "app/app.html",
@@ -213,7 +229,7 @@
     "prettier": "^1.15.3",
     "react-test-renderer": "^16.7.0",
     "redux-logger": "^3.0.6",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.6.3",
     "sass-loader": "^7.1.0",
     "sinon": "^7.2.2",
     "spectron": "^5.0.0",
@@ -237,24 +253,28 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.6.3",
+    "@hapi/sntp": "^3.1.1",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
     "apollo-link": "^1.2.11",
     "apollo-link-http": "^1.5.14",
     "apollo-link-ws": "^1.0.17",
     "apollo-utilities": "^1.2.1",
+    "app-root-dir": "^1.0.2",
     "bignumber.js": "^8.1.1",
     "bs58": "^4.0.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^5.0.1",
     "crypto-random-string": "^1.0.0",
     "devtron": "^1.4.0",
-    "echojs-lib": "1.0.5",
+    "echojs-lib": "1.1.3",
     "echojs-ping": "^0.1.5",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
+    "electron-stream": "^7.0.0",
     "electron-updater": "^4.0.6",
     "focus-trap-react": "^6.0.0",
+    "get-port": "^5.0.0",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "history": "^4.7.2",
@@ -264,6 +284,7 @@
     "js-sha3": "^0.8.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
+    "node-notifier": "^5.4.0",
     "prop-types": "^15.7.2",
     "react": "^16.7.0",
     "react-animated-css": "1.0.4",

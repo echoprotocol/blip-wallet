@@ -150,7 +150,8 @@
         },
         "transaction": {
             "title": "Последняя транзакция"
-        }
+        },
+        "syncing_with_network": "Синхронизация с сетью:"
     },
 
     "history": {

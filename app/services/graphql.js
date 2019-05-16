@@ -35,4 +35,15 @@ const link = split(
 	httpLink,
 );
 
-export default new ApolloClient({ cache, link });
+const defaultOptions = {
+	watchQuery: {
+		fetchPolicy: 'network-only',
+		errorPolicy: 'ignore',
+	},
+	query: {
+		fetchPolicy: 'network-only',
+		errorPolicy: 'all',
+	},
+};
+
+export default new ApolloClient({ cache, link, defaultOptions });

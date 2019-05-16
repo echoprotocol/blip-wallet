@@ -41,7 +41,11 @@ export const initAccounts = () => async (dispatch, getState) => {
 		});
 	});
 
-	await Services.getEcho().api.getFullAccounts(accounts.map(({ id }) => id));
+	try {
+		await Services.getEcho().api.getFullAccounts(accounts.map(({ id }) => id));
+	} catch (e) {
+		console.log('initAccounts error', e);
+	}
 
 	dispatch(setValue('accounts', accountsStore));
 	await dispatch(subscribeTokens());
@@ -54,9 +58,9 @@ export const initAccounts = () => async (dispatch, getState) => {
  *
  * 	@param {Object} store - redux store
  */
-export const initApp = (store) => async (dispatch) => {
+export const initApp = (store) => async (dispatch, getState) => {
 	const listeners = new Listeners();
-	listeners.initListeners(dispatch);
+	listeners.initListeners(dispatch, getState);
 
 	dispatch(setValue('loading', 'global.loading'));
 

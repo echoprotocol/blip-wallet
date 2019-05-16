@@ -1,8 +1,8 @@
 import { PrivateKey, OPERATIONS_IDS, CACHE_MAPS } from 'echojs-lib';
-import bs58 from 'bs58';
 import BN from 'bignumber.js';
 
 import Services from '../services';
+
 import CryptoService from '../services/crypto-service';
 import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
 import {
@@ -11,6 +11,7 @@ import {
 	TIME_LOADING,
 	GLOBAL_ID_1,
 	EXPIRATION_INFELICITY,
+	DEFAULT_MEMO_KEY,
 } from '../constants/global-constants';
 import { toggleLoading, setValue } from './form-actions';
 import { setValue as setGlobal, setValue as setValueGlobal } from './global-actions';
@@ -24,6 +25,36 @@ import { signTransaction } from './sign-actions';
 import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
 import { subscribeTokens } from './balance-actions';
+
+
+const setAccounts = () => (async () => {
+
+	const userStorage = Services.getUserStorage();
+	const accounts = await userStorage.getAllAccounts();
+
+	const keyPromises = accounts.map((account) => new Promise(async (resolve) => {
+
+		const keys = await userStorage.getAllWIFKeysForAccount(account.id);
+
+		return resolve(keys.map((key) => ({
+			id: account.id,
+			key: PrivateKey.fromWif(key.wif).toPrivateKeyString(),
+		})));
+
+	}));
+
+	const accountsKeysResults = await Promise.all(keyPromises);
+	const accountsKeys = [];
+
+	accountsKeysResults.forEach((accountKeysArr) => {
+		accountKeysArr.forEach((accountKey) => {
+			accountsKeys.push(accountKey);
+		});
+	});
+
+	Services.getEcho().setAccounts(accountsKeys);
+
+});
 
 /**
  * @method validateCreateAccount
@@ -117,30 +148,23 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 
 		try {
 			if (registrator.public) {
-				await Services.getEcho().api.registerAccount(accountName, publicKey, publicKey, publicKey, echoRandKey);
+				await Services.getEcho().remote.api.registerAccount(accountName, publicKey, publicKey, DEFAULT_MEMO_KEY, echoRandKey, () => {});
 			} else {
 				const account = await Services.getEcho().api.getAccountByName(registrator.account);
 
 				const options = {
-					ed_key: bs58.decode(echoRandKey.slice(3)).toString('hex'),
+					ed_key: publicKey,
 					registrar: account.id,
 					referrer: account.id,
 					referrer_percent: 0,
 					name: accountName,
-					owner: {
-						weight_threshold: 1,
-						account_auths: [],
-						key_auths: [[publicKey, 1]],
-						address_auths: [],
-					},
 					active: {
 						weight_threshold: 1,
 						account_auths: [],
 						key_auths: [[publicKey, 1]],
-						address_auths: [],
 					},
 					options: {
-						memo_key: publicKey,
+						memo_key: DEFAULT_MEMO_KEY,
 						voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
 						delegating_account: account.id,
 						num_witness: 0,
@@ -179,18 +203,19 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 
 			const userStorage = Services.getUserStorage();
 			const accounts = await userStorage.getAllAccounts();
-
 			await dispatch(addAccount(accountData.id, accountName, true, accounts.length === 0));
 			await userStorage.addAccount(Account.create(accountData.id, accountName, true, accounts.length === 0));
 			await userStorage.addKey(Key.create(publicKey, wif, accountData.id));
+
+			dispatch(setAccounts());
 
 			return resolve({ wif, accountName });
 
 		} catch (e) {
 			return reject(e);
 		}
-	});
 
+	});
 
 	try {
 		const resultRegisterAccount = await Promise.all([promiseRegisterAccount, promiseLoader]);
@@ -296,6 +321,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			await dispatch(addAccount(accountId, accountName, true, accounts.length === 0));
 			await userStorage.addAccount(Account.create(accountId, accountName, true, accounts.length === 0));
 			await userStorage.addKey(Key.create(publicKey, wif, accountId));
+
 		} else {
 			const active = CryptoService.getPublicKey(accountName, wif);
 			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
@@ -328,6 +354,8 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			await userStorage.addAccount(Account.create(accountId, accountName));
 			await userStorage.addKey(Key.create(hasKey[0], wif, accountId));
 		}
+
+		dispatch(setAccounts());
 
 		return resolve(true);
 	});

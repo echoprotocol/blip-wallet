@@ -20,6 +20,7 @@ export default injectIntl(connect(
 		transactions: state.wallet.getIn(['history', 'transactions']),
 		filter: state.wallet.getIn(['history', 'filter']),
 		total: state.wallet.getIn(['history', 'total']),
+		localNodePercent: state.global.get('localNodePercent'),
 	}),
 	(dispatch) => ({
 		loadTransactions: () => dispatch(loadTransactions()),

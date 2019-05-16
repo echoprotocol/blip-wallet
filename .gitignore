@@ -51,3 +51,7 @@ main.js.map
 npm-debug.log.*
 package-lock.json
 
+resources/mac/bin/*
+resources/linux/bin/*
+data
+

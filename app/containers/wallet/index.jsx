@@ -60,6 +60,7 @@ export default connect(
 		hiddenAssets: state.wallet.get('hiddenAssets').get(Services.getUserStorage().getNetworkId()) || new Set(),
 		language: state.global.get('language'),
 		currentNode: state.global.get('currentNode'),
+		localNodePercent: state.global.get('localNodePercent'),
 		balances: balanceSelector(state),
 		transaction: state.wallet.get('transaction'),
 		histories: historySelector(state),

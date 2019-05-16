@@ -132,7 +132,8 @@
 		},
 		"transaction": {
 			"title": "last transaction"
-		}
+		},
+		"syncing_with_network": "Syncing with network:"
 	},
 
 	"history": {

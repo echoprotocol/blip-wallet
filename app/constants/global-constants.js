@@ -12,10 +12,10 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
 
 export const NETWORKS = {
-	testnet: {
+	devnet: {
 		remote: {
 			name: 'Remote node',
-			url: 'wss://testnet.echo-dev.io/ws',
+			url: 'wss://devnet.echo-dev.io/ws',
 		},
 		local: {
 			name: 'Local node',
@@ -25,7 +25,7 @@ export const NETWORKS = {
 };
 
 export const EXPLORER_URL = {
-	testnet: 'https://explorer.echo-dev.io',
+	devnet: 'https://656-echo-explorer.pixelplex-test.by',
 };
 
 export const ECHO_ASSET_ID = '1.3.0';
@@ -80,8 +80,5 @@ export const KEY_CODE_TAB = 9;
 export const KEY_CODE_ARROW_UP = 38;
 export const KEY_CODE_ARROW_DOWN = 40;
 
-export const MEMO_FEE_KEYS = {
-	WIF: '5KGG3tFb5F4h3aiUSKNnKeDcNbL5y1ZVXQXVqpWVMYhW82zBrNb',
-	PUBLIC_MEMO_FROM: 'ECHO7WBUN97NJfSXbDVDqLDQDKu8FasTb7YBdpbWoJF3RYo6qYY6aX',
-	PUBLIC_MEMO_TO: 'ECHO7WBUN97NJfSXbDVDqLDQDKu8FasTb7YBdpbWoJF3RYo6qYY6aX',
-};
+export const DEFAULT_MEMO_KEY = 'ECHO1111111111111111111111111111111114T1Anm';
+export const TEMPLATE_ECHO_KEY = 'DET5Ho3JQJf8WUnLBtxZhrfL8bJc4uCVda6Ku5SUeAbcNAB';

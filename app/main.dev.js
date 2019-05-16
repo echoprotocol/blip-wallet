@@ -11,11 +11,21 @@
  * @flow
  */
 import {
-	app, BrowserWindow, shell, ipcMain,
+	app, BrowserWindow, shell, ipcMain, Tray, Menu,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import getPort from 'get-port';
 import log from 'electron-log';
+import appRootDir from 'app-root-dir';
+import notifier from 'node-notifier';
+import { join as joinPath, dirname } from 'path';
+import rimraf from 'rimraf';
+import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
+import EchoNode from './main/echo-node';
+import { DATA_DIR, SEED_NODE, RESTART_PAUSE_MS } from './constants/chain-constants';
+
+app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
 export default class AppUpdater {
 
@@ -54,7 +64,6 @@ const installExtensions = async () => {
 /**
  * Add event listeners...
  */
-
 app.on('window-all-closed', () => {
 	// Respect the OSX convention of having the application in memory even
 	// after all windows have been closed
@@ -63,7 +72,75 @@ app.on('window-all-closed', () => {
 	}
 });
 
+const echoNode = new EchoNode();
+let restartTimer = null;
+
+app.on('before-quit', (event) => {
+
+	if (restartTimer) {
+		clearTimeout(restartTimer);
+		restartTimer = null;
+	}
+
+	console.log('Caught before-quit. Exiting in 5 seconds.');
+
+	event.preventDefault();
+
+	if (echoNode.child) {
+		echoNode.child.then(() => {
+			process.exit(0);
+		}).catch(() => {
+			process.exit(0);
+		});
+
+		echoNode.stop();
+
+		setTimeout(() => { process.exit(0); }, 12000);
+
+	} else {
+		process.exit(0);
+	}
+
+});
+
+let tray = null;
+
 app.on('ready', async () => {
+
+	const timeOffset = new TimeOffset();
+
+	ipcMain.on('getTimeOffset', async (event) => {
+		try {
+			const offset = await timeOffset.getOffset();
+			event.sender.send('getTimeOffset', { result: offset });
+		} catch (e) {
+			event.sender.send('getTimeOffset', { error: e });
+		}
+	});
+
+	const execPath = process.env.NODE_ENV === 'production' ? joinPath(dirname(appRootDir.get()), 'icons') : joinPath(appRootDir.get(), 'resources', 'icons');
+
+	tray = new Tray(`${execPath}/128x128.png`);
+
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: 'Show App',
+			click: () => {
+				mainWindow.show();
+			},
+		},
+		{
+			label: 'Quit',
+			click: () => {
+				app.isQuiting = true;
+				app.quit();
+			},
+		},
+	]);
+
+	tray.setToolTip('This is my application.');
+	tray.setContextMenu(contextMenu);
+
 	if (
 		process.env.NODE_ENV === 'development'
 		|| process.env.DEBUG_PROD === 'true'
@@ -75,6 +152,8 @@ app.on('ready', async () => {
 		show: false,
 		width: 1024,
 		height: 728,
+		minWidth: 1024,
+		minHeight: 728,
 		frame: false,
 	});
 
@@ -82,16 +161,109 @@ app.on('ready', async () => {
 
 	// @TODO: Use 'ready-to-show' event
 	//        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-	mainWindow.webContents.on('did-finish-load', () => {
+	mainWindow.webContents.on('did-finish-load', async () => {
+
 		if (!mainWindow) {
 			throw new Error('"mainWindow" is not defined');
 		}
+
 		if (process.env.START_MINIMIZED) {
 			mainWindow.minimize();
 		} else {
 			mainWindow.show();
 			mainWindow.focus();
 		}
+
+		notifier.notify({
+			title: 'Blip Wallet',
+			message: 'Please ... TODO:: ',
+		});
+
+		const port = await getPort({ port: getPort.makeRange(3000, 5000) });
+
+		const countAttempts = {};
+		let startingError = false;
+		let processCounterId = 1;
+		const options = {
+			echorand: null,
+			'data-dir': DATA_DIR,
+			'rpc-endpoint': `127.0.0.1:${port}`,
+			'seed-node': SEED_NODE,
+		};
+
+		const tryStart = (processId, params, accounts) => {
+
+			if (processId < processCounterId) {
+				return false;
+			}
+
+			clearTimeout(restartTimer);
+
+			echoNode.stop().then(() => {
+				restartTimer = setTimeout(() => {
+					/* eslint-disable no-use-before-define */
+					startNode(processId, params, accounts);
+				}, RESTART_PAUSE_MS);
+			});
+
+			return true;
+
+		};
+
+		const incrementCounterId = (processId) => {
+			if (!countAttempts[processId]) {
+				countAttempts[processId] = 0;
+			}
+
+			countAttempts[processId] += 1;
+		};
+
+		const startNode = (processId, params, accounts) => {
+
+			console.warn('startingError', startingError);
+
+			clearTimeout(restartTimer);
+
+			if (startingError) {
+				return false;
+			}
+
+			try {
+				incrementCounterId(processId);
+				echoNode.start(params, accounts).then((data) => {
+					console.log('[NODE] child then', data);
+				}).catch((err) => {
+					console.log('[NODE] child err', err);
+					if (countAttempts[processId] === 1) {
+						console.info('TRY TO START');
+						tryStart(processId, params, accounts);
+					} else if (countAttempts[processId] === 2) {
+						rimraf(params['data-dir'], () => {
+							console.info('TRY TO REMOVE FOLDER');
+							tryStart(processId, params, accounts);
+						});
+					} else {
+						startingError = true;
+					}
+
+				});
+
+			} catch (e) {
+				console.log('[NODE] error:', e);
+			}
+
+			return true;
+		};
+
+		startNode(processCounterId += 1, options, []);
+
+		ipcMain.on('startNode', async (event, args) => {
+			console.log('STARTNODE ARGUMENTS', args);
+			tryStart(processCounterId += 1, options, args && args.accounts ? args.accounts : []);
+		});
+
+		mainWindow.webContents.send('started', port);
+
 	});
 
 	mainWindow.on('closed', () => {
@@ -111,10 +283,28 @@ app.on('ready', async () => {
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
 	new AppUpdater();
+
 });
 
-ipcMain.on('close-app', () => {
-	app.quit();
+
+if (process.env.DEBUG_PROD) {
+	const fs = require('fs');
+	const access = fs.createWriteStream('app.log');
+	/* eslint-disable no-multi-assign */
+	process.stdout.write = process.stderr.write = access.write.bind(access);
+	process.on('uncaughtException', (err) => {
+		console.error((err && err.stack) ? err.stack : err);
+	});
+}
+
+ipcMain.on('close-app', (event) => {
+	if (!app.isQuiting) {
+		event.preventDefault();
+		mainWindow.hide();
+	}
+
+	return false;
+	// app.quit();
 });
 
 ipcMain.on('zoom-app', () => {
@@ -125,6 +315,7 @@ ipcMain.on('zoom-app', () => {
 	}
 });
 
-ipcMain.on('minimize-app', () => {
-	mainWindow.minimize();
+ipcMain.on('minimize-app', (event) => {
+	event.preventDefault();
+	mainWindow.hide();
 });

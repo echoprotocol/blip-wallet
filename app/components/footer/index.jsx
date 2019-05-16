@@ -33,10 +33,9 @@ class Footer extends React.Component {
 					</div>
 					<div className="footer-info">
 						<div className="mode"><FormattedMessage id={`wallet.${FormatHelper.capitalizeFirstLetter(currentNode)} node`} /></div>
-						{/* <div className="sync"> */}
-						{/*	Syncing with network: */}
-						{/*	<span className="percent">100%</span> */}
-						{/* </div> */}
+						<div className="sync">
+							<FormattedMessage id="wallet.syncing_with_network" /> <span className="percent"> { this.props.localNodePercent ? this.props.localNodePercent.toFixed(2) : 0 }%</span>
+						</div>
 					</div>
 				</div>
 				<div className="loading-status" />
@@ -49,6 +48,7 @@ class Footer extends React.Component {
 Footer.propTypes = {
 	history: PropTypes.object.isRequired,
 	currentNode: PropTypes.string.isRequired,
+	localNodePercent: PropTypes.number.isRequired,
 };
 
 export default Footer;

@@ -79,6 +79,7 @@ export const clearIn = (field, params) => (dispatch) => {
  *  @params {String[]} [accounts]
  */
 export const formatTransaction = async (type, operation, blockNumber, resultId, accounts = []) => {
+
 	if (!operation.size || !blockNumber) {
 		return new Map({});
 	}

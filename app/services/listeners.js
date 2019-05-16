@@ -9,9 +9,20 @@ class Listeners {
 		this.tokenSubscribe = Services.getTokenSubscribe();
 	}
 
-	initListeners(dispatch) {
-		this.setIsConnected = (status) => dispatch(dispatch(GlobalReducer.actions.set({ field: 'isConnected', value: status })));
-		this.setCurrentNode = (value) => dispatch(dispatch(GlobalReducer.actions.set({ field: 'currentNode', value })));
+
+	initListeners(dispatch, getState) {
+		this.setIsConnected = (status) => dispatch(GlobalReducer.actions.set({ field: 'isConnected', value: status }));
+		this.setCurrentNode = (value) => dispatch(GlobalReducer.actions.set({ field: 'currentNode', value }));
+		this.setLocalNodePercent = (value) => {
+
+			const state = getState();
+
+			if (state.global.get('localNodePercent') !== value) {
+				dispatch(GlobalReducer.actions.set({ field: 'localNodePercent', value }));
+			}
+
+		};
+
 		this.subscribeTokens = (accounts, source) => this.tokenSubscribe.subscribe(accounts, source);
 		this.setTokens = (tokens) => dispatch(WalletReducer.actions.set({ field: 'tokens', value: tokens }));
 
@@ -19,6 +30,8 @@ class Listeners {
 		this.emitter.on('setCurrentNode', this.setCurrentNode);
 		this.emitter.on('subscribeTokens', this.subscribeTokens);
 		this.emitter.on('setTokens', this.setTokens);
+		this.emitter.on('setLocalNodePercent', this.setLocalNodePercent);
+
 	}
 
 }

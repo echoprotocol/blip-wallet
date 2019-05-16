@@ -1,6 +1,6 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
 
-export const OPERATION_ID_PREFIX = '1.11.';
+export const OPERATION_ID_PREFIX = '1.10.';
 export const ASSET_TYPE = 'ASSET';
 export const TOKEN_TYPE = 'TOKEN';
 
@@ -417,38 +417,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	witness_create: {
-		value: OPERATIONS_IDS.WITNESS_CREATE,
-		name: 'operations.witness_create.title',
-		options: {
-			from: {
-				field: 'witness_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.witness_create.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	witness_update: {
-		value: OPERATIONS_IDS.WITNESS_UPDATE,
-		name: 'operations.witness_update.title',
-		options: {
-			from: {
-				field: 'witness_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.witness_update.from',
-			},
-			subject: {
-				field: 'witness',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.witness_update.subject',
-			},
-			amount: null,
-			asset: null,
-		},
-	},
 	proposal_create: {
 		value: OPERATIONS_IDS.PROPOSAL_CREATE,
 		name: 'operations.proposal_create.title',
@@ -639,24 +607,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	worker_create: {
-		value: OPERATIONS_IDS.WORKER_CREATE,
-		name: 'operations.worker_create.title',
-		options: {
-			from: {
-				field: 'owner',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.worker_create.from',
-			},
-			subject: {
-				field: 'name',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.worker_create.subject',
-			},
-			amount: null,
-			asset: null,
-		},
-	},
 	custom: {
 		value: OPERATIONS_IDS.CUSTOM,
 		name: 'operations.custom.title',
@@ -723,56 +673,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	transfer_to_blind: {
-		value: OPERATIONS_IDS.TRANSFER_TO_BLIND,
-		name: 'operations.transfer_to_blind.title',
-		options: {
-			from: {
-				field: 'from',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.transfer_to_blind.from',
-			},
-			subject: null,
-			amount: {
-				field: 'amount.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	blind_transfer: {
-		value: OPERATIONS_IDS.BLIND_TRANSFER,
-		name: 'operations.blind_transfer.title',
-		options: {
-			from: null,
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	transfer_from_blind: {
-		value: OPERATIONS_IDS.TRANSFER_FROM_BLIND,
-		name: 'operations.transfer_from_blind.title',
-		options: {
-			from: null,
-			subject: {
-				field: 'to',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.transfer_from_blind.subject',
-			},
-			amount: {
-				field: 'amount.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
 	asset_settle_cancel: {
 		value: OPERATIONS_IDS.ASSET_SETTLE_CANCEL,
 		name: 'operations.asset_settle_cancel.title',
@@ -813,9 +713,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	// FBA_DISTRIBUTE = 44,
-	// BID_COLLATERAL = 45,
-	// EXECUTE_BID = 46,
 	contract_create: {
 		value: OPERATIONS_IDS.CREATE_CONTRACT,
 		name: 'operations.contract_create.title',

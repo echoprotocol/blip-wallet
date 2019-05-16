@@ -1,6 +1,6 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
 
-import { ECHO_PROXY_TO_SELF_ACCOUNT } from '../constants/global-constants';
+import { ECHO_PROXY_TO_SELF_ACCOUNT, DEFAULT_MEMO_KEY, TEMPLATE_ECHO_KEY } from '../constants/global-constants';
 import { FORM_SIGN_UP } from '../constants/form-constants';
 import { getOperationFee } from './transaction-actions';
 import { setInValue } from './form-actions';
@@ -36,28 +36,20 @@ export const changeActiveTabIndex = (value) => (dispatch) => {
  */
 export const getAccountCreateFee = (accountId, name = '') => {
 	const options = {
-		ed_key: 'a896c9386aaa87026b3ee48d4df90badbc2f246374077722c519687af083c3a3',
+		ed_key: TEMPLATE_ECHO_KEY,
 		registrar: accountId,
 		referrer: accountId,
 		referrer_percent: 0,
 		name,
-		owner: {
-			weight_threshold: 1,
-			account_auths: [],
-			key_auths: [['ECHO6TabpHPGAKwgkDASeCC5ya4pguTEBah7rEVjfnAsNAzcqtUDD1', 1]],
-			address_auths: [],
-		},
 		active: {
 			weight_threshold: 1,
 			account_auths: [],
-			key_auths: [['ECHO6TabpHPGAKwgkDASeCC5ya4pguTEBah7rEVjfnAsNAzcqtUDD1', 1]],
-			address_auths: [],
+			key_auths: [[TEMPLATE_ECHO_KEY, 1]],
 		},
 		options: {
-			memo_key: 'ECHO6TabpHPGAKwgkDASeCC5ya4pguTEBah7rEVjfnAsNAzcqtUDD1',
+			memo_key: DEFAULT_MEMO_KEY,
 			voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
 			delegating_account: accountId,
-			num_witness: 0,
 			num_committee: 0,
 			votes: [],
 			extensions: [],
