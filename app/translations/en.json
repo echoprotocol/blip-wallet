@@ -12,7 +12,7 @@
 		"createPassword": "Create Password",
 		"repeatError": "Password does not match",
 		"title": "Create Password",
-		"hint1":"English alphabet from 8 to 32 characters",
+		"hint1":"English letters from 8 to 32 characters",
 		"hint2":"One uppercase letter",
 		"hint3":"One lowercase letter",
 		"hint4":"One number"
