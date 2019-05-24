@@ -133,7 +133,8 @@ class Blockchain {
 			this.setNetworkGroup(network);
 
 			if (ipcRenderer) {
-				ipcRenderer.on('started', (_, port) => {
+
+				ipcRenderer.on('port', (_, port) => {
 
 					this.localNodeUrl = `ws://127.0.0.1:${port}`;
 
@@ -142,6 +143,8 @@ class Blockchain {
 					}
 
 				});
+
+				ipcRenderer.send('subscribePort');
 			}
 
 			this.startCheckingRemote();
@@ -155,6 +158,7 @@ class Blockchain {
 	}
 
 	async checkNodeSync() {
+
 
 		try {
 
@@ -180,6 +184,7 @@ class Blockchain {
 			}
 
 			const firstBlock = await this.local.api.getBlock(blockNum);
+
 
 			if (!firstBlock) {
 				return false;

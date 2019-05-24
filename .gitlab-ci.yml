@@ -56,6 +56,8 @@ build.master:
 build.package-linux:
   image: electronuserland/builder:10
   stage: build
+  variables:
+    DOWNLOAD_ECHO_NODE_URL: "https://github.com/echoprotocol/echo/releases/download/0.6.1/echo_node"
   cache:
     key: $CI_COMMIT_REF_NAME
     paths:
@@ -64,10 +66,11 @@ build.package-linux:
     - npm config set unsafe-perm true
     - rm -rf node_modules/node-sass
     - npm i
-    - DEBUG_PROD=true npm run package-linux
+    - DEBUG_PROD=true npm run package-linux-with-download-build
   only:
     - master
     - develop
+    - BLP-137
   tags:
     - docker
   artifacts:

@@ -42,6 +42,7 @@ import {
 
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
+
 export default class AppUpdater {
 
 	constructor() {
@@ -174,6 +175,20 @@ app.on('ready', async () => {
 
 	mainWindow.loadURL(`file://${__dirname}/app.html`);
 
+	let rendererIsReady = false;
+	let port = null;
+
+	function sendPort() {
+		if (port && rendererIsReady) {
+			mainWindow.webContents.send('port', port);
+		}
+	}
+
+	ipcMain.on('subscribePort', async () => {
+		rendererIsReady = true;
+		sendPort();
+	});
+
 	// @TODO: Use 'ready-to-show' event
 	//        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
 	mainWindow.webContents.on('did-finish-load', async () => {
@@ -194,14 +209,16 @@ app.on('ready', async () => {
 			message: NOTIFICATION_CONSENSUS_MESSAGE,
 		});
 
-		const port = await getPort({ port: getPort.makeRange(CHAIN_MIN_RANGE_PORT, CHAIN_MAX_RANGE_PORT) });
+		port = await getPort({ port: getPort.makeRange(CHAIN_MIN_RANGE_PORT, CHAIN_MAX_RANGE_PORT) });
+
+		sendPort();
 
 		const countAttempts = {};
 		let startingError = false;
 		let processCounterId = 1;
 		const options = {
 			echorand: null,
-			'data-dir': DATA_DIR,
+			'data-dir': `${app.getPath('userData')}/${DATA_DIR}`,
 			'rpc-endpoint': `127.0.0.1:${port}`,
 			'seed-node': SEED_NODE,
 		};
@@ -272,11 +289,9 @@ app.on('ready', async () => {
 		startNode(processCounterId += 1, options, []);
 
 		ipcMain.on('startNode', async (event, args) => {
-			console.info('START NODE ARGUMENTS', args);
+			console.info('START NODE WITH ARGUMENTS', args);
 			tryStart(processCounterId += 1, options, args && args.accounts ? args.accounts : []);
 		});
-
-		mainWindow.webContents.send('started', port);
 
 	});
 
@@ -303,7 +318,7 @@ app.on('ready', async () => {
 
 if (process.env.DEBUG_PROD) {
 	const fs = require('fs');
-	const access = fs.createWriteStream('app.log');
+	const access = fs.createWriteStream(`${app.getPath('userData')}/app.log`);
 	/* eslint-disable no-multi-assign */
 	process.stdout.write = process.stderr.write = access.write.bind(access);
 	process.on('uncaughtException', (err) => {

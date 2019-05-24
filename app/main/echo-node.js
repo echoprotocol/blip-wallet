@@ -125,7 +125,7 @@ class EchoNode {
 			child.kill('SIGINT');
 		});
 
-		if (1) {
+		if (child.stdout) {
 			child.stdout.pipe(process.stdout);
 			child.stderr.pipe(process.stderr);
 
