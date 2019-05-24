@@ -456,13 +456,19 @@ export const changePrimaryAccount = (indexAccount) => async (dispatch, getState)
 	dispatch(setGlobal('accounts', stateAccounts));
 };
 
-export const removeAllAccounts = () => async (dispatch, getState) => {
-	const accounts = getState().global.get('accounts');
+export const removeAllAccounts = () => async (dispatch) => {
+	const userStorage = Services.getUserStorage();
 
-	for (let i = 0; i < accounts.size; i += 1) {
-		const index = [...accounts.keys()][i];
-		await dispatch(logoutAccount(index)); // eslint-disable-line no-await-in-loop
-	}
+	await userStorage.updateAccounts([]);
+
+	const storageKeys = await userStorage.getAllPublicKeys();
+	await userStorage.removeKeys(storageKeys);
+
+	Services.getLocalStorage().removeData('hiddenAssets');
+	dispatch(GlobalReducer.actions.clear({ field: 'accounts' }));
+	dispatch(WalletReducer.actions.clear({ field: 'balances' }));
+	dispatch(WalletReducer.actions.clear({ field: 'tokens' }));
+	dispatch(WalletReducer.actions.clear({ field: 'hiddenAssets' }));
 
 	dispatch(subscribeTokens());
 };

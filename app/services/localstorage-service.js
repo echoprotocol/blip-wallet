@@ -20,6 +20,14 @@ class LocalStorageService {
 		localStorage.setItem(key, JSON.stringify(data));
 	}
 
+	/**
+	 *
+	 * @param {String} key
+	 */
+	removeData(key) {
+		localStorage.removeItem(key);
+	}
+
 }
 
 export default LocalStorageService;

@@ -10,14 +10,45 @@ import { MODAL_LOGOUT } from '../../constants/modal-constants';
 class LogoutModal extends React.Component {
 
 	logout() {
-		const { accountId } = this.props;
+		const { all, accountId } = this.props;
 
 		this.props.onClose(MODAL_LOGOUT);
-		this.props.logout(accountId);
+
+		if (all) {
+			this.props.removeAllAccounts();
+		} else {
+			this.props.logoutAccount(accountId);
+		}
+	}
+
+	renderBody() {
+		const { all, accountName } = this.props;
+
+		if (all) {
+			return (
+				<div className="modal-body">
+					<div className="text">
+						You are about to log out from all the accounts attached to Blip.
+						You will need to import existing accounts using WIF to see them in the list of Blip accounts or create a new one after completing this action.
+						Do you want to proceed?
+					</div>
+				</div>
+			);
+		}
+
+		return (
+			<div className="modal-body">
+				<div className="text">
+					You are about to log out from the account
+					<span to="/" className="info"> {accountName}</span>.
+						You will need this account WIF to log in again.
+				</div>
+			</div>
+		);
 	}
 
 	render() {
-		const { show, accountName } = this.props;
+		const { show } = this.props;
 		if (show) {
 			return (
 				<Animated
@@ -42,14 +73,7 @@ class LogoutModal extends React.Component {
 
 										<div className="modal-title">Logout</div>
 									</div>
-									<div className="modal-body">
-										<div className="text">
-                                            You are about to log out from the account
-											<span to="/" className="info"> {accountName}</span>.
-                                            You will need this account WIF to log in again.
-										</div>
-
-									</div>
+									{this.renderBody()}
 									<div className="modal-footer">
 										<div className="btns-wrap">
 											<Button
@@ -79,14 +103,17 @@ class LogoutModal extends React.Component {
 
 LogoutModal.propTypes = {
 	show: PropTypes.bool,
-	onClose: PropTypes.func.isRequired,
-	logout: PropTypes.func.isRequired,
+	all: PropTypes.bool,
 	accountId: PropTypes.string,
 	accountName: PropTypes.string,
+	onClose: PropTypes.func.isRequired,
+	logoutAccount: PropTypes.func.isRequired,
+	removeAllAccounts: PropTypes.func.isRequired,
 };
 
 LogoutModal.defaultProps = {
 	show: false,
+	all: false,
 	accountId: '',
 	accountName: '',
 };

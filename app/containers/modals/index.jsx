@@ -7,7 +7,7 @@ import LogoutModal from '../../components/modals/logout';
 import { closeModal } from '../../actions/modals-actions';
 
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
-import { logoutAccount } from '../../actions/account-actions';
+import { logoutAccount, removeAllAccounts } from '../../actions/account-actions';
 
 class Modals extends React.Component {
 
@@ -16,27 +16,23 @@ class Modals extends React.Component {
 	}
 
 	render() {
-		const {
-			showLogout, logout, backup, logoutForm,
-		} = this.props;
+		const { backupModal, logoutModal } = this.props;
 
 		return (
 			<React.Fragment>
-				{backup && backup.get('show')
-					? (
-						<BackupModal
-							accountId={backup.get('accountId')}
-							show={backup.get('show')}
-							onClose={(modal) => this.onClose(modal)}
-						/>
-					)
-					: null }
-				<LogoutModal
-					show={showLogout}
+				<BackupModal
+					show={backupModal.get('show')}
+					accountId={backupModal.get('accountId')}
 					onClose={(modal) => this.onClose(modal)}
-					logout={logout}
-					accountId={logoutForm.get('accountId')}
-					accountName={logoutForm.get('accountName')}
+				/>
+				<LogoutModal
+					show={logoutModal.get('show')}
+					all={logoutModal.get('all')}
+					accountId={logoutModal.get('accountId')}
+					accountName={logoutModal.get('accountName')}
+					onClose={(modal) => this.onClose(modal)}
+					logoutAccount={this.props.logoutAccount}
+					removeAllAccounts={this.props.removeAllAccounts}
 				/>
 			</React.Fragment>
 		);
@@ -45,27 +41,21 @@ class Modals extends React.Component {
 }
 
 Modals.propTypes = {
+	backupModal: PropTypes.object.isRequired,
+	logoutModal: PropTypes.object.isRequired,
 	closeModal: PropTypes.func.isRequired,
-	logout: PropTypes.func.isRequired,
-	backup: PropTypes.object,
-	logoutForm: PropTypes.object,
-	showLogout: PropTypes.bool,
-};
-
-Modals.defaultProps = {
-	backup: null,
-	logoutForm: null,
-	showLogout: false,
+	logoutAccount: PropTypes.func.isRequired,
+	removeAllAccounts: PropTypes.func.isRequired,
 };
 
 export default connect(
 	(state) => ({
-		backup: state.modals.getIn([MODAL_BACKUP]),
-		logoutForm: state.modals.getIn([MODAL_LOGOUT]),
-		showLogout: state.modals.getIn([MODAL_LOGOUT, 'show']),
+		backupModal: state.modals.getIn([MODAL_BACKUP]),
+		logoutModal: state.modals.getIn([MODAL_LOGOUT]),
 	}),
 	(dispatch) => ({
 		closeModal: (modal) => dispatch(closeModal(modal)),
-		logout: (id) => dispatch(logoutAccount(id)),
+		logoutAccount: (id) => dispatch(logoutAccount(id)),
+		removeAllAccounts: () => dispatch(removeAllAccounts()),
 	}),
 )(Modals);

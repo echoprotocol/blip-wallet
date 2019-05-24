@@ -4,7 +4,7 @@ import ManageAccounts from '../../components/manage-accounts';
 
 import { openModal } from '../../actions/modals-actions';
 import { balanceSelector, historySelector } from '../wallet';
-import { changePrimaryAccount, removeAllAccounts } from '../../actions/account-actions';
+import { changePrimaryAccount } from '../../actions/account-actions';
 import { updateBalance } from '../../actions/balance-actions';
 
 export default withRouter(connect(
@@ -14,9 +14,8 @@ export default withRouter(connect(
 		histories: historySelector(state),
 	}),
 	(dispatch) => ({
-		removeAllAccounts: () => dispatch(removeAllAccounts()),
 		changePrimaryAccount: (indexAccount) => dispatch(changePrimaryAccount(indexAccount)),
-		openModal: (modal, payload) => dispatch(openModal(modal, payload)),
+		openModal: (modal, data) => dispatch(openModal(modal, data)),
 		updateBalance: () => dispatch(updateBalance()),
 	}),
 )(ManageAccounts));

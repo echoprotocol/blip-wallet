@@ -4,6 +4,8 @@ import { Button } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Dropdown } from 'react-bootstrap';
 import classnames from 'classnames';
+import { fromJS } from 'immutable';
+
 import Avatar from '../avatar';
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
 import { ECHO_ASSET_ID } from '../../constants/global-constants';
@@ -31,6 +33,10 @@ class ManageAccounts extends React.Component {
 	onChangePrimaryAccount(indexAccount) {
 		const { changePrimaryAccount } = this.props;
 		changePrimaryAccount(indexAccount);
+	}
+
+	onOpenModal(modal, data) {
+		this.props.openModal(modal, fromJS(data));
 	}
 
 	getFraction(balance) {
@@ -112,10 +118,10 @@ class ManageAccounts extends React.Component {
 									<Dropdown.Item onClick={() => this.onChangePrimaryAccount(index)} eventKey={0}>
 										Set as primary
 									</Dropdown.Item>
-									<Dropdown.Item onClick={() => this.props.openModal(MODAL_BACKUP, { accountId: index })} eventKey={1}>
+									<Dropdown.Item onClick={() => this.onOpenModal(MODAL_BACKUP, { accountId: index })} eventKey={1}>
 										Backup info
 									</Dropdown.Item>
-									<Dropdown.Item onClick={() => this.props.openModal(MODAL_LOGOUT, { accountName: account.get('name'), accountId: index })} eventKey={3}>
+									<Dropdown.Item onClick={() => this.onOpenModal(MODAL_LOGOUT, { accountName: account.get('name'), accountId: index })} eventKey={3}>
 										Logout
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -172,7 +178,7 @@ class ManageAccounts extends React.Component {
 										content={
 											<span>Remove all accounts</span>
 										}
-										onClick={() => this.props.removeAllAccounts()}
+										onClick={() => this.onOpenModal(MODAL_LOGOUT, { all: true })}
 									/>
 								</div>
 							</div>
@@ -188,7 +194,6 @@ class ManageAccounts extends React.Component {
 
 ManageAccounts.propTypes = {
 	openModal: PropTypes.func.isRequired,
-	removeAllAccounts: PropTypes.func.isRequired,
 	accounts: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
