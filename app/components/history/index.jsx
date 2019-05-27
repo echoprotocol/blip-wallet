@@ -294,7 +294,7 @@ class History extends React.Component {
 						</div>
 					</PerfectScrollbar>
 					<div className="page-footer">
-						<Footer history={history} currentNode={currentNode} localNodePercent={this.props.localNodePercent} />
+						<Footer history={history} currentNode={currentNode} platform={this.props.platform} localNodePercent={this.props.localNodePercent} />
 					</div>
 
 					<Filter
@@ -326,10 +326,12 @@ History.propTypes = {
 	setNewTransaction: PropTypes.func.isRequired,
 	clear: PropTypes.func.isRequired,
 	localNodePercent: PropTypes.number.isRequired,
+	platform: PropTypes.string,
 };
 
 History.defaultProps = {
 	total: null,
+	platform: null,
 };
 
 export default History;

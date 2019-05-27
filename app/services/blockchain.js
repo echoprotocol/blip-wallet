@@ -20,7 +20,7 @@ try {
 	const electron = require('electron');
 	({ ipcRenderer } = electron);
 } catch (e) {
-	console.log('Err import');
+	console.log('Err electron import');
 }
 
 class Blockchain {

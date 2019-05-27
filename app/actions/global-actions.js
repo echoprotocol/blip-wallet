@@ -1,4 +1,5 @@
 import { Map } from 'immutable';
+
 import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
@@ -10,6 +11,16 @@ import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
 import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
+
+let ipcRenderer;
+
+try {
+	/* eslint-disable global-require */
+	const electron = require('electron');
+	({ ipcRenderer } = electron);
+} catch (e) {
+	console.log('Err electron import');
+}
 
 /**
  *  @method setValue
@@ -68,6 +79,17 @@ export const initApp = (store) => async (dispatch, getState) => {
 
 	if (language) {
 		dispatch(setValue('language', language));
+
+		if (ipcRenderer) {
+
+			ipcRenderer.send('setLanguage', language);
+
+			const platform = await Services.getMainProcessAPIService().getPlatform();
+
+			dispatch(setValue('platform', platform));
+
+		}
+
 	}
 
 	const networkId = localStorage.getItem('network') || Object.keys(NETWORKS)[0];

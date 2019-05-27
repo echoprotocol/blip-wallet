@@ -61,6 +61,7 @@ export default connect(
 		language: state.global.get('language'),
 		currentNode: state.global.get('currentNode'),
 		localNodePercent: state.global.get('localNodePercent'),
+		platform: state.global.get('platform'),
 		balances: balanceSelector(state),
 		transaction: state.wallet.get('transaction'),
 		histories: historySelector(state),
