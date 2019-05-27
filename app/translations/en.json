@@ -388,6 +388,41 @@
 			"title": "Contract transfer",
 			"from": "From",
 			"subject": "To"
+		},
+		"change_sidechain_config": {
+			"title": "Change sidechain config"
+		},
+		"account_address_create": {
+			"title": "Create account address",
+			"from": "Owner"
+		},
+		"transfer_to_address": {
+			"title": "Transfer to address",
+			"from": "From",
+			"subject": "To"
+		},
+		"generate_eth_address": {
+			"title": "Generate ethereum address",
+			"from": "Account"
+		},
+		"create_eth_address": {
+			"title": "Create ethereum address",
+			"from": "Account"
+		},
+		"deposit_eth": {
+			"title": "Deposit ETH",
+			"from": "Committee member",
+			"subject": "Account"
+		},
+		"withdraw_eth": {
+			"title": "Withdraw ETH",
+			"from": "From",
+			"subject": "To"
+		},
+		"approve_withdraw_eth": {
+			"title": "Approve withdraw ETH",
+			"from": "Committee member",
+			"subject": "Withdraw Id"
 		}
 	},
 

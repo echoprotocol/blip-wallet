@@ -406,7 +406,42 @@
             "title": "Перевод в контракте",
             "from": "Отправитель",
             "subject": "Получатель"
-        }
+        },
+        "change_sidechain_config": {
+			"title": "Изменить конфигурацию sidechain"
+		},
+		"account_address_create": {
+			"title": "Создать адрес аккаунта",
+			"from": "Владелец"
+		},
+		"transfer_to_address": {
+			"title": "Перевод на адрес",
+			"from": "Отправитель",
+			"subject": "Получатель"
+		},
+		"generate_eth_address": {
+			"title": "Сгенерировать ethereum адрес",
+			"from": "Аккаунт"
+		},
+		"create_eth_address": {
+			"title": "Создать ethereum адрес",
+			"from": "Аккаунт"
+		},
+		"deposit_eth": {
+			"title": "Депозит ETH",
+            "from": "Член комитета",
+			"subject": "Аккаунт"
+		},
+		"withdraw_eth": {
+			"title": "Вывод ETH",
+			"from": "Отправитель",
+			"subject": "Получатель"
+		},
+		"approve_withdraw_eth": {
+			"title": "Подтвердить вывод ETH",
+			"from": "Член комитета",
+			"subject": "Идентификатор вывода"
+		}
 	},
 
     "send": {
