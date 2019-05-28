@@ -10,7 +10,7 @@ import Avatar from '../avatar';
 import InputDropdown from '../input-dropdown';
 import { FORM_SEND } from '../../constants/form-constants';
 import ValidateSendHelper from '../../helpers/validate-send-helper';
-import { ECHO_ASSET_ID, KEY_CODE_ENTER } from '../../constants/global-constants';
+import { ECHO_ASSET_ID, KEY_CODE_ENTER, TIME_SHOW_ERROR_ASSET } from '../../constants/global-constants';
 
 class Send extends React.Component {
 
@@ -20,6 +20,7 @@ class Send extends React.Component {
 		this.state = {
 			timeout: null,
 			feeTimeout: null,
+			amountTimeout: null,
 		};
 	}
 
@@ -71,6 +72,7 @@ class Send extends React.Component {
 		const {
 			form, balances, tokens,
 		} = this.props;
+		const { amountTimeout } = this.state;
 
 		const field = e.target.name;
 
@@ -79,6 +81,10 @@ class Send extends React.Component {
 
 		let precision = null;
 		let symbol = null;
+
+		if (amountTimeout) {
+			clearTimeout(amountTimeout);
+		}
 
 		if (!ValidateSendHelper.validateContractId(form.get('selectedBalance'))) {
 			tokens.forEach((token) => {
@@ -96,13 +102,19 @@ class Send extends React.Component {
 
 		const asset = balances.find((b) => b.assetId === assetId) || form.get('echoAsset');
 
-		const { value: validatedValue, error } = ValidateSendHelper.amountInput(value, {
+		const { value: validatedValue, error, warning } = ValidateSendHelper.amountInput(value, {
 			precision: precision || asset.precision,
 			symbol: symbol || asset.symbol,
 		});
 
 		if (error) {
 			this.props.setFormError(field, error);
+
+			if (warning) {
+				this.setState({
+					amountTimeout: setTimeout(() => this.props.setFormError(field, ''), TIME_SHOW_ERROR_ASSET),
+				});
+			}
 
 			return false;
 		}

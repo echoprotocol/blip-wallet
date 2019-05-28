@@ -62,6 +62,8 @@ export const RU_LOCALE = 'ru';
 
 export const LOCK_TIMEOUT = 3 * 60 * 1000; // 3 min
 export const TIME_LOADING = 1000; // 1s
+export const TIME_SHOW_ERROR_ASSET = 10000; // 10s
+
 export const LOCK_TIMER_EVENTS = [
 	// 'mousemove',
 	'keydown',
