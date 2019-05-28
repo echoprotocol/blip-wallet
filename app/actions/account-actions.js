@@ -140,11 +140,8 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 			return resolve(false);
 		}
 
-		const wif = CryptoService.generateWIF();
-
+		const { publicKey, wif } = CryptoService.generatePublicKeyAndWif();
 		const echoRandKey = CryptoService.generateEchoRandKey();
-
-		const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
 		try {
 			if (registrator.public) {
