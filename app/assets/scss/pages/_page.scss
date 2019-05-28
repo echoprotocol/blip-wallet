@@ -67,7 +67,7 @@
 		justify-content: center;
 		display: flex;
 		margin: 4em 0 2em;
-		padding: 65px 0;
+		padding: 65px 50px;
 		background-color: #e8e8ea;
 
 		.line-label {
@@ -105,7 +105,7 @@
 		border-radius: 4px;
 		outline: none;
 		cursor: pointer;
-		
+
 		.label {
 			@include source-semibold();
 			position: absolute;

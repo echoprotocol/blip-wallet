@@ -1,0 +1,71 @@
+.settings {
+	.page-in-wrap {
+		flex-direction: column;
+		display: flex;
+		min-height: calc(100vh - 34px);
+		padding-bottom: 0;
+	}
+
+	.form-wrap {
+		margin-top: 0;
+	}
+
+	.page-in-action {
+		margin-top: auto;
+
+		.btn-wrap {
+			margin-right: auto;
+		}
+	}
+}
+
+
+.connected-status {
+	position: relative;
+	display: inline-flex;
+	width: 12px;
+	height: 12px;
+	margin-right: 5px;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 6px;
+		height: 6px;
+		margin: auto;
+		border-radius: 50%;
+		background-color: #a6a8b5;
+		transition: background-color .3s;
+	}
+
+	&.connected {
+		&:before {
+			background-color: #3dc49f;
+		}
+	}
+
+	.connected-popover {
+		@include source-semibold();
+		position: absolute;
+		top: -40px;
+		left: -5px;
+		display: none;
+		padding: 4px 10px 6px;
+		border-radius: 4px;
+		background-color: #3e4951;
+		color: #fff;
+		font-size: 16px;
+		white-space: nowrap;
+	}
+
+	&:hover {
+		.connected-popover {
+			display: inline;
+		}
+	}
+
+}

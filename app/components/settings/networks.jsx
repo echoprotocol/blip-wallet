@@ -2,17 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import classnames from 'classnames';
 
 class Networks extends React.Component {
 
 	render() {
-		const { networks } = this.props;
+		const { networks, connected } = this.props;
 		const current = networks.find((n) => n.get('active'));
 
 		return (
-			<Dropdown className="white select-account">
+			<Dropdown className="white networks">
 				<Dropdown.Toggle variant="Info">
-					<span className="dropdown-toggle-text">
+					<span
+
+						className="dropdown-toggle-text"
+					>
+						<div className={classnames('connected-status', { connected })}>
+							<div className="connected-popover">
+								Status: { connected ? 'online' : 'offline' }
+							</div>
+						</div>
 						{current.get('id')}
 					</span>
 					<span className="carret" />
@@ -42,8 +51,11 @@ class Networks extends React.Component {
 Networks.propTypes = {
 	networks: PropTypes.object.isRequired,
 	changeNetwork: PropTypes.func.isRequired,
+	connected: PropTypes.bool,
 };
 
-// Networks.defaultProps = {};
+Networks.defaultProps = {
+	connected: false,
+};
 
 export default Networks;

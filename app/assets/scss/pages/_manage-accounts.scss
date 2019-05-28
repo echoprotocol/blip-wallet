@@ -132,8 +132,9 @@
 			&:active,
 			&:focus {
 				border: 1px solid transparent;
-
+				background-color: transparent;
 			}
+
 
 			&:not(:active) {
 				&:focus {
@@ -154,20 +155,24 @@
 			border: 1px solid transparent;
 			border-radius: 2px;
 
+			&:hover {
+				.dot {
+					background-color: rgba(#3f4a52, 0.5);
+				}
+			}
+
 			.dot:nth-child(2) {
 				margin: 2px 0;
 			}
 
-			.dot:nth-child(1),
-			.dot:nth-child(2),
-			.dot:nth-child(3) {
+			.dot {
 				content: "";
 				display: block;
 				width: 4px;
 				height: 4px;
 				border-radius: 1px;
 				background-color: #a8acb0;
-
+				transition: background-color .3s;
 			}
 		}
 

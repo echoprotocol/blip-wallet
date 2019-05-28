@@ -336,6 +336,7 @@ class Send extends React.Component {
 							</div>
 
 						</div>
+
 						<div className="page-in-action">
 							<FormattedMessage id="send.button">
 								{

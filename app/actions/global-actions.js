@@ -13,6 +13,7 @@ import Listeners from '../services/listeners';
 import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
 import { initNetworks } from './setting-actions';
 
+
 let ipcRenderer;
 
 try {

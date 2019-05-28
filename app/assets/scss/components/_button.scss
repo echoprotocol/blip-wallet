@@ -130,6 +130,8 @@
 	}
 
 	&.white {
+		color: #33353f;
+
 		&.disabled {
 			border: 1px solid #e8e8ea;
 			background-color: #e8e8ea;
@@ -222,6 +224,11 @@
 		opacity: 1;
 		transition: opacity $speed;
 		transition-delay: 0.1s;
+	}
+
+	&.round {
+		@include onBtnFocus(50px, 3px, 1px, rgba(#cbcbcb, 0.3));
+		border-radius: 50px;
 	}
 }
 
@@ -386,7 +393,7 @@
 	transition: border .3s, color .3s;
 
 	&:hover {
-		border: 1px solid rgba(#a8aab7, 0.66);
+		border: 2px solid rgba(#a8aab7, 0.66);
 	}
 
 	&:active {

@@ -123,6 +123,17 @@
 	}
 }
 
+.networks {
+	.dropdown-toggle {
+		padding: 0 18px;
+	}
+
+	.dropdown-toggle-text {
+		align-items: center;
+		position: relative;
+		display: flex;
+	}
+}
 // &.pink
 .dropdown.pink {
 	&:not(.show) {
