@@ -19,10 +19,21 @@ export const NETWORKS = {
 		},
 		local: {
 			name: 'Local node',
-			url: 'ws://127.0.0.1:8090', // there must be a local node
+			seed: 'node1.devnet.echo-dev.io:6310',
+		},
+	},
+	testnet: {
+		remote: {
+			name: 'Remote node',
+			url: 'wss://testnet.echo-dev.io/ws',
+		},
+		local: {
+			name: 'Local node',
+			seed: 'node1.devnet.echo-dev.io:6310',
 		},
 	},
 };
+export const DEFAULT_NETWORK_ID = 'devnet';
 
 export const EXPLORER_URL = {
 	devnet: 'https://656-echo-explorer.pixelplex-test.by',

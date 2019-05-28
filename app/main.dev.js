@@ -29,7 +29,7 @@ import getPlatform from './main/get-platform';
 
 import {
 	DATA_DIR,
-	SEED_NODE,
+	// SEED_NODE,
 	RESTART_PAUSE_MS,
 	CHAIN_MIN_RANGE_PORT,
 	CHAIN_MAX_RANGE_PORT,
@@ -41,6 +41,9 @@ import {
 	APP_WINDOW_MIN_HEIGHT,
 	APP_WINDOW_MIN_WIDTH,
 	TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS,
+	NETWORKS,
+	DEFAULT_NETWORK_ID,
+	LOCAL_NODE,
 } from './constants/global-constants';
 import { WIN_PLATFORM } from './constants/platform-constants';
 import EN_TRANSLATION from './translations/en';
@@ -257,9 +260,9 @@ app.on('ready', async () => {
 		let processCounterId = 1;
 		const options = {
 			echorand: null,
-			'data-dir': `${app.getPath('userData')}/${DATA_DIR}`,
+			'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${DEFAULT_NETWORK_ID}`,
 			'rpc-endpoint': `127.0.0.1:${port}`,
-			'seed-node': SEED_NODE,
+			'seed-node': NETWORKS[DEFAULT_NETWORK_ID][LOCAL_NODE].seed,
 		};
 
 		const tryStart = (processId, params, accounts) => {
@@ -329,7 +332,17 @@ app.on('ready', async () => {
 
 		ipcMain.on('startNode', async (event, args) => {
 			console.info('START NODE WITH ARGUMENTS', args);
-			tryStart(processCounterId += 1, options, args && args.accounts ? args.accounts : []);
+
+			const NETWORK_ID = args && args.networkId ? args.networkId : DEFAULT_NETWORK_ID;
+
+			const networkOptions = {
+				echorand: null,
+				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
+				'rpc-endpoint': `127.0.0.1:${port}`,
+				'seed-node': NETWORKS[NETWORK_ID][LOCAL_NODE].seed,
+			};
+
+			tryStart(processCounterId += 1, networkOptions, args && args.accounts ? args.accounts : []);
 		});
 
 	});

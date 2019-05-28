@@ -9,6 +9,7 @@ import FormReducer from './form-reducer';
 import GlobalReducer from './global-reducer';
 import AuthReducer from './auth-reducer';
 import ModalsReducer from './modals-reducer';
+import SettingReducer from './setting-reducer';
 
 
 export default function createRootReducer(history) {
@@ -19,6 +20,7 @@ export default function createRootReducer(history) {
 		auth: AuthReducer.reducer,
 		wallet: WalletReducer.reducer,
 		modals: ModalsReducer.reducer,
+		settings: SettingReducer.reducer,
 		router: connectRouter(history),
 		echoCache: echoReducer(),
 	});

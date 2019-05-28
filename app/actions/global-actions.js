@@ -7,10 +7,11 @@ import UserStorageService from '../services/user-storage-service';
 import { UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
-import { NETWORKS, TIME_LOADING } from '../constants/global-constants';
+import { TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
 import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
+import { initNetworks } from './setting-actions';
 
 let ipcRenderer;
 
@@ -92,17 +93,13 @@ export const initApp = (store) => async (dispatch, getState) => {
 
 	}
 
-	const networkId = localStorage.getItem('network') || Object.keys(NETWORKS)[0];
-
 	try {
-
 		const userStorage = Services.getUserStorage();
 		await userStorage.init();
-		await userStorage.setNetworkId(networkId);
+
+		await dispatch(initNetworks(store));
 
 		dispatch(setValue('inited', true));
-
-		await Services.getEcho().init(networkId, { store });
 	} catch (err) {
 		console.warn(err.message || err);
 	} finally {

@@ -10,6 +10,7 @@ import ManageAccounts from './containers/manage-accounts';
 import Send from './containers/send';
 import Wallet from './containers/wallet';
 import History from './containers/history';
+import Settings from './containers/settings';
 
 import Page404 from './components/page404/page404';
 
@@ -18,7 +19,7 @@ import {
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED,
 	INDEX_ROUTE, WALLET, SEND,
-	MANAGE_ACCOUNTS, HISTORY,
+	MANAGE_ACCOUNTS, HISTORY, SETTINGS,
 } from './constants/routes-constants';
 
 
@@ -35,6 +36,7 @@ export default () => (
 			<Route exact path={HISTORY} component={History} />
 			<Route exact path={MANAGE_ACCOUNTS} component={ManageAccounts} />
 			<Route exact path={SEND} component={Send} />
+			<Route exact path={SETTINGS} component={Settings} />
 			<Route exact path="*" component={Page404} />
 		</Switch>
 	</App>

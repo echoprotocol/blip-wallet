@@ -31,6 +31,7 @@ const setAccounts = () => (async () => {
 
 	const userStorage = Services.getUserStorage();
 	const accounts = await userStorage.getAllAccounts();
+	const networkId = await userStorage.getNetworkId();
 
 	const keyPromises = accounts.map((account) => new Promise(async (resolve) => {
 
@@ -52,7 +53,7 @@ const setAccounts = () => (async () => {
 		});
 	});
 
-	Services.getEcho().setAccounts(accountsKeys);
+	Services.getEcho().setOptions(accountsKeys, networkId);
 
 });
 

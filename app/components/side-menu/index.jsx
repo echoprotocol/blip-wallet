@@ -8,7 +8,7 @@ import { Sidebar, Button, Icon } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import {
-	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY,
+	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS,
 } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
@@ -90,13 +90,14 @@ class SideMenu extends React.Component {
 									}
 								</FormattedMessage>
 							</li>
-							<li>
+							<li className={classnames({ active: pathname === SETTINGS })}>
 								<FormattedMessage id="wallet.menu.settings">
 									{
 										(content) => (
 											<Button
 												className="sidebar-nav-link"
 												content={content}
+												onClick={() => history.push(SETTINGS)}
 											/>
 										)
 									}
