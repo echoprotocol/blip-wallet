@@ -291,6 +291,7 @@
     "moment": "^2.24.0",
     "node-notifier": "^5.4.0",
     "prop-types": "^15.7.2",
+    "qrcode.react": "^0.9.3",
     "react": "^16.7.0",
     "react-animated-css": "1.0.4",
     "react-apollo": "^2.5.4",

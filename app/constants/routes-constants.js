@@ -10,7 +10,7 @@ export const UNLOCK = 'unlock';
 export const PAGE404 = '/page404';
 export const INDEX_ROUTE = '/';
 export const MANAGE_ACCOUNTS = '/manage-accounts';
-
+export const RECEIVE = '/receive';
 
 export const PUBLIC_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
@@ -21,7 +21,7 @@ export const PUBLIC_ROUTES = [
 export const LOCKED_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
 	ACCOUNT_IMPORTED, WALLET, SEND,
-	MANAGE_ACCOUNTS, HISTORY,
+	MANAGE_ACCOUNTS, HISTORY, RECEIVE,
 ];
 
 
