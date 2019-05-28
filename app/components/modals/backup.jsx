@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Animated } from 'react-animated-css';
-import FocusTrap from 'focus-trap-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import FocusTrap from 'focus-trap-react';
 import { MODAL_BACKUP } from '../../constants/modal-constants';
 
 class BackupModal extends React.Component {
