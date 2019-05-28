@@ -203,7 +203,7 @@ class History extends React.Component {
 						</li>
 						<li className="age">
 							<span className="line-content">
-								{FormatHelper.getLocaleDateFromNow(transaction.get('timestamp'), language, 'DD MMM, HH:mm')}
+								{FormatHelper.getLocaleDateFromNow(transaction.get('timestamp'), language, 'DD MMM HH:mm')}
 							</span>
 						</li>
 						<li className="from">
