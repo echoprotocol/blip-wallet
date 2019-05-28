@@ -288,6 +288,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 
 			if (!accountId) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
+				return resolve(false);
 			}
 
 			const userStorage = Services.getUserStorage();
@@ -300,7 +301,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 
 			if (account.name !== accountName) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'This WIF does not exist'));
-				return false;
+				return resolve(false);
 			}
 
 			const publicKeys = account.active.key_auths;
@@ -325,7 +326,7 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 
 			if (!accountId) {
 				dispatch(setValue(FORM_SIGN_IN, 'wifError', 'Invalid WIF'));
-				return false;
+				return resolve(false);
 			}
 
 			const account = await Services.getEcho().api.getAccountByName(accountName);
