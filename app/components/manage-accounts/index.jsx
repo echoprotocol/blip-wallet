@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 
 import Avatar from '../avatar';
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
-import { ECHO_ASSET_ID } from '../../constants/global-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../../constants/global-constants';
 import FormatHelper from '../../helpers/format-helper';
 import { AUTHORIZATION } from '../../constants/routes-constants';
 
@@ -39,16 +39,6 @@ class ManageAccounts extends React.Component {
 		this.props.openModal(modal, fromJS(data));
 	}
 
-	getFraction(balance) {
-		if (balance) {
-			if (balance.split('.')[1]) {
-				return `.${balance.split('.')[1]}`;
-			}
-		}
-
-		return '';
-	}
-
 	getBalance(accountId) {
 		const { balances } = this.props;
 
@@ -68,10 +58,11 @@ class ManageAccounts extends React.Component {
 	}
 
 	renderAccounts() {
-		const { accounts } = this.props;
+		const { accounts, balances } = this.props;
 
 		return [...accounts.map((account, index) => {
 			const amount = this.getBalance(index);
+			const precision = ![...balances.values()][0] ? ECHO_ASSET_PRECISION : [...balances.values()][0].asset.get('precision');
 			const customAssetsCount = this.getCustomAssetsCount(index);
 
 			return (
@@ -135,7 +126,7 @@ class ManageAccounts extends React.Component {
 					<div className="line">
 						<div className="balance">
 							<span className="integer">{amount ? `${amount.split('.')[0]}` : '0'}</span>
-							<span className="fractional">{this.getFraction(amount)}</span>
+							<span className="fractional">{FormatHelper.getFraction(amount, precision)}</span>
 						</div>
 					</div>
 				</div>
