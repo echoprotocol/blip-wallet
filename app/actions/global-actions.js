@@ -70,6 +70,10 @@ export const initAccounts = () => async (dispatch, getState) => {
  * 	@param {Object} store - redux store
  */
 export const initApp = (store) => async (dispatch, getState) => {
+	if (ipcRenderer) {
+		ipcRenderer.send('showWindow');
+	}
+
 	const listeners = new Listeners();
 	listeners.initListeners(dispatch, getState);
 

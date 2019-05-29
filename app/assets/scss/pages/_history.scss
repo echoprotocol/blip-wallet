@@ -97,7 +97,7 @@
 	.from,
 	.to {
 		.line-content {
-			min-width: 100px;
+			min-width: 50px;
 		}
 	}
 
@@ -428,7 +428,7 @@
 
 				&.from,
 				&.to {
-					a {
+					a, span {
 						@include text-overflow();
 						display: block;
 						max-width: 180px;

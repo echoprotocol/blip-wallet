@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
 import Settings from './settings';
-import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import { HISTORY } from '../../constants/routes-constants';
 import { TOKEN_TYPE } from '../../constants/graphql-constants';
 import Footer from '../footer';
@@ -99,16 +99,6 @@ class Wallet extends React.Component {
 		return FormatHelper.formatAmount(result, precision);
 	}
 
-	getFraction(balance) {
-		if (balance) {
-			if (balance.split('.')[1]) {
-				return `.${balance.split('.')[1]}`;
-			}
-		}
-
-		return '';
-	}
-
 	sortAssets(assets) {
 		return assets.sort((a, b) => {
 			if (!a || !b) {
@@ -186,6 +176,7 @@ class Wallet extends React.Component {
 			const amount = FormatHelper.accumulateBalances(amounts);
 
 			const amountResult = FormatHelper.formatAmount(amount, parseInt(token.getIn(['contract', 'token', 'decimals']), 10));
+			const precision = token.getIn(['contract', 'token', 'decimals']);
 
 			return (
 				<div className="balance-item" key={key}>
@@ -206,7 +197,7 @@ class Wallet extends React.Component {
 					</div>
 					<div className="balance">
 						<span className="integer">{amountResult ? `${amountResult.split('.')[0]}` : '0'}</span>
-						<span className="fractional">{this.getFraction(amountResult)}</span>
+						<span className="fractional">{FormatHelper.getFraction(amountResult, precision)}</span>
 					</div>
 				</div>
 			);
@@ -228,7 +219,7 @@ class Wallet extends React.Component {
 
 		return assets.map((asset, index) => {
 			const key = index;
-			const { id } = asset;
+			const { id, precision } = asset;
 
 			return (
 				<div className="balance-item" key={key}> {/* add class hide */}
@@ -249,7 +240,7 @@ class Wallet extends React.Component {
 					</div>
 					<div className="balance">
 						<span className="integer">{asset.amount ? `${asset.amount.split('.')[0]}` : '0'}</span>
-						<span className="fractional">{this.getFraction(asset.amount)}</span>
+						<span className="fractional">{FormatHelper.getFraction(asset.amount, precision)}</span>
 					</div>
 				</div>
 			);
@@ -267,6 +258,7 @@ class Wallet extends React.Component {
 
 		const assets = this.renderAssets();
 		const tokens = this.renderTokens();
+		const precision = ![...balances.values()][0] ? ECHO_ASSET_PRECISION : [...balances.values()][0].asset.get('precision');
 
 		return (
 			<div
@@ -285,8 +277,8 @@ class Wallet extends React.Component {
 								<div className="balance-info">
 									<div className="balance">
 										<span className="coins">
-											<span className="int">{balance ? `${balance.split('.')[0]}` : '0.'}</span>
-											<span className="fraction">{this.getFraction(balance)} </span>
+											<span className="int">{balance ? `${balance.split('.')[0]}` : '0'}</span>
+											<span className="fraction">{FormatHelper.getFraction(balance, precision)} </span>
 										</span>
 										<span className="currency">{ECHO_ASSET_SYMBOL}</span>
 									</div>

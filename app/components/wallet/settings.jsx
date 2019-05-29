@@ -215,13 +215,14 @@ class Settings extends React.Component {
 				const amount = FormatHelper.accumulateBalances(amounts);
 
 				const amountResult = FormatHelper.formatAmount(amount, parseInt(token.getIn(['contract', 'token', 'decimals']), 10));
+				const precision = token.getIn(['contract', 'token', 'decimals']);
 
 				return (
 					<div className="line" key={key}>
 						<div className="col">
 							<div className="line sub">
 								<div className="coin">{token.getIn(['contract', 'token', 'symbol'])}</div>
-								<div className="balance">{amountResult}</div>
+								<div className="balance">{amountResult}{FormatHelper.getFraction(amountResult, precision)}</div>
 							</div>
 							<div className="line sub">
 								<div className="type">{`${token.getIn(['contract', 'type'])} token`}</div>
@@ -255,7 +256,7 @@ class Settings extends React.Component {
 								<div className="col">
 									<div className="line sub">
 										<div className="coin">{asset.symbol}</div>
-										<div className="balance">{asset.amount}</div>
+										<div className="balance">{asset.amount}{FormatHelper.getFraction(asset.amount, asset.precision)}</div>
 									</div>
 									<div className="line sub">
 										<div className="type">asset</div>
