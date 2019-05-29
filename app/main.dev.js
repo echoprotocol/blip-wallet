@@ -188,6 +188,7 @@ app.on('ready', async () => {
 		height: APP_WINDOW_HEIGHT,
 		minWidth: APP_WINDOW_MIN_WIDTH,
 		minHeight: APP_WINDOW_MIN_HEIGHT,
+		backgroundColor: '#6852A4',
 		frame: false,
 	});
 
@@ -247,7 +248,6 @@ app.on('ready', async () => {
 		if (process.env.START_MINIMIZED) {
 			mainWindow.minimize();
 		} else {
-			mainWindow.show();
 			mainWindow.focus();
 		}
 
@@ -386,6 +386,10 @@ ipcMain.on('close-app', (event) => {
 
 	return false;
 	// app.quit();
+});
+
+ipcMain.on('showWindow', () => {
+	mainWindow.show();
 });
 
 ipcMain.on('zoom-app', () => {

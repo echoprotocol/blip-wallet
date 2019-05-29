@@ -1,5 +1,6 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
+import { ECHO_ASSET_PRECISION } from '../constants/global-constants';
 
 export default class FormatHelper {
 
@@ -114,6 +115,22 @@ export default class FormatHelper {
 		}
 
 		return FormatHelper.getLocaleTransformDate(date, language, formatter);
+	}
+
+	/**
+	 *
+	 * @param balance
+	 * @param precision
+	 * @returns {string}
+	 */
+	static getFraction(balance, precision = ECHO_ASSET_PRECISION) {
+		if (balance) {
+			if (balance.split('.')[1]) {
+				return `.${balance.split('.')[1]}`;
+			}
+		}
+
+		return `.${'0'.repeat(precision)}`;
 	}
 
 }

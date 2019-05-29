@@ -17,7 +17,6 @@ export default class Root extends Component {
 
 	componentDidMount() {
 		const { store } = this.props;
-
 		store.dispatch(initApp(store));
 	}
 

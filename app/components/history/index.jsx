@@ -86,7 +86,7 @@ class History extends React.Component {
 		this.props.loadMoreTransactions();
 	}
 
-	getIconClassName(transaction, received) {
+	getIconClassName(transaction, sender) {
 		if (CONTRACT_TYPES.includes(transaction.get('type'))) {
 			return 'icon-contract';
 		}
@@ -95,11 +95,11 @@ class History extends React.Component {
 			return 'icon-account';
 		}
 
-		if (OPERATIONS_IDS.TRANSFER === transaction.get('type') && received) {
-			return 'icon-receive-trans';
+		if (OPERATIONS_IDS.TRANSFER === transaction.get('type') && sender) {
+			return 'icon-send-trans';
 		}
 
-		return 'icon-send-trans';
+		return 'icon-receive-trans';
 	}
 
 	subscribe(filter) {
@@ -184,7 +184,7 @@ class History extends React.Component {
 	renderTransaction(transaction, key) {
 		const { language, accounts } = this.props;
 
-		const received = !accounts.has(transaction.getIn(['subject', 'id']));
+		const sender = accounts.has(transaction.getIn(['from', 'id']));
 
 		return (
 			<React.Fragment key={key}>
@@ -196,7 +196,7 @@ class History extends React.Component {
 				>
 					<ul className={classnames('line', { contract: CONTRACT_TYPES.includes(transaction.get('type')) })}>
 						<li className="type">
-							<Icon className={this.getIconClassName(transaction, received)} />
+							<Icon className={this.getIconClassName(transaction, sender)} />
 							<span className="line-content">
 								{transaction.get('name') && <FormattedMessage id={transaction.get('name')} />}
 							</span>
