@@ -43,12 +43,14 @@ export const EXPLORER_URL = {
 	devnet: 'https://656-echo-explorer.pixelplex-test.by',
 };
 
+export const QR_SERVER_URL = 'https://649-bridge-landing.pixelplexlabs.com/receive/';
+
 export const ECHO_ASSET_ID = '1.3.0';
 export const ECHO_ASSET_PRECISION = 5;
 export const ECHO_ASSET_SYMBOL = 'ECHO';
 export const GLOBAL_ID_1 = '2.1.0';
 export const ECHO_PROXY_TO_SELF_ACCOUNT = '1.2.5';
-export const CONTRACT_ID = '1.16';
+export const CONTRACT_ID_PREFIX = '1.14';
 export const EETH_ASSET_SYMBOL = 'EETH';
 
 export const DISCONNECT_STATUS = 'disconnect';

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
-import { SEND } from '../../constants/routes-constants';
+import { SEND, RECEIVE } from '../../constants/routes-constants';
 import { WIN_PLATFORM } from '../../constants/platform-constants';
 import FormatHelper from '../../helpers/format-helper';
 
@@ -23,14 +23,15 @@ class Footer extends React.Component {
 							}
 							onClick={() => this.props.history.push(SEND)}
 						/>
-						{/*
-							<Button
-								className="btn-gray"
-								content={
-								<span className="text"><FormattedMessage id="wallet.receive" /></span>
-							}
-							/>
-						*/}
+						<Button
+							className="btn-gray"
+							content={(
+								<span className="text">
+									<FormattedMessage id="wallet.receive" />
+								</span>
+							)}
+							onClick={() => this.props.history.push(RECEIVE)}
+						/>
 					</div>
 					<div className="footer-info">
 						<div className="mode"><FormattedMessage id={`wallet.${FormatHelper.capitalizeFirstLetter(currentNode)} node`} /></div>

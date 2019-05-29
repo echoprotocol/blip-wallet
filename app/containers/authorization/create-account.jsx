@@ -5,9 +5,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
-import { createSelectorCreator, defaultMemoize } from 'reselect';
-import { CACHE_MAPS } from 'echojs-lib';
-import Immutable from 'immutable';
 
 import Registrator from './registrator';
 import { FORM_SIGN_UP } from '../../constants/form-constants';
@@ -19,6 +16,7 @@ import { loadRegistrators, changeRegistratorAccount } from '../../actions/auth-a
 import ValidateAccountHelper from '../../helpers/validate-account-helper';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 import Avatar from '../../components/avatar';
+import Services from '../../services';
 
 class CreateAccount extends React.Component {
 
@@ -262,25 +260,7 @@ CreateAccount.defaultProps = {
 	error: false,
 };
 
-
-const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
-
-const positiveBalanceAccounts = createImmutableSelector(
-	(state) => state.global.get('accounts'),
-	(state) => state.echoCache.get(CACHE_MAPS.FULL_ACCOUNTS),
-	(state) => state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
-	(accounts, fullAccounts, objectsById) => accounts.filter((name, id) => {
-		const account = fullAccounts.get(id);
-
-		if (!account || !account.get('balances') || account.get('id') !== account.get('lifetime_referrer')) {
-			return false;
-		}
-
-		return account.get('balances').find(
-			(stats, assetId) => objectsById.getIn([stats, 'balance']) && objectsById.get(assetId),
-		);
-	}),
-);
+const positiveBalanceAccounts = Services.getSelector().getPositiveBalanceAccountsSelector();
 
 export default injectIntl(connect(
 	(state) => ({

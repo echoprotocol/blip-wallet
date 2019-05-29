@@ -28,6 +28,8 @@
 @import 'components/input-dropdown';
 @import 'components/multi-dropdown';
 @import 'components/modal-backup';
+@import 'components/accounts-list';
+@import 'components/qr';
 
 @import 'pages/page';
 @import 'pages/auth';
@@ -40,4 +42,5 @@
 @import 'pages/send';
 @import 'pages/manage-accounts';
 @import 'pages/settings';
+@import 'pages/receive';
 @import 'pages/password';

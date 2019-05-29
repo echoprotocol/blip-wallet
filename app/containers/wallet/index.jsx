@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
-import Immutable, { Set } from 'immutable';
-import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { CACHE_MAPS } from 'echojs-lib';
+import { Set } from 'immutable';
 
 import {
 	toggleVisibiltyAsset,
@@ -14,45 +12,8 @@ import { setLastTransaction } from '../../actions/transaction-actions';
 import Wallet from '../../components/wallet';
 import Services from '../../services';
 
-const filteredHistories = createSelector(
-	(state) => state.global.get('accounts').filter((a) => a.get('selected')),
-	(state) => state.echoCache.get(CACHE_MAPS.FULL_ACCOUNTS),
-	(accounts, objects) => accounts.reduce(
-		(map, name, id) => map.set(id, objects.getIn([id, 'history'])),
-		Immutable.Map({}),
-	),
-);
-
-const filteredObjects = createSelector(
-	(state) => state.wallet.get('balances'),
-	(state) => state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
-	(balances, objects) => balances.reduce(
-		(map, s, a) => map.set(a, objects.get(a)).set(s, objects.get(s)),
-		Immutable.Map({}),
-	),
-);
-
-const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
-
-export const historySelector = createImmutableSelector(
-	(state) => state.global.get('accounts').filter((a) => a.get('selected')),
-	(state) => filteredHistories(state),
-	(accounts, histories) => accounts.mapKeys((accountId) => ([accountId, histories.get(accountId)])),
-);
-
-export const balanceSelector = createImmutableSelector(
-	(state) => state.wallet.get('balances'),
-	(state) => filteredObjects(state),
-	(balances, objects) => balances.mapEntries(([statsId, assetId]) => ([
-		statsId,
-		{
-			asset: objects.get(assetId),
-			amount: objects.getIn([statsId, 'balance']),
-			id: objects.getIn([statsId, 'id']),
-			owner: objects.getIn([statsId, 'owner']),
-		},
-	])),
-);
+const historySelector = Services.getSelector().getHistorySelector();
+const balanceSelector = Services.getSelector().getWalletBalanceSelector();
 
 export default connect(
 	(state) => ({

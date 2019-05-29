@@ -1,7 +1,4 @@
 import { connect } from 'react-redux';
-import { CACHE_MAPS } from 'echojs-lib';
-import Immutable from 'immutable';
-import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 
 import { FORM_SEND } from '../../constants/form-constants';
 import {
@@ -14,30 +11,7 @@ import {
 import Send from '../../components/send';
 import Services from '../../services';
 
-const filteredObjects = createSelector(
-	(state) => state.wallet.get('balances'),
-	(state) => state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
-	(balances, objects) => balances.reduce(
-		(map, s, a) => map.set(a, objects.get(a)).set(s, objects.get(s)),
-		Immutable.Map({}),
-	),
-);
-
-const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
-
-const balanceSelector = createImmutableSelector(
-	(state) => state.wallet.get('balances'),
-	(state) => filteredObjects(state),
-	(balances, objects) => balances.mapEntries(([statsId, assetId]) => ([
-		statsId,
-		{
-			assetId,
-			accountId: objects.getIn([statsId, 'owner']),
-			symbol: objects.getIn([assetId, 'symbol']),
-			precision: objects.getIn([assetId, 'precision']),
-		},
-	])),
-);
+const balanceSelector = Services.getSelector().getTransferBalanceSelector();
 
 export default connect(
 	(state) => ({

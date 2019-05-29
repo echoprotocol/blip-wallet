@@ -11,7 +11,7 @@ export const PAGE404 = '/page404';
 export const INDEX_ROUTE = '/';
 export const MANAGE_ACCOUNTS = '/manage-accounts';
 export const SETTINGS = '/settings';
-
+export const RECEIVE = '/receive';
 
 export const PUBLIC_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
@@ -23,7 +23,8 @@ export const LOCKED_ROUTES = [
 	ACCOUNT_CREATED, AUTHORIZATION,
 	ACCOUNT_IMPORTED, WALLET, SEND,
 	MANAGE_ACCOUNTS, HISTORY, SETTINGS,
+	RECEIVE,
 ];
 
 
-export const SIDE_MENU_ROUTES = [WALLET, SEND, MANAGE_ACCOUNTS, HISTORY, SETTINGS];
+export const SIDE_MENU_ROUTES = [WALLET, SEND, MANAGE_ACCOUNTS, HISTORY, SETTINGS, RECEIVE];

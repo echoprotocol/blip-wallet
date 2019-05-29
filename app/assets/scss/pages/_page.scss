@@ -53,11 +53,14 @@
 
 	padding: 40px 35px;
 
-	.title{
+	.title {
 		@include source-semibold();
+		@include min-vw(1400) {
+			font-size: 18px;
+		}
 		height: 30px;
 		color: #33353f;
-		font-size: 1.3em;
+		font-size: 16px;
 		letter-spacing: 0.2em;
 		line-height: 30px;
 	}

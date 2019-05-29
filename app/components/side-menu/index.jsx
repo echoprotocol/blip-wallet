@@ -8,7 +8,7 @@ import { Sidebar, Button, Icon } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import {
-	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS,
+	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE,
 } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.png';
@@ -35,7 +35,7 @@ class SideMenu extends React.Component {
 						className="visible"
 					>
 						{
-							pathname === SEND
+							[SEND, RECEIVE].includes(pathname)
 							&& (
 								<Button
 									className="btn-return arrow right"

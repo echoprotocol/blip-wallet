@@ -668,6 +668,43 @@
 	}
 }
 
+.btn-copy {
+	@include onBtnFocus(50px, 3px, 0px, rgba(#cbcbcb, 0.64));
+	@include btn();
+
+	border-radius: 50%;
+	transition: border .3s, background-color .3s;
+
+	.copy-label {
+		@include source-semibold();
+		position: absolute;
+		right: 100%;
+		margin-right: 10px;
+		padding: 2px 6px 4px;
+		border-radius: 3px;
+		background-color: rgba(#000, 0.8);
+		color: #fff;
+		font-size: 14px;
+		line-height: normal;
+	}
+
+	&.gray {
+		border: 1px solid #cdd0d1;
+		background-color: #cdd0d1;
+		color: #3f4a52;
+
+		&:focus {
+			border: 1px solid  #bfbfbf;
+			background-color: transparent;
+		}
+	}
+
+	&.sm {
+		width: 22px;
+		height: 22px;
+	}
+}
+
 .btn-wrap {
 	display: flex;
 
