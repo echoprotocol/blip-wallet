@@ -70,7 +70,6 @@ build.package-linux:
   only:
     - master
     - develop
-    - BLP-137
   tags:
     - docker
   artifacts:

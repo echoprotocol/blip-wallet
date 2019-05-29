@@ -8,7 +8,9 @@ import {
 	CONTRACT_TYPES, CONTRACT_RESULT_TYPE_0, CONTRACT_RESULT_EXCEPTED_NONE,
 } from '../constants/transaction-constants';
 import { ASSET_TYPE, TOKEN_TYPE, DEFAULT_HISTORY_COUNT } from '../constants/graphql-constants';
-import { ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION } from '../constants/global-constants';
+import {
+	ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION, EETH_ASSET_SYMBOL,
+} from '../constants/global-constants';
 
 import { setValue } from './global-actions';
 import Services from '../services';
@@ -115,7 +117,7 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 
 		let response;
 		const base = { key, type: value.type };
-		const field = operation.getIn(value.field.split('.'));
+		const field = value.field ? operation.getIn(value.field.split('.')) : value.field;
 
 		switch (value.type) {
 			case OPTION_TYPES.ACCOUNT:
@@ -148,16 +150,23 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 					id: response.id,
 				};
 			case OPTION_TYPES.STRING:
+			case OPTION_TYPES.NUMBER:
+			case OPTION_TYPES.ACCOUNT_ADDRESS:
 				return {
 					...base,
 					label: value.label,
 					value: field,
 				};
-			case OPTION_TYPES.NUMBER:
+			case OPTION_TYPES.EETH_ASSET:
+				[response] = await Services.getEcho().api.lookupAssetSymbols([EETH_ASSET_SYMBOL]);
+
 				return {
 					...base,
+					link: `/asset/${response.id}/info`,
 					label: value.label,
-					value: field,
+					value: response.symbol,
+					precision: response.precision,
+					id: response.id,
 				};
 			default:
 				throw new Error('Unknown option type');

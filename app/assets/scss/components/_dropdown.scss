@@ -73,7 +73,7 @@
 	background-clip: padding-box;
 
 	.scrollbar-container {
-		margin: 10px 2px 0;
+		padding: 10px 2px 0;
 	}
 
 	.dropdown-item {
@@ -120,6 +120,13 @@
 		@include text-overflow();
 		max-width: calc(100% - 80px);
 		margin: 0 auto 0 14px;
+	}
+
+	.dropdown-menu {
+		.scrollbar-container {
+			position: relative;
+			max-height: 220px;
+		}
 	}
 }
 

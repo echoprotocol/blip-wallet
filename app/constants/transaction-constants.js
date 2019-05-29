@@ -10,6 +10,8 @@ export const OPTION_TYPES = {
 	ASSET: 'asset',
 	NUMBER: 'number',
 	STRING: 'string',
+	ACCOUNT_ADDRESS: 'eth_address',
+	EETH_ASSET: 'eEth',
 };
 
 export const CONTRACT_TYPES = [
@@ -779,6 +781,146 @@ export const OPERATIONS = {
 				field: 'amount.asset_id',
 				type: OPTION_TYPES.ASSET,
 			},
+		},
+	},
+	change_sidechain_config: {
+		value: OPERATIONS_IDS.CHANGE_SIDECHAIN_CONFIG,
+		name: 'operations.change_sidechain_config.title',
+		options: {
+			from: null,
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	account_address_create: {
+		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
+		name: 'operations.account_address_create.title',
+		options: {
+			from: {
+				field: 'owner',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.account_address_create.from',
+			},
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	transfer_to_address: {
+		value: OPERATIONS_IDS.TRANSFER_TO_ADDRESS,
+		name: 'operations.transfer_to_address.title',
+		options: {
+			from: {
+				field: 'from',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.transfer_to_address.from',
+			},
+			subject: {
+				field: 'to',
+				type: OPTION_TYPES.ACCOUNT_ADDRESS,
+				label: 'operations.transfer_to_address.subject',
+			},
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	generate_eth_address: {
+		value: OPERATIONS_IDS.GENERATE_ETH_ADDRESS,
+		name: 'operations.generate_eth_address.title',
+		options: {
+			from: {
+				field: 'account_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.generate_eth_address.from',
+			},
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	create_eth_address: {
+		value: OPERATIONS_IDS.CREATE_ETH_ADDRESS,
+		name: 'operations.create_eth_address.title',
+		options: {
+			from: {
+				field: 'account_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.create_eth_address.from',
+			},
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	deposit_eth: {
+		value: OPERATIONS_IDS.DEPOSIT_ETH,
+		name: 'operations.deposit_eth.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.deposit_eth.from',
+			},
+			subject: {
+				field: 'account_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.deposit_eth.subject',
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				type: OPTION_TYPES.EETH_ASSET,
+			},
+		},
+	},
+	withdraw_eth: {
+		value: OPERATIONS_IDS.WITHDRAW_ETH,
+		name: 'operations.withdraw_eth.title',
+		options: {
+			from: {
+				field: 'acc_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.withdraw_eth.from',
+			},
+			subject: {
+				field: 'eth_addr',
+				type: OPTION_TYPES.ACCOUNT_ADDRESS,
+				label: 'operations.withdraw_eth.subject',
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				type: OPTION_TYPES.EETH_ASSET,
+			},
+		},
+	},
+	approve_withdraw_eth: {
+		value: OPERATIONS_IDS.APPROVE_WITHDRAW_ETH,
+		name: 'operations.approve_withdraw_eth.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.approve_withdraw_eth.from',
+			},
+			subject: {
+				field: 'withdraw_id',
+				type: OPTION_TYPES.NUMBER,
+				label: 'operations.approve_withdraw_eth.subject',
+			},
+			amount: null,
+			asset: null,
 		},
 	},
 };

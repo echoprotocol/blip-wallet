@@ -306,7 +306,7 @@ class Wallet extends React.Component {
 
 					<div className="page-footer ">
 						<LastTransaction transaction={transaction} language={language} accounts={accounts} click={() => history.push(HISTORY)} />
-						<Footer history={history} currentNode={currentNode} localNodePercent={this.props.localNodePercent} />
+						<Footer history={history} currentNode={currentNode} platform={this.props.platform} localNodePercent={this.props.localNodePercent} />
 					</div>
 					<div className="settings-wrap">
 						<Button
@@ -336,10 +336,15 @@ class Wallet extends React.Component {
 
 }
 
+Wallet.defaultProps = {
+	platform: null,
+};
+
 Wallet.propTypes = {
 	accounts: PropTypes.object.isRequired,
 	hiddenAssets: PropTypes.object.isRequired,
 	language: PropTypes.string.isRequired,
+	platform: PropTypes.string,
 	localNodePercent: PropTypes.number.isRequired,
 	transaction: PropTypes.object.isRequired,
 	histories: PropTypes.object.isRequired,

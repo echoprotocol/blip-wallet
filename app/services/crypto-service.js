@@ -152,6 +152,20 @@ class CryptoService {
 	}
 
 	/**
+	 *
+	 * @returns {{wif: string, publicKey: string}}
+	 */
+	static generatePublicKeyAndWif() {
+		let publicKey = '';
+		let wif = '';
+		do {
+			wif = CryptoService.generateWIF();
+			publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
+		} while (publicKey.length !== ECHORANDKEY_SIZE);
+		return { publicKey, wif };
+	}
+
+	/**
 	 *  @method getPublicKey
 	 *
 	 *  Generate public key from seed, using in desktop app.

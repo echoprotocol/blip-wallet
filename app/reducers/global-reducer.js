@@ -12,6 +12,7 @@ const DEFAULT_FIELDS = Map({
 	accounts: new Map({}),
 	locked: true,
 	inited: false,
+	platform: null,
 });
 
 export default createModule({

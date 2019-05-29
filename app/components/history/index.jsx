@@ -203,7 +203,7 @@ class History extends React.Component {
 						</li>
 						<li className="age">
 							<span className="line-content">
-								{FormatHelper.getLocaleDateFromNow(transaction.get('timestamp'), language, 'DD MMM, HH:mm')}
+								{FormatHelper.getLocaleDateFromNow(transaction.get('timestamp'), language, 'DD MMM HH:mm')}
 							</span>
 						</li>
 						<li className="from">
@@ -213,13 +213,9 @@ class History extends React.Component {
 						</li>
 						<li className="from-to-icon">
 							{
+								/* left */
 								transaction.get('subject') ? (
-									<Icon
-										className={classnames(
-											'arrow-direction',
-											{ left: OPERATIONS_IDS.TRANSFER === transaction.get('type') && received },
-										)}
-									/>
+									<Icon className="arrow-direction" />
 								) : null
 							}
 						</li>
@@ -298,7 +294,7 @@ class History extends React.Component {
 						</div>
 					</PerfectScrollbar>
 					<div className="page-footer">
-						<Footer history={history} currentNode={currentNode} localNodePercent={this.props.localNodePercent} />
+						<Footer history={history} currentNode={currentNode} platform={this.props.platform} localNodePercent={this.props.localNodePercent} />
 					</div>
 
 					<Filter
@@ -330,10 +326,12 @@ History.propTypes = {
 	setNewTransaction: PropTypes.func.isRequired,
 	clear: PropTypes.func.isRequired,
 	localNodePercent: PropTypes.number.isRequired,
+	platform: PropTypes.string,
 };
 
 History.defaultProps = {
 	total: null,
+	platform: null,
 };
 
 export default History;

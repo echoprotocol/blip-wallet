@@ -1,4 +1,5 @@
 import { platform } from 'os';
+import { WIN_PLATFORM, LINUX_PLATFORM, MAC_PLATFORM } from '../constants/platform-constants';
 
 export default () => {
 	switch (platform()) {
@@ -7,12 +8,12 @@ export default () => {
 		case 'linux':
 		case 'openbsd':
 		case 'android':
-			return 'linux';
+			return LINUX_PLATFORM;
 		case 'darwin':
 		case 'sunos':
-			return 'mac';
+			return MAC_PLATFORM;
 		case 'win32':
-			return 'win';
+			return WIN_PLATFORM;
 		default:
 			throw new Error('Unknown error');
 	}

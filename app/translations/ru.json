@@ -406,7 +406,42 @@
             "title": "Перевод в контракте",
             "from": "Отправитель",
             "subject": "Получатель"
-        }
+        },
+        "change_sidechain_config": {
+			"title": "Изменить конфигурацию sidechain"
+		},
+		"account_address_create": {
+			"title": "Создать адрес аккаунта",
+			"from": "Владелец"
+		},
+		"transfer_to_address": {
+			"title": "Перевод на адрес",
+			"from": "Отправитель",
+			"subject": "Получатель"
+		},
+		"generate_eth_address": {
+			"title": "Сгенерировать ethereum адрес",
+			"from": "Аккаунт"
+		},
+		"create_eth_address": {
+			"title": "Создать ethereum адрес",
+			"from": "Аккаунт"
+		},
+		"deposit_eth": {
+			"title": "Депозит ETH",
+            "from": "Член комитета",
+			"subject": "Аккаунт"
+		},
+		"withdraw_eth": {
+			"title": "Вывод ETH",
+			"from": "Отправитель",
+			"subject": "Получатель"
+		},
+		"approve_withdraw_eth": {
+			"title": "Подтвердить вывод ETH",
+			"from": "Член комитета",
+			"subject": "Идентификатор вывода"
+		}
 	},
 
     "send": {
@@ -432,5 +467,13 @@
         "public_key": "Public key",
         "wif": "Private key",
         "close": "Close"
-    }
+    },
+
+
+	"notifications": {
+		"title": "Blip Wallet",
+		"consensus_message": "You need to have an Echo account and log into the application to participate in block production.",
+		"windows_doesnt_support_local_node": "This version of the wallet does not support local Echo nodes on Windows OS. Your wallet will be connected to a remote node."
+	}
+
 }

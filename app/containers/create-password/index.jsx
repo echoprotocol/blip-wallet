@@ -164,6 +164,12 @@ class CreatePassword extends React.Component {
 							isVisible={isVisible}
 							className="lines"
 						>
+							<div className="password-info">
+								<p>Please, create a password that will be used to unlock the wallet from this devive.</p>
+								<p>
+									Important: Blip does not store backups of the acoount password, so in case of losing your password you will needto reset it.
+								</p>
+							</div>
 							<div className="line">
 								<div className="line-label">
 									<span className="line-label-text">

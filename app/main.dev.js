@@ -1,5 +1,5 @@
 /* eslint global-require: off */
-
+/* eslint-disable no-underscore-dangle */
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -20,9 +20,12 @@ import appRootDir from 'app-root-dir';
 import notifier from 'node-notifier';
 import { join as joinPath, dirname } from 'path';
 import rimraf from 'rimraf';
+import i18next from 'i18next';
+
 import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
+import getPlatform from './main/get-platform';
 
 import {
 	DATA_DIR,
@@ -31,7 +34,7 @@ import {
 	CHAIN_MIN_RANGE_PORT,
 	CHAIN_MAX_RANGE_PORT,
 } from './constants/chain-constants';
-import { NOTIFICATION_CONSENSUS_TITLE, NOTIFICATION_CONSENSUS_MESSAGE } from './constants/notification-constants';
+
 import {
 	APP_WINDOW_HEIGHT,
 	APP_WINDOW_WIDTH,
@@ -39,6 +42,8 @@ import {
 	APP_WINDOW_MIN_WIDTH,
 	TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS,
 } from './constants/global-constants';
+import { WIN_PLATFORM } from './constants/platform-constants';
+import EN_TRANSLATION from './translations/en';
 
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
@@ -164,6 +169,16 @@ app.on('ready', async () => {
 		await installExtensions();
 	}
 
+	await i18next.init({
+		lng: 'en',
+		debug: true,
+		resources: {
+			en: {
+				translation: EN_TRANSLATION,
+			},
+		},
+	});
+
 	mainWindow = new BrowserWindow({
 		show: false,
 		width: APP_WINDOW_WIDTH,
@@ -189,6 +204,35 @@ app.on('ready', async () => {
 		sendPort();
 	});
 
+	ipcMain.on('getPlatform', async () => {
+		mainWindow.webContents.send('getPlatform', getPlatform());
+	});
+
+	let localEchoNodeNotified = false;
+
+	ipcMain.on('setLanguage', async () => {
+
+		// TODO:: language switch
+
+		if (!localEchoNodeNotified) {
+			if (getPlatform() === WIN_PLATFORM) {
+				notifier.notify({
+					title: i18next.t('notifications.title'),
+					message: i18next.t('notifications.windows_doesnt_support_local_node'),
+				});
+			} else {
+				notifier.notify({
+					title: i18next.t('notifications.title'),
+					message: i18next.t('notifications.consensus_message'),
+				});
+			}
+
+			localEchoNodeNotified = true;
+
+		}
+
+	});
+
 	// @TODO: Use 'ready-to-show' event
 	//        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
 	mainWindow.webContents.on('did-finish-load', async () => {
@@ -203,11 +247,6 @@ app.on('ready', async () => {
 			mainWindow.show();
 			mainWindow.focus();
 		}
-
-		notifier.notify({
-			title: NOTIFICATION_CONSENSUS_TITLE,
-			message: NOTIFICATION_CONSENSUS_MESSAGE,
-		});
 
 		port = await getPort({ port: getPort.makeRange(CHAIN_MIN_RANGE_PORT, CHAIN_MAX_RANGE_PORT) });
 
