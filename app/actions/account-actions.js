@@ -14,7 +14,7 @@ import {
 	DEFAULT_MEMO_KEY,
 } from '../constants/global-constants';
 import { toggleLoading, setValue } from './form-actions';
-import { setValue as setGlobal, setValue as setValueGlobal } from './global-actions';
+import { setValue as setGlobal, setValue as setValueGlobal, setAccounts } from './global-actions';
 import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import GlobalReducer from '../reducers/global-reducer';
@@ -26,36 +26,6 @@ import Account from '../logic-components/db/models/account';
 import Key from '../logic-components/db/models/key';
 import { subscribeTokens } from './balance-actions';
 
-
-const setAccounts = () => (async () => {
-
-	const userStorage = Services.getUserStorage();
-	const accounts = await userStorage.getAllAccounts();
-	const networkId = await userStorage.getNetworkId();
-
-	const keyPromises = accounts.map((account) => new Promise(async (resolve) => {
-
-		const keys = await userStorage.getAllWIFKeysForAccount(account.id);
-
-		return resolve(keys.map((key) => ({
-			id: account.id,
-			key: PrivateKey.fromWif(key.wif).toPrivateKeyString(),
-		})));
-
-	}));
-
-	const accountsKeysResults = await Promise.all(keyPromises);
-	const accountsKeys = [];
-
-	accountsKeysResults.forEach((accountKeysArr) => {
-		accountKeysArr.forEach((accountKey) => {
-			accountsKeys.push(accountKey);
-		});
-	});
-
-	Services.getEcho().setOptions(accountsKeys, networkId);
-
-});
 
 /**
  * @method validateCreateAccount

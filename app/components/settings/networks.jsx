@@ -3,59 +3,103 @@ import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classnames from 'classnames';
+import { FormattedMessage } from 'react-intl';
+
+import { NETWORK_STATUS, REMOTE_NODE } from '../../constants/global-constants';
+import FormatHelper from '../../helpers/format-helper';
+import Services from '../../services';
 
 class Networks extends React.Component {
 
-	render() {
-		const { networks, connected } = this.props;
+	onClick(value) {
+		const { networks } = this.props;
+
 		const current = networks.find((n) => n.get('active'));
 
+		if (current && current.equals(value)) {
+			value = null;
+		}
+
+		this.props.changeNetwork(value);
+	}
+
+	render() {
+		const {
+			network, networks, connected, node,
+		} = this.props;
+		const current = network || networks.find((n) => n.get('active'));
+		const status = connected ? NETWORK_STATUS.ONLINE : NETWORK_STATUS.OFFLINE;
+
 		return (
-			<Dropdown className="white networks">
-				<Dropdown.Toggle variant="Info">
-					<span
+			<div className="form-wrap">
+				<div className="title"><FormattedMessage id="settings.networks.title" /></div>
 
-						className="dropdown-toggle-text"
-					>
-						<div className={classnames('connected-status', { connected })}>
-							<div className="connected-popover">
-								Status: { connected ? 'online' : 'offline' }
-							</div>
+				<div className="line">
+					<div className="line-content">
+						<div className="line-vertical-label">
+							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
 						</div>
-						{current.get('id')}
-					</span>
-					<span className="carret" />
-				</Dropdown.Toggle>
+						<Dropdown className="white networks">
+							<Dropdown.Toggle variant="Info">
+								<span className="dropdown-toggle-text">
+									{
+										!network ? (
+											<div className={classnames('connected-status', status)}>
+												<div className="connected-popover">
+													<FormattedMessage id={`settings.networks.status.${status}`} />
+												</div>
+											</div>
+										) : (<div className="connected-status" />)
+									}
+									{FormatHelper.capitalizeFirstLetter(current.get('id'))}
+								</span>
+								<span className="carret" />
+							</Dropdown.Toggle>
 
-				<Dropdown.Menu>
-					<PerfectScrollbar>
-						{
-							networks.map((network) => (
-								<Dropdown.Item
-									key={network.get('id')}
-									eventKey={network.get('id')}
-									onClick={(() => this.props.changeNetwork(network))}
-								>
-									{network.get('id')}
-								</Dropdown.Item>
-							))
-						}
-					</PerfectScrollbar>
-				</Dropdown.Menu>
-			</Dropdown>
+							<Dropdown.Menu>
+								<PerfectScrollbar>
+									{
+										networks.map((value) => (
+											<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+												{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+											</Dropdown.Item>
+										))
+									}
+								</PerfectScrollbar>
+							</Dropdown.Menu>
+						</Dropdown>
+					</div>
+				</div>
+				<div className="line">
+					<div className="line-content">
+						<div className="line-vertical-label">
+							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.node.address" /></span>
+						</div>
+						<div className="line-link">
+							{
+								node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl
+							}
+						</div>
+					</div>
+				</div>
+
+			</div>
 		);
 	}
 
 }
 
 Networks.propTypes = {
+	network: PropTypes.object,
+	connected: PropTypes.bool,
+	node: PropTypes.string.isRequired,
 	networks: PropTypes.object.isRequired,
 	changeNetwork: PropTypes.func.isRequired,
-	connected: PropTypes.bool,
 };
 
 Networks.defaultProps = {
 	connected: false,
+	network: null,
 };
 
 export default Networks;

@@ -42,9 +42,15 @@
 		transition: background-color .3s;
 	}
 
-	&.connected {
+	&.online {
 		&:before {
 			background-color: #3dc49f;
+		}
+	}
+
+	&.offline {
+		&:before {
+			background-color: rgba(233, 68, 54, 0.9);
 		}
 	}
 

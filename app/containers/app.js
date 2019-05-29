@@ -32,6 +32,7 @@ import {
 	RESTORE_PASSWORD,
 	WALLET,
 	MANAGE_ACCOUNTS,
+	SETTINGS,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 
@@ -112,7 +113,7 @@ class App extends React.Component {
 
 		}
 
-		if (!routed && [WALLET, MANAGE_ACCOUNTS].includes(pathname)) {
+		if (!routed && [WALLET, MANAGE_ACCOUNTS, SETTINGS].includes(pathname)) {
 			const { locked, accounts } = this.props;
 
 			if (!locked && !accounts.size) {

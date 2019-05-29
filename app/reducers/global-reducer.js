@@ -1,5 +1,5 @@
 import { createModule } from 'redux-modules';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 import { EN_LOCALE } from '../constants/global-constants';
 
@@ -13,6 +13,7 @@ const DEFAULT_FIELDS = Map({
 	locked: true,
 	inited: false,
 	platform: null,
+	networks: new List([]),
 });
 
 export default createModule({

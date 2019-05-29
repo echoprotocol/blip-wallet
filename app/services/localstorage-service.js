@@ -7,7 +7,7 @@ class LocalStorageService {
 	 * @returns {any}
 	 */
 	getData(key) {
-		const data = JSON.parse(localStorage.getItem(key) || '{}');
+		const data = JSON.parse(localStorage.getItem(key) || 'null');
 		return data;
 	}
 

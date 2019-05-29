@@ -145,7 +145,7 @@ export const saveSelectedAccounts = (selectedAccounts) => async (dispatch, getSt
  */
 export const initHiddenAssets = () => (dispatch) => {
 	const localStorage = Services.getLocalStorage();
-	const dataFromStorage = localStorage.getData('hiddenAssets');
+	const dataFromStorage = localStorage.getData('hiddenAssets') || {};
 	let hiddenAssets = new Map({});
 	Object.keys(dataFromStorage).forEach((key) => {
 		hiddenAssets = hiddenAssets.set(key, new Set(dataFromStorage[key]));
@@ -179,4 +179,14 @@ export const toggleVisibiltyAsset = (idAsset) => async (dispatch, getState) => {
 
 	localStorage.setData('hiddenAssets', hiddenAssets);
 	dispatch(setValue('hiddenAssets', hiddenAssets));
+};
+
+/**
+ *
+ * @returns {Function}
+ */
+export const init = () => async (dispatch) => {
+	await dispatch(initTokens());
+	await dispatch(updateBalance());
+	dispatch(initHiddenAssets());
 };

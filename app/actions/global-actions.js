@@ -1,4 +1,5 @@
-import { Map } from 'immutable';
+import { Map, fromJS } from 'immutable';
+import { PrivateKey } from 'echojs-lib';
 
 import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
@@ -7,12 +8,10 @@ import UserStorageService from '../services/user-storage-service';
 import { UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
-import { TIME_LOADING } from '../constants/global-constants';
+import { NETWORKS, DEFAULT_NETWORK_ID, TIME_LOADING } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
 import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
-import { initNetworks } from './setting-actions';
-
 
 let ipcRenderer;
 
@@ -35,6 +34,78 @@ try {
 export const setValue = (field, value) => (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field, value }));
 };
+
+/**
+ *  @method clearValue
+ *
+ * 	Clear value to global reducer
+ *
+ * 	@param {String} field
+ */
+export const clearValue = (field) => (dispatch) => {
+	dispatch(GlobalReducer.actions.clear({ field }));
+};
+
+/**
+ *  @method initNetworks
+ *
+ * 	Set value to global reducer
+ *
+ * 	@param store
+ */
+export const initNetworks = (store) => async (dispatch) => {
+	let current = Services.getLocalStorage().getData('current_network');
+	if (!current || !NETWORKS[current]) {
+		current = DEFAULT_NETWORK_ID;
+		Services.getLocalStorage().setData('current_network', current);
+	}
+
+	const networks = Object.entries(NETWORKS).map(([id, value]) => ({
+		id,
+		remote: value.remote,
+		active: current === id,
+	}));
+
+	await Services.getUserStorage().setNetworkId(current);
+	await Services.getEcho().init(current, { store });
+
+	Services.getEcho().setOptions([], current);
+
+	dispatch(setValue('networks', fromJS(networks)));
+};
+
+/**
+ *  @method setAccounts
+ */
+export const setAccounts = () => (async () => {
+
+	const userStorage = Services.getUserStorage();
+	const accounts = await userStorage.getAllAccounts();
+	const networkId = await userStorage.getNetworkId();
+
+	const keyPromises = accounts.map((account) => new Promise(async (resolve) => {
+
+		const keys = await userStorage.getAllWIFKeysForAccount(account.id);
+
+		return resolve(keys.map((key) => ({
+			id: account.id,
+			key: PrivateKey.fromWif(key.wif).toPrivateKeyString(),
+		})));
+
+	}));
+
+	const accountsKeysResults = await Promise.all(keyPromises);
+	const accountsKeys = [];
+
+	accountsKeysResults.forEach((accountKeysArr) => {
+		accountKeysArr.forEach((accountKey) => {
+			accountsKeys.push(accountKey);
+		});
+	});
+
+	Services.getEcho().setOptions(accountsKeys, networkId);
+
+});
 
 /**
  *  @method initAccounts
@@ -61,6 +132,7 @@ export const initAccounts = () => async (dispatch, getState) => {
 	}
 
 	dispatch(setValue('accounts', accountsStore));
+	dispatch(setAccounts());
 	await dispatch(subscribeTokens());
 };
 

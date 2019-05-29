@@ -215,9 +215,9 @@
 	}
 
 	&.disabled {
-		border: 1px solid #8f77c5;
-		background-color: transparent;
-		color: #a78edc;
+		border: 1px solid #e8e8ea;
+		background-color: #e8e8ea;
+		color: rgba(63, 74, 82, 0.4);
 	}
 
 	.text {

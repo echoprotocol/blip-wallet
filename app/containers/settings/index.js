@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
 
 import Settings from '../../components/settings';
-import { changeNetwork } from '../../actions/setting-actions';
+import { applySettings } from '../../actions/setting-actions';
 
 export default connect(
 	(state) => ({
-		networks: state.settings.get('networks'),
+		isConnected: state.global.get('isConnected'),
+		currentNode: state.global.get('currentNode'),
+		networks: state.global.get('networks'),
+		loading: state.settings.get('loading'),
 	}),
 	(dispatch) => ({
-		changeNetwork: (value) => dispatch(changeNetwork(value)),
+		applySettings: (value) => dispatch(applySettings(value)),
 	}),
 )(Settings);

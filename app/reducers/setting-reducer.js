@@ -1,8 +1,9 @@
 import { createModule } from 'redux-modules';
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 
 const DEFAULT_FIELDS = Map({
-	networks: new List([]),
+	loading: false,
+	error: null,
 });
 
 export default createModule({

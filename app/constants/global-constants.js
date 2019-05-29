@@ -34,6 +34,10 @@ export const NETWORKS = {
 	},
 };
 export const DEFAULT_NETWORK_ID = 'devnet';
+export const NETWORK_STATUS = {
+	ONLINE: 'online',
+	OFFLINE: 'offline',
+};
 
 export const EXPLORER_URL = {
 	devnet: 'https://656-echo-explorer.pixelplex-test.by',

@@ -53,7 +53,6 @@ class Blockchain {
 	 * @type {boolean}
 	 */
 	get isConnected() {
-
 		if (!this.isOnline) {
 			return false;
 		}
@@ -134,27 +133,27 @@ class Blockchain {
 
 			if (ipcRenderer) {
 
-				ipcRenderer.on('port', (_, port) => {
-
+				ipcRenderer.on('port', async (_, port) => {
 					this.localNodeUrl = `ws://127.0.0.1:${port}`;
 
 					if (this.isOnline) {
-						this.startCheckingLocalNode();
+						await this.startCheckingLocalNode();
 					}
 
+					this.emitter.emit('setIsConnected', this.isConnected);
 				});
 
 				ipcRenderer.send('subscribePort');
 			}
 
-			this.startCheckingRemote();
+			await this.startCheckingRemote();
 
+			this.emitter.emit('setIsConnected', this.isConnected);
 
 		} catch (e) {
 			console.error('init error', e);
 		}
 
-		this.emitter.emit('setIsConnected', this.isConnected);
 	}
 
 	async checkNodeSync() {
@@ -524,6 +523,31 @@ class Blockchain {
 		ipcRenderer.send('startNode', { accounts, networkId });
 
 		return true;
+	}
+
+	/**
+	*
+	* @param network
+	* @returns {Promise<void>}
+	*/
+	async changeConnection(network) {
+		try {
+
+			this.setNetworkGroup(network);
+
+			if (this.localNodeUrl) {
+				if (this.isOnline) {
+					await this.startCheckingLocalNode();
+				}
+
+				this.emitter.emit('setIsConnected', this.isConnected);
+			}
+
+			await this.startCheckingRemote();
+			this.emitter.emit('setIsConnected', this.isConnected);
+		} catch (e) {
+			console.error('change connection error', e);
+		}
 	}
 
 }

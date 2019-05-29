@@ -397,7 +397,7 @@ export const loadTransactions = () => async (dispatch, getState) => {
 			return;
 		}
 
-		const filter = fromJS(Services.getLocalStorage().getData('historyFilter'));
+		const filter = fromJS(Services.getLocalStorage().getData('historyFilter') || {});
 
 		if (filter.isEmpty() || (!filter.get('accounts') && !filter.get('coins') && !filter.get('types'))) {
 			await dispatch(setDefaultFilters());

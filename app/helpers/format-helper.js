@@ -1,5 +1,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
+import _ from 'lodash';
+
 import { ECHO_ASSET_PRECISION } from '../constants/global-constants';
 
 export default class FormatHelper {
@@ -115,6 +117,10 @@ export default class FormatHelper {
 		}
 
 		return FormatHelper.getLocaleTransformDate(date, language, formatter);
+	}
+
+	static getError(err) {
+		return err instanceof Error || (_.isObject(err) && err.message) ? err.message : err;
 	}
 
 	/**

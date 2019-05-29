@@ -474,6 +474,18 @@
 		"title": "Blip Wallet",
 		"consensus_message": "You need to have an Echo account and log into the application to participate in block production.",
 		"windows_doesnt_support_local_node": "This version of the wallet does not support local Echo nodes on Windows OS. Your wallet will be connected to a remote node."
+	},
+
+    "settings": {
+		"networks": {
+			"title": "Сеть",
+			"select.network": "Выбор сети",
+			"status.online": "Статус: доступен",
+            "status.offline": "Статус: недоступен",
+			"node.address": "Адрес узла"
+		},
+		"apply": "Применить",
+		"cancel": "Отменить"
 	}
 
 }
