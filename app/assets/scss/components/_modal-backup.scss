@@ -30,6 +30,10 @@
 			&-action {
 				justify-content: space-between;
 				display: flex;
+
+				.key {
+					margin-right: 10px;
+				}
 			}
 
 		}
@@ -41,6 +45,7 @@
 		.account-name {
 			margin-right: 5px;
 			color: #43d7ad;
+			word-break: break-all;
 		}
 	}
 }

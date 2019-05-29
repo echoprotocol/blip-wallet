@@ -39,6 +39,7 @@
 		flex-direction: column;
 		justify-content: space-around;
 		display: flex;
+		max-width: calc(100% - 100px);
 		margin-left: 14px;
 		font-size: 16px;
 
@@ -49,6 +50,7 @@
 					margin-top: 4px;
 				}
 				align-items: center;
+				align-self: flex-start;
 				justify-content: center;
 				display: flex;
 				padding: 3px 12px;
@@ -74,6 +76,8 @@
 
 		.name {
 			@include source-semibold();
+			@include text-overflow();
+			max-width: 100%;
 			color: #3f4a52;
 		}
 	}
@@ -194,6 +198,8 @@
 
 			.account-name {
 				@include source-semibold();
+				@include text-overflow();
+				max-width: 100%;
 				padding: 20px 16px;
 				color: #3f4a52;
 				font-size: 16px;
