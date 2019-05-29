@@ -54,8 +54,12 @@ i.icon {
 	content: "\e907";
 }
 
-.icon-receive-trans:before {
-	content: "\e908";
+.icon-receive-trans {
+	transform: rotate(90deg);
+
+	&:before {
+		content: "\e909";
+	}
 }
 
 .icon-send-trans:before {
