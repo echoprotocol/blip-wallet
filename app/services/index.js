@@ -4,6 +4,7 @@ import Emitter from './emitter';
 import Graphql from './graphql';
 import LocalStrorageService from './localstorage-service';
 import TokenSubscribe from './token-subscribe';
+import Selector from './selector';
 import MainProcessAPIService from './main.process.api.service';
 
 class Services {
@@ -16,6 +17,7 @@ class Services {
 		this.graphql = null;
 		this.localStorage = null;
 		this.tokenSubscribe = null;
+		this.selector = null;
 		this.mainProcessAPIService = null;
 	}
 
@@ -84,6 +86,16 @@ class Services {
 		this.tokenSubscribe = new TokenSubscribe(this.getEmitter(), this.getGraphql());
 
 		return this.tokenSubscribe;
+	}
+
+	getSelector() {
+		if (this.selector) {
+			return this.selector;
+		}
+
+		this.selector = new Selector();
+
+		return this.selector;
 	}
 
 	getMainProcessAPIService() {

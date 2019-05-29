@@ -8,6 +8,7 @@ import {
 	FORM_UNLOCK,
 	FORM_SIGN_UP,
 	FORM_SEND,
+	FORM_RECEIVE,
 } from '../constants/form-constants';
 
 const DEFAULT_FIELDS = Map({
@@ -60,6 +61,17 @@ const DEFAULT_FORM_FIELDS = {
 			precision: '',
 		},
 	}),
+	[FORM_RECEIVE]: Map({
+		selectedAccount: {
+			value: '',
+			error: null,
+		},
+		amount: {
+			value: '',
+			error: null,
+		},
+		selectedBalance: '',
+	}),
 };
 
 export default createModule({
@@ -70,6 +82,7 @@ export default createModule({
 		[FORM_SIGN_UP]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_UP]),
 		[FORM_SIGN_IN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_IN]),
 		[FORM_SEND]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SEND]),
+		[FORM_RECEIVE]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_RECEIVE]),
 	}),
 	transformations: {
 		set: {
@@ -132,7 +145,6 @@ export default createModule({
 				return state;
 			},
 		},
-
 
 		clearForm: {
 			reducer: (state, { payload }) => {

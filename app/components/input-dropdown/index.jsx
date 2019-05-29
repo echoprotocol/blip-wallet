@@ -67,6 +67,24 @@ class InputDropdown extends React.Component {
 		}
 	}
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { currentVal, assetsList, tokensList } = prevState;
+
+		if (!assetsList.concat(tokensList).find((data) => data.text === currentVal) && currentVal) {
+			const { path } = nextProps;
+
+			if (path) {
+				nextProps.setValue(path.field, '');
+				nextProps.setFee();
+			}
+
+			return { currentVal: '' };
+		}
+
+		return null;
+	}
+
+
 	componentWillUnmount() {
 		document.removeEventListener('mousedown', this.handleClickOutside);
 	}
@@ -274,7 +292,7 @@ class InputDropdown extends React.Component {
 
 	render() {
 		const {
-			opened, focus, assetsList, tokensList, currentVal, search,
+			opened, focus, assetsList, tokensList, search, currentVal,
 		} = this.state;
 		const {
 			title, hints, disable, errorText, value: inputValue, name, intl, placeholder,
@@ -460,8 +478,8 @@ InputDropdown.defaultProps = {
 	path: null,
 	setValue: null,
 	onChange: null,
-	onKeyPress: null,
-	setFee: null,
+	onKeyPress: () => {},
+	setFee: () => {},
 	data: null,
 };
 

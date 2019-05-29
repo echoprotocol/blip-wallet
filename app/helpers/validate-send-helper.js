@@ -1,5 +1,5 @@
 import BN from 'bignumber.js';
-import { CONTRACT_ID } from '../constants/global-constants';
+import { CONTRACT_ID_PREFIX } from '../constants/global-constants';
 
 export default class ValidateSendHelper {
 
@@ -7,7 +7,7 @@ export default class ValidateSendHelper {
 
 		id = id.split('.');
 
-		if (id.length !== 3 || parseInt(id[2], 10).toString() !== id[2] || id.splice(0, 2).join('.') !== CONTRACT_ID) {
+		if (id.length !== 3 || parseInt(id[2], 10).toString() !== id[2] || id.splice(0, 2).join('.') !== CONTRACT_ID_PREFIX) {
 			return 'Invalid contract ID';
 		}
 

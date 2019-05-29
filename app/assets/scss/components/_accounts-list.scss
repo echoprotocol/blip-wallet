@@ -1,14 +1,3 @@
-.description-block {
-	@include source-regular();
-	margin-top: 40px;
-	color: #3f4a52;
-	font-size: 18px;
-
-	& + .accounts-list {
-		margin-top: 30px;
-	}
-}
-
 .accounts-list {
 	display: grid;
 	margin: 40px 0;

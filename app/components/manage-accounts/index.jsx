@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 
 import Avatar from '../avatar';
 import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
-import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../../constants/global-constants';
+import { ECHO_ASSET_PRECISION } from '../../constants/global-constants';
 import FormatHelper from '../../helpers/format-helper';
 import { AUTHORIZATION } from '../../constants/routes-constants';
 
@@ -39,31 +39,13 @@ class ManageAccounts extends React.Component {
 		this.props.openModal(modal, fromJS(data));
 	}
 
-	getBalance(accountId) {
-		const { balances } = this.props;
-
-		const coreBalance = balances.find((b) => b.asset.get('id') === ECHO_ASSET_ID && b.owner === accountId);
-
-		if (!coreBalance) {
-			return false;
-		}
-
-		return FormatHelper.formatAmount(coreBalance.amount, coreBalance.asset.get('precision'));
-	}
-
-	getCustomAssetsCount(accountId) {
-		const { balances } = this.props;
-
-		return balances.filter((b) => b.asset.get('id') !== ECHO_ASSET_ID && b.owner === accountId).size;
-	}
-
 	renderAccounts() {
 		const { accounts, balances } = this.props;
 
 		return [...accounts.map((account, index) => {
-			const amount = this.getBalance(index);
+			const amount = FormatHelper.getBalance(index, balances);
+			const customAssetsCount = FormatHelper.getCustomAssetsCount(index, balances);
 			const precision = ![...balances.values()][0] ? ECHO_ASSET_PRECISION : [...balances.values()][0].asset.get('precision');
-			const customAssetsCount = this.getCustomAssetsCount(index);
 
 			return (
 				<div className="account-item" key={account.get('name')}>
@@ -85,7 +67,7 @@ class ManageAccounts extends React.Component {
 										<div className="name-label">Primary account</div>
 									</React.Fragment>
 								)
-								:							(
+								: (
 									<React.Fragment>
 										<div className="name-label">Account name</div>
 										<div className="name">{account.get('name')}</div>
@@ -125,7 +107,7 @@ class ManageAccounts extends React.Component {
 					</div>
 					<div className="line">
 						<div className="balance">
-							<span className="integer">{amount ? `${amount.split('.')[0]}` : '0'}</span>
+							<span className="integer">{`${amount.split('.')[0]}`}</span>
 							<span className="fractional">{FormatHelper.getFraction(amount, precision)}</span>
 						</div>
 					</div>

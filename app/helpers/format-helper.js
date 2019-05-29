@@ -1,6 +1,8 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
-import { ECHO_ASSET_PRECISION } from '../constants/global-constants';
+import { validators } from 'echojs-lib';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
+import { ASSET_TYPE, TOKEN_TYPE } from '../constants/transaction-constants';
 
 export default class FormatHelper {
 
@@ -11,6 +13,27 @@ export default class FormatHelper {
      */
 	static accumulateBalances(values) {
 		return values.reduce((res, a) => res.plus(a), new BN(0));
+	}
+
+	/**
+	 *
+	 * @param accountId
+	 * @param balances
+	 * @param assetId
+	 * @returns {string|null}
+	 */
+	static getBalance(accountId, balances, assetId = ECHO_ASSET_ID) {
+		const balance = balances.find((b) => b.asset.get('id') === assetId && b.owner === accountId);
+
+		if (!balance) {
+			return '0';
+		}
+
+		return FormatHelper.formatAmount(balance.amount, balance.asset.get('precision'));
+	}
+
+	static getCustomAssetsCount(accountId, balances) {
+		return balances.filter((b) => b.asset.get('id') !== ECHO_ASSET_ID && b.owner === accountId).size;
 	}
 
 	/**
@@ -119,6 +142,54 @@ export default class FormatHelper {
 
 	/**
 	 *
+	 * @param accountName
+	 * @param currencyId
+	 * @param amount
+	 * @returns {string}
+	 */
+	static formatQrUrl(accountName, currencyId, amount) {
+		const currencyType = validators.isAssetId(currencyId) ? ASSET_TYPE.toLowerCase() : TOKEN_TYPE.toLowerCase();
+
+		return `${accountName}/${currencyType}-${currencyId.split('.')[2]}/${amount || 0}/qr-code.png`;
+	}
+
+
+	/**
+	 *
+	 * @param accountName
+	 * @param currencyId
+	 * @param amount
+	 * @returns {string}
+	 */
+	static formatQrKey(accountName, currencyId, amount) {
+		return `${currencyId}:${accountName}?amount=${amount || 0}`;
+	}
+
+	/**
+	 *
+	 * @param amount
+	 * @param precision
+	 * @param currencyId - asset or token id
+	 * @param accountName
+	 * @param type - 'url' for backend service or 'key' for qr content
+	 * @returns {string}
+	 */
+	static formatQr(amount, precision, currencyId, accountName, type) {
+		amount = new BN(amount).times(10 ** precision);
+		amount = amount.isNaN() ? null : amount.toString();
+		currencyId = currencyId || ECHO_ASSET_ID;
+
+		switch (type) {
+			case 'url':
+				return FormatHelper.formatQrUrl(accountName, currencyId, amount);
+			case 'key':
+				return FormatHelper.formatQrKey(accountName, currencyId, amount);
+			default:
+				return '';
+		}
+	}
+
+	/**
 	 * @param balance
 	 * @param precision
 	 * @returns {string}

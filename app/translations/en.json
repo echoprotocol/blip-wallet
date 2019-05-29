@@ -451,6 +451,30 @@
 		"close": "Close"
 	},
 
+	"receive": {
+		"copy": {
+			"account": {
+				"title": "Copy account name",
+				"description": "Copy one of the account names attached to Blip and share with a sender to request a transaction."
+			},
+			"qrcode": {
+				"title": "Generate QR-Code",
+				"description": "Fill in the information about payment type, assets etc. to get unique QR code."
+			}
+		},
+		"hint": {
+			"copied": "Copied to clipboard"
+		},
+		"select": {
+			"account.label": "Select account",
+			"amount": {
+				"label": "Select asset and amount",
+				"placeholder": "Amount"
+			},
+			"qr.description": "QR code and link are generated automatically. You can copy it and send to someone for payment."
+		}
+	},
+
 	"notifications": {
 		"title": "Blip Wallet",
 		"consensus_message": "You need to have an Echo account and log into the application to participate in block production.",

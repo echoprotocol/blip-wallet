@@ -77,3 +77,27 @@
 		}
 	}
 }
+
+@include max-vw(1200) {
+	.withSidebar {
+		.form-wrap {
+			.line {
+				flex-direction: column;
+
+				&-label {
+					margin-right: 0;
+					text-align: left;
+
+					&-text {
+						position: relative;
+					}
+				}
+
+				&-content {
+					width: 420px;
+				}
+			}
+
+		}
+	}
+}
