@@ -85,6 +85,24 @@ const installExtensions = async () => {
 	).catch(console.log);
 };
 
+// lock multiple app windows
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+	app.quit();
+} else {
+	app.on('second-instance', () => {
+		// Someone tried to run a second instance, we should focus our window.
+		if (mainWindow) {
+			if (mainWindow.isMinimized()) {
+				mainWindow.restore();
+			}
+
+			mainWindow.focus();
+		}
+	});
+}
+
 /**
  * Add event listeners...
  */
@@ -190,6 +208,9 @@ app.on('ready', async () => {
 		minHeight: APP_WINDOW_MIN_HEIGHT,
 		backgroundColor: '#6852A4',
 		frame: false,
+		webPreferences: {
+			nodeIntegration: true,
+		},
 	});
 
 	mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -378,18 +399,20 @@ if (process.env.DEBUG_PROD) {
 	});
 }
 
+ipcMain.on('showWindow', () => {
+	mainWindow.show();
+});
+
 ipcMain.on('close-app', (event) => {
 	if (!app.isQuiting) {
 		event.preventDefault();
-		mainWindow.hide();
+
+		if (process.platform !== 'darwin') {
+			app.quit();
+		} else {
+			mainWindow.hide();
+		}
 	}
-
-	return false;
-	// app.quit();
-});
-
-ipcMain.on('showWindow', () => {
-	mainWindow.show();
 });
 
 ipcMain.on('zoom-app', () => {
@@ -402,5 +425,5 @@ ipcMain.on('zoom-app', () => {
 
 ipcMain.on('minimize-app', (event) => {
 	event.preventDefault();
-	mainWindow.hide();
+	mainWindow.minimize();
 });
