@@ -43,7 +43,7 @@
 	.line {
 		justify-content: flex-end;
 		display: flex;
-
+		
 		&-vertical-label {
 			@include source-semibold();
 			color: #3f4a52;
@@ -81,7 +81,7 @@
 			@include min-vw(1400) {
 				min-width: 460px;
 			}
-			width: 362px;
+			width: 400px;
 		}
 
 		&:not(:last-child) {
