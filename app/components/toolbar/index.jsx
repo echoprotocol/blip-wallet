@@ -78,10 +78,11 @@ class Toolbar extends React.Component {
 		const { zoomed } = this.state;
 
 		return (
-			<div className="toolbar">
+			<div className="toolbar" ref={this.refToolbar}>
 				<div className="draggable" />
 				<div className="win-btns">
 					<Button
+						ref={this.refMinimize}
 						className="btn-win-minimize"
 						content={(
 							<Icon className="win-minimize" />
@@ -89,6 +90,7 @@ class Toolbar extends React.Component {
 						onClick={() => this.onMinimizeApp()}
 					/>
 					<Button
+						ref={this.refZom}
 						className="btn-win-zoom"
 						content={(
 							<Icon className={zoomed ? 'win-zoom-in' : 'win-zoom-out'} />
@@ -96,6 +98,7 @@ class Toolbar extends React.Component {
 						onClick={() => this.onZoomApp()}
 					/>
 					<Button
+						ref={this.refClose}
 						className="btn-win-close"
 						content={(
 							<Icon className="win-close" />
