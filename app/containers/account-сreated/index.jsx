@@ -36,6 +36,11 @@ class AccountCreated extends React.Component {
 		this.setState({ focused: true });
 	}
 
+	changeVisibleCpyWif() {
+		this.setState({ isVisibleWif: true });
+		setTimeout(() => this.setState({ isVisibleWif: false }), 3000);
+	}
+
 	renderCopy(wif) {
 		const { isVisibleWif } = this.state;
 		return (
@@ -44,7 +49,7 @@ class AccountCreated extends React.Component {
 					<Button
 						onFocus={() => this.copyFocus()}
 						onBlur={() => this.copyBlur()}
-						onClick={() => this.setState({ isVisibleWif: true })}
+						onClick={() => this.changeVisibleCpyWif()}
 						content={<Icon className="copy" />}
 						className={
 							classnames(
@@ -151,11 +156,11 @@ class AccountCreated extends React.Component {
 				</div>
 				<Animated
 					className="wif-toast"
-					animationIn="fadeIn"
-					animationOut="fadeOut"
+					animationIn="fadeInUp"
+					animationOut="fadeOutDown"
 					animateOnMount={false}
 					isVisible={isVisibleWif}
-				> <FormattedMessage id="account.created.wif.copied" />
+				>	<FormattedMessage id="account.created.wif.copied" />
 				</Animated>
 
 			</div>
