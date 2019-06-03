@@ -20,6 +20,11 @@ class SideMenu extends React.Component {
 		this.props.lock();
 	}
 
+	goTo(e, path) {
+		e.target.blur();
+		this.props.history.push(path);
+	}
+
 
 	render() {
 		const { pathname, locked, history } = this.props;
@@ -58,7 +63,7 @@ class SideMenu extends React.Component {
 											<Button
 												className="sidebar-nav-link"
 												content={content}
-												onClick={() => history.push(WALLET)}
+												onClick={(e) => this.goTo(e, WALLET)}
 											/>
 										)
 									}
@@ -71,7 +76,7 @@ class SideMenu extends React.Component {
 											<Button
 												className="sidebar-nav-link"
 												content={content}
-												onClick={() => history.push(HISTORY)}
+												onClick={(e) => this.goTo(e, HISTORY)}
 											/>
 										)
 									}
@@ -84,7 +89,7 @@ class SideMenu extends React.Component {
 											<Button
 												className="sidebar-nav-link"
 												content={content}
-												onClick={() => history.push(MANAGE_ACCOUNTS)}
+												onClick={(e) => this.goTo(e, MANAGE_ACCOUNTS)}
 											/>
 										)
 									}
@@ -97,7 +102,7 @@ class SideMenu extends React.Component {
 											<Button
 												className="sidebar-nav-link"
 												content={content}
-												onClick={() => history.push(SETTINGS)}
+												onClick={(e) => this.goTo(e, SETTINGS)}
 											/>
 										)
 									}
