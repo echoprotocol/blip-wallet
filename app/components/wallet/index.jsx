@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
@@ -286,7 +285,7 @@ class Wallet extends React.Component {
 										<span className="coins">+ 0.00000 </span>
 										<span className="currency">{ECHO_ASSET_SYMBOL} </span>
 										<span className="message">(unclaimed)</span>
-										<Link to="/" className="claim-link">Claim balance</Link>
+										<span className="claim-link">Claim balance</span>
 									</div>
 								</div>
 								<div className="balances-list">
