@@ -23,7 +23,7 @@ class Registrator extends React.Component {
 			return;
 		}
 
-		this.props.setIn('registrator', { public: isPublic });
+		this.props.changeRegistratorType(isPublic);
 	}
 
 	renderDropdown(form, registrators) {
@@ -124,7 +124,7 @@ Registrator.propTypes = {
 	isVisible: PropTypes.bool,
 	registrators: PropTypes.object.isRequired,
 	form: PropTypes.object.isRequired,
-	setIn: PropTypes.func.isRequired,
+	changeRegistratorType: PropTypes.func.isRequired,
 	changeRegistrator: PropTypes.func.isRequired,
 };
 

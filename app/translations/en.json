@@ -65,7 +65,8 @@
 				"Each account segment should end with a letter or digit.": "Each account segment should end with a letter or digit.",
 				"Each account segment should be longer.": "Each account segment should be longer.",
 				"Account already exists": "Account already exists",
-				"Connection error": "Connection error"
+				"Connection error": "Connection error",
+				"Insufficient funds": "Insufficient funds"
 			},
 			"registrator": {
 				"title": "Registration type",

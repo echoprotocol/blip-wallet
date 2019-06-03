@@ -68,7 +68,7 @@ class CreateAccount extends React.Component {
 			toggle('loading', false);
 		}
 
-		setError(field, '');
+		setError(null);
 		this.setState(hints);
 	}
 
@@ -98,19 +98,36 @@ class CreateAccount extends React.Component {
 
 
 		return [hint1, hint2, hint3, hint4].every((hint) => hint === 'active')
-			&& !form.get('accountNameError')
+			&& !form.get('error')
 			&& !form.get('loading');
 	}
 
 	selectAccount(id, name) {
+		const error = this.props.intl.formatMessage({ id: 'account.create.error.Insufficient funds' });
+
+		if (this.props.form.get('error') === error) {
+			this.props.setError(null);
+		}
+
 		this.nameInput.focus();
 		this.props.changeRegistratorAccount(id, name);
 	}
 
+	changeRegistratorType(value) {
+		const error = this.props.intl.formatMessage({ id: 'account.create.error.Insufficient funds' });
+
+		if (this.props.form.get('error') === error) {
+			this.props.setError(null);
+		}
+
+		this.props.setInValue('registrator', { public: value });
+	}
+
 	render() {
 		const {
-			error, isVisible, form, intl, registrators, accountName,
+			isVisible, form, intl, registrators, accountName,
 		} = this.props;
+
 		const {
 			hint1, hint2, hint3, hint4, startCountAccounts,
 		} = this.state;
@@ -130,7 +147,7 @@ class CreateAccount extends React.Component {
 								registrators={registrators}
 								form={form.get('registrator')}
 								changeRegistrator={(id, name) => this.selectAccount(id, name)}
-								setIn={this.props.setInValue}
+								changeRegistratorType={(value) => this.changeRegistratorType(value)}
 							/>
 						) : null
 					}
@@ -149,7 +166,7 @@ class CreateAccount extends React.Component {
 									className={classnames('pink')}
 									placeholder={placeholder}
 									ref={(input) => { this.nameInput = input; }}
-									error={error}
+									error={!!form.get('error')}
 									loading={form.get('loading')}
 									fluid
 									name="accountName"
@@ -158,12 +175,12 @@ class CreateAccount extends React.Component {
 									onKeyPress={(e) => this.onKeyPress(e)}
 								/>
 								{
-									form.get('accountNameError')
+									form.get('error')
 										&& (
 											<div className="error-message">
 												<FormattedMessage
-													id={`account.create.error.${form.get('accountNameError')}`}
-													defaultMessage={form.get('accountNameError')}
+													id={`account.create.error.${form.get('error')}`}
+													defaultMessage={form.get('error')}
 												/>
 											</div>
 										)
@@ -192,7 +209,7 @@ class CreateAccount extends React.Component {
 							<div className={
 								classnames('avatar-box',
 									{ fadeOut: !isSuccess && accountName.length },
-									{ visible: form.get('accountNameError') })
+									{ visible: form.get('error') })
 							}
 							>
 								<Avatar
@@ -239,7 +256,6 @@ class CreateAccount extends React.Component {
 }
 CreateAccount.propTypes = {
 	accountName: PropTypes.string.isRequired,
-	error: PropTypes.bool,
 	form: PropTypes.object.isRequired,
 	accounts: PropTypes.object.isRequired,
 	registrators: PropTypes.object.isRequired,
@@ -256,10 +272,6 @@ CreateAccount.propTypes = {
 	setError: PropTypes.func.isRequired,
 };
 
-CreateAccount.defaultProps = {
-	error: false,
-};
-
 const positiveBalanceAccounts = Services.getSelector().getPositiveBalanceAccountsSelector();
 
 export default injectIntl(connect(
@@ -269,7 +281,7 @@ export default injectIntl(connect(
 		registrators: positiveBalanceAccounts(state),
 	}),
 	(dispatch) => ({
-		setError: (field, value) => dispatch(setValue(FORM_SIGN_UP, `${field}Error`, value)),
+		setError: (value) => dispatch(setValue(FORM_SIGN_UP, 'error', value)),
 		registerAccount: (accountName) => dispatch(registerAccount(accountName)),
 		validateAccount: (form, name) => dispatch(validateCreateAccount(form, name)),
 		toggleLoading: (field, value) => dispatch(toggleLoading(FORM_SIGN_UP, field, value)),

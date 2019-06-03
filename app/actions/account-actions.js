@@ -39,14 +39,14 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 	const error = ValidateAccountHelper.validateAccountName(accountName);
 
 	if (error) {
-		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', error));
+		dispatch(setValue(FORM_SIGN_UP, 'error', error));
 		dispatch(toggleLoading(form, false));
 
 		return false;
 	}
 
 	if (!Services.getEcho().isConnected) {
-		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Connection error'));
+		dispatch(setValue(FORM_SIGN_UP, 'error', 'Connection error'));
 		dispatch(toggleLoading(form, false));
 
 		return false;
@@ -56,11 +56,11 @@ export const validateCreateAccount = (form, accountName) => async (dispatch) => 
 		const result = await Services.getEcho().api.lookupAccounts(accountName);
 
 		if (result.find((i) => i[0] === accountName)) {
-			dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Account already exists'));
+			dispatch(setValue(FORM_SIGN_UP, 'error', 'Account already exists'));
 		}
 	} catch (err) {
 
-		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Account already exists'));
+		dispatch(setValue(FORM_SIGN_UP, 'error', 'Account already exists'));
 
 		console.warn(err.message || err);
 	} finally {
@@ -105,7 +105,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 		const registrator = getState().form.getIn([FORM_SIGN_UP, 'registrator']);
 
 		if (!Services.getEcho().isConnected) {
-			dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Connection error'));
+			dispatch(setValue(FORM_SIGN_UP, 'error', 'Connection error'));
 			dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 
 			return resolve(false);
@@ -135,7 +135,6 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 						memo_key: DEFAULT_MEMO_KEY,
 						voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
 						delegating_account: account.id,
-						num_witness: 0,
 						num_committee: 0,
 						votes: [],
 						extensions: [],
@@ -150,7 +149,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 				const fee = await getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);
 
 				if (BN(fee).gt(balance)) {
-					dispatch(setValue(FORM_SIGN_UP, 'accountNameError', 'Insufficient funds'));
+					dispatch(setValue(FORM_SIGN_UP, 'error', 'Insufficient funds'));
 					return resolve(false);
 				}
 
@@ -189,7 +188,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 		const resultRegisterAccount = await Promise.all([promiseRegisterAccount, promiseLoader]);
 		return resultRegisterAccount[0];
 	} catch (err) {
-		dispatch(setValue(FORM_SIGN_UP, 'accountNameError', err.message || err));
+		dispatch(setValue(FORM_SIGN_UP, 'error', err.message || err));
 
 		return null;
 	} finally {

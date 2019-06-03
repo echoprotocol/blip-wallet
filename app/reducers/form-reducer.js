@@ -21,7 +21,6 @@ const DEFAULT_FORM_FIELDS = {
 		error: null,
 	}),
 	[FORM_SIGN_UP]: Map({
-		accountNameError: '',
 		registrator: {
 			public: true,
 			account: null,
