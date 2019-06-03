@@ -15,9 +15,6 @@
 	background-color: #5e4b98;
 
 	.head {
-		height: 60px;
-		padding: 22px 30px 0;
-
 		.btn-inversed {
 			padding: 0 30px;
 		}
@@ -44,6 +41,12 @@
 				margin-bottom: 24px;
 			}
 		}
+
+		.head {
+			height: 60px;
+			padding: 22px 30px 0;
+		}
+
 
 		.footer {
 			.btn-primary {

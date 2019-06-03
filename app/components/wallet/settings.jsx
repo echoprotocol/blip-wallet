@@ -56,6 +56,12 @@ class Settings extends React.Component {
 		saveSelectedAccounts(selectedAccounts);
 	}
 
+	onClose(e) {
+		const { toggleSettings } = this.props;
+
+		toggleSettings(e);
+	}
+
 	setActiveTab(e, active) {
 		e.stopPropagation();
 		this.setState({
@@ -282,6 +288,9 @@ class Settings extends React.Component {
 
 		return (
 			<div className="sidebar-settings">
+				<div className="head">
+					<Button className="btn-close" onClick={(e) => this.onClose(e)} />
+				</div>
 				<div className="settings-tabs">
 					<div className="menu">
 						{
