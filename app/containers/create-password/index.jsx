@@ -165,9 +165,9 @@ class CreatePassword extends React.Component {
 							className="lines"
 						>
 							<div className="password-info">
-								<p>Please, create a password that will be used to unlock the wallet from this devive.</p>
+								<p>Please, create a password that will be used to unlock the wallet from this device.</p>
 								<p>
-									Important: Blip does not store backups of the acoount password, so in case of losing your password you will needto reset it.
+									Important: Blip does not store backups of the account password, so in case of losing your password you will need to reset it.
 								</p>
 							</div>
 							<div className="line">
