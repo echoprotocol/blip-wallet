@@ -8,7 +8,6 @@ import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
 import {
 	ECHO_PROXY_TO_SELF_ACCOUNT,
 	ECHO_ASSET_ID,
-	TIME_LOADING,
 	GLOBAL_ID_1,
 	EXPIRATION_INFELICITY,
 	DEFAULT_MEMO_KEY,
@@ -17,6 +16,7 @@ import { toggleLoading, setValue } from './form-actions';
 import { setValue as setGlobal, setValue as setValueGlobal, setAccounts } from './global-actions';
 import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
+import ViewHelper from '../helpers/view-helper';
 import GlobalReducer from '../reducers/global-reducer';
 import WalletReducer from '../reducers/wallet-reducer';
 
@@ -100,7 +100,7 @@ const addAccount = (id, name, selected = true, primary) => async (dispatch, getS
  */
 export const registerAccount = (accountName) => async (dispatch, getState) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.create.loading' }));
-	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseLoader = ViewHelper.timeout();
 	const promiseRegisterAccount = new Promise(async (resolve, reject) => {
 		const registrator = getState().form.getIn([FORM_SIGN_UP, 'registrator']);
 
@@ -231,7 +231,7 @@ const validateImportAccount = async (accountName) => {
  */
 export const importAccount = (accountName, wif) => async (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'account.import.loading' }));
-	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseLoader = ViewHelper.timeout();
 	const promiseImportAccount = new Promise(async (resolve) => {
 		if (!Services.getEcho().isConnected) {
 			dispatch(setValue(FORM_SIGN_IN, 'accountNameError', 'Connection error'));

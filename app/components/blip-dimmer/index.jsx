@@ -12,7 +12,7 @@ class BlipDimmer extends React.Component {
 		const contentTranslate = intl.formatMessage({ id: content });
 
 		return (
-			<div className="dimmer">
+			<div className="dimmer violet">
 				<img className="dimmer-loading" src={dimmerLoading} alt="" />
 				{ content
 					&& (

@@ -2,6 +2,7 @@ import { createModule } from 'redux-modules';
 import { Map, List } from 'immutable';
 
 const DEFAULT_FIELDS = Map({
+	loading: false,
 	balances: new Map({}),
 	transaction: new Map({}),
 	history: new Map({

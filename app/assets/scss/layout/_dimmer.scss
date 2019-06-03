@@ -9,7 +9,10 @@
 	left: 0;
 	z-index: 30;
 	display: flex;
-	background-color: rgba(#65509f, 0.9);
+
+	&.violet {
+		background-color: rgba(#65509f, 0.9);
+	}
 
 	&-loading {
 		animation: rotation $speed * 4 infinite linear, fadeIn $speed * 2;

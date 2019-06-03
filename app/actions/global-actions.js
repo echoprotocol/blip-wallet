@@ -8,10 +8,11 @@ import UserStorageService from '../services/user-storage-service';
 import { UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
-import { NETWORKS, DEFAULT_NETWORK_ID, TIME_LOADING } from '../constants/global-constants';
+import { NETWORKS, DEFAULT_NETWORK_ID } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
 import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
+import ViewHelper from '../helpers/view-helper';
 
 let ipcRenderer;
 
@@ -195,7 +196,7 @@ export const initApp = (store) => async (dispatch, getState) => {
  */
 export const createDB = (form, password) => async (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'restorePassword.loading' }));
-	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseLoader = ViewHelper.timeout();
 	const promiseCreateDB = new Promise(async (resolve) => {
 		dispatch(setValueToForm(form, 'loading', true));
 		const userStorage = Services.getUserStorage();
@@ -232,7 +233,7 @@ export const createDB = (form, password) => async (dispatch) => {
 export const validateUnlock = (form, password) => async (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'unlock.loading' }));
 
-	const promiseLoader = new Promise((resolve) => setTimeout(resolve, TIME_LOADING));
+	const promiseLoader = ViewHelper.timeout();
 	const promiseValidateUnlock = new Promise(async (resolve) => {
 		dispatch(setValueToForm(form, 'loading', true));
 

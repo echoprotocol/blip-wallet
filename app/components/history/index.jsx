@@ -11,6 +11,8 @@ import BN from 'bignumber.js';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import settings from '../../assets/images/settings.svg';
+import dimmerLoading from '../../assets/images/dimmer-loader.png';
+
 import { EXPLORER_URL, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import { CONTRACT_TYPES, ACCOUNT_TYPES } from '../../constants/transaction-constants';
 import FormatHelper from '../../helpers/format-helper';
@@ -248,7 +250,7 @@ class History extends React.Component {
 
 	render() {
 		const {
-			transactions, filter, history, currentNode,
+			loading, transactions, filter, history, currentNode,
 		} = this.props;
 		const { open } = this.state;
 
@@ -259,23 +261,31 @@ class History extends React.Component {
 						<div className="transactions-wrap">
 							<div className="title"><FormattedMessage id="history.table.title" /></div>
 							{
-								transactions.size ? (
+								loading ? (
+									<div className="dimmer">
+										<img className="dimmer-loading" src={dimmerLoading} alt="" />
+									</div>
+								) : (
 									<div className="table-transactions">
-										<div className="transaction-header">
-											<ul className="line">
-												<li className="type"><FormattedMessage id="history.table.type" /></li>
-												<li className="age"><FormattedMessage id="history.table.age" /></li>
-												<li className="from"><FormattedMessage id="history.table.from" /></li>
-												<li />
-												<li className="to"><FormattedMessage id="history.table.to" /></li>
-												<li className="amount"><FormattedMessage id="history.table.amount" /></li>
-												<li className="fee"><FormattedMessage id="history.table.fee" /></li>
-												<li />
-											</ul>
-										</div>
+										{
+											transactions.size ? (
+												<div className="transaction-header">
+													<ul className="line">
+														<li className="type"><FormattedMessage id="history.table.type" /></li>
+														<li className="age"><FormattedMessage id="history.table.age" /></li>
+														<li className="from"><FormattedMessage id="history.table.from" /></li>
+														<li />
+														<li className="to"><FormattedMessage id="history.table.to" /></li>
+														<li className="amount"><FormattedMessage id="history.table.amount" /></li>
+														<li className="fee"><FormattedMessage id="history.table.fee" /></li>
+														<li />
+													</ul>
+												</div>
+											) : <div />
+										}
 										{transactions.map((tr, key) => this.renderTransaction(tr, key))}
 									</div>
-								) : <div />
+								)
 							}
 						</div>
 						<div className="settings-wrap">
@@ -305,6 +315,7 @@ class History extends React.Component {
 }
 
 History.propTypes = {
+	loading: PropTypes.bool,
 	language: PropTypes.string.isRequired,
 	accounts: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
@@ -323,6 +334,7 @@ History.propTypes = {
 };
 
 History.defaultProps = {
+	loading: false,
 	total: null,
 	platform: null,
 };

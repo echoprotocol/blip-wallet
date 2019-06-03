@@ -11,8 +11,7 @@ import { ASSET_TYPE, TOKEN_TYPE, DEFAULT_HISTORY_COUNT } from '../constants/grap
 import {
 	ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION, EETH_ASSET_SYMBOL,
 } from '../constants/global-constants';
-
-import { setValue } from './global-actions';
+import ViewHelper from '../helpers/view-helper';
 import Services from '../services';
 import { getHistoryByAccounts, getCoinsByAccounts } from '../services/queries/transaction-queries';
 
@@ -221,9 +220,7 @@ export const setLastTransaction = () => async (dispatch, getState) => {
  * Get transactions history by selected accounts
  * @returns {Function}
  */
-const getFilteredHistory = (offset = 0, count = DEFAULT_HISTORY_COUNT) => async (dispatch, getState) => {
-	const filter = getState().wallet.getIn(['history', 'filter']);
-
+const getFilteredHistory = async (filter, offset = 0, count = DEFAULT_HISTORY_COUNT) => {
 	const selectedAccounts = filter.get('accounts')
 		.filter((a) => a.get('selected'))
 		.reduce((arr, a) => ([...arr, a.get('id')]), []);
@@ -387,7 +384,7 @@ const updateFilters = (filter) => async (dispatch, getState) => {
  * @returns {Function}
  */
 export const loadTransactions = () => async (dispatch, getState) => {
-	dispatch(setValue('loading', 'history.loading'));
+	dispatch(set('loading', true));
 
 	try {
 		const accounts = getState().global.get('accounts');
@@ -397,7 +394,7 @@ export const loadTransactions = () => async (dispatch, getState) => {
 			return;
 		}
 
-		const filter = fromJS(Services.getLocalStorage().getData('historyFilter') || {});
+		let filter = fromJS(Services.getLocalStorage().getData('historyFilter') || {});
 
 		if (filter.isEmpty() || (!filter.get('accounts') && !filter.get('coins') && !filter.get('types'))) {
 			await dispatch(setDefaultFilters());
@@ -405,12 +402,16 @@ export const loadTransactions = () => async (dispatch, getState) => {
 			await dispatch(updateFilters(filter));
 		}
 
-		const { transactions, total } = await dispatch(getFilteredHistory());
+		filter = getState().wallet.getIn(['history', 'filter']);
+		const [{ transactions, total }] = await Promise.all([
+			getFilteredHistory(filter),
+			ViewHelper.timeout(),
+		]);
 		dispatch(setIn('history', { transactions, total }));
 	} catch (e) {
 		console.warn(e);
 	} finally {
-		dispatch(setValue('loading', ''));
+		dispatch(set('loading', false));
 	}
 };
 
@@ -420,8 +421,9 @@ export const loadTransactions = () => async (dispatch, getState) => {
  */
 export const loadMoreTransactions = () => async (dispatch, getState) => {
 	const { size } = getState().wallet.getIn(['history', 'transactions']);
+	const filter = getState().wallet.getIn(['history', 'filter']);
 
-	const { transactions, total } = await dispatch(getFilteredHistory(size));
+	const { transactions, total } = await getFilteredHistory(filter, size);
 	dispatch(mergeIn('history', { transactions, total }));
 };
 
@@ -478,15 +480,18 @@ export const saveFilters = (accounts, coins, types) => async (dispatch, getState
 	dispatch(setIn('history', { filter }));
 	saveHistoryFilter(filter);
 
-	dispatch(setValue('loading', 'history.loading'));
+	dispatch(set('loading', true));
 
 	try {
-		const { transactions, total } = await dispatch(getFilteredHistory());
+		const [{ transactions, total }] = await Promise.all([
+			getFilteredHistory(filter),
+			ViewHelper.timeout(),
+		]);
 		dispatch(setIn('history', { transactions, total }));
 	} catch (e) {
 		console.warn(e);
 	} finally {
-		dispatch(setValue('loading', ''));
+		dispatch(set('loading', false));
 	}
 
 };
