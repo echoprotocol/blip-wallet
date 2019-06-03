@@ -140,6 +140,12 @@ class Wallet extends React.Component {
 		this.props.toggleVisibiltyAsset(idAsset);
 	}
 
+	switchToSend(currencyId) {
+		const { balances } = this.props;
+
+		this.props.goToSend(currencyId, balances);
+	}
+
 	renderTokens() {
 		const {
 			tokens, accounts, hiddenAssets,
@@ -178,7 +184,14 @@ class Wallet extends React.Component {
 			const precision = token.getIn(['contract', 'token', 'decimals']);
 
 			return (
-				<div className="balance-item" key={key}>
+				<div
+					className="balance-item"
+					key={key}
+					onClick={() => this.switchToSend(token.getIn(['contract', 'id']))}
+					role="button"
+					tabIndex="0"
+					onKeyPress={() => {}}
+				>
 					<div className="balance-item-header">
 						<div className="wrap">
 							<Button
@@ -221,7 +234,14 @@ class Wallet extends React.Component {
 			const { id, precision } = asset;
 
 			return (
-				<div className="balance-item" key={key}> {/* add class hide */}
+				<div
+					className="balance-item"
+					key={key}
+					onClick={() => this.switchToSend(asset.id)}
+					role="button"
+					tabIndex="0"
+					onKeyPress={() => {}}
+				> {/* add class hide */}
 					<div className="balance-item-header">
 						<div className="wrap">
 							<Button
@@ -349,6 +369,7 @@ Wallet.propTypes = {
 	initHiddenAssets: PropTypes.func.isRequired,
 	updateTokens: PropTypes.func.isRequired,
 	toggleVisibiltyAsset: PropTypes.func.isRequired,
+	goToSend: PropTypes.func.isRequired,
 };
 
 export default Wallet;

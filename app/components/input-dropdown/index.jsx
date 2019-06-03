@@ -39,6 +39,7 @@ class InputDropdown extends React.Component {
 
 	componentDidMount() {
 		this.setDropdownBalances();
+		this.setInitialCurrency();
 		document.addEventListener('mousedown', this.handleClickOutside);
 		return null;
 	}
@@ -191,6 +192,14 @@ class InputDropdown extends React.Component {
 		this.setState({
 			search: e.target.value,
 		});
+	}
+
+	setInitialCurrency() {
+		const { initialData } = this.props;
+
+		if (initialData) {
+			this.setState({ currentVal: initialData.symbol });
+		}
 	}
 
 	setMenuRef(node) {
@@ -457,6 +466,7 @@ InputDropdown.propTypes = {
 	globalLoading: PropTypes.bool,
 	errorText: PropTypes.string,
 	placeholder: PropTypes.string,
+	initialData: PropTypes.object,
 	value: PropTypes.any,
 	hints: PropTypes.array,
 	path: PropTypes.object,
@@ -474,6 +484,7 @@ InputDropdown.defaultProps = {
 	globalLoading: false,
 	errorText: '',
 	placeholder: '',
+	initialData: null,
 	value: '',
 	path: null,
 	setValue: null,

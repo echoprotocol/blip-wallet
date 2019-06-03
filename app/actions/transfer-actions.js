@@ -293,8 +293,10 @@ export const send = () => async (dispatch, getState) => {
 	const accounts = getState().global.getIn(['accounts']);
 
 	const from = form.get('from');
-	const fromId = accounts.findKey((a, id) => id === from.value) || [...accounts.keys()][0];
-	const fromName = from.value || [...accounts.values()][0].get('name');
+	const initialFrom = form.get('initialData').accountId;
+
+	const fromId = accounts.findKey((a, id) => id === from.value || initialFrom) || [...accounts.keys()][0];
+	const fromName = from.value || initialFrom || [...accounts.values()][0].get('name');
 	const [fromAccount] = await Services.getEcho().api.getFullAccounts([fromName]);
 
 	const objectIds = Object.entries(fromAccount.balances).reduce((arr, b) => [...arr, ...b], []);

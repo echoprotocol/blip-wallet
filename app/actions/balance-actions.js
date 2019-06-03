@@ -1,9 +1,14 @@
 import { Set, Map, fromJS } from 'immutable';
+import { validators } from 'echojs-lib';
+import { history } from '../store/configureStore';
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
+import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
+import { SEND } from '../constants/routes-constants';
+import { FORM_SEND } from '../constants/form-constants';
 
 /**
  *  @method setValue
@@ -189,4 +194,81 @@ export const init = () => async (dispatch) => {
 	await dispatch(initTokens());
 	await dispatch(updateBalance());
 	dispatch(initHiddenAssets());
+};
+
+/**
+ *
+ * @param currencyId
+ * @param balances
+ * @returns {Function}
+ */
+export const goToSend = (currencyId, balances) => (dispatch, getState) => {
+	const accounts = getState().global.get('accounts');
+
+	if (validators.isContractId(currencyId)) {
+		const tokens = getState().wallet.get('tokens');
+
+		const primaryAccountToken = tokens
+			.find((token) => token.getIn(['contract', 'id']) === currencyId
+				&& accounts.find((account, id) => id === token.getIn(['account', 'id']) && account.get('primary')));
+
+		const data = {
+			balanceId: '',
+			accountId: '',
+			symbol: '',
+		};
+
+		if (primaryAccountToken) {
+			data.balanceId = primaryAccountToken.getIn(['contract', 'id']);
+			data.accountId = primaryAccountToken.getIn(['account', 'id']);
+			data.symbol = primaryAccountToken.getIn(['contract', 'token', 'symbol']);
+		} else {
+			const balance = tokens
+				.find((t) => t.getIn(['contract', 'id']) === currencyId
+					&& accounts.find((account, id) => id === t.getIn(['account', 'id'])));
+
+			data.balanceId = balance ? balance.getIn(['contract', 'id']) : '';
+			data.accountId = balance ? balance.getIn(['account', 'id']) : '';
+			data.symbol = balance ? balance.getIn(['contract', 'token', 'symbol']) : '';
+		}
+
+		history.push(SEND);
+
+		dispatch(setForm(FORM_SEND, 'selectedBalance', data.balanceId));
+		dispatch(setForm(FORM_SEND, 'initialData', { accountId: data.accountId, symbol: data.symbol }));
+
+		return true;
+	}
+
+	const primaryAccountBalance = balances
+		.find((balance) => balance.asset.get('id') === currencyId
+			&& accounts.find((account, id) => id === balance.owner && account.get('primary')));
+
+	const data = {
+		balanceId: '',
+		accountId: '',
+		symbol: '',
+	};
+
+	if (primaryAccountBalance) {
+		data.balanceId = primaryAccountBalance.id;
+		data.accountId = primaryAccountBalance.owner;
+		data.symbol = primaryAccountBalance.asset.get('symbol');
+	} else {
+		const balance = balances
+			.find((b) => b.asset.get('id') === currencyId
+				&& accounts.find((account, id) => id === b.owner));
+
+		data.balanceId = balance ? balance.id : '';
+		data.accountId = balance ? balance.owner : '';
+		data.symbol = balance ? balance.asset.get('symbol') : '';
+	}
+
+	history.push(SEND);
+
+	dispatch(setForm(FORM_SEND, 'selectedBalance', data.balanceId));
+	dispatch(setForm(FORM_SEND, 'initialData', { accountId: data.accountId, symbol: data.symbol }));
+
+
+	return true;
 };

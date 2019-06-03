@@ -7,6 +7,7 @@ import {
 	initTokens,
 	saveSelectedAccounts,
 	updateBalance,
+	goToSend,
 } from '../../actions/balance-actions';
 import { setLastTransaction } from '../../actions/transaction-actions';
 import Wallet from '../../components/wallet';
@@ -36,5 +37,6 @@ export default connect(
 		toggleVisibiltyAsset: (idAsset) => dispatch(toggleVisibiltyAsset(idAsset)),
 		initHiddenAssets: () => dispatch(initHiddenAssets()),
 		updateTokens: () => dispatch(initTokens()),
+		goToSend: (currencyId, balances) => dispatch(goToSend(currencyId, balances)),
 	}),
 )(Wallet);

@@ -174,7 +174,11 @@ class Send extends React.Component {
 			accounts, form, balances, tokens, loading, intl, hiddenAssets,
 		} = this.props;
 
-		const fromAccountName = accounts && (accounts.getIn([form.get('from').value, 'name']) || accounts.find((a) => a.get('primary')).get('name'));
+		const fromAccountName = accounts && (
+			accounts.getIn([form.get('from').value, 'name'])
+			|| accounts.getIn([form.get('initialData').accountId, 'name'])
+			|| accounts.find((a) => a.get('primary')).get('name')
+		);
 
 		const amountTitle = intl.formatMessage({ id: 'send.amount.title' });
 
@@ -287,8 +291,12 @@ class Send extends React.Component {
 													data={{
 														balances,
 														tokens,
-														from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
+														from: form.get('from').value || form.get('initialData').accountId || accounts.findKey((a) => a.get('primary')),
 														hiddenAssets,
+													}}
+													initialData={{
+														selectedBalance: form.get('selectedBalance'),
+														symbol: form.get('initialData').symbol,
 													}}
 													disable={!!loading}
 													globalLoading={!!loading}

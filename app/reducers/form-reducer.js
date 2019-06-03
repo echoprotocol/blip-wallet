@@ -59,6 +59,10 @@ const DEFAULT_FORM_FIELDS = {
 			symbol: '',
 			precision: '',
 		},
+		initialData: {
+			accountId: '',
+			symbol: '',
+		},
 	}),
 	[FORM_RECEIVE]: Map({
 		selectedAccount: {
