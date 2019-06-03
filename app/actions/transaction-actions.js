@@ -492,27 +492,6 @@ export const saveFilters = (accounts, coins, types) => async (dispatch, getState
 };
 
 /**
- * Reset transactions filter and update transactions
- *
- * @returns {Function}
- */
-export const resetFilters = () => async (dispatch) => {
-	dispatch(setValue('loading', 'history.loading'));
-
-	try {
-		dispatch(clearIn('history', ['filter']));
-		await dispatch(setDefaultFilters());
-		const { transactions, total } = await dispatch(getFilteredHistory());
-		dispatch(setIn('history', { transactions, total }));
-	} catch (e) {
-		console.warn(e);
-	} finally {
-		dispatch(setValue('loading', ''));
-	}
-
-};
-
-/**
  * Get transaction fee
  * @returns {Function}
  */

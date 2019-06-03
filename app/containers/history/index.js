@@ -7,7 +7,6 @@ import {
 	loadMoreTransactions,
 	toggleTransactionDetails,
 	saveFilters,
-	resetFilters,
 	setNewTransaction,
 	clear,
 } from '../../actions/transaction-actions';
@@ -28,7 +27,6 @@ export default injectIntl(connect(
 		loadMoreTransactions: () => dispatch(loadMoreTransactions()),
 		toggleTransactionDetails: (key) => dispatch(toggleTransactionDetails(key)),
 		saveFilters: (accounts, coins, types) => dispatch(saveFilters(accounts, coins, types)),
-		resetFilters: () => dispatch(resetFilters()),
 		setNewTransaction: (operation) => dispatch(setNewTransaction(operation)),
 		clear: () => dispatch(clear('history')),
 	}),

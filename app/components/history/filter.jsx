@@ -86,7 +86,11 @@ class Filter extends React.Component {
 
 	onReset(e) {
 		e.preventDefault();
-		this.props.reset();
+		this.setState((prevState) => ({
+			accounts: prevState.accounts.map((i) => i.set('selected', true)),
+			coins: prevState.coins.map((i) => i.set('selected', true)),
+			types: prevState.types.map((i) => i.set('selected', true)),
+		}));
 	}
 
 	onClose(e) {
@@ -254,7 +258,6 @@ class Filter extends React.Component {
 Filter.propTypes = {
 	intl: intlShape.isRequired,
 	filter: PropTypes.object.isRequired,
-	reset: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
 	apply: PropTypes.func.isRequired,
 };

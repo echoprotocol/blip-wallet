@@ -62,11 +62,6 @@ class History extends React.Component {
 		this.setState({ open: !status });
 	}
 
-	onResetFilter() {
-		this.setState({ open: false });
-		this.props.resetFilters();
-	}
-
 	onCloseFilter() {
 		this.setState({ open: false });
 	}
@@ -300,7 +295,6 @@ class History extends React.Component {
 					<Filter
 						filter={filter}
 						apply={(accounts, coins, types) => this.onApplyFilter(accounts, coins, types)}
-						reset={() => this.onResetFilter()}
 						close={() => this.onCloseFilter()}
 					/>
 				</div>
@@ -321,7 +315,6 @@ History.propTypes = {
 	loadTransactions: PropTypes.func.isRequired,
 	toggleTransactionDetails: PropTypes.func.isRequired,
 	saveFilters: PropTypes.func.isRequired,
-	resetFilters: PropTypes.func.isRequired,
 	loadMoreTransactions: PropTypes.func.isRequired,
 	setNewTransaction: PropTypes.func.isRequired,
 	clear: PropTypes.func.isRequired,
