@@ -44,6 +44,7 @@
                 "Account name should not be empty": "Имя не может быть пустым",
                 "Account name should be longer.": "Имя должно быть длиннее",
                 "Account name should be shorter.": "Имя должно быть короче",
+                "Account name should have only lowercase letters, digits, or dashes.": "Имя должно состоять из строчных букв, цифр, или тире",
                 "Each account segment should start with a lowercase letter.": "Каждая часть должна начинаться со строчной буквы",
                 "Each account segment should have only lowercase letters, digits, or dashes.": "Каждая часть должна состоять из строчных букв, цифр, или тире",
                 "Each account segment should end with a lowercase letter or digit.": "Каждая часть должна заканчиваться строчной буквой или цифрой",
