@@ -83,7 +83,7 @@ export const clear = (field) => (dispatch) => {
 export const updateBalance = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts');
 
-	const selectedAccounts = await Services.getEcho().api.getFullAccounts([...accounts.filter((acc) => acc.get('selected')).keys()]);
+	const selectedAccounts = await Services.getEcho().api.getFullAccounts([...accounts.keys()]);
 
 	const objectIds = selectedAccounts.reduce((balances, account) => {
 		const result = Object.entries(account.balances).reduce((arr, b) => [...arr, ...b], []);

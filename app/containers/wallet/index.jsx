@@ -13,7 +13,7 @@ import Wallet from '../../components/wallet';
 import Services from '../../services';
 
 const historySelector = Services.getSelector().getHistorySelector();
-const balanceSelector = Services.getSelector().getWalletBalanceSelector();
+const balanceSelector = Services.getSelector().getSelectedAccountBalancesSelector();
 
 export default connect(
 	(state) => ({

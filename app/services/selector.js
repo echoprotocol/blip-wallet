@@ -39,6 +39,23 @@ export default class Selector {
 		);
 	}
 
+	getSelectedAccountBalancesSelector() {
+		return this._getSelectorCreator(Immutable.is)(
+			(state) => state.wallet.get('balances'),
+			(state) => this._getFilteredBalances()(state),
+			(state) => state.global.get('accounts'),
+			(balances, objects, accounts) => balances.mapEntries(([statsId, assetId]) => ([
+				statsId,
+				{
+					asset: objects.get(assetId),
+					amount: objects.getIn([statsId, 'balance']),
+					id: objects.getIn([statsId, 'id']),
+					owner: objects.getIn([statsId, 'owner']),
+				},
+			])).filter((balance) => accounts.find((account, id) => account.get('selected') && id === balance.owner)),
+		);
+	}
+
 	getWalletBalanceSelector() {
 		return this._getSelectorCreator(Immutable.is)(
 			(state) => state.wallet.get('balances'),
