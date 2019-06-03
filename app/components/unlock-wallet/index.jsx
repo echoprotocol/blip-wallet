@@ -26,16 +26,18 @@ class UnlockWallet extends React.Component {
 			password: '',
 			valid: false,
 			focused: false,
+			isInputFocused: false,
 		};
 
 		this.onClickForgotPassword = this.onClickForgotPassword.bind(this);
 		this.onTogglePrivacy = this.onTogglePrivacy.bind(this);
 		this.changeFocusTarget = this.changeFocusTarget.bind(this);
 		this.renderPrivacyEyeBlur = this.renderPrivacyEyeBlur.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	componentDidMount() {
-		this.unlockInput.focus();
+		document.addEventListener('keypress', this.handleKeyPress);
 	}
 
 	componentWillUnmount() {
@@ -83,6 +85,21 @@ class UnlockWallet extends React.Component {
 		if (KEY_CODE_ENTER === code) {
 			await this.validateUnlock();
 		}
+	}
+
+	handleKeyPress(e) {
+		const code = e.keyCode || e.which;
+		const { isInputFocused } = this.state;
+
+		if (KEY_CODE_ENTER === code) {
+			return null;
+		}
+
+		if (!isInputFocused) {
+			this.unlockInput.focus();
+		}
+
+		return null;
 	}
 
 	async validateUnlock() {
@@ -200,6 +217,8 @@ class UnlockWallet extends React.Component {
 									value={password}
 									onChange={(e) => this.onChange(e)}
 									onKeyPress={(e) => this.onKeyPress(e)}
+									onFocus={() => this.setState({ isInputFocused: true })}
+									onBlur={() => this.setState({ isInputFocused: false })}
 								/>
 								{
 									form.get('error')
