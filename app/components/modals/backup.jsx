@@ -17,19 +17,17 @@ class BackupModal extends React.Component {
 			keys: [],
 		};
 
-		this.mounted = false;
+		this.refClipboard = React.createRef();
 	}
 
-	componentDidMount() {
-		this.updateInfo();
-	}
+	componentDidUpdate(prevProps) {
+		if (!prevProps.show && this.props.show) {
+			this.updateInfo();
+		}
 
-	componentDidUpdate() {
-		this.updateInfo();
-	}
-
-	componentWillUnmount() {
-		this.mounted = true;
+		if (this.refClipboard.current) {
+			this.refClipboard.current.focus();
+		}
 	}
 
 	async updateInfo() {
@@ -41,16 +39,12 @@ class BackupModal extends React.Component {
 
 		const keys = await this.props.getKeysByAccountId(account);
 
-		if (!this.mounted) {
-			this.setState({ keys });
-		}
+		this.setState({ keys });
 
 		return true;
-
 	}
 
 	render() {
-
 		const { show } = this.props;
 
 		if (show) {
@@ -92,6 +86,7 @@ class BackupModal extends React.Component {
 															<div className="key">{key.wif}</div>
 															<CopyToClipboard text={key.wif}>
 																<Button
+																	ref={this.refClipboard}
 																	className="btn-square primary"
 																	content={<Icon className="copy" />}
 																/>

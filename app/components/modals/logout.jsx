@@ -9,6 +9,18 @@ import { MODAL_LOGOUT } from '../../constants/modal-constants';
 
 class LogoutModal extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.refConfirm = React.createRef();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (!prevProps.show && this.props.show) {
+			this.refConfirm.current.focus();
+		}
+	}
+
 	logout() {
 		const { all, accountId } = this.props;
 
@@ -56,8 +68,6 @@ class LogoutModal extends React.Component {
 					animationOut="fadeOut"
 					isVisible={show}
 					className="modal-overlay"
-
-
 				>
 					<PerfectScrollbar className="modal-scroll">
 						<FocusTrap>
@@ -77,6 +87,7 @@ class LogoutModal extends React.Component {
 									<div className="modal-footer">
 										<div className="btns-wrap">
 											<Button
+												ref={this.refConfirm}
 												className="btn-modal-primary"
 												content="Confirm"
 												onClick={() => this.logout()}
