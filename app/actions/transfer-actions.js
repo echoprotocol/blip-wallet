@@ -65,6 +65,7 @@ export const checkAccount = (fromAccount, toAccount) => async (dispatch) => {
 		dispatch(setValue(FORM_SEND, 'isCheckLoading', false));
 	}
 
+	dispatch(setFormError(FORM_SEND, 'to', ''));
 	return true;
 };
 

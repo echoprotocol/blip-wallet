@@ -138,6 +138,14 @@ class Send extends React.Component {
 		}
 	}
 
+	onChangeAccount(id, from) {
+		const { form } = this.props;
+		const to = form.get('to').value;
+
+		this.props.setFormValue('from', id);
+		this.props.checkAccount(from, to);
+	}
+
 	setFee(data) {
 		if (this.state.feeTimeout) {
 			clearTimeout(this.state.feeTimeout);
@@ -214,7 +222,7 @@ class Send extends React.Component {
 													const key = id;
 
 													return (
-														<Dropdown.Item key={key} eventKey={id} onClick={(() => this.props.setFormValue('from', id))}>
+														<Dropdown.Item key={key} eventKey={id} onClick={() => this.onChangeAccount(id, account.get('name'))}>
 															{accounts.getIn([id, 'name'])}
 														</Dropdown.Item>
 													);
