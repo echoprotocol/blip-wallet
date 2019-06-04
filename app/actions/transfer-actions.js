@@ -1,9 +1,6 @@
 import BN from 'bignumber.js';
 import { keccak256 } from 'js-sha3';
-import {
-	CACHE_MAPS,
-} from 'echojs-lib';
-import secureRandom from 'secure-random';
+import { CACHE_MAPS, OPERATIONS_IDS } from 'echojs-lib';
 
 import { FORM_SEND } from '../constants/form-constants';
 import ValidateSendHelper from '../helpers/validate-send-helper';
@@ -23,8 +20,6 @@ import { getOperationFee } from './transaction-actions';
 import { signTransaction } from './sign-actions';
 import { WALLET } from '../constants/routes-constants';
 import { history } from '../store/configureStore';
-
-const { Long } = require('bytebuffer');
 
 const getTransferCode = (id, amount) => {
 	const method = keccak256('transfer(address,uint256)').substr(0, 8);
@@ -90,24 +85,6 @@ const checkFeePool = (coreAsset, asset, fee) => {
 	feePool = price.times(feePool).times(10 ** asset.get('precision'));
 
 	return feePool.gt(fee);
-};
-
-export const uniqueNonceUint64 = () => {
-	let uniqueNonceEntropy = null;
-
-	const entropy = ((() => {
-		if (uniqueNonceEntropy === null) {
-			return parseInt(secureRandom.randomUint8Array(1)[0], 10);
-		}
-
-		return (uniqueNonceEntropy + 1) % 256;
-	})());
-
-	uniqueNonceEntropy = entropy;
-
-	let long = Long.fromNumber(Date.now());
-	long = long.shiftLeft(8).or(Long.fromNumber(entropy));
-	return long.toString();
 };
 
 /**
@@ -212,7 +189,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 			const tokens = getState().wallet.get('tokens');
 			const precision = tokens.find((t) => t.getIn(['contract', 'id']) === selectedBalance).getIn(['contract', 'token', 'decimals']);
 			const code = getTransferCode(toAccount.id, new BN(amount).times(10 ** precision));
-			type = 48;
+			type = OPERATIONS_IDS.CALL_CONTRACT;
 			options = {
 				code,
 				fee: {
@@ -252,6 +229,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
  *
  *    Send transaction
  *
+ * @param type
  * @param options
  */
 const sendTransaction = async (type, options) => {
@@ -369,7 +347,7 @@ export const send = () => async (dispatch, getState) => {
 		if (isToken) {
 			const code = getTransferCode(toAccount.id, new BN(amount).times(10 ** balance.precision));
 
-			type = 48;
+			type = OPERATIONS_IDS.CALL_CONTRACT;
 			options = {
 				code,
 				fee: {

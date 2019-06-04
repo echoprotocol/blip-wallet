@@ -33,7 +33,7 @@ export const CONTRACT_RESULT_EXCEPTED_NONE = 'None';
 export const TRANSFER_KEYS = {
 	transfer: 'from',
 	contract: 'registrar',
-	48: 'registrar',
+	[OPERATIONS_IDS.CALL_CONTRACT]: 'registrar',
 };
 
 export const OPERATIONS = {

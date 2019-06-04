@@ -8,7 +8,6 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import Avatar from '../avatar';
 import InputDropdown from '../input-dropdown';
-import { FORM_SEND } from '../../constants/form-constants';
 import ValidateSendHelper from '../../helpers/validate-send-helper';
 import { ECHO_ASSET_ID, KEY_CODE_ENTER, TIME_SHOW_ERROR_ASSET } from '../../constants/global-constants';
 
@@ -333,7 +332,7 @@ class Send extends React.Component {
 														disable
 														globalLoading={!!loading}
 														errorText={form.get('fee').error}
-														setValue={(field, value) => this.props.setValue(FORM_SEND, field, value)}
+														setValue={(field, value) => this.props.setValue(field, value)}
 														path={{ field: 'selectedFeeBalance' }}
 														data={{
 															balances,
