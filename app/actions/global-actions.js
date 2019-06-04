@@ -5,7 +5,7 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { UNLOCK, CREATE_PASSWORD } from '../constants/routes-constants';
+import { UNLOCK, CREATE_PASSWORD, AUTHORIZATION } from '../constants/routes-constants';
 import { startAnimation } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS, DEFAULT_NETWORK_ID } from '../constants/global-constants';
@@ -213,11 +213,13 @@ export const createDB = (form, password) => async (dispatch) => {
 	try {
 		await Promise.all([promiseCreateDB, promiseLoader]);
 		dispatch(setValue('locked', false));
+		await dispatch(startAnimation(CREATE_PASSWORD, false));
+		history.push(AUTHORIZATION);
 	} catch (err) {
+		await dispatch(startAnimation(CREATE_PASSWORD, false));
 		console.error(err);
 	} finally {
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
-		await dispatch(startAnimation(CREATE_PASSWORD, false));
 		dispatch(setValueToForm(form, 'loading', false));
 	}
 };

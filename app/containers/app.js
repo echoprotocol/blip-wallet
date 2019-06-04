@@ -93,13 +93,11 @@ class App extends React.Component {
 			routed = true;
 
 			const userStorage = Services.getUserStorage();
-
 			const doesDBExist = await userStorage.doesDBExist();
 
 			if (doesDBExist) {
 				this.props.history.push(WALLET);
 			}
-
 		}
 
 		if (!routed && [RESTORE_PASSWORD].includes(pathname)) {

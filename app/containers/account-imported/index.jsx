@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Avatar from '../../components/avatar';
 import { startAnimation } from '../../actions/animation-actions';
-import { ACCOUNT_IMPORTED, CREATE_PASSWORD } from '../../constants/routes-constants';
+import { ACCOUNT_IMPORTED, WALLET } from '../../constants/routes-constants';
 
 class AccountImported extends React.Component {
 
@@ -59,7 +59,7 @@ class AccountImported extends React.Component {
 						>
 							<Button
 								className="btn-primary arrow"
-								onClick={() => history.push(CREATE_PASSWORD)}
+								onClick={() => history.push(WALLET)}
 								content={(
 									<React.Fragment>
 										<div className="text"><FormattedMessage id="account.imported.button" /></div>
