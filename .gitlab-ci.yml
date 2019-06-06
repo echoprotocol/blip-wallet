@@ -114,7 +114,8 @@ build.package-mac:
     paths:
       - node_modules
   before_script:
-    - rm -rf $HOME/.node-gyp
+    - rm -rf ~/.node-gyp
+    - rm -f ~/.npmrc
   script:
     - npm config set unsafe-perm true
     - rm -rf node_modules/node-sass
