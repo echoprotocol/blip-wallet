@@ -113,6 +113,8 @@ build.package-mac:
     key: $CI_COMMIT_REF_NAME
     paths:
       - node_modules
+  before_script:
+    - rm -rf $HOME/.node-gyp
   script:
     - npm config set unsafe-perm true
     - rm -rf node_modules/node-sass
