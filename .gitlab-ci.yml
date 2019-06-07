@@ -109,16 +109,12 @@ build.package-win:
 
 build.package-mac:
   stage: build
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - node_modules
-  before_script:
-    - rm -rf ~/.node-gyp
-    - rm -f ~/.npmrc
+#   cache:
+#     key: $CI_COMMIT_REF_NAME
+#     paths:
+#       - node_modules
   script:
     - npm config set unsafe-perm true
-    - rm -rf node_modules/node-sass
     - npm i
     - DEBUG_PROD=true npm run package-mac
   only:
