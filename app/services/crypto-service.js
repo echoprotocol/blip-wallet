@@ -4,7 +4,7 @@ import { PrivateKey, ED25519 } from 'echojs-lib';
 import bs58 from 'bs58';
 import random from 'crypto-random-string';
 import {
-	ACTIVE_KEY, ALGORITHM, ECHORANDKEY_SIZE, RANDOM_SIZE,
+	ACTIVE_KEY, ALGORITHM, ECHORANDKEY_SIZE, PUBLIC_KEY_SIZE, RANDOM_SIZE,
 } from '../constants/global-constants';
 
 class CryptoService {
@@ -161,7 +161,7 @@ class CryptoService {
 		do {
 			wif = CryptoService.generateWIF();
 			publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
-		} while (publicKey.length !== ECHORANDKEY_SIZE);
+		} while (publicKey.length !== PUBLIC_KEY_SIZE);
 		return { publicKey, wif };
 	}
 

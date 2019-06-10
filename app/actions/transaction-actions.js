@@ -306,7 +306,10 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 	coins = coins.map((i) => ({ ...i, selected: true }));
 	filter = filter.set('coins', fromJS(coins));
 
-	filter = filter.set('types', fromJS(Object.keys(OPERATIONS).map((type) => ({
+	// TODO: delete slice after adding new operation to graphql
+	const oldOperations = Object.keys(OPERATIONS).slice(0, Object.keys(OPERATIONS).length - 4);
+
+	filter = filter.set('types', fromJS(oldOperations.map((type) => ({
 		type,
 		name: OPERATIONS[type].name,
 		selected: true,

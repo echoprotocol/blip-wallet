@@ -10,7 +10,6 @@ import {
 	ECHO_ASSET_ID,
 	GLOBAL_ID_1,
 	EXPIRATION_INFELICITY,
-	DEFAULT_MEMO_KEY,
 } from '../constants/global-constants';
 import { toggleLoading, setValue } from './form-actions';
 import { setValue as setGlobal, setValue as setValueGlobal, setAccounts } from './global-actions';
@@ -116,12 +115,12 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 
 		try {
 			if (registrator.public) {
-				await Services.getEcho().remote.api.registerAccount(accountName, publicKey, publicKey, DEFAULT_MEMO_KEY, echoRandKey, () => {});
+				await Services.getEcho().remote.api.registerAccount(accountName, publicKey, echoRandKey, () => {});
 			} else {
 				const account = await Services.getEcho().api.getAccountByName(registrator.account);
 
 				const options = {
-					ed_key: publicKey,
+					echorand_key: publicKey,
 					registrar: account.id,
 					referrer: account.id,
 					referrer_percent: 0,
@@ -132,7 +131,6 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 						key_auths: [[publicKey, 1]],
 					},
 					options: {
-						memo_key: DEFAULT_MEMO_KEY,
 						voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
 						delegating_account: account.id,
 						num_committee: 0,

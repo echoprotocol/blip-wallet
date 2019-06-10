@@ -836,7 +836,7 @@ export const OPERATIONS = {
 		name: 'operations.generate_eth_address.title',
 		options: {
 			from: {
-				field: 'account_id',
+				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.generate_eth_address.from',
 			},
@@ -850,7 +850,7 @@ export const OPERATIONS = {
 		name: 'operations.create_eth_address.title',
 		options: {
 			from: {
-				field: 'account_id',
+				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.create_eth_address.from',
 			},
@@ -869,7 +869,7 @@ export const OPERATIONS = {
 				label: 'operations.deposit_eth.from',
 			},
 			subject: {
-				field: 'account_id',
+				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.deposit_eth.subject',
 			},
@@ -887,7 +887,7 @@ export const OPERATIONS = {
 		name: 'operations.withdraw_eth.title',
 		options: {
 			from: {
-				field: 'acc_id',
+				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.withdraw_eth.from',
 			},
@@ -905,6 +905,7 @@ export const OPERATIONS = {
 			},
 		},
 	},
+
 	approve_withdraw_eth: {
 		value: OPERATIONS_IDS.APPROVE_WITHDRAW_ETH,
 		name: 'operations.approve_withdraw_eth.title',
@@ -921,6 +922,93 @@ export const OPERATIONS = {
 			},
 			amount: null,
 			asset: null,
+		},
+	},
+	contract_fund_pool: {
+		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
+		name: 'operations.contract_fund_pool.title',
+		options: {
+			from: {
+				field: 'registrar',
+				type: OPTION_TYPES.ACCOUNT,
+			},
+			subject: {
+				field: 'contract_to_modify',
+				type: OPTION_TYPES.CONTRACT,
+			},
+			amount: null,
+			asset: {
+				field: 'fee',
+				type: OPTION_TYPES.EETH_ASSET,
+			},
+		},
+	},
+	contract_whitelist: {
+		value: OPERATIONS_IDS.CONTRACT_WHITELIST,
+		name: 'operations.contract_whitelist.title',
+		options: {
+			from: {
+				field: 'sender',
+				type: OPTION_TYPES.ACCOUNT,
+			},
+			subject: {
+				field: 'callee',
+				type: OPTION_TYPES.ACCOUNT,
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'fee',
+				type: OPTION_TYPES.EETH_ASSET,
+			},
+		},
+	},
+	sidechain_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
+		name: 'operations.sidechain_issue.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_issue.from',
+			},
+			subject: {
+				field: 'deposit_id',
+				type: OPTION_TYPES.NUMBER,
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'fee',
+				type: OPTION_TYPES.EETH_ASSET,
+			},
+		},
+	},
+	sidechain_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_BURN,
+		name: 'operations.sidechain_burn.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_burn.from',
+			},
+			subject: {
+				field: 'withdraw_id',
+				type: OPTION_TYPES.NUMBER,
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'fee',
+				type: OPTION_TYPES.EETH_ASSET,
+			},
 		},
 	},
 };

@@ -271,7 +271,7 @@
     "connected-react-router": "^5.0.1",
     "crypto-random-string": "^1.0.0",
     "devtron": "^1.4.0",
-    "echojs-lib": "^1.1.4",
+    "echojs-lib": "^1.1.7",
     "echojs-ping": "^0.1.5",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",

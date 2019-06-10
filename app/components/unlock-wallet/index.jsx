@@ -41,6 +41,7 @@ class UnlockWallet extends React.Component {
 	}
 
 	componentWillUnmount() {
+		document.removeEventListener('keypress', this.handleKeyPress);
 		this.props.clearForm();
 	}
 

@@ -62,6 +62,7 @@ export const LOCAL_NODE = 'local';
 
 export const RANDOM_SIZE = 2048;
 export const ECHORANDKEY_SIZE = 47;
+export const PUBLIC_KEY_SIZE = 48;
 
 export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
@@ -101,7 +102,7 @@ export const KEY_CODE_ARROW_UP = 38;
 export const KEY_CODE_ARROW_DOWN = 40;
 
 export const DEFAULT_MEMO_KEY = 'ECHO1111111111111111111111111111111114T1Anm';
-export const TEMPLATE_ECHO_KEY = 'DET5Ho3JQJf8WUnLBtxZhrfL8bJc4uCVda6Ku5SUeAbcNAB';
+export const TEMPLATE_ECHO_KEY = 'ECHO5Ho3JQJf8WUnLBtxZhrfL8bJc4uCVda6Ku5SUeAbcNAB';
 
 export const APP_WINDOW_WIDTH = 1024;
 export const APP_WINDOW_HEIGHT = 728;
