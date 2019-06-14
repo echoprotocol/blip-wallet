@@ -275,7 +275,10 @@ export const send = () => async (dispatch, getState) => {
 	const initialFrom = form.get('initialData').accountId;
 
 	const fromId = accounts.findKey((a, id) => id === from.value || initialFrom) || [...accounts.keys()][0];
-	const fromName = from.value || initialFrom || [...accounts.values()][0].get('name');
+	const activeAccount = accounts.findKey((a) => a.get('primary'));
+	const fromName = from.value || initialFrom || accounts.get(activeAccount).get('name');
+
+
 	const [fromAccount] = await Services.getEcho().api.getFullAccounts([fromName]);
 
 	const objectIds = Object.entries(fromAccount.balances).reduce((arr, b) => [...arr, ...b], []);
@@ -330,6 +333,7 @@ export const send = () => async (dispatch, getState) => {
 	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'send.loading' }));
 
 	try {
+
 		const isAccount = await dispatch(checkAccount(fromName, to.value));
 
 		if (!isAccount) {
