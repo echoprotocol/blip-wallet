@@ -61,6 +61,7 @@ class History extends React.Component {
 
 	onToggleSettings(e, status) {
 		e.preventDefault();
+		e.target.blur();
 		this.setState({ open: !status });
 	}
 
