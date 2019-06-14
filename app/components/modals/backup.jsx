@@ -20,6 +20,12 @@ class BackupModal extends React.Component {
 		this.refClipboard = React.createRef();
 	}
 
+	componentDidMount() {
+		if (this.state.keys.length === 0 && this.props.show) {
+			this.updateInfo();
+		}
+	}
+
 	componentDidUpdate(prevProps) {
 		if (!prevProps.show && this.props.show) {
 			this.updateInfo();
