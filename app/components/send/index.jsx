@@ -142,7 +142,9 @@ class Send extends React.Component {
 		const to = form.get('to').value;
 
 		this.props.setFormValue('from', id);
-		this.props.checkAccount(from, to);
+		if (to) {
+			this.props.checkAccount(from, to);
+		}
 	}
 
 	setFee(data) {
