@@ -86,7 +86,7 @@ class Settings extends React.Component {
 				{ active: !activeIndex },
 			)
 		}
-		onClick={(e) => this.setActiveTab(e, 0)}
+		onMouseDown={(e) => this.setActiveTab(e, 0)}
 	> <FormattedMessage id="wallet.filtert" />
 	</Button>,
 			},
@@ -101,7 +101,7 @@ class Settings extends React.Component {
 				{ active: !!activeIndex },
 			)
 		}
-		onClick={(e) => this.setActiveTab(e, 1)}
+		onMouseDown={(e) => this.setActiveTab(e, 1)}
 	><FormattedMessage id="wallet.archivedt" />
 	</Button>,
 			},
