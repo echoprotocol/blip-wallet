@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 import scrypt from 'scrypt-js';
-import { PrivateKey, ED25519 } from 'echojs-lib';
+import { PrivateKey, ED25519, constants } from 'echojs-lib';
 import bs58 from 'bs58';
 import random from 'crypto-random-string';
 import {
-	ACTIVE_KEY, ALGORITHM, ECHORANDKEY_SIZE, RANDOM_SIZE,
+	ACTIVE_KEY, ALGORITHM, RANDOM_SIZE,
 } from '../constants/global-constants';
 
 class CryptoService {
@@ -142,13 +142,7 @@ class CryptoService {
 	 *  @return {String} echoRandKey
 	 */
 	static generateEchoRandKey() {
-		const EchoRandKeyBuffer = ED25519.createKeyPair();
-		const echoRandPublicKey = EchoRandKeyBuffer.publicKey;
-		const echoRandKey = `DET${bs58.encode(echoRandPublicKey)}`;
-		if (echoRandKey.length !== ECHORANDKEY_SIZE) {
-			return CryptoService.generateEchoRandKey();
-		}
-		return echoRandKey;
+		return `${constants.CHAIN_CONFIG.ADDRESS_PREFIX}${bs58.encode(ED25519.createKeyPair().publicKey)}`;
 	}
 
 	/**

@@ -61,7 +61,6 @@ export const REMOTE_NODE = 'remote';
 export const LOCAL_NODE = 'local';
 
 export const RANDOM_SIZE = 2048;
-export const ECHORANDKEY_SIZE = 47;
 
 export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
