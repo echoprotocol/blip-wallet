@@ -88,7 +88,7 @@ class Authorization extends React.Component {
 			)
 		}
 		disabled={!activeIndex}
-		onClick={(e) => this.setActiveTab(e, 0)}
+		onMouseDown={(e) => this.setActiveTab(e, 0)}
 	>
 		<Animated
 			animationIn={activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
@@ -110,7 +110,7 @@ class Authorization extends React.Component {
 			)
 		}
 		disabled={!!activeIndex}
-		onClick={(e) => this.setActiveTab(e, 1)}
+		onMouseDown={(e) => this.setActiveTab(e, 1)}
 	>
 		<Animated
 			animationIn={!activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
