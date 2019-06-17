@@ -110,12 +110,14 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 			return resolve(false);
 		}
 
-		const { publicKey, wif } = CryptoService.generatePublicKeyAndWif();
 		const echoRandKey = CryptoService.generateEchoRandKey();
+		const wif = CryptoService.generateWIF();
+		const publicKey = PrivateKey.fromWif(wif).toPublicKey().toString();
 
 		try {
 			if (registrator.public) {
 				await Services.getEcho().remote.api.registerAccount(accountName, publicKey, echoRandKey, () => {});
+
 			} else {
 				const account = await Services.getEcho().api.getAccountByName(registrator.account);
 
