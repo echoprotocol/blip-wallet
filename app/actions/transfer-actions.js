@@ -154,7 +154,9 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 		const selectedFeeBalance = getState().form.getIn([FORM_SEND, 'selectedFeeBalance']) || defaultSelected;
 
 		const accounts = getState().global.getIn(['accounts']);
-		const fromId = accounts.findKey((a) => a.get('name') === form.get('from').value) || [...accounts.keys()][0];
+
+		const fromId = accounts.findKey((a, id) => id === form.get('from').value)
+			|| accounts.findKey((a, id) => id === form.get('initialData').accountId) || [...accounts.keys()][0];
 		const [toAccount] = await Services.getEcho().api.getFullAccounts([to.value]);
 
 		let isToken = false;
@@ -274,7 +276,7 @@ export const send = () => async (dispatch, getState) => {
 	const from = form.get('from');
 	const initialFrom = form.get('initialData').accountId;
 
-	const fromId = accounts.findKey((a, id) => id === from.value || initialFrom) || [...accounts.keys()][0];
+	const fromId = accounts.findKey((a, id) => id === from.value) || accounts.findKey((a, id) => id === initialFrom) || [...accounts.keys()][0];
 	const activeAccount = accounts.findKey((a) => a.get('primary'));
 	const fromName = from.value || initialFrom || accounts.get(activeAccount).get('name');
 
