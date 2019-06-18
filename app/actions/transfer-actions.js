@@ -172,7 +172,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 
 			options = {
 				amount: {
-					amount: amount * (10 ** amountAsset.get('precision')),
+					amount: new BN(amount).times(10 ** amountAsset.get('precision')).toString(),
 					asset_id: amountAsset.get('id'),
 				},
 				fee: {
