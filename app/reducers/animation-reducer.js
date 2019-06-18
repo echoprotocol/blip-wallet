@@ -13,7 +13,8 @@ import {
 
 const DEFAULT_ANIMATIONS = {
 	[UNLOCK]: Map({
-		isVisible: true,
+		isVisible: false,
+		showLogo: true,
 	}),
 	[AUTHORIZATION]: Map({
 		isVisible: true,
@@ -28,7 +29,8 @@ const DEFAULT_ANIMATIONS = {
 		isVisible: true,
 	}),
 	[CREATE_PASSWORD]: Map({
-		isVisible: true,
+		isVisible: false,
+		showLogo: true,
 	}),
 };
 
@@ -41,12 +43,11 @@ export default createModule({
 		[ACCOUNT_IMPORTED]: _.cloneDeep(DEFAULT_ANIMATIONS[ACCOUNT_IMPORTED]),
 		[CREATE_PASSWORD]: _.cloneDeep(DEFAULT_ANIMATIONS[CREATE_PASSWORD]),
 		[RESTORE_PASSWORD]: _.cloneDeep(DEFAULT_ANIMATIONS[RESTORE_PASSWORD]),
-
 	}),
 	transformations: {
 		set: {
 			reducer: (state, { payload }) => {
-				state = state.setIn([payload.type, 'isVisible'], payload.value);
+				state = state.setIn([payload.type, payload.field], payload.value);
 				return state;
 			},
 		},

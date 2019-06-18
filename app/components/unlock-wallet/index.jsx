@@ -14,7 +14,6 @@ import { clearForm, setValue as setValueToForm } from '../../actions/form-action
 import { FORM_UNLOCK } from '../../constants/form-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
 
-
 class UnlockWallet extends React.Component {
 
 	constructor(props) {
@@ -158,7 +157,9 @@ class UnlockWallet extends React.Component {
 		const {
 			showPas, password, valid, focused,
 		} = this.state;
-		const { isVisible, form, intl } = this.props;
+		const {
+			isVisible, form, intl, showLogo,
+		} = this.props;
 
 		const placeholder = intl.formatMessage({ id: 'unlock.placeholder' });
 		const button = intl.formatMessage({ id: 'unlock.button' });
@@ -171,14 +172,17 @@ class UnlockWallet extends React.Component {
 				onFocus={this.changeFocusTarget}
 				onClick={this.changeFocusTarget}
 			>
-				<Animated
-					className="blip-logo"
-					animationIn="fadeInRight"
-					animationOut="fadeOutLeft"
-					animateOnMount={false}
-					isVisible={isVisible}
-				><img src={blipLogo} alt="" />
-				</Animated>
+				{showLogo && (
+					<Animated
+						className="blip-logo"
+						animationIn="fadeInRight"
+						animationOut="fadeOutLeft"
+						animateOnMount={false}
+						isVisible={isVisible}
+					><img src={blipLogo} alt="" />
+					</Animated>
+				)}
+
 				<Animated
 					className="unlock-info"
 					animationIn="fadeInRight"
@@ -283,12 +287,14 @@ UnlockWallet.propTypes = {
 	form: PropTypes.object.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
+	showLogo: PropTypes.bool.isRequired,
 };
 
 export default withRouter(injectIntl(connect(
 	(state) => ({
 		isVisible: state.animation.getIn([UNLOCK, 'isVisible']),
 		form: state.form.get(FORM_UNLOCK),
+		showLogo: state.animation.getIn([UNLOCK, 'showLogo']),
 	}),
 	(dispatch) => ({
 		validateUnlock: (form, password) => dispatch(validateUnlock(form, password)),

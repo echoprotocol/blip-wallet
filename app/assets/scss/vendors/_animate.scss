@@ -1270,6 +1270,20 @@
   animation-name: slideOutUp;
 }
 
+@-webkit-keyframes fadeDownToUp {
+  from {
+    transform: translate(0px,220px) rotate(0deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(0px,0px) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+
+
 .animated {
   -webkit-animation-duration: .22s;
   animation-duration: .22s;
@@ -1321,6 +1335,7 @@
   -webkit-animation-duration: 3s;
   animation-duration: 3s;
 }
+
 
 @media (print), (prefers-reduced-motion) {
   .animated {

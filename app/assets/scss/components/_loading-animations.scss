@@ -1,0 +1,41 @@
+.loading-animation {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	right: 0;
+	margin: auto;
+
+	&-logo {
+		width: 240px;
+		height: auto;
+		margin-left: calc(50vw - 120px);
+		transition: margin .4s;
+		&.left {
+
+			&>div {
+				@include max-vw(1400) {
+					width: 170px;
+					top: calc(100% - 86px) !important;
+				}
+				left: -16px;
+				top: calc(100% - 126px) !important;
+
+			}
+
+			height: 16vh;
+			margin: 0;
+		}
+	}
+
+	&-text {
+		@include source-regular();
+		position: absolute;
+		top: 44vh;
+		width: 100%;
+		color: rgba(#fff, 0.5);
+		font-size: 16px;
+		text-align: center;
+	}
+}

@@ -11,7 +11,7 @@ const DEFAULT_FIELDS = Map({
 	localNodePercent: 0,
 	accounts: new Map({}),
 	locked: true,
-	inited: false,
+	inited: new Map({ app: false, animation: false }),
 	platform: null,
 	networks: new List([]),
 });

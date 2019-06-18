@@ -36,6 +36,19 @@ export const setValue = (field, value) => (dispatch) => {
 	dispatch(GlobalReducer.actions.set({ field, value }));
 };
 
+
+/**
+ *
+ * *  @method setInValue
+ *
+ * @param field
+ * @param params
+ * @returns {Function}
+ */
+export const setInValue = (field, params) => (dispatch) => {
+	dispatch(GlobalReducer.actions.setIn({ field, params }));
+};
+
 /**
  *  @method clearValue
  *
@@ -177,7 +190,7 @@ export const initApp = (store) => async (dispatch, getState) => {
 
 		await dispatch(initNetworks(store));
 
-		dispatch(setValue('inited', true));
+		dispatch(setInValue('inited', { app: true }));
 	} catch (err) {
 		console.warn(err.message || err);
 	} finally {

@@ -60,7 +60,7 @@ class Toolbar extends React.Component {
 		const close = ReactDOM.findDOMNode(this.refClose.current);
 		/* eslint-enable */
 
-		if (toolbar.contains(e.target)) {
+		if (toolbar && toolbar.contains(e.target)) {
 			e.stopImmediatePropagation();
 			if (close.contains(e.target)) {
 				this.onCloseApp();

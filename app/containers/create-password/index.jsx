@@ -140,7 +140,9 @@ class CreatePassword extends React.Component {
 	}
 
 	render() {
-		const { error, loading, isVisible } = this.props;
+		const {
+			error, loading, isVisible,
+		} = this.props;
 		const {
 			showPas,
 			hint1, hint2, hint3, hint4, repeatError,

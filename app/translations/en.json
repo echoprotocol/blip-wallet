@@ -492,6 +492,9 @@
 		},
 		"apply": "Apply changes",
 		"cancel": "Cancel"
-	}
+	},
 
+	"animations": {
+		"loading": "Blip is loading. Wait a bit."
+	}
 }

@@ -16,7 +16,7 @@ import AccountImported from '../account-imported';
 
 import { startAnimation } from '../../actions/animation-actions';
 
-import { AUTHORIZATION } from '../../constants/routes-constants';
+import { AUTHORIZATION, CREATE_PASSWORD } from '../../constants/routes-constants';
 import { changeActiveTabIndex } from '../../actions/auth-actions';
 
 class Authorization extends React.Component {
@@ -136,12 +136,12 @@ class Authorization extends React.Component {
 
 	renderAuth() {
 		const { activeIndex, importAccount, createAccount } = this.state;
-		const { isVisible } = this.props;
+		const { isVisible, showLogo } = this.props;
 
 		return (
 			<div className="page">
 				<div className="logo-wrap">
-					<img src={blipLogo} alt="" />
+					{showLogo && <img src={blipLogo} alt="" />}
 				</div>
 				<div className="auth-tabs">
 					<div className="menu">
@@ -199,12 +199,14 @@ Authorization.propTypes = {
 	activeTabIndex: PropTypes.number.isRequired,
 	startAnimation: PropTypes.func.isRequired,
 	changeActiveTabIndex: PropTypes.func.isRequired,
+	showLogo: PropTypes.bool.isRequired,
 };
 
 export default connect(
 	(state) => ({
 		isVisible: state.animation.getIn([AUTHORIZATION, 'isVisible']),
 		activeTabIndex: state.auth.get('activeTabIndex'),
+		showLogo: state.animation.getIn([CREATE_PASSWORD, 'showLogo']),
 	}),
 	(dispatch) => ({
 		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
