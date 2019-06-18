@@ -415,6 +415,10 @@ ipcMain.on('close-app', (event) => {
 	}
 });
 
+ipcMain.on('showWindow', () => {
+	mainWindow.show();
+});
+
 ipcMain.on('zoom-app', () => {
 	if (!mainWindow.isMaximized()) {
 		mainWindow.maximize();
