@@ -276,10 +276,10 @@ export const send = () => async (dispatch, getState) => {
 	const from = form.get('from');
 	const initialFrom = form.get('initialData').accountId;
 
-	const fromId = accounts.findKey((a, id) => id === from.value) || accounts.findKey((a, id) => id === initialFrom) || [...accounts.keys()][0];
 	const activeAccount = accounts.findKey((a) => a.get('primary'));
 	const fromName = from.value || initialFrom || accounts.get(activeAccount).get('name');
 
+	const fromId = accounts.findKey((a, id) => id === from.value) || accounts.findKey((a, id) => id === initialFrom) || activeAccount;
 
 	const [fromAccount] = await Services.getEcho().api.getFullAccounts([fromName]);
 
