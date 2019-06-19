@@ -8,11 +8,7 @@ import { Animated } from 'react-animated-css';
 import blipLogo from '../../assets/images/blip-logo.svg';
 import { startAnimation } from '../../actions/animation-actions';
 import { clearWalletData } from '../../actions/global-actions';
-import {
-	CREATE_PASSWORD,
-	RESTORE_PASSWORD, UNLOCK,
-} from '../../constants/routes-constants';
-
+import { RESTORE_PASSWORD, UNLOCK } from '../../constants/routes-constants';
 
 class RestorePassword extends React.Component {
 
@@ -27,10 +23,6 @@ class RestorePassword extends React.Component {
 		this.onClearData = this.onClearData.bind(this);
 	}
 
-	componentWillUnmount() {
-		this.props.startAnimation(RESTORE_PASSWORD, true);
-	}
-
 	onChange() {
 		this.setState((prevState) => ({
 			checked: !prevState.checked,
@@ -39,14 +31,12 @@ class RestorePassword extends React.Component {
 
 	async onClearData() {
 		await this.props.clearWalletData();
-		await this.props.startAnimation(RESTORE_PASSWORD, false);
-		this.props.history.push(CREATE_PASSWORD);
 	}
 
 	async returnFunction() {
-		await this.props.startAnimation(RESTORE_PASSWORD, false);
+		await this.props.startAnimation(RESTORE_PASSWORD, 'isVisible', false);
 		this.props.history.goBack();
-		this.props.startAnimation(UNLOCK, true);
+		this.props.startAnimation(UNLOCK, 'isVisible', true);
 	}
 
 
@@ -148,7 +138,7 @@ export default connect(
 		isVisible: state.animation.getIn([RESTORE_PASSWORD, 'isVisible']),
 	}),
 	(dispatch) => ({
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 		clearWalletData: () => dispatch(clearWalletData()),
 	}),
 )(RestorePassword);

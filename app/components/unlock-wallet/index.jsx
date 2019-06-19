@@ -6,13 +6,20 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import { Animated } from 'react-animated-css';
-import blipLogo from '../../assets/images/blip-logo.svg';
+
 import { validateUnlock, setValue } from '../../actions/global-actions';
-import { startAnimation } from '../../actions/animation-actions';
+import { startAnimation, setValue as setValueToAnimation } from '../../actions/animation-actions';
+
 import { UNLOCK, RESTORE_PASSWORD } from '../../constants/routes-constants';
 import { clearForm, setValue as setValueToForm } from '../../actions/form-actions';
+
 import { FORM_UNLOCK } from '../../constants/form-constants';
 import { KEY_CODE_ENTER } from '../../constants/global-constants';
+import { WAITING_ANIMATION } from '../../constants/animation-constants';
+import ViewHelper from '../../helpers/view-helper';
+
+
+import WaitingAnimation from '../waiting-animation';
 
 class UnlockWallet extends React.Component {
 
@@ -32,11 +39,11 @@ class UnlockWallet extends React.Component {
 		this.onTogglePrivacy = this.onTogglePrivacy.bind(this);
 		this.changeFocusTarget = this.changeFocusTarget.bind(this);
 		this.renderPrivacyEyeBlur = this.renderPrivacyEyeBlur.bind(this);
-		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	componentDidMount() {
-		document.addEventListener('keypress', this.handleKeyPress);
+		this.unlockInput.focus();
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	componentWillUnmount() {
@@ -48,7 +55,8 @@ class UnlockWallet extends React.Component {
 		e.preventDefault();
 
 		this.props.setValueToForm('error', null);
-		await this.props.startAnimation(UNLOCK, false);
+		await this.props.startAnimation(UNLOCK, 'isVisible', false);
+		await this.props.startAnimation(RESTORE_PASSWORD, 'isVisible', true);
 		this.props.history.push(RESTORE_PASSWORD);
 
 	}
@@ -109,13 +117,8 @@ class UnlockWallet extends React.Component {
 		this.setState({ valid });
 
 		if (valid) {
-			setTimeout(() => {
-				this.props.startAnimation(UNLOCK, false);
-			}, 500);
-			setTimeout(() => {
-				this.props.unlockWallet(false);
-
-			}, 1000);
+			await ViewHelper.timeout(() => this.props.startAnimation(UNLOCK, 'isVisible', false), 500);
+			ViewHelper.timeout(() => this.props.unlockWallet(false), 500);
 		}
 	}
 
@@ -158,7 +161,7 @@ class UnlockWallet extends React.Component {
 			showPas, password, valid, focused,
 		} = this.state;
 		const {
-			isVisible, form, intl, showLogo,
+			isVisible, form, intl, waitingAnimation, showLogo,
 		} = this.props;
 
 		const placeholder = intl.formatMessage({ id: 'unlock.placeholder' });
@@ -172,17 +175,24 @@ class UnlockWallet extends React.Component {
 				onFocus={this.changeFocusTarget}
 				onClick={this.changeFocusTarget}
 			>
-				{showLogo && (
-					<Animated
-						className="blip-logo"
-						animationIn="fadeInRight"
-						animationOut="fadeOutLeft"
-						animateOnMount={false}
-						isVisible={isVisible}
-					><img src={blipLogo} alt="" />
-					</Animated>
-				)}
 
+				{showLogo
+					&& (
+						<Animated
+							className="animation-logo-wrap"
+							animationIn="fadeInRight"
+							animationOut="fadeOutLeft"
+							animateOnMount={false}
+							isVisible={isVisible}
+						>
+							<WaitingAnimation
+								setValueToAnimation={(value) => this.props.setValueToAnimation(value)}
+								active={waitingAnimation}
+								inited
+							/>
+						</Animated>
+					)
+				}
 				<Animated
 					className="unlock-info"
 					animationIn="fadeInRight"
@@ -256,7 +266,7 @@ class UnlockWallet extends React.Component {
 						disabled={password.length < 8}
 						content={(
 							<React.Fragment>
-								<div className="text">{button}</div>{/* text will "Clear" if disabled */}
+								<div className="text">{button}</div>
 							</React.Fragment>
 						)}
 					/>
@@ -287,20 +297,24 @@ UnlockWallet.propTypes = {
 	form: PropTypes.object.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
+	waitingAnimation: PropTypes.bool.isRequired,
+	setValueToAnimation: PropTypes.func.isRequired,
 	showLogo: PropTypes.bool.isRequired,
 };
 
 export default withRouter(injectIntl(connect(
 	(state) => ({
 		isVisible: state.animation.getIn([UNLOCK, 'isVisible']),
-		form: state.form.get(FORM_UNLOCK),
 		showLogo: state.animation.getIn([UNLOCK, 'showLogo']),
+		form: state.form.get(FORM_UNLOCK),
+		waitingAnimation: state.animation.getIn([WAITING_ANIMATION, 'active']),
 	}),
 	(dispatch) => ({
 		validateUnlock: (form, password) => dispatch(validateUnlock(form, password)),
 		unlockWallet: (value) => dispatch(setValue('locked', value)),
 		setValueToForm: (form, value) => dispatch(setValueToForm(FORM_UNLOCK, form, value)),
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 		clearForm: () => dispatch(clearForm(FORM_UNLOCK)),
+		setValueToAnimation: (value) => dispatch(setValueToAnimation(WAITING_ANIMATION, 'active', value)),
 	}),
 )(UnlockWallet)));

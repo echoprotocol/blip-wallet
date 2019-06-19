@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import AnimationLabel from './animation-label';
 import AnimationLogo from './animation-logo';
 import en from '../../translations/en';
 import blipLoading from '../../assets/animations/blip-loading';
-import { DELAY_SHOW_TEXT_ANIMATION } from '../../constants/animation-constans';
-
+import { DELAY_SHOW_TEXT_ANIMATION } from '../../constants/animation-constants';
+import ViewHelper from '../../helpers/view-helper';
 
 class LoadingAnimation extends React.Component {
 
@@ -16,9 +17,11 @@ class LoadingAnimation extends React.Component {
 		};
 	}
 
+
 	componentDidMount() {
-		setTimeout(() => this.changeVisibleText(), DELAY_SHOW_TEXT_ANIMATION);
+		ViewHelper.timeout(() => this.changeVisibleText(), DELAY_SHOW_TEXT_ANIMATION);
 	}
+
 
 	componentWillUnmount() {
 		this.changeVisibleText();

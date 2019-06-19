@@ -1,4 +1,6 @@
 import AnimationReducer from '../reducers/animation-reducer';
+import { CHANGE_PAGE_ANIMATION_TIME } from '../constants/animation-constants';
+import ViewHelper from '../helpers/view-helper';
 
 /**
  * Set value by field
@@ -14,12 +16,12 @@ export const startAnimation = (type, field, value) => (dispatch) => {
 	}
 
 	return new Promise((resolve) => {
-		setTimeout(() => {
+		ViewHelper.timeout(() => {
 			if (value) {
 				dispatch(AnimationReducer.actions.set({ type, field, value }));
 			}
 			resolve();
-		}, 200);
+		}, CHANGE_PAGE_ANIMATION_TIME);
 	});
 
 };

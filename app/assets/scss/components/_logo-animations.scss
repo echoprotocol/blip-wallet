@@ -1,0 +1,69 @@
+.animation-logo-wrap {
+	margin: 8vh 0 auto;
+
+	.animation-logo {
+		width: 240px;
+		height: auto;
+		transition: all 0.35s ease-in-out;
+
+		&.not-loaded {
+			margin-top: 25vh;
+			margin-bottom: 3vh;
+		}
+	}
+}
+
+.loading-animation {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	margin: auto;
+
+	.animation-logo {
+		width: 240px;
+		height: auto;
+		margin-left: calc(50vw - 120px);
+		transition: margin .4s;
+
+		&.left {
+
+			height: 16vh;
+			margin: 0 0 0 4vw;
+
+			&>div {
+				@include max-vw(1400) {
+					top: calc(100% - 89px) !important;
+					width: 170px;
+				}
+				top: calc(100% - 126px) !important;
+				left: -16px;
+
+			}
+		}
+	}
+
+	.animation-logo-label {
+		@include source-regular();
+
+		@include max-vh(1100) {
+			top: 46vh;
+		}
+		@include max-vh(1000) {
+			top: 48vh;
+		}
+		@include max-vh(900) {
+			top: 50vh;
+		}
+		@include max-vh(850) {
+			top: 52vh;
+		}
+
+		position: absolute;
+		top: 44vh;
+		width: 100%;
+		color: rgba(#fff, 0.5);
+		font-size: 16px;
+		text-align: center;
+	}
+}

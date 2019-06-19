@@ -13,7 +13,7 @@ import { ACCOUNT_IMPORTED, WALLET } from '../../constants/routes-constants';
 class AccountImported extends React.Component {
 
 	componentWillUnmount() {
-		this.props.startAnimation(ACCOUNT_IMPORTED, true);
+		this.props.startAnimation(ACCOUNT_IMPORTED, 'isVisible', true);
 	}
 
 	render() {
@@ -88,6 +88,6 @@ export default withRouter(connect(
 		isVisible: state.animation.getIn([ACCOUNT_IMPORTED, 'isVisible']),
 	}),
 	(dispatch) => ({
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 	}),
 )(AccountImported));

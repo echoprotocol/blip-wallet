@@ -43,7 +43,7 @@ class CreatePassword extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.props.startAnimation(CREATE_PASSWORD, true);
+		this.props.startAnimation(CREATE_PASSWORD, 'isVisible', true);
 	}
 
 	onChange(e) {
@@ -141,7 +141,7 @@ class CreatePassword extends React.Component {
 
 	render() {
 		const {
-			error, loading, isVisible,
+			error, loading, isVisible, showLogo,
 		} = this.props;
 		const {
 			showPas,
@@ -157,7 +157,7 @@ class CreatePassword extends React.Component {
 				onFocus={this.changeFocusTarget}
 				onClick={this.changeFocusTarget}
 			>
-				<Header />
+				<Header showLogo={showLogo} />
 				<PerfectScrollbar className="form-wrap">
 					<div className="form-content">
 						<Animated
@@ -305,6 +305,7 @@ CreatePassword.propTypes = {
 	startAnimation: PropTypes.func.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	createDB: PropTypes.func.isRequired,
+	showLogo: PropTypes.bool.isRequired,
 	loading: PropTypes.bool,
 };
 
@@ -318,9 +319,10 @@ export default connect(
 		loading: state.form.getIn([FORM_CREATE_PASSWORD, 'loading']),
 		error: state.form.getIn([FORM_CREATE_PASSWORD, 'error']),
 		isVisible: state.animation.getIn([CREATE_PASSWORD, 'isVisible']),
+		showLogo: state.animation.getIn([CREATE_PASSWORD, 'showLogo']),
 	}),
 	(dispatch) => ({
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 		createDB: (value) => dispatch(createDB(FORM_CREATE_PASSWORD, value)),
 	}),
 )(CreatePassword);

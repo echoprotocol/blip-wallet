@@ -11,6 +11,10 @@ import {
 	CREATE_PASSWORD,
 } from '../constants/routes-constants';
 
+import {
+	WAITING_ANIMATION,
+} from '../constants/animation-constants';
+
 const DEFAULT_ANIMATIONS = {
 	[UNLOCK]: Map({
 		isVisible: false,
@@ -32,6 +36,9 @@ const DEFAULT_ANIMATIONS = {
 		isVisible: false,
 		showLogo: true,
 	}),
+	[WAITING_ANIMATION]: Map({
+		active: false,
+	}),
 };
 
 export default createModule({
@@ -43,6 +50,7 @@ export default createModule({
 		[ACCOUNT_IMPORTED]: _.cloneDeep(DEFAULT_ANIMATIONS[ACCOUNT_IMPORTED]),
 		[CREATE_PASSWORD]: _.cloneDeep(DEFAULT_ANIMATIONS[CREATE_PASSWORD]),
 		[RESTORE_PASSWORD]: _.cloneDeep(DEFAULT_ANIMATIONS[RESTORE_PASSWORD]),
+		[WAITING_ANIMATION]: _.cloneDeep(DEFAULT_ANIMATIONS[WAITING_ANIMATION]),
 	}),
 	transformations: {
 		set: {

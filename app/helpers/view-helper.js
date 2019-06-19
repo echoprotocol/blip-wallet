@@ -6,8 +6,11 @@ export default class ViewHelper {
 	 * @param ms
 	 * @returns {Promise}
 	 */
-	static timeout(ms = TIME_LOADING) {
-		return new Promise((resolve) => setTimeout(resolve, ms));
+	static timeout(callback = () => {}, ms = TIME_LOADING) {
+		return new Promise((resolve) => setTimeout(() => {
+			callback();
+			resolve();
+		}, ms));
 	}
 
 }

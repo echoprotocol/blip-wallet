@@ -40,7 +40,7 @@ class Authorization extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.props.startAnimation(AUTHORIZATION, true);
+		this.props.startAnimation(AUTHORIZATION, 'isVisible', true);
 	}
 
 	onChangeFormData(form, field, value) {
@@ -50,22 +50,14 @@ class Authorization extends React.Component {
 	async setActiveTab(e, active) {
 
 		e.stopPropagation();
-		this.props.startAnimation(AUTHORIZATION, false);
-		this.setState({
-			activeIndex: active,
-		});
-
-		await this.props.startAnimation(AUTHORIZATION, true);
-
-		this.setState({
-			activeIndex: active,
-		});
-
+		await this.props.startAnimation(AUTHORIZATION, 'isVisible', false);
+		await this.props.startAnimation(AUTHORIZATION, 'isVisible', true);
+		this.setState({ activeIndex: active });
 		this.props.changeActiveTabIndex(active);
 	}
 
 	goForward(accountName, wif) {
-		this.props.startAnimation(AUTHORIZATION, false);
+		this.props.startAnimation(AUTHORIZATION, 'isVisible', false);
 
 		setTimeout(() => {
 			this.setState({ wif, accountName });
@@ -79,48 +71,47 @@ class Authorization extends React.Component {
 		const menuItems = [
 			{
 				menuItem:
-	<Button
+	<Animated
+		animationIn={activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
+		animationOut="fadeOutLeft"
+		isVisible={isVisible}
 		key="0"
-		className={
-			classnames(
-				'menu-item',
-				{ active: !activeIndex },
-			)
-		}
-		disabled={!activeIndex}
-		onMouseDown={(e) => this.setActiveTab(e, 0)}
 	>
-		<Animated
-			animationIn={activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
-			animationOut="fadeOutLeft"
-			isVisible={isVisible}
+		<Button
+			className={
+				classnames(
+					'menu-item',
+					{ active: !activeIndex },
+				)
+			}
+			disabled={!activeIndex}
+			onMouseDown={(e) => this.setActiveTab(e, 0)}
 		>
 			<FormattedMessage id="account.create.title" />
-		</Animated>
-	</Button>,
+		</Button>
+	</Animated>,
 			},
 			{
 				menuItem:
-	<Button
+	<Animated
 		key="1"
-		className={
-			classnames(
-				'menu-item',
-				{ active: !!activeIndex },
-			)
-		}
-		disabled={!!activeIndex}
-		onMouseDown={(e) => this.setActiveTab(e, 1)}
+		animationIn={!activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
+		animationOut="fadeOutLeft"
+		isVisible={isVisible}
 	>
-		<Animated
-			animationIn={!activeIndex ? 'fadeInRightBig' : 'fadeInRight'}
-			animationOut="fadeOutLeft"
-			isVisible={isVisible}
+		<Button
+			className={
+				classnames(
+					'menu-item',
+					{ active: !!activeIndex },
+				)
+			}
+			disabled={!!activeIndex}
+			onMouseDown={(e) => this.setActiveTab(e, 1)}
 		>
 			<FormattedMessage id="account.import.title" />
-		</Animated>
-
-	</Button>,
+		</Button>
+	</Animated>,
 			},
 		];
 
@@ -209,7 +200,7 @@ export default connect(
 		showLogo: state.animation.getIn([CREATE_PASSWORD, 'showLogo']),
 	}),
 	(dispatch) => ({
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 		changeActiveTabIndex: (value) => dispatch(changeActiveTabIndex(value)),
 	}),
 )(Authorization);

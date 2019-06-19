@@ -22,6 +22,8 @@ import Unlock from '../components/unlock-wallet';
 import Toolbar from '../components/toolbar';
 import Services from '../services';
 import Modals from './modals';
+import { setValue, startAnimation } from '../actions/animation-actions';
+import ViewHelper from '../helpers/view-helper';
 
 import {
 	CREATE_PASSWORD,
@@ -30,21 +32,23 @@ import {
 	LOCKED_ROUTES,
 	SIDE_MENU_ROUTES,
 	RESTORE_PASSWORD,
-	WALLET,
+	WALLET, UNLOCK,
 	MANAGE_ACCOUNTS,
-	SETTINGS, UNLOCK,
+	SETTINGS,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 
 import { lockApp, setInValue } from '../actions/global-actions';
+
+
 import { FORM_CREATE_PASSWORD } from '../constants/form-constants';
 import LoadingAnimation from '../components/loading-animation';
 import {
 	TIME_FADE_LEFT_LOGO_ANIMATION,
 	TIME_FADE_OUT_LOADING_ANIMATION,
 	TIME_SHOW_LOADING_ANIMATION,
-} from '../constants/animation-constans';
-import { setValue, startAnimation } from '../actions/animation-actions';
+	WAITING_ANIMATION, NEXT_PAGE_SETUP_TIME,
+} from '../constants/animation-constants';
 
 addLocaleData([...localeEn, ...localeRu]);
 
@@ -58,6 +62,8 @@ class App extends React.Component {
 		};
 
 		this.cancelShowingAnimation = this.cancelShowingAnimation.bind(this);
+		this.getNextPageAnimationTimeout = this.getNextPageAnimationTimeout.bind(this);
+		this.setLoadAnimationEnd = this.setLoadAnimationEnd.bind(this);
 	}
 
 	componentDidMount() {
@@ -75,8 +81,36 @@ class App extends React.Component {
 		const { pathname } = this.props;
 
 		if (LOCKED_ROUTES.includes(pathname)) {
+			this.props.setValue(WAITING_ANIMATION, 'active', true);
 			this.props.lock();
 		}
+	}
+
+	onIdleActive() {
+		this.props.setValue(WAITING_ANIMATION, 'active', false);
+	}
+
+	setLoadAnimationEnd(timeForMovingToLeft) {
+		if (timeForMovingToLeft === 0) {
+			this.props.setValue(UNLOCK, 'showLogo', true);
+			this.props.setValue(CREATE_PASSWORD, 'showLogo', true);
+			this.props.setInValue('inited', { animation: true });
+		} else {
+			this.setState({ stayLogoAnimation: true });
+		}
+	}
+
+	async getNextPageAnimationTimeout() {
+		const userStorage = Services.getUserStorage();
+		const doesDBExist = await userStorage.doesDBExist();
+
+		if (doesDBExist) {
+			this.props.startAnimation(UNLOCK, 'isVisible', true);
+			return 0;
+		}
+		this.props.startAnimation(CREATE_PASSWORD, 'isVisible', true);
+		return TIME_FADE_LEFT_LOGO_ANIMATION;
+
 	}
 
 	async checkLocation() {
@@ -86,7 +120,6 @@ class App extends React.Component {
 		}
 
 		const { loadingCreatePass } = this.props;
-
 		if (loadingCreatePass) {
 			return false;
 		}
@@ -115,7 +148,7 @@ class App extends React.Component {
 			const doesDBExist = await userStorage.doesDBExist();
 
 			if (doesDBExist) {
-				this.props.history.push(WALLET);
+				this.props.history.push(AUTHORIZATION);
 			}
 		}
 
@@ -143,42 +176,35 @@ class App extends React.Component {
 	}
 
 	async cancelShowingAnimation() {
+
 		let timeForMovingToLeft = 0;
 		this.props.setValue(UNLOCK, 'showLogo', false);
 		this.props.setValue(CREATE_PASSWORD, 'showLogo', false);
-		setTimeout(async () => {
-			const userStorage = Services.getUserStorage();
-			const doesDBExist = await userStorage.doesDBExist();
 
-			if (doesDBExist) {
-				this.props.startAnimation(UNLOCK, 'isVisible', true);
-			} else {
-				timeForMovingToLeft = TIME_FADE_LEFT_LOGO_ANIMATION;
-				this.props.startAnimation(CREATE_PASSWORD, 'isVisible', true);
-			}
+		ViewHelper.timeout(async () => {
 
-			setTimeout(() => {
+			timeForMovingToLeft = await this.getNextPageAnimationTimeout();
+
+		}, TIME_SHOW_LOADING_ANIMATION - NEXT_PAGE_SETUP_TIME)
+			.then(() => ViewHelper.timeout(() => {
+
 				this.setState({ runStartAnimation: true });
 
-				setTimeout(() => {
-					if (timeForMovingToLeft === 0) {
-						this.props.setValue(UNLOCK, 'showLogo', true);
-						this.props.setValue(CREATE_PASSWORD, 'showLogo', true);
-						this.props.setInValue('inited', { animation: true });
-					} else {
-						this.setState({ stayLogoAnimation: true });
-					}
-				}, TIME_FADE_OUT_LOADING_ANIMATION + timeForMovingToLeft);
-			}, 1000);
+			}, NEXT_PAGE_SETUP_TIME))
+			.then(() => ViewHelper.timeout(() => {
 
-		}, TIME_SHOW_LOADING_ANIMATION - 1000);
+				this.setLoadAnimationEnd(timeForMovingToLeft);
+
+			}, TIME_FADE_OUT_LOADING_ANIMATION + timeForMovingToLeft));
 	}
+
 
 	render() {
 
 		const {
 			children, loading, locked,
-			pathname, language, initedAnimation, initedApp, moveAnimationToLeft,
+			pathname, language, initedAnimation,
+			initedApp, moveAnimationToLeft,
 		} = this.props;
 
 		const { runStartAnimation } = this.state;
@@ -195,6 +221,7 @@ class App extends React.Component {
 						onIdle={() => this.onIdle()}
 						timeout={LOCK_TIMEOUT}
 						events={LOCK_TIMER_EVENTS}
+						onActive={() => this.onIdleActive()}
 					/>
 					<Toolbar />
 					{ (PUBLIC_ROUTES.includes(pathname) || locked) && <div className="bg" />}
@@ -248,10 +275,10 @@ App.propTypes = {
 	accounts: PropTypes.object.isRequired,
 	loadingCreatePass: PropTypes.bool.isRequired,
 	locked: PropTypes.bool,
+	setValue: PropTypes.func.isRequired,
 	initedApp: PropTypes.bool,
 	initedAnimation: PropTypes.bool.isRequired,
 	setInValue: PropTypes.func.isRequired,
-	setValue: PropTypes.func.isRequired,
 	startAnimation: PropTypes.func.isRequired,
 	moveAnimationToLeft: PropTypes.bool.isRequired,
 };
@@ -275,8 +302,8 @@ export default connect(
 	}),
 	(dispatch) => ({
 		lock: () => dispatch(lockApp()),
-		setInValue: (field, value) => dispatch(setInValue(field, value)),
 		setValue: (type, field, value) => dispatch(setValue(type, field, value)),
+		setInValue: (field, value) => dispatch(setInValue(field, value)),
 		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 	}),
 )(withRouter(App));

@@ -4,7 +4,8 @@ import { Transition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import TweenMax from 'gsap';
 import classnames from 'classnames';
-import { TIME_FADE_LEFT_LOGO_ANIMATION, TIME_FADE_OUT_LOADING_ANIMATION } from '../../constants/animation-constans';
+import { TIME_FADE_LEFT_LOGO_ANIMATION, TIME_FADE_OUT_LOADING_ANIMATION } from '../../constants/animation-constants';
+import ViewHelper from '../../helpers/view-helper';
 
 class AnimationLogo extends React.Component {
 
@@ -20,7 +21,7 @@ class AnimationLogo extends React.Component {
 
 	endHandler(n) {
 		let endStateAnimation = {
-			top: '8vh',
+			top: this.props.moveAnimationToLeft ? '8vh' : '13vh',
 			ease: window.Power1.easeOut,
 		};
 
@@ -28,7 +29,7 @@ class AnimationLogo extends React.Component {
 		TweenMax.to(n, TIME_FADE_OUT_LOADING_ANIMATION / 1000, endStateAnimation);
 
 		if (this.props.moveAnimationToLeft) {
-			setTimeout(() => this.setState({ left: true }), TIME_FADE_OUT_LOADING_ANIMATION - 100);
+			ViewHelper.timeout(() => this.setState({ left: true }), TIME_FADE_OUT_LOADING_ANIMATION - 100);
 
 			endStateAnimation = {
 				delay: TIME_FADE_OUT_LOADING_ANIMATION / 1000,
@@ -56,7 +57,7 @@ class AnimationLogo extends React.Component {
 		return (
 			<div className={
 				classnames(
-					'loading-animation-logo',
+					'animation-logo',
 					{ left: this.state.left },
 				)}
 			>

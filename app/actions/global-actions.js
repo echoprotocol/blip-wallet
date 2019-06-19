@@ -5,8 +5,12 @@ import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
 import { history } from '../store/configureStore';
 import UserStorageService from '../services/user-storage-service';
-import { UNLOCK, CREATE_PASSWORD, AUTHORIZATION } from '../constants/routes-constants';
-import { startAnimation } from './animation-actions';
+import {
+	UNLOCK, CREATE_PASSWORD,
+	AUTHORIZATION, WALLET,
+	INDEX_ROUTE,
+} from '../constants/routes-constants';
+import { startAnimation, setValue as setAnamationValue } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
 import { NETWORKS, DEFAULT_NETWORK_ID } from '../constants/global-constants';
 import LanguageService from '../services/language';
@@ -131,6 +135,7 @@ export const initAccounts = () => async (dispatch, getState) => {
 
 	let accountsStore = getState().global.get('accounts');
 
+
 	accountsStore = accountsStore.withMutations((mapAccounts) => {
 		accounts.forEach((account) => {
 			mapAccounts.setIn([account.id, 'name'], account.name);
@@ -145,9 +150,16 @@ export const initAccounts = () => async (dispatch, getState) => {
 		console.log('initAccounts error', e);
 	}
 
+
 	dispatch(setValue('accounts', accountsStore));
 	dispatch(setAccounts());
 	await dispatch(subscribeTokens());
+
+	const { pathname } = getState().router.location;
+	if ([INDEX_ROUTE, AUTHORIZATION].includes(pathname)) {
+		history.push(accountsStore.size ? WALLET : AUTHORIZATION);
+	}
+
 };
 
 /**
@@ -226,10 +238,10 @@ export const createDB = (form, password) => async (dispatch) => {
 	try {
 		await Promise.all([promiseCreateDB, promiseLoader]);
 		dispatch(setValue('locked', false));
-		await dispatch(startAnimation(CREATE_PASSWORD, false));
+		await dispatch(startAnimation(CREATE_PASSWORD, 'isVisible', false));
 		history.push(AUTHORIZATION);
 	} catch (err) {
-		await dispatch(startAnimation(CREATE_PASSWORD, false));
+		await dispatch(startAnimation(CREATE_PASSWORD, 'isVisible', false));
 		console.error(err);
 	} finally {
 		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
@@ -246,7 +258,6 @@ export const createDB = (form, password) => async (dispatch) => {
  * 	@param {String} password
  */
 export const validateUnlock = (form, password) => async (dispatch) => {
-	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'unlock.loading' }));
 
 	const promiseLoader = ViewHelper.timeout();
 	const promiseValidateUnlock = new Promise(async (resolve) => {
@@ -282,7 +293,6 @@ export const validateUnlock = (form, password) => async (dispatch) => {
 		return false;
 	} finally {
 		dispatch(setValueToForm(form, 'loading', false));
-		dispatch(GlobalReducer.actions.set({ field: 'loading', value: '' }));
 	}
 };
 
@@ -291,11 +301,18 @@ export const lockApp = () => async (dispatch, getState) => {
 
 	const userStorage = Services.getUserStorage();
 	await userStorage.resetCurrentScheme();
-	await dispatch(startAnimation(pathname, false));
+	await dispatch(startAnimation(pathname, 'isVisible', false));
 
 	dispatch(setValue('locked', true));
 	dispatch(setValue('accounts', new Map({})));
-	dispatch(startAnimation(UNLOCK, true));
+
+	dispatch(setAnamationValue(UNLOCK, 'showLogo', true));
+	dispatch(setAnamationValue(CREATE_PASSWORD, 'showLogo', true));
+	dispatch(setInValue('inited', { animation: true }));
+
+	dispatch(startAnimation(UNLOCK, 'isVisible', true));
+
+
 };
 
 /**
@@ -330,7 +347,8 @@ export const clearWalletData = () => async (dispatch, getState) => {
 	dispatch(setValue('locked', true));
 	dispatch(setValue('accounts', new Map({})));
 
-	await dispatch(startAnimation(pathname, false));
+	await dispatch(startAnimation(pathname, 'isVisible', false));
+	await dispatch(startAnimation(CREATE_PASSWORD, 'isVisible', true));
 	history.push(CREATE_PASSWORD);
 
 };

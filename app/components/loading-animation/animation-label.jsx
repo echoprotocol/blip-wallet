@@ -2,7 +2,7 @@ import React from 'react';
 import { TweenLite } from 'gsap';
 import { Transition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import { TIME_FADE_OUT_LOADING_ANIMATION } from '../../constants/animation-constans';
+import { TIME_FADE_OUT_LOADING_ANIMATION } from '../../constants/animation-constants';
 
 class AnimationLabel extends React.Component {
 
@@ -25,7 +25,7 @@ class AnimationLabel extends React.Component {
 
 	render() {
 		return (
-			<div className="loading-animation-text">
+			<div className="animation-logo-label">
 				<Transition
 					in={this.props.in}
 					mountOnEnter

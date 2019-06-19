@@ -25,7 +25,7 @@ class AccountCreated extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.props.startAnimation(ACCOUNT_CREATED, true);
+		this.props.startAnimation(ACCOUNT_CREATED, 'isVisible', true);
 	}
 
 	copyBlur() {
@@ -183,6 +183,6 @@ export default injectIntl(withRouter(connect(
 		isVisible: state.animation.getIn([ACCOUNT_CREATED, 'isVisible']),
 	}),
 	(dispatch) => ({
-		startAnimation: (type, value) => dispatch(startAnimation(type, value)),
+		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 	}),
 )(AccountCreated)));
