@@ -1,7 +1,7 @@
 {
   "name": "blip-wallet",
   "productName": "BlipWallet",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Blip Wallet",
   "scripts": {
     "web": "cross-env NODE_ENV=development node --trace-warnings -r @babel/register ./node_modules/webpack-dev-server/bin/webpack-dev-server --config configs/webpack.config.web.babel.js --mode development --progress --colors --history-api-fallback --hot --inline",
