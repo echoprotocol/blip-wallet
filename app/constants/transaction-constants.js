@@ -11,7 +11,9 @@ export const OPTION_TYPES = {
 	NUMBER: 'number',
 	STRING: 'string',
 	ACCOUNT_ADDRESS: 'eth_address',
+	CONTRACT_ADDRESS: 'eth_address',
 	EETH_ASSET: 'eEth',
+	ERC20_TOKEN: 'erc20_token',
 };
 
 export const CONTRACT_TYPES = [
@@ -929,17 +931,22 @@ export const OPERATIONS = {
 		name: 'operations.contract_fund_pool.title',
 		options: {
 			from: {
-				field: 'registrar',
+				field: 'sender',
 				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.contract_fund_pool.from',
 			},
 			subject: {
-				field: 'contract_to_modify',
+				field: 'contract',
 				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_fund_pool.subject',
 			},
-			amount: null,
+			amount: {
+				field: 'value.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
 			asset: {
-				field: 'fee',
-				type: OPTION_TYPES.EETH_ASSET,
+				field: 'value.asset_id',
+				type: OPTION_TYPES.ASSET,
 			},
 		},
 	},
@@ -950,19 +957,15 @@ export const OPERATIONS = {
 			from: {
 				field: 'sender',
 				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.contract_whitelist.from',
 			},
 			subject: {
-				field: 'callee',
-				type: OPTION_TYPES.ACCOUNT,
+				field: 'contract',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_whitelist.subject',
 			},
-			amount: {
-				field: 'value',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'fee',
-				type: OPTION_TYPES.EETH_ASSET,
-			},
+			amount: null,
+			asset: null,
 		},
 	},
 	sidechain_issue: {
@@ -977,14 +980,15 @@ export const OPERATIONS = {
 			subject: {
 				field: 'deposit_id',
 				type: OPTION_TYPES.NUMBER,
+				label: 'operations.sidechain_issue.subject',
 			},
 			amount: {
-				field: 'value',
+				field: 'value.amount',
 				type: OPTION_TYPES.NUMBER,
 			},
 			asset: {
-				field: 'fee',
-				type: OPTION_TYPES.EETH_ASSET,
+				field: 'value.asset_id',
+				type: OPTION_TYPES.ASSET,
 			},
 		},
 	},
@@ -1000,15 +1004,121 @@ export const OPERATIONS = {
 			subject: {
 				field: 'withdraw_id',
 				type: OPTION_TYPES.NUMBER,
+				label: 'operations.sidechain_burn.subject',
+			},
+			amount: {
+				field: 'value.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'value.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	register_erc20_token: {
+		value: OPERATIONS_IDS.REGISTER_ERC20_TOKEN,
+		name: 'operations.register_erc20_token.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.register_erc20_token.from',
+			},
+			subject: {
+				field: 'eth_addr',
+				type: OPTION_TYPES.CONTRACT_ADDRESS,
+				label: 'operations.register_erc20_token.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
+	deposit_erc20_token: {
+		value: OPERATIONS_IDS.DEPOSIT_ERC20_TOKEN,
+		name: 'operations.deposit_erc20_token.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.deposit_erc20_token.from',
+			},
+			subject: {
+				field: 'erc20_token_addr',
+				type: OPTION_TYPES.CONTRACT_ADDRESS,
+				label: 'operations.deposit_erc20_token.subject',
 			},
 			amount: {
 				field: 'value',
 				type: OPTION_TYPES.NUMBER,
 			},
 			asset: {
-				field: 'fee',
-				type: OPTION_TYPES.EETH_ASSET,
+				type: OPTION_TYPES.ERC20_TOKEN,
 			},
+		},
+	},
+	withdraw_erc20_token: {
+		value: OPERATIONS_IDS.WITHDRAW_ERC20_TOKEN,
+		name: 'operations.withdraw_erc20_token.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.withdraw_erc20_token.from',
+			},
+			subject: {
+				field: 'to',
+				type: OPTION_TYPES.ACCOUNT_ADDRESS,
+				label: 'operations.withdraw_erc20_token.subject',
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				type: OPTION_TYPES.ERC20_TOKEN,
+			},
+		},
+	},
+	approve_erc20_token_withdraw: {
+		value: OPERATIONS_IDS.APPROVE_ERC20_TOKEN_WITHDRAW,
+		name: 'operations.approve_erc20_token_withdraw.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.approve_erc20_token_withdraw.from',
+			},
+			subject: {
+				field: 'to',
+				type: OPTION_TYPES.ACCOUNT_ADDRESS,
+				label: 'operations.approve_erc20_token_withdraw.subject',
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				type: OPTION_TYPES.ERC20_TOKEN,
+			},
+		},
+	},
+	contract_update: {
+		value: OPERATIONS_IDS.CONTRACT_UPDATE,
+		name: 'operations.contract_update.title',
+		options: {
+			from: {
+				field: 'sender',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.contract_update.from',
+			},
+			subject: {
+				field: 'contract',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_update.subject',
+			},
+			amount: null,
+			asset: null,
 		},
 	},
 };

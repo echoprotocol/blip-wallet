@@ -216,7 +216,8 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 			return false;
 		}
 
-		dispatch(setFormValue(FORM_SEND, 'fee', resultFee.amount / (10 ** objectsById.getIn([options.fee.asset_id, 'precision']))));
+		const precision = objectsById.getIn([options.fee.asset_id, 'precision']);
+		dispatch(setFormValue(FORM_SEND, 'fee', BN(resultFee.amount).div(BN(10).pow(precision)).toFixed(precision)));
 	} catch (err) {
 		console.warn(err);
 
@@ -490,7 +491,7 @@ export const setMinAmount = () => async (dispatch, getState) => {
 		precision = asset.get('precision');
 	}
 
-	const amount = new BN(1).div(10 ** precision).toString();
+	const amount = new BN(1).div(10 ** precision).toFixed(precision);
 
 	dispatch(setValue(FORM_SEND, 'minAmount', { amount, symbol }));
 

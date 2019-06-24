@@ -443,7 +443,52 @@
 			"title": "Подтвердить вывод ETH",
 			"from": "Член комитета",
 			"subject": "Идентификатор вывода"
-		}
+		},
+        "contract_fund_pool": {
+            "title": "Финансирование пула контракта",
+            "from": "Отправитель",
+            "subject": "Контракт"
+        },
+        "contract_whitelist": {
+            "title": "Белый список контрактов",
+            "from": "Аккаунт",
+            "subject": "Контракт"
+        },
+        "sidechain_issue": {
+            "title": "Выпуск sidechain",
+            "from": "Аккаунт",
+            "subject": "Депозит"
+        },
+        "sidechain_burn": {
+            "title": "Сжечь sidechain",
+            "from": "Аккаунт",
+            "subject": "ID вывода"
+        },
+        "register_erc20_token": {
+            "title": "Регистрация ERC20 токена",
+            "from": "Аккаунт",
+            "subject": "Ethereum адрес"
+        },
+        "deposit_erc20_token": {
+            "title": "Депозит ERC20 токена",
+            "from": "Аккаунт",
+            "subject": "Ethereum адрес"
+        },
+        "withdraw_erc20_token": {
+            "title": "Вывод ERC20 токена",
+            "from": "Аккаунт",
+            "subject": "Ethereum адрес"
+        },
+        "approve_erc20_token_withdraw": {
+            "title": "Одобрение вывода ERC20 токена",
+            "from": "Член комитета",
+            "subject": "Ethereum адрес"
+        },
+        "contract_update": {
+            "title": "Обновление контракта",
+            "from": "Аккаунт",
+            "subject": "Контракт"
+        }
 	},
 
     "send": {

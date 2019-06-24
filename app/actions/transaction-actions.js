@@ -9,7 +9,7 @@ import {
 } from '../constants/transaction-constants';
 import { ASSET_TYPE, TOKEN_TYPE, DEFAULT_HISTORY_COUNT } from '../constants/graphql-constants';
 import {
-	ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION, EETH_ASSET_SYMBOL,
+	ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION, EETH_ASSET_SYMBOL, ERC20_TOKEN_PRECISION,
 } from '../constants/global-constants';
 import ViewHelper from '../helpers/view-helper';
 import Services from '../services';
@@ -151,6 +151,7 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 			case OPTION_TYPES.STRING:
 			case OPTION_TYPES.NUMBER:
 			case OPTION_TYPES.ACCOUNT_ADDRESS:
+			case OPTION_TYPES.CONTRACT_ADDRESS:
 				return {
 					...base,
 					label: value.label,
@@ -166,6 +167,12 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 					value: response.symbol,
 					precision: response.precision,
 					id: response.id,
+				};
+			case OPTION_TYPES.ERC20_TOKEN:
+				return {
+					...base,
+					value: '',
+					precision: ERC20_TOKEN_PRECISION,
 				};
 			default:
 				throw new Error('Unknown option type');

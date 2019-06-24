@@ -424,6 +424,51 @@
 			"title": "Approve withdraw ETH",
 			"from": "Committee member",
 			"subject": "Withdraw Id"
+		},
+		"contract_fund_pool": {
+			"title": "Contract fund pool",
+			"from": "Sender",
+			"subject": "Contract"
+		},
+		"contract_whitelist": {
+			"title": "Contract whitelist",
+			"from": "Account",
+			"subject": "Contract"
+		},
+		"sidechain_issue": {
+			"title": "Sidechain issue",
+			"from": "Account",
+			"subject": "Deposit"
+		},
+		"sidechain_burn": {
+			"title": "Sidechain burn",
+			"from": "Account",
+			"subject": "Withdrawal ID"
+		},
+		"register_erc20_token": {
+			"title": "Register ERC20 token",
+			"from": "Account",
+			"subject": "Ethereum address"
+		},
+		"deposit_erc20_token": {
+			"title": "Deposit ERC20 token",
+			"from": "Account",
+			"subject": "Ethereum address"
+		},
+		"withdraw_erc20_token": {
+			"title": "Withdraw ERC20 token",
+			"from": "Account",
+			"subject": "Ethereum address"
+		},
+		"approve_erc20_token_withdraw": {
+			"title": "Approve ERC20 token withdrawal",
+			"from": "Committee member",
+			"subject": "Ethereum address"
+		},
+		"contract_update": {
+			"title": "Contract update",
+			"from": "Account",
+			"subject": "Contract"
 		}
 	},
 
