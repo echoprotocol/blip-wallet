@@ -26,8 +26,6 @@ class Settings extends React.Component {
 		this.props.applySettings({
 			network,
 		});
-
-		this.clearState();
 	}
 
 	onCancel() {
@@ -54,6 +52,7 @@ class Settings extends React.Component {
 							node={this.props.currentNode}
 							networks={this.props.networks}
 							changeNetwork={(value) => this.onChange('network', value)}
+							isDisabled={loading}
 						/>
 						<div className="page-in-action">
 							<div className="btn-wrap">

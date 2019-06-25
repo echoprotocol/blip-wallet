@@ -352,8 +352,10 @@ class UserStorageService {
 
 		let network;
 
-		if (!decryptedData.data.networks || !decryptedData.data.networks[networkId]) {
+		if (!decryptedData.data.networks) {
 			decryptedData.data.networks = {};
+			network = Network.create([], []);
+		} else if (!decryptedData.data.networks[networkId]) {
 			network = Network.create([], []);
 		} else {
 			const rawNetwork = decryptedData.data.networks[networkId];

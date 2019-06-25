@@ -25,7 +25,7 @@ class Networks extends React.Component {
 
 	render() {
 		const {
-			network, networks, connected, node,
+			network, networks, connected, node, isDisabled,
 		} = this.props;
 		const current = network || networks.find((n) => n.get('active'));
 		const status = connected ? NETWORK_STATUS.ONLINE : NETWORK_STATUS.OFFLINE;
@@ -40,7 +40,7 @@ class Networks extends React.Component {
 							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
 						</div>
 						<Dropdown className="white networks">
-							<Dropdown.Toggle variant="Info">
+							<Dropdown.Toggle variant="Info" disabled={isDisabled}>
 								<span className="dropdown-toggle-text">
 									{
 										!network ? (
@@ -92,6 +92,7 @@ class Networks extends React.Component {
 Networks.propTypes = {
 	network: PropTypes.object,
 	connected: PropTypes.bool,
+	isDisabled: PropTypes.bool,
 	node: PropTypes.string.isRequired,
 	networks: PropTypes.object.isRequired,
 	changeNetwork: PropTypes.func.isRequired,
@@ -99,6 +100,7 @@ Networks.propTypes = {
 
 Networks.defaultProps = {
 	connected: false,
+	isDisabled: false,
 	network: null,
 };
 

@@ -133,14 +133,14 @@ export const initAccounts = () => async (dispatch, getState) => {
 
 	const accounts = await userStorage.getAllAccounts();
 
-	let accountsStore = getState().global.get('accounts');
-
+	let accountsStore = new Map({});
 
 	accountsStore = accountsStore.withMutations((mapAccounts) => {
 		accounts.forEach((account) => {
-			mapAccounts.setIn([account.id, 'name'], account.name);
-			mapAccounts.setIn([account.id, 'selected'], account.selected);
-			mapAccounts.setIn([account.id, 'primary'], account.primary);
+			mapAccounts = mapAccounts
+				.setIn([account.id, 'name'], account.name)
+				.setIn([account.id, 'selected'], account.selected)
+				.setIn([account.id, 'primary'], account.primary);
 		});
 	});
 

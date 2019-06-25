@@ -1,9 +1,11 @@
 import FormatHelper from '../helpers/format-helper';
 import Services from '../services';
-import { setValue, clearValue, initAccounts } from './global-actions';
+import { setValue, initAccounts } from './global-actions';
 import { init as initWallet, reset as clearWallet } from './balance-actions';
+import { history } from '../store/configureStore';
 
 import SettingReducer from '../reducers/setting-reducer';
+import { WALLET, AUTHORIZATION } from '../constants/routes-constants';
 
 /**
  * @method set
@@ -43,11 +45,12 @@ export const changeNetwork = (network) => async (dispatch, getState) => {
 
 	Services.getLocalStorage().setData('current_network', network.get('id'));
 
-	dispatch(clearValue('accounts'));
 	dispatch(clearWallet());
-
 	await dispatch(initAccounts());
 	await dispatch(initWallet());
+
+	const accounts = getState().global.get('accounts');
+	history.push(accounts.size ? WALLET : AUTHORIZATION);
 };
 
 /**
