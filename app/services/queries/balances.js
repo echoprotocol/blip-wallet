@@ -22,6 +22,6 @@ export const getBalances = async (accounts) => {
 		}
 	`;
 
-	const client = Services.getGraphql();
+	const client = Services.getGraphql().getClient();
 	return client.query({ query, variables: { accounts } });
 };

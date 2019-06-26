@@ -34,6 +34,7 @@ export const changeNetwork = (network) => async (dispatch, getState) => {
 
 	await Services.getUserStorage().setNetworkId(network.get('id'));
 	await Services.getEcho().changeConnection(network.get('id'));
+	await Services.getGraphql().init(network.get('id'));
 	Services.getEcho().setOptions([], network.get('id'));
 
 	dispatch(setValue(

@@ -63,7 +63,7 @@ class Services {
 			return this.graphql;
 		}
 
-		this.graphql = Graphql;
+		this.graphql = new Graphql();
 
 		return this.graphql;
 	}
@@ -83,7 +83,7 @@ class Services {
 			return this.tokenSubscribe;
 		}
 
-		this.tokenSubscribe = new TokenSubscribe(this.getEmitter(), this.getGraphql());
+		this.tokenSubscribe = new TokenSubscribe(this.getEmitter(), this.getGraphql().getClient());
 
 		return this.tokenSubscribe;
 	}

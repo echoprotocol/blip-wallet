@@ -6,34 +6,13 @@ import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 
 import {
-	HTTP_LINK, WS_LINK, OPERATION_DEFINITION, SUBSCRIPTION,
+	OPERATION_DEFINITION, SUBSCRIPTION,
 } from '../constants/graphql-constants';
-import { MAX_RETRIES } from '../constants/global-constants';
+import { ECHODB, MAX_RETRIES } from '../constants/global-constants';
 
 const cache = new InMemoryCache({
 	dataIdFromObject: (o) => (o._id ? `${o.__typename}:${o._id}` : null), // eslint-disable-line no-underscore-dangle
 });
-
-const httpLink = new HttpLink({ uri: HTTP_LINK });
-
-const wsLink = new WebSocketLink({
-	uri: WS_LINK,
-	options: {
-		reconnect: true,
-		reconnectionAttempts: MAX_RETRIES,
-	},
-});
-
-const link = split(
-	({ query }) => {
-		const { kind, operation } = getMainDefinition(query);
-		return (
-			kind === OPERATION_DEFINITION && operation === SUBSCRIPTION
-		);
-	},
-	wsLink,
-	httpLink,
-);
 
 const defaultOptions = {
 	watchQuery: {
@@ -46,4 +25,37 @@ const defaultOptions = {
 	},
 };
 
-export default new ApolloClient({ cache, link, defaultOptions });
+class Graphql {
+
+	init(network) {
+		const httpLink = new HttpLink({ uri: ECHODB[network].HTTP_LINK });
+
+		const wsLink = new WebSocketLink({
+			uri: ECHODB[network].WS_LINK,
+			options: {
+				reconnect: true,
+				reconnectionAttempts: MAX_RETRIES,
+			},
+		});
+
+		const link = split(
+			({ query }) => {
+				const { kind, operation } = getMainDefinition(query);
+				return (
+					kind === OPERATION_DEFINITION && operation === SUBSCRIPTION
+				);
+			},
+			wsLink,
+			httpLink,
+		);
+
+		this.client = new ApolloClient({ cache, link, defaultOptions });
+	}
+
+	getClient() {
+		return this.client;
+	}
+
+}
+
+export default Graphql;

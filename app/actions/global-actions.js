@@ -85,6 +85,7 @@ export const initNetworks = (store) => async (dispatch) => {
 	}));
 
 	await Services.getUserStorage().setNetworkId(current);
+	await Services.getGraphql().init(current);
 	await Services.getEcho().init(current, { store });
 
 	Services.getEcho().setOptions([], current);

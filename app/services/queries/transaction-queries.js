@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import client from '../graphql';
+import Services from '../index';
 
 export const getHistoryByAccounts = (accounts, assets, tokens, operations, offset, count) => {
 	const GET_HISTORY = gql`
@@ -21,7 +21,7 @@ export const getHistoryByAccounts = (accounts, assets, tokens, operations, offse
 	}
 	`;
 
-	return client.query({
+	return Services.getGraphql().getClient().query({
 		query: GET_HISTORY,
 		variables: {
 			accounts,
@@ -54,7 +54,7 @@ export const getCoinsByAccounts = (accounts) => {
 	}
 	`;
 
-	return client.query({
+	return Services.getGraphql().getClient().query({
 		query: GET_BALANCES,
 		variables: {
 			accounts,

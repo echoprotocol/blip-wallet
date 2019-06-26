@@ -193,6 +193,8 @@ class Receive extends React.Component {
 		const { copied } = this.state;
 
 		const selectedAccountName = accounts && (accounts.getIn([form.get('selectedAccount').value, 'name']) || accounts.find((a) => a.get('primary')).get('name'));
+		const networkId = Services.getUserStorage().getNetworkId();
+		const QR_URL = QR_SERVER_URL[networkId];
 
 		return (
 			<div className="page receive">
@@ -284,11 +286,11 @@ class Receive extends React.Component {
 										<div className="qr-info">
 											<div className="qr-link">
 												<span className="qr-link-content">
-													{`${QR_SERVER_URL}${this.getQr(selectedAccountName, 'url')}`}
+													{`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
 												</span>
 												<CopyToClipboard
 													onCopy={() => this.onCopyUrl()}
-													text={`${QR_SERVER_URL}${this.getQr(selectedAccountName, 'url')}`}
+													text={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
 												>
 													<Button
 														className="btn-copy gray sm"

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import client from '../graphql';
+import Services from '../index';
 
 import { ASSET_TYPE, TOKEN_TYPE } from '../../constants/graphql-constants';
 
@@ -38,7 +38,7 @@ export const newOperation = (filter) => {
 	}
 	`;
 
-	return client.subscribe({
+	return Services.getGraphql().getClient().subscribe({
 		query: NEW_OPERATION,
 		variables: {
 			accounts,

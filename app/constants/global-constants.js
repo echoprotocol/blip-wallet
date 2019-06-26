@@ -41,10 +41,24 @@ export const NETWORK_STATUS = {
 
 export const EXPLORER_URL = {
 	devnet: 'https://656-echo-explorer.pixelplex-test.by',
-	testnet: 'https://656-echo-explorer.pixelplexlabs.com',
+	testnet: 'https://explorer.echo.org',
 };
 
-export const QR_SERVER_URL = 'https://649-bridge-landing.pixelplexlabs.com/receive/';
+export const ECHODB = {
+	devnet: {
+		HTTP_LINK: 'https://645-echodb.pixelplex-test.by/graphql',
+		WS_LINK: 'wss://645-echodb.pixelplex-test.by/graphql',
+	},
+	testnet: {
+		HTTP_LINK: 'https://645-echodb.pixelplexlabs.com/graphql',
+		WS_LINK: 'wss://645-echodb.pixelplexlabs.com/graphql',
+	},
+};
+
+export const QR_SERVER_URL = {
+	devnet: 'https://649-bridge-landing.pixelplex-test.by/receive/',
+	testnet: 'https://649-bridge-landing.pixelplexlabs.com/receive/',
+};
 
 export const ECHO_ASSET_ID = '1.3.0';
 export const ECHO_ASSET_PRECISION = 8;
