@@ -5,7 +5,7 @@ import {
 	clearForm, setFormError, setFormValue, setValue,
 } from '../../actions/form-actions';
 import {
-	checkAccount, send, setFeeFormValue, setMinAmount,
+	checkAccount, send, setFeeFormValue, setMinAmount, changeAccount,
 } from '../../actions/transfer-actions';
 
 import Send from '../../components/send';
@@ -31,5 +31,6 @@ export default connect(
 		setFeeFormValue: () => dispatch(setFeeFormValue()),
 		clearForm: () => dispatch(clearForm(FORM_SEND)),
 		setMinAmount: () => dispatch(setMinAmount()),
+		changeAccount: (id) => dispatch(changeAccount(id)),
 	}),
 )(Send);

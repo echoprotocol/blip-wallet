@@ -64,6 +64,12 @@ export const checkAccount = (fromAccount, toAccount) => async (dispatch) => {
 	return true;
 };
 
+export const changeAccount = (fromId) => (dispatch) => {
+	dispatch(setFormValue(FORM_SEND, 'from', fromId));
+	dispatch(setFormError(FORM_SEND, 'fee', ''));
+	dispatch(setFormError(FORM_SEND, 'amount', ''));
+};
+
 /**
  *  @method checkFeePool
  *

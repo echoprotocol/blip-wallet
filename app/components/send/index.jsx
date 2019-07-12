@@ -141,7 +141,7 @@ class Send extends React.Component {
 		const { form } = this.props;
 		const to = form.get('to').value;
 
-		this.props.setFormValue('from', id);
+		this.props.changeAccount(id);
 		if (to) {
 			this.props.checkAccount(from, to);
 		}
@@ -395,6 +395,7 @@ Send.propTypes = {
 	setFeeFormValue: PropTypes.func.isRequired,
 	clearForm: PropTypes.func.isRequired,
 	setMinAmount: PropTypes.func.isRequired,
+	changeAccount: PropTypes.func.isRequired,
 	intl: intlShape.isRequired,
 };
 
