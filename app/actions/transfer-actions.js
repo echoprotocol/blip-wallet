@@ -2,13 +2,15 @@ import BN from 'bignumber.js';
 import { keccak256 } from 'js-sha3';
 import { CACHE_MAPS, OPERATIONS_IDS } from 'echojs-lib';
 
-import { FORM_SEND } from '../constants/form-constants';
-import ValidateSendHelper from '../helpers/validate-send-helper';
+import { getOperationFee } from './transaction-actions';
+import { signTransaction } from './sign-actions';
 import {
 	setFormError, setFormValue, setValue,
 } from './form-actions';
-import Services from '../services';
-import GlobalReducer from '../reducers/global-reducer';
+
+import ValidateSendHelper from '../helpers/validate-send-helper';
+import FormatHelper from '../helpers/format-helper';
+
 import {
 	BROADCAST_LIMIT,
 	ECHO_ASSET_ID,
@@ -16,10 +18,12 @@ import {
 	GLOBAL_ID_1,
 } from '../constants/global-constants';
 import { TRANSFER_KEYS } from '../constants/transaction-constants';
-import { getOperationFee } from './transaction-actions';
-import { signTransaction } from './sign-actions';
+import { FORM_SEND } from '../constants/form-constants';
 import { WALLET } from '../constants/routes-constants';
+
+import GlobalReducer from '../reducers/global-reducer';
 import { history } from '../store/configureStore';
+import Services from '../services';
 
 const getTransferCode = (id, amount) => {
 	const method = keccak256('transfer(address,uint256)').substr(0, 8);
@@ -437,13 +441,14 @@ export const send = () => async (dispatch, getState) => {
 			}
 		}
 
+		const feeAssetPrecision = new BN(10).pow(feeAsset.get('precision'));
 		if (isToken) {
 			options.value.amount = 0;
-			options.fee.amount *= 10 ** feeAsset.get('precision');
+			options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString();
 		} else {
 			const amountAsset = objectsById.get(options.amount.asset_id);
-			options.amount.amount = parseInt(options.amount.amount * (10 ** amountAsset.get('precision')), 10);
-			options.fee.amount *= 10 ** feeAsset.get('precision');
+			options.amount.amount = new BN(options.amount.amount).times(new BN(10).pow(amountAsset.get('precision'))).toString();
+			options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString();
 		}
 
 		const start = new Date().getTime();
@@ -463,7 +468,7 @@ export const send = () => async (dispatch, getState) => {
 
 		history.push(WALLET);
 	} catch (err) {
-		console.warn('Broadcast transaction error', err);
+		console.warn('Broadcast transaction error', FormatHelper.getError(err));
 
 		return null;
 	} finally {
