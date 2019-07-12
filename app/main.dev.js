@@ -162,7 +162,7 @@ app.on('ready', async () => {
 
 	const execPath = process.env.NODE_ENV === 'production' ? joinPath(dirname(appRootDir.get()), 'icons') : joinPath(appRootDir.get(), 'resources', 'icons');
 
-	tray = new Tray(`${execPath}/128x128.png`);
+	tray = new Tray(`${execPath}/16x16.png`);
 
 	const contextMenu = Menu.buildFromTemplate([
 		{
@@ -182,6 +182,8 @@ app.on('ready', async () => {
 
 	tray.setToolTip('This is my application.');
 	tray.setContextMenu(contextMenu);
+
+	tray.on('click', () => mainWindow.show());
 
 	if (
 		process.env.NODE_ENV === 'development'
@@ -408,10 +410,6 @@ ipcMain.on('close-app', (event) => {
 		event.preventDefault();
 		mainWindow.hide();
 	}
-});
-
-ipcMain.on('showWindow', () => {
-	mainWindow.show();
 });
 
 ipcMain.on('zoom-app', () => {
