@@ -151,10 +151,10 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 		const amount = Number(form.get('amount').value).toString();
 		const objectsById = getState().echoCache.get(CACHE_MAPS.OBJECTS_BY_ID);
 
-		const defaultSelected = objectsById
+		let defaultSelected = objectsById
 			.filter((o, id) => ValidateSendHelper.isAccountBalanceId(id))
-			.find((val) => val.get('asset_type') === ECHO_ASSET_ID)
-			.get('id');
+			.find((val) => val.get('asset_type') === ECHO_ASSET_ID);
+		defaultSelected = defaultSelected ? defaultSelected.get('id') : '';
 
 		const selectedBalance = getState().form.getIn([FORM_SEND, 'selectedBalance']) || defaultSelected;
 		const selectedFeeBalance = getState().form.getIn([FORM_SEND, 'selectedFeeBalance']) || defaultSelected;
@@ -175,16 +175,18 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 		let type = null;
 
 		if (!isToken) {
-			const amountAsset = objectsById.get(objectsById.getIn([selectedBalance, 'asset_type']));
+			const asset = selectedBalance
+				? objectsById.get(objectsById.getIn([selectedBalance, 'asset_type']))
+				: objectsById.get(ECHO_ASSET_ID);
 			type = 'transfer';
 
 			options = {
 				amount: {
-					amount: new BN(amount).times(10 ** amountAsset.get('precision')).toString(),
-					asset_id: amountAsset.get('id'),
+					amount: new BN(amount).times(10 ** asset.get('precision')).toString(),
+					asset_id: asset.get('id'),
 				},
 				fee: {
-					asset_id: objectsById.getIn([selectedFeeBalance, 'asset_type']),
+					asset_id: objectsById.getIn([selectedFeeBalance, 'asset_type']) || asset.get('id'),
 				},
 				from: fromId,
 				to: toAccount.id,
@@ -413,26 +415,25 @@ export const send = () => async (dispatch, getState) => {
 			return false;
 		}
 
-		if (!isToken) {
-			const amountAsset = objectsById.get(options.amount.asset_id);
+		const feePrecision = new BN(10).pow(feeAsset.get('precision'));
+		const feeAmount = new BN(options.fee.amount).times(feePrecision);
 
-			if (amountAsset.get('id') === feeAsset.get('id')) {
-				const total = new BN(amount).times(10 ** amountAsset.get('precision')).plus(options.fee.amount);
+		if (!isToken && options.amount.asset_id === options.fee.asset_id) {
+			const totalAmount = new BN(amount).times(feePrecision).plus(feeAmount);
 
-				if (total.gt(objectsById.getIn([selectedBalance, 'balance']))) {
-					dispatch(setFormError(FORM_SEND, 'amount', 'Insufficient funds for fee'));
-					return false;
-				}
-			} else {
-				const feeBalance = objectsById
-					.filter((o, id) => ValidateSendHelper.isAccountBalanceId(id))
-					.find((val) => val.get('asset_type') === feeAsset.get('id'))
-					.get('balance');
+			if (totalAmount.gt(objectsById.getIn([selectedBalance, 'balance']))) {
+				dispatch(setFormError(FORM_SEND, 'fee', 'Insufficient funds for fee'));
+				return false;
+			}
+		} else {
+			const feeBalance = objectsById
+				.filter((o, id) => ValidateSendHelper.isAccountBalanceId(id))
+				.find((val) => val.get('asset_type') === feeAsset.get('id') && val.get('owner') === fromAccount.id)
+				.get('balance');
 
-				if (new BN(fee.value).gt(feeBalance)) {
-					dispatch(setFormError(FORM_SEND, 'amount', 'Insufficient funds for fee'));
-					return false;
-				}
+			if (feeAmount.gt(feeBalance)) {
+				dispatch(setFormError(FORM_SEND, 'fee', 'Insufficient funds for fee'));
+				return false;
 			}
 		}
 
