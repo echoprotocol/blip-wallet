@@ -33,7 +33,7 @@ export const NETWORKS = {
 		},
 	},
 };
-export const DEFAULT_NETWORK_ID = 'devnet';
+export const DEFAULT_NETWORK_ID = 'testnet';
 export const NETWORK_STATUS = {
 	ONLINE: 'online',
 	OFFLINE: 'offline',
