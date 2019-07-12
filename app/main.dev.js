@@ -406,12 +406,7 @@ ipcMain.on('showWindow', () => {
 ipcMain.on('close-app', (event) => {
 	if (!app.isQuiting) {
 		event.preventDefault();
-
-		if (process.platform !== 'darwin') {
-			app.quit();
-		} else {
-			mainWindow.hide();
-		}
+		mainWindow.hide();
 	}
 });
 
