@@ -20,15 +20,15 @@ class Filter extends React.Component {
 			types: null,
 			search: {
 				account: {
-					value: null,
+					value: '',
 					timeout: null,
 				},
 				type: {
-					value: null,
+					value: '',
 					timeout: null,
 				},
 				coin: {
-					value: null,
+					value: '',
 					timeout: null,
 				},
 			},
@@ -49,10 +49,10 @@ class Filter extends React.Component {
 		this.clear();
 	}
 
-	onToggleChecked(type, key) {
+	onToggleChecked(type, item) {
 		this.setState((prevState) => {
-			const item = prevState[type].get(key);
-			const list = prevState[type].set(key, item.set('selected', !item.get('selected')));
+			const index = prevState[type].indexOf(item);
+			const list = prevState[type].set(index, item.set('selected', !item.get('selected')));
 
 			return { [type]: list };
 		});
@@ -84,6 +84,18 @@ class Filter extends React.Component {
 		}));
 	}
 
+	onDropdownClose(type) {
+		this.setState((prevState) => ({
+			search: {
+				...prevState.search,
+				[type]: {
+					value: '',
+					timeout: null,
+				},
+			},
+		}));
+	}
+
 	onReset(e) {
 		e.preventDefault();
 
@@ -99,6 +111,34 @@ class Filter extends React.Component {
 
 	onClose(e) {
 		e.preventDefault();
+
+		const { filter } = this.props;
+		const { account, coin, type } = this.state.search;
+
+		clearTimeout(account.timeout);
+		clearTimeout(coin.timeout);
+		clearTimeout(type.timeout);
+
+		this.setState({
+			accounts: filter.get('accounts'),
+			coins: filter.get('coins'),
+			types: filter.get('types'),
+			search: {
+				account: {
+					value: '',
+					timeout: null,
+				},
+				type: {
+					value: '',
+					timeout: null,
+				},
+				coin: {
+					value: '',
+					timeout: null,
+				},
+			},
+		});
+
 		this.props.close();
 	}
 
@@ -223,8 +263,9 @@ class Filter extends React.Component {
 							info={this.getInfo('accounts')}
 							placeholder={intl.formatMessage({ id: 'history.filter.accounts.placeholder' })}
 							accounts={this.getAccountList(search.account.value, accounts)}
-							toggle={(key) => this.onToggleChecked('accounts', key)}
+							toggle={(item) => this.onToggleChecked('accounts', item)}
 							search={(value) => this.onSearch('account', value)}
+							close={() => this.onDropdownClose('account')}
 						/>
 					</div>
 					<div className="field">
@@ -233,8 +274,9 @@ class Filter extends React.Component {
 							info={this.getInfo('types')}
 							placeholder={intl.formatMessage({ id: 'history.filter.types.placeholder' })}
 							types={this.getTypeList(search.type.value, types)}
-							toggle={(key) => this.onToggleChecked('types', key)}
+							toggle={(item) => this.onToggleChecked('types', item)}
 							search={(value) => this.onSearch('type', value)}
+							close={() => this.onDropdownClose('type')}
 						/>
 					</div>
 					<div className="field">
@@ -243,8 +285,9 @@ class Filter extends React.Component {
 							info={this.getInfo('coins')}
 							placeholder={intl.formatMessage({ id: 'history.filter.coins.placeholder' })}
 							coins={this.getCoinList(search.coin.value, coins)}
-							toggle={(value) => this.onToggleChecked('coins', coins.indexOf(value))}
+							toggle={(value) => this.onToggleChecked('coins', value)}
 							search={(value) => this.onSearch('coin', value)}
+							close={() => this.onDropdownClose('coin')}
 						/>
 					</div>
 				</div>

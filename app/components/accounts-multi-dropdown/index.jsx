@@ -45,8 +45,12 @@ class AccountsMultiDropdown extends React.Component {
 		const { opened } = this.state;
 		const { opened: prevOpened } = prevState;
 
-		if (opened && (opened !== prevOpened)) {
-			this.searchInput.focus();
+		if (opened !== prevOpened) {
+			if (opened) {
+				this.searchInput.focus();
+			} else {
+				this.searchInput.value = '';
+			}
 		}
 	}
 
@@ -62,6 +66,7 @@ class AccountsMultiDropdown extends React.Component {
 					this.setState({
 						opened: false,
 					});
+					this.props.close();
 				}
 				break;
 			case KEY_CODE_ARROW_DOWN:
@@ -98,6 +103,7 @@ class AccountsMultiDropdown extends React.Component {
 					this.setState({
 						opened: false,
 					});
+					this.props.close();
 
 				}
 				break;
@@ -127,9 +133,9 @@ class AccountsMultiDropdown extends React.Component {
 		return null;
 	}
 
-	onItemToggle(e, key) {
+	onItemToggle(e, item) {
 		e.preventDefault();
-		this.props.toggle(key);
+		this.props.toggle(item);
 	}
 
 	onSearch(e) {
@@ -148,6 +154,10 @@ class AccountsMultiDropdown extends React.Component {
 	toggleDropdown() {
 		const { opened } = this.state;
 		this.setState({ opened: !opened });
+
+		if (opened) {
+			this.props.close();
+		}
 	}
 
 	handleClickOutside(event) {
@@ -157,6 +167,7 @@ class AccountsMultiDropdown extends React.Component {
 			this.setState({
 				opened: false,
 			});
+			this.props.close();
 		}
 
 	}
@@ -210,7 +221,7 @@ class AccountsMultiDropdown extends React.Component {
 													ref={(ref) => { this.refList[i] = ref; }}
 													tabIndex={0}
 													onKeyDown={(e) => this.onKeyDown(e, i)}
-													onKeyPress={(e) => this.onItemToggle(e, i)}
+													onKeyPress={(e) => this.onItemToggle(e, a)}
 													onChange={() => {}}
 													type="checkbox"
 													name="multi-select"
@@ -218,7 +229,7 @@ class AccountsMultiDropdown extends React.Component {
 													checked={a.get('selected')}
 												/>
 
-												<label htmlFor={`ac-${a.get('id')}`} onClick={(e) => this.onItemToggle(e, i)}>
+												<label htmlFor={`ac-${a.get('id')}`} onClick={(e) => this.onItemToggle(e, a)}>
 													<Avatar accountName={a.get('name')} />
 													<span className="label-text">
 														{a.get('name')}
@@ -245,6 +256,7 @@ AccountsMultiDropdown.propTypes = {
 	accounts: PropTypes.object,
 	toggle: PropTypes.func.isRequired,
 	search: PropTypes.func.isRequired,
+	close: PropTypes.func,
 };
 
 AccountsMultiDropdown.defaultProps = {
@@ -252,6 +264,7 @@ AccountsMultiDropdown.defaultProps = {
 	info: '',
 	placeholder: '',
 	accounts: null,
+	close: () => {},
 };
 
 export default AccountsMultiDropdown;

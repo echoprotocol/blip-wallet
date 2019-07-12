@@ -46,8 +46,12 @@ class TransactionMultiDropdown extends React.Component {
 		const { opened } = this.state;
 		const { opened: prevOpened } = prevState;
 
-		if (opened && (opened !== prevOpened)) {
-			this.searchInput.focus();
+		if (opened !== prevOpened) {
+			if (opened) {
+				this.searchInput.focus();
+			} else {
+				this.searchInput.value = '';
+			}
 		}
 	}
 
@@ -63,6 +67,7 @@ class TransactionMultiDropdown extends React.Component {
 					this.setState({
 						opened: false,
 					});
+					this.props.close();
 				}
 				break;
 			case KEY_CODE_ARROW_DOWN:
@@ -99,6 +104,7 @@ class TransactionMultiDropdown extends React.Component {
 					this.setState({
 						opened: false,
 					});
+					this.props.close();
 
 				}
 				break;
@@ -128,9 +134,9 @@ class TransactionMultiDropdown extends React.Component {
 		return null;
 	}
 
-	onItemToggle(e, key) {
+	onItemToggle(e, item) {
 		e.preventDefault();
-		this.props.toggle(key);
+		this.props.toggle(item);
 	}
 
 	onSearch(e) {
@@ -149,6 +155,10 @@ class TransactionMultiDropdown extends React.Component {
 	toggleDropdown() {
 		const { opened } = this.state;
 		this.setState({ opened: !opened });
+
+		if (opened) {
+			this.props.close();
+		}
 	}
 
 	handleClickOutside(event) {
@@ -158,6 +168,7 @@ class TransactionMultiDropdown extends React.Component {
 			this.setState({
 				opened: false,
 			});
+			this.props.close();
 		}
 
 	}
@@ -210,7 +221,7 @@ class TransactionMultiDropdown extends React.Component {
 											<input
 												ref={(ref) => { this.refList[i] = ref; }}
 												tabIndex={0}
-												onKeyPress={(e) => this.onItemToggle(e, i)}
+												onKeyPress={(e) => this.onItemToggle(e, item)}
 												onChange={() => {}}
 												onKeyDown={(e) => this.onKeyDown(e, i)}
 												type="checkbox"
@@ -219,7 +230,7 @@ class TransactionMultiDropdown extends React.Component {
 												checked={item.get('selected')}
 											/>
 
-											<label htmlFor={`tr-${item.get('type')}`} onClick={(e) => this.onItemToggle(e, i)}>
+											<label htmlFor={`tr-${item.get('type')}`} onClick={(e) => this.onItemToggle(e, item)}>
 												<span className="label-text">
 													<FormattedMessage id={item.get('name')} />
 												</span>
@@ -244,6 +255,7 @@ TransactionMultiDropdown.propTypes = {
 	types: PropTypes.object,
 	toggle: PropTypes.func.isRequired,
 	search: PropTypes.func.isRequired,
+	close: PropTypes.func,
 };
 
 TransactionMultiDropdown.defaultProps = {
@@ -251,6 +263,7 @@ TransactionMultiDropdown.defaultProps = {
 	info: '',
 	placeholder: '',
 	types: null,
+	close: () => {},
 };
 
 export default TransactionMultiDropdown;

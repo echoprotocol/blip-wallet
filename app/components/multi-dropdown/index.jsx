@@ -45,8 +45,12 @@ class MultiDropdown extends React.Component {
 		const { opened } = this.state;
 		const { opened: prevOpened } = prevState;
 
-		if (opened && (opened !== prevOpened)) {
-			this.searchInput.focus();
+		if (opened !== prevOpened) {
+			if (opened) {
+				this.searchInput.focus();
+			} else {
+				this.searchInput.value = '';
+			}
 		}
 	}
 
@@ -64,6 +68,7 @@ class MultiDropdown extends React.Component {
 					this.setState({
 						opened: false,
 					});
+					this.props.close();
 				}
 				break;
 			case KEY_CODE_ARROW_DOWN:
@@ -114,6 +119,7 @@ class MultiDropdown extends React.Component {
 					this.setState({
 						opened: false,
 					});
+					this.props.close();
 
 				}
 				break;
@@ -165,6 +171,10 @@ class MultiDropdown extends React.Component {
 	toggleDropdown() {
 		const { opened } = this.state;
 		this.setState({ opened: !opened });
+
+		if (opened) {
+			this.props.close();
+		}
 	}
 
 	handleClickOutside(event) {
@@ -174,6 +184,7 @@ class MultiDropdown extends React.Component {
 			this.setState({
 				opened: false,
 			});
+			this.props.close();
 		}
 
 	}
@@ -283,6 +294,7 @@ MultiDropdown.propTypes = {
 	coins: PropTypes.array,
 	toggle: PropTypes.func.isRequired,
 	search: PropTypes.func.isRequired,
+	close: PropTypes.func,
 };
 
 MultiDropdown.defaultProps = {
@@ -290,6 +302,7 @@ MultiDropdown.defaultProps = {
 	info: '',
 	placeholder: '',
 	coins: null,
+	close: () => {},
 };
 
 export default MultiDropdown;
