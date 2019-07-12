@@ -314,7 +314,7 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 	filter = filter.set('coins', fromJS(coins));
 
 	// TODO: delete slice after adding new operation to graphql
-	const oldOperations = Object.keys(OPERATIONS).slice(0, Object.keys(OPERATIONS).length - 4);
+	const oldOperations = Object.keys(OPERATIONS).slice(0, Object.keys(OPERATIONS).length - 7);
 
 	filter = filter.set('types', fromJS(oldOperations.map((type) => ({
 		type,

@@ -69,6 +69,10 @@ class History extends React.Component {
 		this.setState({ open: false });
 	}
 
+	onResetFilter(accounts, coins, types) {
+		this.props.saveFilters(accounts, coins, types);
+	}
+
 	onApplyFilter(accounts, coins, types) {
 		this.setState({ open: false });
 		this.props.saveFilters(accounts, coins, types);
@@ -306,6 +310,7 @@ class History extends React.Component {
 					<Filter
 						filter={filter}
 						apply={(accounts, coins, types) => this.onApplyFilter(accounts, coins, types)}
+						reset={(accounts, coins, types) => this.onResetFilter(accounts, coins, types)}
 						close={() => this.onCloseFilter()}
 					/>
 				</div>

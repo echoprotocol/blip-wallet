@@ -86,11 +86,15 @@ class Filter extends React.Component {
 
 	onReset(e) {
 		e.preventDefault();
-		this.setState((prevState) => ({
-			accounts: prevState.accounts.map((i) => i.set('selected', true)),
-			coins: prevState.coins.map((i) => i.set('selected', true)),
-			types: prevState.types.map((i) => i.set('selected', true)),
-		}));
+
+		let { accounts, coins, types } = this.state;
+
+		accounts = accounts.map((i) => i.set('selected', true));
+		coins = coins.map((i) => i.set('selected', true));
+		types = types.map((i) => i.set('selected', true));
+
+		this.setState({ accounts, coins, types });
+		this.props.reset(accounts, coins, types);
 	}
 
 	onClose(e) {
@@ -260,6 +264,7 @@ Filter.propTypes = {
 	filter: PropTypes.object.isRequired,
 	close: PropTypes.func.isRequired,
 	apply: PropTypes.func.isRequired,
+	reset: PropTypes.func.isRequired,
 };
 
 export default injectIntl(Filter);
