@@ -116,39 +116,9 @@ app.on('window-all-closed', () => {
 
 const echoNode = new EchoNode();
 let restartTimer = null;
-
-app.on('before-quit', (event) => {
-
-	if (restartTimer) {
-		clearTimeout(restartTimer);
-		restartTimer = null;
-	}
-
-	console.log('Caught before-quit. Exiting in 5 seconds.');
-
-	event.preventDefault();
-
-	if (echoNode.child) {
-		echoNode.child.then(() => {
-			process.exit(0);
-		}).catch(() => {
-			process.exit(0);
-		});
-
-		echoNode.stop();
-
-		setTimeout(() => { process.exit(0); }, TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS);
-
-	} else {
-		process.exit(0);
-	}
-
-});
-
 let tray = null;
 
-app.on('ready', async () => {
-
+async function createWindow() {
 	const timeOffset = new TimeOffset();
 
 	ipcMain.on('getTimeOffset', async (event) => {
@@ -296,12 +266,13 @@ app.on('ready', async () => {
 
 			clearTimeout(restartTimer);
 
-			echoNode.stop().then(() => {
-				restartTimer = setTimeout(() => {
-					/* eslint-disable no-use-before-define */
-					startNode(processId, params, accounts);
-				}, RESTART_PAUSE_MS);
-			});
+			echoNode.stop()
+				.then(() => {
+					restartTimer = setTimeout(() => {
+						/* eslint-disable no-use-before-define */
+						startNode(processId, params, accounts);
+					}, RESTART_PAUSE_MS);
+				});
 
 			return true;
 
@@ -326,23 +297,25 @@ app.on('ready', async () => {
 
 			try {
 				incrementCounterId(processId);
-				echoNode.start(params, accounts).then((data) => {
-					console.log('[NODE] child then', data);
-				}).catch((err) => {
-					console.log('[NODE] child err', err);
-					if (countAttempts[processId] === 1) {
-						console.info('TRY TO START');
-						tryStart(processId, params, accounts);
-					} else if (countAttempts[processId] === 2) {
-						rimraf(params['data-dir'], () => {
-							console.info('TRY TO REMOVE FOLDER');
+				echoNode.start(params, accounts)
+					.then((data) => {
+						console.log('[NODE] child then', data);
+					})
+					.catch((err) => {
+						console.log('[NODE] child err', err);
+						if (countAttempts[processId] === 1) {
+							console.info('TRY TO START');
 							tryStart(processId, params, accounts);
-						});
-					} else {
-						startingError = true;
-					}
+						} else if (countAttempts[processId] === 2) {
+							rimraf(params['data-dir'], () => {
+								console.info('TRY TO REMOVE FOLDER');
+								tryStart(processId, params, accounts);
+							});
+						} else {
+							startingError = true;
+						}
 
-				});
+					});
 
 			} catch (e) {
 				console.log('[NODE] error:', e);
@@ -387,9 +360,45 @@ app.on('ready', async () => {
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
 	new AppUpdater();
+}
+app.on('before-quit', (event) => {
+
+	if (restartTimer) {
+		clearTimeout(restartTimer);
+		restartTimer = null;
+	}
+
+	console.log('Caught before-quit. Exiting in 5 seconds.');
+
+	event.preventDefault();
+
+	if (echoNode.child) {
+		echoNode.child.then(() => {
+			process.exit(0);
+		}).catch(() => {
+			process.exit(0);
+		});
+
+		echoNode.stop();
+
+		setTimeout(() => { process.exit(0); }, TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS);
+
+	} else {
+		process.exit(0);
+	}
 
 });
 
+
+app.on('ready', createWindow);
+
+app.on('activate', () => {
+	if (mainWindow === null) {
+		createWindow();
+	} else {
+		mainWindow.show();
+	}
+});
 
 if (process.env.DEBUG_PROD) {
 	const fs = require('fs');
@@ -400,10 +409,6 @@ if (process.env.DEBUG_PROD) {
 		console.error((err && err.stack) ? err.stack : err);
 	});
 }
-
-ipcMain.on('showWindow', () => {
-	mainWindow.show();
-});
 
 ipcMain.on('close-app', (event) => {
 	if (!app.isQuiting) {
@@ -418,6 +423,10 @@ ipcMain.on('zoom-app', () => {
 	} else {
 		mainWindow.unmaximize();
 	}
+});
+
+ipcMain.on('showWindow', () => {
+	mainWindow.show();
 });
 
 ipcMain.on('minimize-app', (event) => {
