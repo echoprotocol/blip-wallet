@@ -46,7 +46,7 @@ class TransactionMultiDropdown extends React.Component {
 		const { opened } = this.state;
 		const { opened: prevOpened } = prevState;
 
-		if (opened !== prevOpened) {
+		if (this.searchInput && opened !== prevOpened) {
 			if (opened) {
 				this.searchInput.focus();
 			} else {
