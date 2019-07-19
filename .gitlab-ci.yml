@@ -66,7 +66,7 @@ build.package-linux:
     - npm config set unsafe-perm true
     - rm -rf node_modules/node-sass
     - npm i
-    - DEBUG_PROD=true npm run package-linux-with-download-build
+    - DEBUG_PROD=true npm run package-linux
   only:
     - master
     - develop
