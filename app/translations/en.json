@@ -494,6 +494,7 @@
 		"info": "Backup info",
 		"public_key": "Public key",
 		"wif": "WIF",
+		"account_id": "Account ID",
 		"close": "Close"
 	},
 

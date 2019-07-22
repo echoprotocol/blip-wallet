@@ -510,10 +510,11 @@
     },
 
     "backup": {
-        "info": "Backup info",
-        "public_key": "Public key",
-        "wif": "Private key",
-        "close": "Close"
+        "info": "Резервная информация",
+        "public_key": "Открытый ключ",
+        "wif": "Закрытый ключ",
+        "account_id": "Идентификатор аккаунта",
+        "close": "Закрыть"
     },
 
     "receive": {

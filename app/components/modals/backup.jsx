@@ -51,7 +51,7 @@ class BackupModal extends React.Component {
 	}
 
 	render() {
-		const { show } = this.props;
+		const { show, account } = this.props;
 
 		if (show) {
 			return (
@@ -74,7 +74,7 @@ class BackupModal extends React.Component {
 										/>
 
 										<div className="modal-title">
-											<span className="account-name">{this.props.account ? this.props.account.get('name') : null}</span>
+											<span className="account-name">{account ? account.get('name') : null}</span>
 											<FormattedMessage id="backup.info" />
 										</div>
 									</div>
@@ -98,6 +98,10 @@ class BackupModal extends React.Component {
 																/>
 															</CopyToClipboard>
 														</div>
+													</div>
+													<div className="key-wrap">
+														<div className="key-label"><FormattedMessage id="backup.account_id" /></div>
+														<div className="key">{account ? account.get('id') : null}</div>
 													</div>
 												</div>
 											))}
