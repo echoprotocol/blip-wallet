@@ -90,6 +90,7 @@
 			"description2": "You can get an access to it in other Echo wallets.",
 			"wif": {
 				"name": "Account name",
+				"id": "Account ID",
 				"hint1": "Please save your WIF key.",
 				"hint2": "You will need it to import your account into any Echo wallet.",
 				"hint3": "Your WIF key can't be restored if you lose it.",

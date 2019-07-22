@@ -78,7 +78,7 @@ class CreateAccount extends React.Component {
 		const createData = await create(accountName);
 
 		if (createData) {
-			goForward(createData.accountName, createData.wif);
+			goForward(createData.accountName, createData.wif, createData.accountId);
 		}
 	}
 

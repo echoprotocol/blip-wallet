@@ -35,6 +35,7 @@ class Authorization extends React.Component {
 			},
 			wif: '',
 			accountName: '',
+			accountId: '',
 		};
 		this.onChangeFormData = this.onChangeFormData.bind(this);
 	}
@@ -56,11 +57,11 @@ class Authorization extends React.Component {
 		this.props.changeActiveTabIndex(active);
 	}
 
-	goForward(accountName, wif) {
+	goForward(accountName, wif, accountId) {
 		this.props.startAnimation(AUTHORIZATION, 'isVisible', false);
 
 		setTimeout(() => {
-			this.setState({ wif, accountName });
+			this.setState({ wif, accountName, accountId });
 		}, 200);
 	}
 
@@ -157,7 +158,7 @@ class Authorization extends React.Component {
 										<CreateAccount
 											accountName={createAccount.accountName}
 											onChange={(field, value) => this.onChangeFormData('createAccount', field, value)}
-											goForward={(accountName, wif) => this.goForward(accountName, wif)}
+											goForward={(accountName, wif, accountId) => this.goForward(accountName, wif, accountId)}
 											isVisible={isVisible}
 										/>
 									)
@@ -170,10 +171,10 @@ class Authorization extends React.Component {
 	}
 
 	render() {
-		const { wif, accountName } = this.state;
+		const { wif, accountName, accountId } = this.state;
 
 		if (wif) {
-			return (<AccountCreated wif={wif} accountName={accountName} />);
+			return (<AccountCreated wif={wif} accountName={accountName} accountId={accountId} />);
 		}
 
 		if (accountName) {

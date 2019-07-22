@@ -66,7 +66,7 @@ class AccountCreated extends React.Component {
 	render() {
 		const { isVisibleWif, focused } = this.state;
 		const {
-			wif, accountName, intl, history, isVisible,
+			wif, accountName, intl, history, isVisible, accountId,
 		} = this.props;
 
 		const hint1 = intl.formatMessage({ id: 'account.created.wif.hint1' });
@@ -122,13 +122,10 @@ class AccountCreated extends React.Component {
 						</div>
 						<div className="body">
 							<div className="card-wrap">
-								<span>
-									{hint1}
-									<br />
-									{hint2}
-									<br />
-									{hint3}
-								</span>
+								<div>
+									<div className="wif-label"><FormattedMessage id="account.created.wif.id" /></div>
+									<div className="name">{accountId}</div>
+								</div>
 								<div className="wif-wrap">
 									<div className="wif-label">WIF</div>
 									<div className="wif">
@@ -147,8 +144,14 @@ class AccountCreated extends React.Component {
 										/>
 
 									</div>
-
 								</div>
+								<span>
+									{hint1}
+									<br />
+									{hint2}
+									<br />
+									{hint3}
+								</span>
 							</div>
 
 						</div>
@@ -175,6 +178,7 @@ AccountCreated.propTypes = {
 	history: PropTypes.object.isRequired,
 	wif: PropTypes.string.isRequired,
 	accountName: PropTypes.string.isRequired,
+	accountId: PropTypes.string.isRequired,
 	intl: intlShape.isRequired,
 };
 

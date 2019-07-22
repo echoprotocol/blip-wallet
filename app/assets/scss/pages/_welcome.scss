@@ -71,25 +71,42 @@
 	.body {
 		.card-wrap {
 			@include min-vw(1400) {
-				padding: 40px 38px;
+                padding: 18px 38px 25px;
 			}
 			flex-direction: column;
 			height: 100%;
-			padding: 25px 38px;
+            padding: 18px 38px 25px;
 			color: #000;
 
 			span {
 				font-size: 1.6em;
 				line-height: 1.3;
 			}
+
+            .wif-label {
+              color: rgba(#000, 0.5);
+              font-size: 14px;
+
+              span {
+                font-size: 14px;
+                color: inherit;
+              }
+            }
+
+            .name {
+              font-family: 'SourceSansPro-SemiBold';
+              font-size: 16px;
+              padding: 14px 0 33px;
+            }
 		}
 
 		.wif-wrap {
-			padding: 5em 0 0;
+			padding: 0 0 3em;
 
 			.wif-label {
 				color: rgba(#000, 0.5);
 				font-size: 1.4em;
+                padding-bottom: 10px;
 			}
 
 			.wif {

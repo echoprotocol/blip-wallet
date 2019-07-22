@@ -176,7 +176,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 
 			dispatch(setAccounts());
 
-			return resolve({ wif, accountName });
+			return resolve({ wif, accountName, accountId: accountData.id });
 
 		} catch (e) {
 			return reject(e);
