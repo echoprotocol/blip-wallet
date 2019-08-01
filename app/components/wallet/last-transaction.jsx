@@ -19,7 +19,7 @@ class LastTransaction extends React.Component {
 		const networkId = Services.getUserStorage().getNetworkId();
 
 		const name = !accounts.has(field.get('id')) ? (
-			<a target="_blank" href={`${EXPLORER_URL[networkId]}${field.get('link')}`}>
+			<a target="_blank" href={`${EXPLORER_URL[networkId]}${field.get('link')}`} onClick={(e) => e.stopPropagation()}>
 				{field.get('value')}
 			</a>
 		) : <span>{field.get('value')}</span>;
