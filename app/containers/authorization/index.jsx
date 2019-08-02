@@ -16,8 +16,10 @@ import AccountImported from '../account-imported';
 
 import { startAnimation } from '../../actions/animation-actions';
 
+import { FORM_SIGN_IN, FORM_SIGN_UP } from '../../constants/form-constants';
 import { AUTHORIZATION, CREATE_PASSWORD } from '../../constants/routes-constants';
 import { changeActiveTabIndex } from '../../actions/auth-actions';
+import { clearForm } from '../../actions/form-actions';
 
 class Authorization extends React.Component {
 
@@ -41,6 +43,8 @@ class Authorization extends React.Component {
 	}
 
 	componentWillUnmount() {
+		this.props.clearForm(FORM_SIGN_IN);
+		this.props.clearForm(FORM_SIGN_UP);
 		this.props.startAnimation(AUTHORIZATION, 'isVisible', true);
 	}
 
@@ -187,11 +191,12 @@ class Authorization extends React.Component {
 }
 
 Authorization.propTypes = {
+	showLogo: PropTypes.bool.isRequired,
 	isVisible: PropTypes.bool.isRequired,
 	activeTabIndex: PropTypes.number.isRequired,
-	startAnimation: PropTypes.func.isRequired,
 	changeActiveTabIndex: PropTypes.func.isRequired,
-	showLogo: PropTypes.bool.isRequired,
+	startAnimation: PropTypes.func.isRequired,
+	clearForm: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -203,5 +208,6 @@ export default connect(
 	(dispatch) => ({
 		startAnimation: (type, field, value) => dispatch(startAnimation(type, field, value)),
 		changeActiveTabIndex: (value) => dispatch(changeActiveTabIndex(value)),
+		clearForm: (form) => dispatch(clearForm(form)),
 	}),
 )(Authorization);

@@ -20,7 +20,6 @@ class ImportAccount extends React.Component {
 		};
 	}
 
-
 	componentDidMount() {
 		this.nameInput.focus();
 	}

@@ -79,7 +79,7 @@ class Toolbar extends React.Component {
 
 		return (
 			<div className="toolbar" ref={this.refToolbar}>
-				<div className="draggable" />
+				<div className="draggable win" />
 				<div className="win-btns">
 					<Button
 						ref={this.refMinimize}

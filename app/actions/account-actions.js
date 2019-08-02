@@ -288,7 +288,6 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 			await dispatch(addAccount(accountId, accountName, true, accounts.length === 0));
 			await userStorage.addAccount(Account.create(accountId, accountName, true, accounts.length === 0));
 			await userStorage.addKey(Key.create(publicKey, wif, accountId));
-
 		} else {
 			const active = CryptoService.getPublicKey(accountName, wif);
 			const [[accountId]] = await Services.getEcho().api.getKeyReferences([active]);
@@ -323,7 +322,6 @@ export const importAccount = (accountName, wif) => async (dispatch) => {
 		}
 
 		dispatch(setAccounts());
-
 		return resolve(true);
 	});
 
