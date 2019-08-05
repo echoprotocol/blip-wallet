@@ -192,7 +192,10 @@ class Receive extends React.Component {
 		} = this.props;
 		const { copied } = this.state;
 
-		const selectedAccountName = accounts && (accounts.getIn([form.get('selectedAccount').value, 'name']) || accounts.find((a) => a.get('primary')).get('name'));
+		const selectedAccountName = accounts.size ? (
+			accounts.getIn([form.get('selectedAccount').value, 'name'])
+			|| accounts.find((a) => a.get('primary')).get('name')
+		) : '';
 		const networkId = Services.getUserStorage().getNetworkId();
 		const QR_URL = QR_SERVER_URL[networkId];
 

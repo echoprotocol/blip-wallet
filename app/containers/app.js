@@ -32,9 +32,7 @@ import {
 	LOCKED_ROUTES,
 	SIDE_MENU_ROUTES,
 	RESTORE_PASSWORD,
-	WALLET, UNLOCK,
-	MANAGE_ACCOUNTS,
-	SETTINGS,
+	UNLOCK,
 } from '../constants/routes-constants';
 import { LOCK_TIMEOUT, LOCK_TIMER_EVENTS } from '../constants/global-constants';
 
@@ -163,7 +161,7 @@ class App extends React.Component {
 
 		}
 
-		if (!routed && [WALLET, MANAGE_ACCOUNTS, SETTINGS].includes(pathname)) {
+		if (!routed && SIDE_MENU_ROUTES.includes(pathname)) {
 			const { locked, accounts } = this.props;
 
 			if (!locked && !accounts.size) {
