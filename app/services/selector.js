@@ -96,7 +96,7 @@ export default class Selector {
 			(accounts, fullAccounts, objectsById) => accounts.filter((name, id) => {
 				const account = fullAccounts.get(id);
 
-				if (!account || !account.get('balances') || account.get('id') !== account.get('lifetime_referrer')) {
+				if (!account || !account.get('balances')) {
 					return false;
 				}
 

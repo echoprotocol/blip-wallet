@@ -118,6 +118,7 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 		const base = { key, type: value.type };
 		const field = value.field ? operation.getIn(value.field.split('.')) : value.field;
 
+
 		switch (value.type) {
 			case OPTION_TYPES.ACCOUNT:
 				response = await Services.getEcho().api[validators.isAccountId(field) ? 'getObject' : 'getAccountByName'](field);

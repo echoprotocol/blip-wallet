@@ -1,4 +1,5 @@
 import BN from 'bignumber.js';
+import { constants } from 'echojs-lib';
 import { CONTRACT_ID_PREFIX } from '../constants/global-constants';
 
 export default class ValidateSendHelper {
@@ -15,7 +16,8 @@ export default class ValidateSendHelper {
 	}
 
 	static isAccountBalanceId(v) {
-		const accountBalanceIdRegex = /^2\.5\.[1-9]\d*$/;
+
+		const accountBalanceIdRegex = new RegExp(`^2\\.${constants.CHAIN_TYPES.IMPLEMENTATION_OBJECT_TYPE.ACCOUNT_BALANCE}\\.[1-9]+$`);
 
 		return typeof v === 'string' && accountBalanceIdRegex.test(v);
 	}

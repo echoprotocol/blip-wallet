@@ -38,8 +38,6 @@ export const getAccountCreateFee = (accountId, name = '') => {
 	const options = {
 		echorand_key: TEMPLATE_ECHO_KEY,
 		registrar: accountId,
-		referrer: accountId,
-		referrer_percent: 0,
 		name,
 		active: {
 			weight_threshold: 1,
@@ -55,7 +53,6 @@ export const getAccountCreateFee = (accountId, name = '') => {
 		},
 	};
 
-
 	return getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);
 };
 
@@ -66,7 +63,6 @@ export const getAccountCreateFee = (accountId, name = '') => {
 export const loadRegistrators = () => async (dispatch, getState) => {
 	let accounts = getState().global.get('accounts');
 	accounts = await Services.getEcho().api.getFullAccounts([...accounts.keys()]);
-	accounts = accounts.filter((a) => (a.balances && a.id === a.lifetime_referrer));
 
 	if (!accounts.length) {
 		return;

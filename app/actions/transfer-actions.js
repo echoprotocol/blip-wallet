@@ -128,6 +128,7 @@ const getTransactionFee = (type, options) => async (dispatch) => {
 			asset_id: fee.asset_id,
 		};
 	} catch (err) {
+		console.log('err', err);
 		dispatch(setFormError(FORM_SEND, 'fee', 'Can\'t be calculated'));
 	}
 
@@ -203,7 +204,8 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 			const tokens = getState().wallet.get('tokens');
 			const precision = tokens.find((t) => t.getIn(['contract', 'id']) === selectedBalance).getIn(['contract', 'token', 'decimals']);
 			const code = getTransferCode(toAccount.id, new BN(amount).times(10 ** precision));
-			type = OPERATIONS_IDS.CALL_CONTRACT;
+
+			type = OPERATIONS_IDS.CONTRACT_CALL;
 			options = {
 				code,
 				fee: {
@@ -366,7 +368,7 @@ export const send = () => async (dispatch, getState) => {
 		if (isToken) {
 			const code = getTransferCode(toAccount.id, new BN(amount).times(10 ** balance.precision));
 
-			type = OPERATIONS_IDS.CALL_CONTRACT;
+			type = OPERATIONS_IDS.CONTRACT_CALL;
 			options = {
 				code,
 				fee: {
