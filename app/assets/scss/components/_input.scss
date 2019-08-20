@@ -51,7 +51,6 @@
 		}
 	}
 
-
 	&.disabled {
 		input {
 			border-color: #7d65be;
@@ -105,7 +104,6 @@
 
 		&::placeholder {
 			color: #624d9a;
-
 		}
 
 		&:hover {
@@ -133,7 +131,7 @@
 	}
 
 	& + .hints,
-	& +  .error-message + .hints {
+	& + .error-message + .hints {
 		color: #b89bf5;
 
 		.active {
@@ -194,7 +192,7 @@
 	}
 
 	& + .hints,
-	& +  .error-message + .hints {
+	& + .error-message + .hints {
 		color: #5b5c63;
 
 		.active {
@@ -251,7 +249,6 @@ form {
 	}
 }
 
-
 .error-message {
 	@include source-regular();
 	position: absolute;
@@ -282,12 +279,13 @@ form {
 
 		.icon-eye {
 			@include min-vw(1400) {
+				width: 60px;
 				height: 60px;
 			}
 			position: absolute;
 			top: 0;
 			right: 0;
-			width: 60px;
+			width: 48px;
 			height: 44px;
 			border: 0;
 			background-color: transparent;
@@ -318,7 +316,10 @@ form {
 		}
 
 		input {
-			padding-right: 50px;
+			@include min-vw(1400) {
+				padding-right: 52px;
+			}
+			padding-right: 43px;
 		}
 
 		.copy-wrap {

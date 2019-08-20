@@ -71,11 +71,11 @@
 	.body {
 		.card-wrap {
 			@include min-vw(1400) {
-                padding: 18px 38px 25px;
+				padding: 18px 38px 25px;
 			}
 			flex-direction: column;
 			height: 100%;
-            padding: 18px 38px 25px;
+			padding: 18px 38px 25px;
 			color: #000;
 
 			span {
@@ -83,34 +83,40 @@
 				line-height: 1.3;
 			}
 
-            .wif-label {
-              color: rgba(#000, 0.5);
-              font-size: 14px;
+			.wif-label {
+				color: rgba(#000, 0.5);
+				font-size: 14px;
 
-              span {
-                font-size: 14px;
-                color: inherit;
-              }
-            }
+				span {
+					color: inherit;
+					font-size: 14px;
+				}
+			}
 
-            .name {
-              font-family: 'SourceSansPro-SemiBold';
-              font-size: 16px;
-              padding: 14px 0 33px;
-            }
+			.name {
+				padding: 14px 0 33px;
+				font-family: 'SourceSansPro-SemiBold';
+				font-size: 16px;
+			}
 		}
 
 		.wif-wrap {
 			padding: 0 0 3em;
 
 			.wif-label {
+				padding-bottom: 10px;
 				color: rgba(#000, 0.5);
 				font-size: 1.4em;
-                padding-bottom: 10px;
 			}
 
 			.wif {
 				margin: 8px 0 0;
+
+				&.white {
+					input:disabled {
+						background-color: #fff;
+					}
+				}
 			}
 		}
 
@@ -187,7 +193,7 @@
 			text-align: left;
 
 			.account-info {
-                max-width: calc(100% - 80px);
+				max-width: calc(100% - 80px);
 				margin-left: 1.8em;
 
 				.label {
@@ -198,7 +204,7 @@
 
 				.name {
 					@include source-semibold();
-                    width: 100%;
+					width: 100%;
 					margin-top: 3px;
 					color: #fff;
 					font-size: 1.8em;
@@ -216,6 +222,9 @@
 
 .wif-toast {
 	@include source-regular();
+	@include min-vw(1400) {
+		font-size: 19px;
+	}
 	align-items: center;
 	justify-content: center;
 	position: absolute;
@@ -229,6 +238,6 @@
 	background-position: bottom;
 	background-repeat-y: no-repeat;
 	color: #b89bf5;
-	font-size: 1.4em;
+	font-size: 14px;
 	letter-spacing: 0.014em;
 }

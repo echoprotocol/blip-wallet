@@ -36,9 +36,9 @@ class AccountCreated extends React.Component {
 		this.setState({ focused: true });
 	}
 
-	changeVisibleCpyWif() {
+	changeVisibleCopyWif() {
 		this.setState({ isVisibleWif: true });
-		setTimeout(() => this.setState({ isVisibleWif: false }), 3000);
+		setTimeout(() => this.setState({ isVisibleWif: false }), 2000);
 	}
 
 	renderCopy(wif) {
@@ -49,7 +49,7 @@ class AccountCreated extends React.Component {
 					<Button
 						onFocus={() => this.copyFocus()}
 						onBlur={() => this.copyBlur()}
-						onClick={() => this.changeVisibleCpyWif()}
+						onClick={() => this.changeVisibleCopyWif()}
 						content={<Icon className="copy" />}
 						className={
 							classnames(
@@ -145,7 +145,7 @@ class AccountCreated extends React.Component {
 
 									</div>
 								</div>
-								<span>
+								<span classNames="hints">
 									{hint1}
 									<br />
 									{hint2}

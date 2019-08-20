@@ -1,16 +1,17 @@
-
-
 i.icon {
 	@include iconmoon();
 }
 
 .icon-spinner:before {
-	content: "\e900";
+	content: '\e900';
 }
 
 .copy:before {
+	@include min-vw(1400) {
+		font-size: 13px;
+	}
 	content: '\e901';
-	font-size: 13px;
+	font-size: 11px;
 }
 
 .arrow-right:before {
@@ -33,7 +34,7 @@ i.icon {
 	}
 
 	&:before {
-		content: "\e90a";
+		content: '\e90a';
 		color: #9ba0a4;
 	}
 }
@@ -43,41 +44,41 @@ i.icon {
 }
 
 .icon-account:before {
-	content: "\e904";
+	content: '\e904';
 }
 
 .icon-info:before {
-	content: "\e906";
+	content: '\e906';
 }
 
 .icon-contract:before {
-	content: "\e907";
+	content: '\e907';
 }
 
 .icon-receive-trans {
 	transform: rotate(90deg);
 
 	&:before {
-		content: "\e909";
+		content: '\e909';
 	}
 }
 
 .icon-send-trans:before {
-	content: "\e909";
+	content: '\e909';
 }
 
 .win-zoom-out:before {
-	content: "\e910"
+	content: '\e910';
 }
 
 .win-zoom-in:before {
-	content: "\e90b"
+	content: '\e90b';
 }
 
 .win-minimize:before {
-	content: "\e90f"
+	content: '\e90f';
 }
 
 .win-close:before {
-	content: "\e90e";
+	content: '\e90e';
 }

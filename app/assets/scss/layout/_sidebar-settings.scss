@@ -1,17 +1,13 @@
 .sidebar-settings {
-	@include min-vw(1000) {
-		width: 480px;
-	}
 	@include min-vw(1400) {
-		width: 520px;
+		width: 473px;
 	}
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 100%;
-	width: 420px;
+	width: 363px;
 	height: 100%;
-	border-right: 1px solid #4d4175;
 	background-color: #5e4b98;
 
 	.head {
@@ -28,7 +24,7 @@
 
 	.body {
 		height: calc(100vh - 170px);
-		padding: 40px 30px 0
+		padding: 40px 30px 0;
 	}
 
 	.footer {
@@ -47,7 +43,6 @@
 			padding: 22px 30px 0;
 		}
 
-
 		.footer {
 			.btn-primary {
 				@include min-vw(1400) {
@@ -57,5 +52,4 @@
 			}
 		}
 	}
-
 }

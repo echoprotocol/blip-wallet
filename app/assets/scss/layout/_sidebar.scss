@@ -17,24 +17,25 @@
 	}
 
 	&-wrap {
-		@include min-vw(1400) {
-			width: 300px;
-		}
-
 		position: relative;
 		z-index: 2;
-		width: 255px;
+		width: 225px;
 		height: 100%;
 		overflow: hidden;
 
-
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			width: 1px;
+			background-color: rgba(#000, 0.27);
+		}
 	}
 
 	&.right {
-		@include min-vw(1400) {
-			left: calc(100% - 300px);
-		}
-		left: calc(100% - 255px);
+		left: calc(100% - 225px);
 	}
 
 	.visible {
@@ -54,19 +55,20 @@
 	}
 
 	.btn-transparent {
-		margin-left: calc(27px + 0.5vw);
+		margin-left: 26px;
 		color: #c1afee;
 		font-size: 1.4em;
 	}
 }
 
 .sidebar-nav {
+	z-index: 1;
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 
 	li {
-		padding: 0 calc(22px + 0.5vw);
+		padding: 0 26px;
 		border-left: 5px solid transparent;
 		transition: border $speed;
 
