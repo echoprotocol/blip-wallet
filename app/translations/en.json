@@ -236,7 +236,7 @@
 			"subject": "Issue to account"
 		},
 		"asset_reserve": {
-			"title": "Burn asset",
+			"title": "Reserve asset",
 			"from": "Payer"
 		},
 		"asset_fund_fee_pool": {
@@ -320,11 +320,11 @@
 			"subject": "To"
 		},
 		"sidechain_eth_create_address": {
-			"title": "Generate ethereum address",
+			"title": "Create ethereum address",
 			"from": "Account"
 		},
 		"sidechain_eth_approve_address": {
-			"title": "Create ethereum address",
+			"title": "Approve ethereum address",
 			"from": "Account"
 		},
 		"sidechain_eth_deposit": {
