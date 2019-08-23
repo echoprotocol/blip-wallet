@@ -143,7 +143,7 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 
 				return {
 					...base,
-					link: `/asset/${response.id}/info`,
+					link: `/assets/${response.id}/info`,
 					label: value.label,
 					value: response.symbol,
 					precision: response.precision,
@@ -152,18 +152,23 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 			case OPTION_TYPES.STRING:
 			case OPTION_TYPES.NUMBER:
 			case OPTION_TYPES.ACCOUNT_ADDRESS:
-			case OPTION_TYPES.CONTRACT_ADDRESS:
-				return {
+			case OPTION_TYPES.CONTRACT_ADDRESS: {
+				const result = {
 					...base,
 					label: value.label,
 					value: field,
 				};
+				if (type === OPERATIONS.asset_create.value) {
+					result.link = `/assets/${resultId}/info`;
+				}
+				return result;
+			}
 			case OPTION_TYPES.EETH_ASSET:
 				[response] = await Services.getEcho().api.lookupAssetSymbols([EETH_ASSET_SYMBOL]);
 
 				return {
 					...base,
-					link: `/asset/${response.id}/info`,
+					link: `/assets/${response.id}/info`,
 					label: value.label,
 					value: response.symbol,
 					precision: response.precision,
