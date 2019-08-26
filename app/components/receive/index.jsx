@@ -6,6 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { FormattedMessage } from 'react-intl';
 import Qr from 'qrcode.react';
+import { validators } from 'echojs-lib';
 import Avatar from '../avatar';
 import FormatHelper from '../../helpers/format-helper';
 import InputDropdown from '../input-dropdown';
@@ -126,13 +127,15 @@ class Receive extends React.Component {
 	}
 
 	getQr(accountName, type) {
-		const { form, echoAsset } = this.props;
+		const { form, echoAsset, balances } = this.props;
 		const { precision } = this.state;
+
+		const balance = validators.isAccountBalanceId(form.get('selectedBalance')) ? balances.get(form.get('selectedBalance')) : null;
 
 		return FormatHelper.formatQr(
 			form.get('amount').value,
 			precision || echoAsset.get('precision'),
-			form.get('selectedBalance'),
+			balance ? balance.assetId : form.get('selectedBalance'),
 			accountName,
 			type,
 		);

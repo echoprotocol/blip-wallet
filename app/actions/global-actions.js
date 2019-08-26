@@ -344,6 +344,8 @@ export const clearWalletData = () => async (dispatch, getState) => {
 
 	LanguageService.resetLanguage();
 
+	Services.getLocalStorage().removeData('historyFilter');
+
 	dispatch(setValue('language', LanguageService.getDefaultLanguage()));
 	dispatch(setValue('locked', true));
 	dispatch(setValue('accounts', new Map({})));

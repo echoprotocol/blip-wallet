@@ -210,24 +210,6 @@
 			"from": "Отправитель",
 			"subject": "Получатель"
 		},
-        "limit_order_create": {
-            "title": "Разместить заказ",
-            "from": "Продавец"
-        },
-        "limit_order_cancel": {
-            "title": "Отменить заказ",
-            "from": "Платёжный аккаунт",
-            "subject": "Заказ"
-        },
-        "call_order_update": {
-            "title": "Обновить поля",
-            "from": "Платёжный аккаунт"
-        },
-        "fill_order": {
-            "title": "Заполнить заказ",
-            "from": "Аккаунт",
-            "subject": "Заказ"
-        },
         "account_create": {
             "title": "Аккаунт создан",
             "from": "Создатель",
@@ -241,10 +223,6 @@
             "title": "Белый список аккаунтов",
             "from": "Авторизующий аккаунт",
             "subject": "Аккаунт"
-        },
-        "account_upgrade": {
-            "title": "Аккаунт улучшен",
-            "from": "Аккаунт для обновления"
         },
         "account_transfer": {
             "title": "Перевод аккаунта",
@@ -284,27 +262,10 @@
             "title": "Финансировать сбор средств фонда",
             "from": "Аккаунт"
         },
-        "asset_settle": {
-            "title": "Расчет активов",
-            "from": "Аккаунт"
-        },
-        "asset_global_settle": {
-            "title": "Глобальный расчет активов",
-            "from": "Издатель"
-        },
         "asset_publish_feed": {
             "title": "Опубликовать фид",
             "from": "Издатель",
             "subject": "Актив"
-        },
-        "witness_create": {
-            "title": "Создать свидетеля",
-            "from": "Аккаунт"
-        },
-        "witness_update": {
-            "title": "Обновить свидетеля",
-            "from": "Аккаунт",
-            "subject": "Свидетель"
         },
         "proposal_create": {
             "title": "Создание заявки",
@@ -316,23 +277,6 @@
         },
         "proposal_delete": {
             "title": "Удаление заявки",
-            "from": "Аккаунт"
-        },
-        "withdraw_permission_create": {
-            "title": "Создать разрешение на снятие средств",
-            "from": "Аккаунт"
-        },
-        "withdraw_permission_update": {
-            "title": "Обновить разрешение на снятие средств",
-            "from": "Аккаунт"
-        },
-        "withdraw_permission_claim": {
-            "title": "Требовать разрешения на снятие средств",
-            "from": "From",
-            "subject": "To"
-        },
-        "withdraw_permission_delete": {
-            "title": "Удалить разрешение на снятие средств",
             "from": "Аккаунт"
         },
         "committee_member_create": {
@@ -355,19 +299,6 @@
             "title": "Снять баланс",
             "from": "Владелец"
         },
-        "worker_create": {
-            "title": "Создать работника",
-            "from": "Владелец",
-            "subject": "Работник"
-        },
-        "custom": {
-            "title": "Кастом",
-            "from": "Плательщик"
-        },
-        "assert": {
-            "title": "Подтвердить операцию",
-            "from": "Аккаунт"
-        },
         "balance_claim": {
             "title": "Запрос баланса",
             "subject": "Аккаунт"
@@ -376,21 +307,6 @@
             "title": "Отменить перевод",
             "from": "Отправитель",
             "subject": "Получатель"
-        },
-        "transfer_to_blind": {
-            "title": "Перевод на слепой аккаунт",
-            "from": "Отправитель"
-        },
-        "blind_transfer": {
-            "title": "Слепой перевод"
-        },
-        "transfer_from_blind": {
-            "title": "Перевод с слепого аккаунта",
-            "subject": "Получатель"
-        },
-        "asset_settle_cancel": {
-            "title": "Отменить расчет активов",
-            "from": "Аккаунт"
         },
         "asset_claim_fees": {
             "title": "Запрос по активам",
@@ -410,7 +326,7 @@
             "from": "Отправитель",
             "subject": "Получатель"
         },
-        "change_sidechain_config": {
+        "sidechain_change_config": {
 			"title": "Изменить конфигурацию sidechain"
 		},
 		"account_address_create": {
@@ -422,25 +338,25 @@
 			"from": "Отправитель",
 			"subject": "Получатель"
 		},
-		"generate_eth_address": {
+		"sidechain_eth_create_address": {
 			"title": "Сгенерировать ethereum адрес",
 			"from": "Аккаунт"
 		},
-		"create_eth_address": {
+		"sidechain_eth_approve_address": {
 			"title": "Создать ethereum адрес",
 			"from": "Аккаунт"
 		},
-		"deposit_eth": {
+		"sidechain_eth_deposit": {
 			"title": "Депозит ETH",
             "from": "Член комитета",
 			"subject": "Аккаунт"
 		},
-		"withdraw_eth": {
+		"sidechain_eth_withdraw": {
 			"title": "Вывод ETH",
 			"from": "Отправитель",
 			"subject": "Получатель"
 		},
-		"approve_withdraw_eth": {
+		"sidechain_eth_approve_withdraw": {
 			"title": "Подтвердить вывод ETH",
 			"from": "Член комитета",
 			"subject": "Идентификатор вывода"
@@ -455,32 +371,32 @@
             "from": "Аккаунт",
             "subject": "Контракт"
         },
-        "sidechain_issue": {
+        "sidechain_eth_issue": {
             "title": "Выпуск sidechain",
             "from": "Аккаунт",
             "subject": "Депозит"
         },
-        "sidechain_burn": {
+        "sidechain_eth_burn": {
             "title": "Сжечь sidechain",
             "from": "Аккаунт",
             "subject": "ID вывода"
         },
-        "register_erc20_token": {
+        "sidechain_erc20_register_token": {
             "title": "Регистрация ERC20 токена",
             "from": "Аккаунт",
             "subject": "Ethereum адрес"
         },
-        "deposit_erc20_token": {
+        "sidechain_erc20_deposit_token": {
             "title": "Депозит ERC20 токена",
             "from": "Аккаунт",
             "subject": "Ethereum адрес"
         },
-        "withdraw_erc20_token": {
+        "sidechain_erc20_withdraw_token": {
             "title": "Вывод ERC20 токена",
             "from": "Аккаунт",
             "subject": "Ethereum адрес"
         },
-        "approve_erc20_token_withdraw": {
+        "sidechain_erc20_approve_token_withdraw": {
             "title": "Одобрение вывода ERC20 токена",
             "from": "Член комитета",
             "subject": "Ethereum адрес"

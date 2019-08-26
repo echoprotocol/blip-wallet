@@ -1,6 +1,6 @@
-import { OPERATIONS_IDS } from 'echojs-lib';
+import { OPERATIONS_IDS, constants } from 'echojs-lib';
 
-export const OPERATION_ID_PREFIX = '1.10.';
+export const OPERATION_ID_PREFIX = `1.${constants.OBJECT_TYPES.OPERATION_HISTORY}.`;
 export const ASSET_TYPE = 'ASSET';
 export const TOKEN_TYPE = 'TOKEN';
 
@@ -17,15 +17,14 @@ export const OPTION_TYPES = {
 };
 
 export const CONTRACT_TYPES = [
-	OPERATIONS_IDS.CREATE_CONTRACT,
-	OPERATIONS_IDS.CALL_CONTRACT,
+	OPERATIONS_IDS.CONTRACT_CREATE,
+	OPERATIONS_IDS.CONTRACT_CALL,
 	OPERATIONS_IDS.CONTRACT_TRANSFER,
 ];
 
 export const ACCOUNT_TYPES = [
 	OPERATIONS_IDS.ACCOUNT_CREATE,
 	OPERATIONS_IDS.ACCOUNT_UPDATE,
-	OPERATIONS_IDS.ACCOUNT_UPGRADE,
 ];
 
 export const CONTRACT_RESULT_TYPE_0 = 0;
@@ -35,7 +34,7 @@ export const CONTRACT_RESULT_EXCEPTED_NONE = 'None';
 export const TRANSFER_KEYS = {
 	transfer: 'from',
 	contract: 'registrar',
-	[OPERATIONS_IDS.CALL_CONTRACT]: 'registrar',
+	[OPERATIONS_IDS.CONTRACT_CALL]: 'registrar',
 };
 
 export const OPERATIONS = {
@@ -59,82 +58,6 @@ export const OPERATIONS = {
 			},
 			asset: {
 				field: 'amount.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	limit_order_create: {
-		value: OPERATIONS_IDS.LIMIT_ORDER_CREATE,
-		name: 'operations.limit_order_create.title',
-		options: {
-			from: {
-				field: 'seller',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.limit_order_create.from',
-			},
-			subject: null,
-			amount: {
-				field: 'amount_to_sell.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount_to_sell.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	limit_order_cancel: {
-		value: OPERATIONS_IDS.LIMIT_ORDER_CANCEL,
-		name: 'operations.limit_order_cancel.title',
-		options: {
-			from: {
-				field: 'seller',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.limit_order_cancel.from',
-			},
-			subject: {
-				field: 'order',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.limit_order_cancel.subject',
-			},
-			amount: null,
-			asset: null,
-		},
-	},
-	call_order_update: {
-		value: OPERATIONS_IDS.CALL_ORDER_UPDATE,
-		name: 'operations.call_order_update.title',
-		options: {
-			from: {
-				field: 'funding_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.call_order_update.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	fill_order: {
-		value: OPERATIONS_IDS.FILL_ORDER,
-		name: 'operations.fill_order.title',
-		options: {
-			from: {
-				field: 'account_id',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.fill_order.from',
-			},
-			subject: {
-				field: 'order_id',
-				type: OPTION_TYPES.STRING,
-				label: 'operations.fill_order.subject',
-			},
-			amount: {
-				field: 'pays.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'pays.asset_id',
 				type: OPTION_TYPES.ASSET,
 			},
 		},
@@ -185,20 +108,6 @@ export const OPERATIONS = {
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.account_whitelist.subject',
 			},
-			amount: null,
-			asset: null,
-		},
-	},
-	account_upgrade: {
-		value: OPERATIONS_IDS.ACCOUNT_UPGRADE,
-		name: 'operations.account_upgrade.title',
-		options: {
-			from: {
-				field: 'account_to_upgrade',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.account_upgrade.from',
-			},
-			subject: null,
 			amount: null,
 			asset: null,
 		},
@@ -357,46 +266,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	asset_settle: {
-		value: OPERATIONS_IDS.ASSET_SETTLE,
-		name: 'operations.asset_settle.title',
-		options: {
-			from: {
-				field: 'account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.asset_settle.from',
-			},
-			subject: null,
-			amount: {
-				field: 'amount.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	asset_global_settle: {
-		value: OPERATIONS_IDS.ASSET_GLOBAL_SETTLE,
-		name: 'operations.asset_global_settle.title',
-		options: {
-			from: {
-				field: 'issuer',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.asset_global_settle.from',
-			},
-			subject: null,
-			amount: {
-				field: 'settle_price',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'asset_to_settle',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
 	asset_publish_feed: {
 		value: OPERATIONS_IDS.ASSET_PUBLISH_FEED,
 		name: 'operations.asset_publish_feed.title',
@@ -457,72 +326,6 @@ export const OPERATIONS = {
 				field: 'fee_paying_account',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.proposal_delete.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	withdraw_permission_create: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_CREATE,
-		name: 'operations.withdraw_permission_create.title',
-		options: {
-			from: {
-				field: 'withdraw_from_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_permission_create.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	withdraw_permission_update: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_UPDATE,
-		name: 'operations.withdraw_permission_update.title',
-		options: {
-			from: {
-				field: 'withdraw_from_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_permission_update.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	withdraw_permission_claim: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_CLAIM,
-		name: 'operations.withdraw_permission_claim.title',
-		options: {
-			from: {
-				field: 'withdraw_from_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_permission_claim.from',
-			},
-			subject: {
-				field: 'withdraw_to_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_permission_claim.subject',
-			},
-			amount: {
-				field: 'amount_to_withdraw.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount_to_withdraw.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	withdraw_permission_delete: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_DELETE,
-		name: 'operations.withdraw_permission_delete.title',
-		options: {
-			from: {
-				field: 'withdraw_from_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_permission_delete.from',
 			},
 			subject: null,
 			amount: null,
@@ -611,34 +414,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	custom: {
-		value: OPERATIONS_IDS.CUSTOM,
-		name: 'operations.custom.title',
-		options: {
-			from: {
-				field: 'payer',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.custom.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	assert: {
-		value: OPERATIONS_IDS.ASSERT,
-		name: 'operations.assert.title',
-		options: {
-			from: {
-				field: 'fee_paying_account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.assert.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
 	balance_claim: {
 		value: OPERATIONS_IDS.BALANCE_CLAIM,
 		name: 'operations.balance_claim.title',
@@ -677,26 +452,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	asset_settle_cancel: {
-		value: OPERATIONS_IDS.ASSET_SETTLE_CANCEL,
-		name: 'operations.asset_settle_cancel.title',
-		options: {
-			from: {
-				field: 'account',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.asset_settle_cancel.from',
-			},
-			subject: null,
-			amount: {
-				field: 'amount.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
 	asset_claim_fees: {
 		value: OPERATIONS_IDS.ASSET_CLAIM_FEES,
 		name: 'operations.asset_claim_fees.title',
@@ -718,7 +473,7 @@ export const OPERATIONS = {
 		},
 	},
 	contract_create: {
-		value: OPERATIONS_IDS.CREATE_CONTRACT,
+		value: OPERATIONS_IDS.CONTRACT_CREATE,
 		name: 'operations.contract_create.title',
 		options: {
 			from: {
@@ -738,7 +493,7 @@ export const OPERATIONS = {
 		},
 	},
 	contract_call: {
-		value: OPERATIONS_IDS.CALL_CONTRACT,
+		value: OPERATIONS_IDS.CONTRACT_CALL,
 		name: 'operations.contract_call.title',
 		options: {
 			from: {
@@ -785,9 +540,9 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	change_sidechain_config: {
-		value: OPERATIONS_IDS.CHANGE_SIDECHAIN_CONFIG,
-		name: 'operations.change_sidechain_config.title',
+	sidechain_change_config: {
+		value: OPERATIONS_IDS.SIDECHAIN_CHANGE_CONFIG,
+		name: 'operations.sidechain_change_config.title',
 		options: {
 			from: null,
 			subject: null,
@@ -833,47 +588,47 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	generate_eth_address: {
-		value: OPERATIONS_IDS.GENERATE_ETH_ADDRESS,
-		name: 'operations.generate_eth_address.title',
+	sidechain_eth_create_address: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS,
+		name: 'operations.sidechain_eth_create_address.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.generate_eth_address.from',
+				label: 'operations.sidechain_eth_create_address.from',
 			},
 			subject: null,
 			amount: null,
 			asset: null,
 		},
 	},
-	create_eth_address: {
-		value: OPERATIONS_IDS.CREATE_ETH_ADDRESS,
-		name: 'operations.create_eth_address.title',
+	sidechain_eth_approve_address: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS,
+		name: 'operations.sidechain_eth_approve_address.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.create_eth_address.from',
+				label: 'operations.sidechain_eth_approve_address.from',
 			},
 			subject: null,
 			amount: null,
 			asset: null,
 		},
 	},
-	deposit_eth: {
-		value: OPERATIONS_IDS.DEPOSIT_ETH,
-		name: 'operations.deposit_eth.title',
+	sidechain_eth_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT,
+		name: 'operations.sidechain_eth_deposit.title',
 		options: {
 			from: {
 				field: 'committee_member_id',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.deposit_eth.from',
+				label: 'operations.sidechain_eth_deposit.from',
 			},
 			subject: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.deposit_eth.subject',
+				label: 'operations.sidechain_eth_deposit.subject',
 			},
 			amount: {
 				field: 'value',
@@ -884,19 +639,19 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	withdraw_eth: {
-		value: OPERATIONS_IDS.WITHDRAW_ETH,
-		name: 'operations.withdraw_eth.title',
+	sidechain_eth_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW,
+		name: 'operations.sidechain_eth_withdraw.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_eth.from',
+				label: 'operations.sidechain_eth_withdraw.from',
 			},
 			subject: {
 				field: 'eth_addr',
 				type: OPTION_TYPES.ACCOUNT_ADDRESS,
-				label: 'operations.withdraw_eth.subject',
+				label: 'operations.sidechain_eth_withdraw.subject',
 			},
 			amount: {
 				field: 'value',
@@ -907,20 +662,19 @@ export const OPERATIONS = {
 			},
 		},
 	},
-
-	approve_withdraw_eth: {
-		value: OPERATIONS_IDS.APPROVE_WITHDRAW_ETH,
-		name: 'operations.approve_withdraw_eth.title',
+	sidechain_eth_approve_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW,
+		name: 'operations.sidechain_eth_approve_withdraw.title',
 		options: {
 			from: {
 				field: 'committee_member_id',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.approve_withdraw_eth.from',
+				label: 'operations.sidechain_eth_approve_withdraw.from',
 			},
 			subject: {
 				field: 'withdraw_id',
 				type: OPTION_TYPES.NUMBER,
-				label: 'operations.approve_withdraw_eth.subject',
+				label: 'operations.sidechain_eth_approve_withdraw.subject',
 			},
 			amount: null,
 			asset: null,
@@ -968,19 +722,19 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	sidechain_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
-		name: 'operations.sidechain_issue.title',
+	sidechain_eth_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_ISSUE,
+		name: 'operations.sidechain_eth_issue.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.sidechain_issue.from',
+				label: 'operations.sidechain_eth_issue.from',
 			},
 			subject: {
 				field: 'deposit_id',
 				type: OPTION_TYPES.NUMBER,
-				label: 'operations.sidechain_issue.subject',
+				label: 'operations.sidechain_eth_issue.subject',
 			},
 			amount: {
 				field: 'value.amount',
@@ -992,19 +746,19 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	sidechain_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_BURN,
-		name: 'operations.sidechain_burn.title',
+	sidechain_eth_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_BURN,
+		name: 'operations.sidechain_eth_burn.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.sidechain_burn.from',
+				label: 'operations.sidechain_eth_burn.from',
 			},
 			subject: {
 				field: 'withdraw_id',
 				type: OPTION_TYPES.NUMBER,
-				label: 'operations.sidechain_burn.subject',
+				label: 'operations.sidechain_eth_burn.subject',
 			},
 			amount: {
 				field: 'value.amount',
@@ -1016,37 +770,37 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	register_erc20_token: {
-		value: OPERATIONS_IDS.REGISTER_ERC20_TOKEN,
-		name: 'operations.register_erc20_token.title',
+	sidechain_erc20_register_token: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN,
+		name: 'operations.sidechain_erc20_register_token.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.register_erc20_token.from',
+				label: 'operations.sidechain_erc20_register_token.from',
 			},
 			subject: {
 				field: 'eth_addr',
 				type: OPTION_TYPES.CONTRACT_ADDRESS,
-				label: 'operations.register_erc20_token.subject',
+				label: 'operations.sidechain_erc20_register_token.subject',
 			},
 			amount: null,
 			asset: null,
 		},
 	},
-	deposit_erc20_token: {
-		value: OPERATIONS_IDS.DEPOSIT_ERC20_TOKEN,
-		name: 'operations.deposit_erc20_token.title',
+	sidechain_erc20_deposit_token: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN,
+		name: 'operations.sidechain_erc20_deposit_token.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.deposit_erc20_token.from',
+				label: 'operations.sidechain_erc20_deposit_token.from',
 			},
 			subject: {
 				field: 'erc20_token_addr',
 				type: OPTION_TYPES.CONTRACT_ADDRESS,
-				label: 'operations.deposit_erc20_token.subject',
+				label: 'operations.sidechain_erc20_deposit_token.subject',
 			},
 			amount: {
 				field: 'value',
@@ -1057,19 +811,19 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	withdraw_erc20_token: {
-		value: OPERATIONS_IDS.WITHDRAW_ERC20_TOKEN,
-		name: 'operations.withdraw_erc20_token.title',
+	sidechain_erc20_withdraw_token: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN,
+		name: 'operations.sidechain_erc20_withdraw_token.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.withdraw_erc20_token.from',
+				label: 'operations.sidechain_erc20_withdraw_token.from',
 			},
 			subject: {
 				field: 'to',
 				type: OPTION_TYPES.ACCOUNT_ADDRESS,
-				label: 'operations.withdraw_erc20_token.subject',
+				label: 'operations.sidechain_erc20_withdraw_token.subject',
 			},
 			amount: {
 				field: 'value',
@@ -1080,19 +834,19 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	approve_erc20_token_withdraw: {
-		value: OPERATIONS_IDS.APPROVE_ERC20_TOKEN_WITHDRAW,
-		name: 'operations.approve_erc20_token_withdraw.title',
+	sidechain_erc20_approve_token_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW,
+		name: 'operations.sidechain_erc20_approve_token_withdraw.title',
 		options: {
 			from: {
 				field: 'committee_member_id',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.approve_erc20_token_withdraw.from',
+				label: 'operations.sidechain_erc20_approve_token_withdraw.from',
 			},
 			subject: {
 				field: 'to',
 				type: OPTION_TYPES.ACCOUNT_ADDRESS,
-				label: 'operations.approve_erc20_token_withdraw.subject',
+				label: 'operations.sidechain_erc20_approve_token_withdraw.subject',
 			},
 			amount: {
 				field: 'value',

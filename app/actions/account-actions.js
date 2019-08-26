@@ -123,8 +123,6 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 				const options = {
 					echorand_key: publicKey,
 					registrar: account.id,
-					referrer: account.id,
-					referrer_percent: 0,
 					name: accountName,
 					active: {
 						weight_threshold: 1,
