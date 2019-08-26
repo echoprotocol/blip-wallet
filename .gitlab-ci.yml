@@ -7,9 +7,25 @@ eslint:
   stage: test
   script:
     - npm i
-    - npm run lint
+    - npm run lint    
   only:
     - merge_requests
+    - master
+    - develop
+  tags:
+    - docker
+
+tests:
+  image: node:10.15
+  stage: test
+  script:
+    - npm i    
+    - npm run build
+    - npm run test
+  only:
+    - merge_requests
+    - master
+    - develop
   tags:
     - docker
 
