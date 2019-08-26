@@ -2,6 +2,7 @@
 	align-items: center;
 	display: flex;
 	height: 34px;
+	border-radius: 4px 4px 0 0;
 	background-color: #e1e1e4;
 	user-select: none;
 	position: relative;
@@ -138,6 +139,7 @@
 		}
 
 		.btn-win-close {
+            border-radius: 0 4px 0 0;
 			color: #4c565e;
 
 

@@ -2,9 +2,13 @@
 	position: relative;
 
 	&.withSidebar {
+		border-radius: 0 0 4px 4px;
 		background-color: #f1f1f1;
 
 		.page {
+			// @include min-vw(1400) {
+			// 	width: calc(100vw - 300px);
+			// }
 			width: calc(100vw - 255px);
 		}
 	}
@@ -22,6 +26,11 @@
 	position: absolute;
 	width: 100%;
 	height: calc(100vh - 34px);
+	border-radius: 0 0 4px 4px;
+
+	&:before {
+		border-radius: 0 0 4px 4px;
+	}
 
 	& + .global-wrap {
 		.page {

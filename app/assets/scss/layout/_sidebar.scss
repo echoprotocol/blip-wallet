@@ -17,11 +17,15 @@
 	}
 
 	&-wrap {
+		@include min-vw(1400) {
+			width: 300px;
+		}
 		position: relative;
 		z-index: 2;
 		width: 225px;
 		height: 100%;
 		overflow: hidden;
+		border-radius: 0 0 4px 0;
 
 		&:before {
 			content: '';

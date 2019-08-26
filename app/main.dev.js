@@ -179,11 +179,11 @@ async function createWindow() {
 		height: APP_WINDOW_HEIGHT,
 		minWidth: APP_WINDOW_MIN_WIDTH,
 		minHeight: APP_WINDOW_MIN_HEIGHT,
-		backgroundColor: '#6852A4',
-		frame: false,
 		webPreferences: {
 			nodeIntegration: true,
 		},
+		frame: false,
+		transparent: true,
 	});
 
 	mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -390,8 +390,12 @@ app.on('before-quit', (event) => {
 
 });
 
-
-app.on('ready', createWindow);
+/**
+ * It is electron bug on linux
+ * https://github.com/electron/electron/issues/15947
+ *
+ */
+app.on('ready', () => setTimeout(createWindow, 100));
 
 app.on('activate', () => {
 	if (mainWindow === null) {
