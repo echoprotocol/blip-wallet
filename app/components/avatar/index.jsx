@@ -36,12 +36,12 @@ class Avatar extends React.Component {
 		return null;
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 		if (nextProps.reset) return true;
+		if (nextState.avatarSize !== this.state.avatarSize && nextState.avatarSize) return true;
 		if (nextProps.loading) return false;
 		if (nextProps.accountName.length === 0) return false;
-		if (this.state.accountName === nextProps.accountName) return false;
-		return true;
+		return this.state.accountName !== nextProps.accountName;
 	}
 
 	componentWillUnmount() {
@@ -58,6 +58,7 @@ class Avatar extends React.Component {
 	render() {
 		const { round } = this.props;
 		const { avatarSize, accountName } = this.state;
+
 		return (
 			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
 				{
