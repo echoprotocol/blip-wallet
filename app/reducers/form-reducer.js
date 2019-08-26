@@ -26,6 +26,7 @@ const DEFAULT_FORM_FIELDS = {
 			account: null,
 			fee: null,
 		},
+		isBlockchainError: false,
 	}),
 	[FORM_SIGN_IN]: Map({
 		accountNameError: '',

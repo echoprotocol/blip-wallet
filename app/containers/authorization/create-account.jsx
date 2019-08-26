@@ -46,7 +46,7 @@ class CreateAccount extends React.Component {
 		}
 
 		const {
-			setError, validateAccount: validate, toggleLoading: toggle,
+			validateAccount: validate, toggleLoading: toggle,
 		} = this.props;
 
 		const { value } = e.target;
@@ -68,7 +68,7 @@ class CreateAccount extends React.Component {
 			toggle('loading', false);
 		}
 
-		setError(null);
+		this.resetError(null);
 		this.setState(hints);
 	}
 
@@ -105,8 +105,8 @@ class CreateAccount extends React.Component {
 	selectAccount(id, name) {
 		const error = this.props.intl.formatMessage({ id: 'account.create.error.Insufficient funds' });
 
-		if (this.props.form.get('error') === error) {
-			this.props.setError(null);
+		if (this.props.form.get('error') === error || this.props.form.get('isBlockchainError')) {
+			this.resetError(null);
 		}
 
 		this.nameInput.focus();
@@ -116,11 +116,16 @@ class CreateAccount extends React.Component {
 	changeRegistratorType(value) {
 		const error = this.props.intl.formatMessage({ id: 'account.create.error.Insufficient funds' });
 
-		if (this.props.form.get('error') === error) {
-			this.props.setError(null);
+		if (this.props.form.get('error') === error || this.props.form.get('isBlockchainError')) {
+			this.resetError(null);
 		}
 
 		this.props.setInValue('registrator', { public: value });
+	}
+
+	resetError() {
+		this.props.setValue('error', null);
+		this.props.setValue('isBlockchainError', false);
 	}
 
 	render() {
@@ -269,7 +274,7 @@ CreateAccount.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
 	toggleLoading: PropTypes.func.isRequired,
 	onChange: PropTypes.func.isRequired,
-	setError: PropTypes.func.isRequired,
+	setValue: PropTypes.func.isRequired,
 };
 
 const positiveBalanceAccounts = Services.getSelector().getPositiveBalanceAccountsSelector();
@@ -281,7 +286,7 @@ export default injectIntl(connect(
 		registrators: positiveBalanceAccounts(state),
 	}),
 	(dispatch) => ({
-		setError: (value) => dispatch(setValue(FORM_SIGN_UP, 'error', value)),
+		setValue: (field, value) => dispatch(setValue(FORM_SIGN_UP, field, value)),
 		registerAccount: (accountName) => dispatch(registerAccount(accountName)),
 		validateAccount: (form, name) => dispatch(validateCreateAccount(form, name)),
 		toggleLoading: (field, value) => dispatch(toggleLoading(FORM_SIGN_UP, field, value)),

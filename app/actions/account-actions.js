@@ -185,6 +185,10 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 		const resultRegisterAccount = await Promise.all([promiseRegisterAccount, promiseLoader]);
 		return resultRegisterAccount[0];
 	} catch (err) {
+		if (err.message) {
+			dispatch(setValue(FORM_SIGN_UP, 'isBlockchainError', true));
+		}
+
 		dispatch(setValue(FORM_SIGN_UP, 'error', err.message || err));
 
 		return null;
