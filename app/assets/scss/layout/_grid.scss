@@ -2,12 +2,14 @@
 	position: relative;
 
 	&.withSidebar {
+		border-radius: 0 0 4px 4px;
 		background-color: #f1f1f1;
 
 		.page {
 			@include min-vw(1400) {
 				width: calc(100vw - 300px);
 			}
+
 			width: calc(100vw - 255px);
 		}
 	}
@@ -23,9 +25,14 @@
 .bg {
 	@include background();
 	position: absolute;
-	width: 100%;
+    width: 100%;
+	border-radius: 0 0 4px 4px;
 	height: calc(100vh - 34px);
 	background-color: rgba(#6852a4, 0.7);
+
+	&:before {
+		border-radius: 0 0 4px 4px;
+	}
 
 	& + .global-wrap {
 		.page {

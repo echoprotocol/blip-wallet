@@ -58,6 +58,7 @@ class Toolbar extends React.Component {
 		const toolbar = ReactDOM.findDOMNode(this.refToolbar.current);
 		const zom = ReactDOM.findDOMNode(this.refZom.current);
 		const close = ReactDOM.findDOMNode(this.refClose.current);
+		const mimimize = ReactDOM.findDOMNode(this.refMinimize.current);
 		/* eslint-enable */
 
 		if (toolbar && toolbar.contains(e.target)) {
@@ -70,7 +71,9 @@ class Toolbar extends React.Component {
 				this.onZoomApp();
 				return;
 			}
-			this.onMinimizeApp();
+			if (mimimize.contains(e.target)) {
+				this.onMinimizeApp();
+			}
 		}
 	}
 
