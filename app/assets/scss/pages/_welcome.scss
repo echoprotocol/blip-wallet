@@ -79,7 +79,10 @@
 			color: #000;
 
 			span {
-				font-size: 1.6em;
+				@include min-vw(1400) {
+					font-size: 16px;
+				}
+				font-size: 14px;
 				line-height: 1.3;
 			}
 

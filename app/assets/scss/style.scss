@@ -46,3 +46,7 @@
 @import 'pages/settings';
 @import 'pages/receive';
 @import 'pages/password';
+
+body {
+	overflow: hidden;
+}
