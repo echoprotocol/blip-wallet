@@ -1,17 +1,17 @@
 .toolbar {
 	align-items: center;
+	position: relative;
 	display: flex;
 	height: 34px;
 	border-radius: 4px 4px 0 0;
 	background-color: #e1e1e4;
 	user-select: none;
-	position: relative;
 
 	.draggable {
+		width: 100%;
+		height: 34px;
 		-webkit-user-select: none;
 		-webkit-app-region: drag;
-		width: 100%;
-	    height: 34px;
 
 		&.before-ios-btns {
 			width: 20px;
@@ -60,7 +60,6 @@
 		}
 	}
 
-
 	.btn-ios-close {
 		border: 1px solid #e33e41;
 		background-color: #ff5c5c;
@@ -98,8 +97,6 @@
 			border: 1px solid #128435;
 			background-color: #029740;
 		}
-
-
 	}
 
 	.win-btns {
@@ -116,7 +113,7 @@
 			padding: 0;
 			border: 0;
 			background-color: transparent;
-			transition: opacity .3s, color .3s, background-color .3s;
+			transition: opacity 0.3s, color 0.3s, background-color 0.3s;
 
 			&:hover {
 				background-color: rgba(#b0b3b8, 0.4);
@@ -139,9 +136,8 @@
 		}
 
 		.btn-win-close {
-            border-radius: 0 4px 0 0;
+			border-radius: 0 4px 0 0;
 			color: #4c565e;
-
 
 			&:hover {
 				background-color: #f93932;
@@ -153,5 +149,4 @@
 			}
 		}
 	}
-
 }

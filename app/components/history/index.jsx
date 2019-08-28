@@ -294,13 +294,20 @@ class History extends React.Component {
 							}
 						</div>
 						<div className="settings-wrap">
-							<Button
-								className="btn-settings"
-								onClick={(e) => this.onToggleSettings(e, open)}
-								content={
-									<img src={settings} alt="" />
-								}
-							/>
+							{
+								open ? (
+									<Button className="btn-close" onClick={(e) => this.onToggleSettings(e, open)} />
+								) : (
+									<Button
+										className="btn-settings"
+										onClick={(e) => this.onToggleSettings(e, open)}
+										content={
+											<img src={settings} alt="" />
+										}
+									/>
+								)
+							}
+
 						</div>
 					</PerfectScrollbar>
 					<div className="page-footer">

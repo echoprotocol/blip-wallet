@@ -70,31 +70,41 @@
 	height: 100%;
 
 	.menu {
+		@include min-vw(1400) {
+			min-height: 107px;
+			padding: 0 24px 17px 26px;
+		}
 		align-items: flex-end;
 		display: flex;
-		min-height: 107px;
-		padding: 0 25px 17px 15px;
+		min-height: 103px;
+		padding: 0 16px 20px 14px;
 		border-bottom: 1px solid rgba(184, 155, 245, 0.4);
 
 		&-item {
 			@include source-regular();
 			@include min-vw(1400) {
 				font-size: 24px;
+				letter-spacing: 0.7px;
 			}
 			@include btn();
-			margin-right: 13px;
-
 			border: 1px solid transparent;
 			border-radius: 3px;
 			background-color: transparent;
 			color: #b89bf5;
 			font-size: 19px;
-			letter-spacing: 0.019em;
+			letter-spacing: 0.3px;
 			line-height: 1;
 			user-select: none;
 			transition: color $speed;
 			animation: fadeIn $speed;
 			will-change: transform;
+
+			&:not(:last-child) {
+				@include min-vw(1400) {
+					margin-right: 13px;
+				}
+				margin-right: 10px;
+			}
 
 			&:not(.active):not(:active) {
 				@include onBtnFocus(4px, 2px, 2px, rgba(#43d7ad, 0.45));
@@ -130,8 +140,11 @@
 	}
 
 	.segment {
+		@include min-vw(1400) {
+			padding: 30px 30px 30px 33px;
+		}
 		position: relative;
-		padding: 30px;
+		padding: 21px 19px 21px 23px;
 
 		&.action {
 			margin-top: auto;
@@ -146,25 +159,30 @@
 		&.tab {
 			.info-text {
 				@include source-regular();
+				@include min-vw(1400) {
+					font-size: 16px;
+					line-height: 23px;
+				}
 				color: #fff;
-				font-size: 1.4em;
+				font-size: 14px;
+				line-height: 20px;
 			}
 
 			.checkbox {
 				label {
 					align-items: center;
-					padding-left: 34px;
+					padding-left: 30px;
 				}
 
 				.label-account-name {
 					@include source-regular();
 
 					@include min-vw(1400) {
-						font-size: 18px;
+						font-size: 16px;
 					}
-					margin-left: 14px;
+					margin-left: 9px;
 					color: #fff;
-					font-size: 16px;
+					font-size: 14px;
 					line-height: 0;
 				}
 			}
@@ -172,7 +190,7 @@
 			.accounts-list {
 				.account {
 					&:not(:last-child) {
-						margin-bottom: 1.4em;
+						margin-bottom: 10px;
 					}
 				}
 			}
@@ -180,10 +198,14 @@
 			.select-accounts {
 				.title {
 					@include source-semibold();
-					margin: 3em 0 1.2em;
+					@include min-vw(1400) {
+						margin: 30px 0 0;
+						letter-spacing: 3px;
+					}
+					margin: 25px 0 0;
 					color: #fff;
-					font-size: 1.3em;
-					letter-spacing: 0.18em;
+					font-size: 13px;
+					letter-spacing: 2px;
 					text-transform: uppercase;
 				}
 			}

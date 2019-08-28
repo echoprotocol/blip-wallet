@@ -27,7 +27,7 @@ export const NETWORKS = {
 	testnet: {
 		remote: {
 			name: 'Remote node',
-			url: 'wss://testnet.echo-dev.io/ws',
+			url: 'ws://testnet.echo-dev.io/ws',
 		},
 		local: {
 			name: 'Local node',

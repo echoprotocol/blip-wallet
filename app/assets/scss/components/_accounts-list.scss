@@ -1,6 +1,6 @@
 .accounts-list {
 	display: grid;
-	margin: 40px 0;
+	margin: 24px 0;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 6px;
 
@@ -31,7 +31,8 @@
 			max-width: calc(100% - 80px);
 			margin-left: 14px;
 			color: #3f4a52;
-			font-size: 16px;}
+			font-size: 16px;
+		}
 
 		.currency-wrap {
 			margin: 20px 0 0 38px;
@@ -72,7 +73,7 @@
 		border-radius: 4px;
 	}
 
-	.name-wrap  {
+	.name-wrap {
 		@include source-regular();
 		flex-direction: column;
 		justify-content: space-around;
@@ -94,14 +95,13 @@
 				background-color: #e1e2e4;
 				color: #3f4a52;
 				font-size: 12px;
-				letter-spacing: .3px;
+				letter-spacing: 0.3px;
 				text-transform: uppercase;
 
 				&:after {
 					@include iconmoon();
-					content: "\e906";
+					content: '\e906';
 					margin-left: 5px;
-
 				}
 			}
 		}
@@ -163,14 +163,12 @@
 		}
 	}
 
-
 	.dropdown.white:not(.show) {
 		.dropdown-toggle {
 			&:hover,
 			&:active,
 			&:focus {
 				border: 1px solid transparent;
-
 			}
 
 			&:not(:active) {
@@ -199,13 +197,12 @@
 			.dot:nth-child(1),
 			.dot:nth-child(2),
 			.dot:nth-child(3) {
-				content: "";
+				content: '';
 				display: block;
 				width: 4px;
 				height: 4px;
 				border-radius: 1px;
 				background-color: #a8acb0;
-
 			}
 		}
 
@@ -237,7 +234,6 @@
 				font-size: 16px;
 			}
 
-
 			.dropdown-item {
 				@include source-regular();
 				margin: 0 2px 2px;
@@ -249,6 +245,5 @@
 				}
 			}
 		}
-
 	}
 }

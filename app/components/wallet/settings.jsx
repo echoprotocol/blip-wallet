@@ -288,9 +288,6 @@ class Settings extends React.Component {
 
 		return (
 			<div className="sidebar-settings">
-				<div className="head">
-					<Button className="btn-close" onClick={(e) => this.onClose(e)} />
-				</div>
 				<div className="settings-tabs">
 					<div className="menu">
 						{

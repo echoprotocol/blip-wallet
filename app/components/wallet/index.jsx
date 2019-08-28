@@ -321,13 +321,19 @@ class Wallet extends React.Component {
 						<Footer history={history} currentNode={currentNode} platform={this.props.platform} localNodePercent={this.props.localNodePercent} />
 					</div>
 					<div className="settings-wrap">
-						<Button
-							className="btn-settings"
-							onClick={(e) => { this.toggleSettings(e); }}
-							content={
-								<img src={settings} alt="" />
-							}
-						/>
+						{
+							showSettings ? (
+								<Button className="btn-close" onClick={(e) => this.toggleSettings(e)} />
+							) : (
+								<Button
+									className="btn-settings"
+									onClick={(e) => { this.toggleSettings(e); }}
+									content={
+										<img src={settings} alt="" />
+									}
+								/>
+							)
+						}
 					</div>
 					<Settings
 						open={showSettings}

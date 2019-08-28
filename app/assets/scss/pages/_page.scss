@@ -3,8 +3,12 @@
 	border-radius: 0 0 4px 4px;
 
 	.page {
+		@include min-vw(1400) {
+			width: calc(100vw - 225px);
+		}
 		flex-direction: column;
 		display: flex;
+		width: calc(100vw - 225px);
 		height: calc(100vh - 34px);
 		transition: transform 0.2s;
 
@@ -29,9 +33,14 @@
 	&.open {
 		.page {
 			@include min-vw(1400) {
-				transform: translateX(-473px);
+				width: calc(100vw - 255px);
+				transform: translateX(-443px);
 			}
 			transform: translateX(-363px);
+		}
+
+		.sidebar-settings {
+			left: 100%;
 		}
 	}
 }
