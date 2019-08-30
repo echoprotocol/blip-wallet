@@ -1,12 +1,14 @@
 @mixin input {
-	@include min-vw(1200) {
-		font-size: 18px;
-	}
-	@include min-vw(1400) {
-		height: 60px;
+	@include min-vw($md) {
 		padding: 0 22px;
-		font-size: 20px;
+		font-size: 17px;
+		letter-spacing: 0.12px;
 	}
+	// @include min-vw($lg) {
+	// 	height: 60px;
+	// 	padding: 0 22px;
+	// 	font-size: 20px;
+	// }
 	height: 44px;
 	padding: 0 14px;
 	border-radius: 3px;
@@ -31,7 +33,6 @@
 		@include input();
 		@include source-semibold();
 		@include hardware-accel();
-		letter-spacing: 0.017em;
 
 		&::placeholder {
 			line-height: 44px;
@@ -208,7 +209,7 @@
 .hints {
 	@include source-regular();
 
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		font-size: 16px;
 		line-height: 22px;
 	}
@@ -278,10 +279,10 @@ form {
 		}
 
 		.icon-eye {
-			@include min-vw(1400) {
-				width: 60px;
-				height: 60px;
-			}
+			// @include min-vw($lg) {
+			// 	width: 60px;
+			// 	height: 60px;
+			// }
 			position: absolute;
 			top: 0;
 			right: 0;
@@ -316,7 +317,7 @@ form {
 		}
 
 		input {
-			@include min-vw(1400) {
+			@include min-vw($md) {
 				padding-right: 52px;
 			}
 			padding-right: 43px;

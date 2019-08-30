@@ -79,18 +79,18 @@
 	}
 
 	.label-text {
-		@include min-vw(1400) {
-			line-height: 60px;
-		}
+		// @include min-vw($lg) {
+		// 	line-height: 60px;
+		// }
 
 		display: flex;
 		margin: 0 0 0 20px;
-		line-height: 44px;
+		line-height: 46px;
 	}
 
 	.hints {
 
-		@include min-vw(1400) {
+		@include min-vw($md) {
 			font-size: 16px;
 			line-height: 22px;
 		}

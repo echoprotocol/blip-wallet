@@ -9,10 +9,10 @@ html {
 }
 
 body {
-	@include min-vw(1200) {
+	@include min-vw($md) {
 		font-size: calc(62.5% + 0.05vw);
 	}
-	@include min-vw(1400) {
+	@include min-vw($lg) {
 		font-size: calc(62.5% + 0.14vw);
 	}
 	margin: 0;
@@ -45,17 +45,12 @@ ul {
 }
 
 .avatar-image {
-	@include min-vw(1400) {
-		min-width: 60px;
-		max-width: 60px;
-		height: 60px;
-	}
 	min-width: 44px;
 	max-width: 44px;
 	height: 44px;
 	overflow: hidden;
 	border-radius: 3px;
-
+	
 	svg,
 	img {
 		min-width: 100%;

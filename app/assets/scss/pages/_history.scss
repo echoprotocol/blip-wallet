@@ -3,13 +3,12 @@
 	display: flex;
 
 	.transactions-wrap > .title {
-		@include source-semibold();
+		@include page-title();
+		@include min-vw($md) {
+			margin-left: 47px;
+		}
 		margin-bottom: 13px;
-		margin-left: 47px;
-		color: #33353f;
-		font-size: 13px;
-		letter-spacing: 3px;
-		text-transform: uppercase;
+		margin-left: 30px;
 	}
 }
 
@@ -73,6 +72,7 @@
 		.line-content {
 			@include source-semibold();
 			color: #5b5c63;
+			letter-spacing: 0.42px;
 		}
 	}
 
@@ -224,7 +224,7 @@
 	}
 }
 
-@include max-vw(1300) {
+@include max-vw(1000) {
 	.table-transactions {
 		.transaction-item {
 			display: flex;
@@ -325,7 +325,7 @@
 	}
 }
 
-@include min-vw(1300) {
+@include min-vw(999) {
 	.table-transactions {
 		position: relative;
 		display: table;
@@ -337,12 +337,15 @@
 			.line {
 				li {
 					@include source-regular();
-					height: 53px;
+					height: 54px;
 					color: #8e8e97;
 					text-transform: capitalize;
 
 					&.type {
-						padding-left: 46px;
+						@include min-vw($md) {
+							padding-left: 46px;
+						}
+						padding-left: 32px;
 					}
 				}
 			}
@@ -409,7 +412,10 @@
 					}
 
 					.icon {
-						margin-left: 35px;
+						@include min-vw($md) {
+							margin-left: 35px;
+						}
+						margin-left: 18px;
 						font-size: 40px;
 						line-height: 0;
 						vertical-align: middle;
@@ -426,13 +432,13 @@
 					span {
 						@include text-overflow();
 						display: block;
-						max-width: 180px;
+						max-width: 160px;
 					}
 				}
 
 				&.from {
 					width: 1px;
-					padding: 0 10px;
+					padding: 0;
 				}
 
 				&.to {

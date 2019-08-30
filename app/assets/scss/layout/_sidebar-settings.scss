@@ -1,5 +1,5 @@
 .sidebar-settings {
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		width: 473px;
 	}
 	position: absolute;
@@ -33,7 +33,7 @@
 
 		.footer {
 			.btn-primary {
-				@include min-vw(1400) {
+				@include min-vw($md) {
 					padding: 0 60px;
 				}
 				padding: 0 30px;

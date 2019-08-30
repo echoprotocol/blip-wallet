@@ -1,25 +1,3 @@
-.settings {
-	.page-in-wrap {
-		flex-direction: column;
-		display: flex;
-		min-height: calc(100vh - 34px);
-		padding-bottom: 0;
-	}
-
-	.form-wrap {
-		margin-top: 0;
-	}
-
-	.page-in-action {
-		margin-top: auto;
-
-		.btn-wrap {
-			margin-right: auto;
-		}
-	}
-}
-
-
 .connected-status {
 	position: relative;
 	display: inline-flex;

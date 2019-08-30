@@ -1,5 +1,5 @@
 .header {
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		padding: 0 0 40px;
 	}
 	align-items: flex-end;

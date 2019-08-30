@@ -43,39 +43,45 @@ class Settings extends React.Component {
 		const { loading } = this.props;
 
 		return (
-			<div className="page settings">
-				<PerfectScrollbar className="page-in-scroll">
-					<div className="page-in-wrap">
-						<Networks
-							network={network}
-							connected={this.props.isConnected}
-							node={this.props.currentNode}
-							networks={this.props.networks}
-							changeNetwork={(value) => this.onChange('network', value)}
-							isDisabled={loading}
-						/>
-						<div className="page-in-action">
-							<div className="btn-wrap">
-								<Button
-									className="btn-primary white"
-									content={(
-										<div className="text"><FormattedMessage id="settings.apply" /></div>
-									)}
-									disabled={loading || !network}
-									onClick={() => this.onApply()}
-								/>
-								<Button
-									className="btn-gray round"
-									content={(
-										<div className="text"><FormattedMessage id="settings.cancel" /></div>
-									)}
-									disabled={loading || !network}
-									onClick={() => this.onCancel()}
-								/>
+			<div className="page-wrap">
+				<div className="page">
+					<PerfectScrollbar className="page-scroll">
+						<div className="settings-page-wrap">
+							<div className="title">
+								<FormattedMessage id="settings.networks.title" />
 							</div>
+							<Networks
+								network={network}
+								connected={this.props.isConnected}
+								node={this.props.currentNode}
+								networks={this.props.networks}
+								changeNetwork={(value) => this.onChange('network', value)}
+								isDisabled={loading}
+							/>
+						</div>
+
+					</PerfectScrollbar>
+					<div className="page-in-action">
+						<div className="btn-wrap">
+							<Button
+								className="btn-primary white"
+								content={(
+									<div className="text"><FormattedMessage id="settings.apply" /></div>
+								)}
+								disabled={loading || !network}
+								onClick={() => this.onApply()}
+							/>
+							<Button
+								className="btn-gray round"
+								content={(
+									<div className="text"><FormattedMessage id="settings.cancel" /></div>
+								)}
+								disabled={loading || !network}
+								onClick={() => this.onCancel()}
+							/>
 						</div>
 					</div>
-				</PerfectScrollbar>
+				</div>
 			</div>
 
 		);

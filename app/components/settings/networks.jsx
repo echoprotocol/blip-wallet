@@ -32,13 +32,11 @@ class Networks extends React.Component {
 
 		return (
 			<div className="form-wrap">
-				<div className="title"><FormattedMessage id="settings.networks.title" /></div>
-
 				<div className="line">
+					<div className="line-label">
+						<span className="line-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
+					</div>
 					<div className="line-content">
-						<div className="line-vertical-label">
-							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
-						</div>
 						<Dropdown className="white networks">
 							<Dropdown.Toggle variant="Info" disabled={isDisabled}>
 								<span className="dropdown-toggle-text">

@@ -20,7 +20,7 @@
 	@include min-vw(900) {
 		margin-left: 50px;
 	}
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		width: 420px;
 		margin-left: 100px;
 	}
@@ -70,7 +70,7 @@
 
 	.body {
 		.card-wrap {
-			@include min-vw(1400) {
+			@include min-vw($md) {
 				padding: 18px 38px 25px;
 			}
 			flex-direction: column;
@@ -79,7 +79,7 @@
 			color: #000;
 
 			span {
-				@include min-vw(1400) {
+				@include min-vw($md) {
 					font-size: 16px;
 				}
 				font-size: 14px;
@@ -130,11 +130,11 @@
 }
 
 .welcome-info {
-	@include min-vw(1200) {
+	@include min-vw($md) {
 		max-width: 34%;
 		margin-right: 50px;
 	}
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		max-width: 30%;
 		margin-right: 100px;
 	}
@@ -168,11 +168,11 @@
 	}
 
 	&.import {
-		@include min-vw(1200) {
+		@include min-vw($md) {
 			max-width: 100%;
 			margin-right: 0;
 		}
-		@include min-vw(1400) {
+		@include min-vw($md) {
 			max-width: 100%;
 		}
 		@include max-vw(900) {
@@ -225,7 +225,7 @@
 
 .wif-toast {
 	@include source-regular();
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		font-size: 19px;
 	}
 	align-items: center;

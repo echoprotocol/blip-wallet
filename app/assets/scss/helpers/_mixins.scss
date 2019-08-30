@@ -144,3 +144,14 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 };
+
+@mixin page-title() {
+	@include source-semibold();
+	@include min-vw($md) {
+		letter-spacing: 3px;
+	}
+	color: #33353f;
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+}

@@ -1,25 +1,19 @@
 .last-transaction {
 	position: relative;
-	padding: 1.8em;
+	padding: 20px 32px;
 	border: 1px solid #bcbcbc;
 	border-radius: 4px;
 	outline: none;
 	cursor: pointer;
 
 	.label {
-		@include source-semibold();
-		@include min-vw(1400) {
-			font-size: 15px;
-		}
+		@include page-title();
 		position: absolute;
 		top: 0;
-		margin: -0.5em 0 0 -10px;
+		margin: -9px 0 0 -11px;
 		padding: 0 10px;
 		background-color: #e8e8e8;
-		font-size: 13px;
-		letter-spacing: 0.2em;
 		line-height: 1;
-		text-transform: uppercase;
 	}
 
 	.line {
@@ -29,11 +23,11 @@
 
 		.date {
 			margin-right: 4em;
-			font-size: 1.4em;
+			font-size: 14px;
 		}
 
 		.action {
-			font-size: 1.4em;
+			font-size: 14px;
 		}
 
 		.balance {
@@ -44,17 +38,17 @@
 
 			.coins {
 				margin-right: 5px;
-				font-size: 2.1em;
+				font-size: 21px;
 			}
 
 			.currency {
-				font-size: 1.6em;
+				font-size: 16px;
 			}
 		}
 
 		.action-info {
 			color: #8e8e97;
-			font-size: 1.4em;
+			font-size: 14px;
 
 			& + .action-info {
 				margin-left: 4em;
@@ -71,14 +65,8 @@
 	}
 
 	& + .footer-actions {
-		margin-top: 1.5em;
+		margin-top: 27px;
 
-		.btn-wrap {
-			@include min-vw(1400) {
-				.button {
-					min-width: 200px;
-				}
-			}
-		}
+
 	}
 }

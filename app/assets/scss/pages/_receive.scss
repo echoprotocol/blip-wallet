@@ -5,7 +5,7 @@
 
 	.description-block {
 		@include source-regular();
-		@include min-vw(1400) {
+		@include min-vw($md) {
 			font-size: 18px;
 		}
 		margin-top: 40px;

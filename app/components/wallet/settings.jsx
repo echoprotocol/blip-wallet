@@ -159,7 +159,7 @@ class Settings extends React.Component {
 						</div>
 						<div className="select-accounts">
 							<div className="title"><FormattedMessage id="wallet.select" /></div>
-							<div className="accounts-list">
+							<div className="select-accounts-list">
 								{this.renderAccounts()}
 							</div>
 						</div>

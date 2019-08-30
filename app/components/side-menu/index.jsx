@@ -11,7 +11,7 @@ import {
 	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE,
 } from '../../constants/routes-constants';
 
-import lock from '../../assets/images/lock.png';
+import lock from '../../assets/images/lock.svg';
 
 
 class SideMenu extends React.Component {

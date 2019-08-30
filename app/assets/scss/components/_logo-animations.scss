@@ -31,7 +31,7 @@
 			margin: 0 0 0 4vw;
 
 			& > div {
-				@include max-vw(1400) {
+				@include max-vw($md) {
 					top: calc(100% - 89px) !important;
 					width: 170px;
 				}

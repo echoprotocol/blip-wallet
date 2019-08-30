@@ -19,7 +19,7 @@
 
 	.qr-link {
 		@include source-semibold();
-		@include min-vw(1200) {
+		@include min-vw($md) {
 			margin-bottom: 20px;
 			font-size: 19px;
 		}
@@ -30,7 +30,7 @@
 
 		.qr-link-content {
 			@include text-overflow();
-			@include min-vw(1400) {
+			@include min-vw($md) {
 				max-width: 300px;
 			}
 			display: block;
@@ -52,7 +52,7 @@
 
 	.qr-description {
 		@include source-regular();
-		@include min-vw(1200) {
+		@include min-vw($md) {
 			font-size: 16px;
 		}
 		color: #5b5c63;

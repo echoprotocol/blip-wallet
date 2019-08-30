@@ -50,11 +50,10 @@
 
 .btn-primary {
 	@include source-semibold();
-
-	@include min-vw(1400) {
-		height: 59px;
-		font-size: 19px;
-	}
+	// @include min-vw($lg) {
+	// 	height: 59px;
+	// 	font-size: 19px;
+	// }
 	@include onBtnFocus(50px, 2px, 2px, rgba(#43d7ad, 0.45));
 
 	@include btn();
@@ -111,10 +110,10 @@
 	}
 
 	&.ok {
-		@include min-vw(1400) {
-			width: 59px;
-			height: 59px;
-		}
+		// @include min-vw($lg) {
+		// 	width: 59px;
+		// 	height: 59px;
+		// }
 		width: 41px;
 		height: 41px;
 		border-radius: 50%;
@@ -146,9 +145,8 @@
 .btn-main {
 	@include source-semibold();
 
-	@include min-vw(1400) {
-		height: 59px;
-		font-size: 19px;
+	@include min-vw($md) {
+		font-size: 18px;
 	}
 	@include onBtnFocus(4px, 2px, 2px, rgba(#472e8a, 0.3));
 
@@ -188,8 +186,8 @@
 .btn-gray {
 	@include source-semibold();
 
-	@include min-vw(1400) {
-		height: 59px;
+	@include min-vw($md) {
+		font-size: 18px;
 	}
 	@include onBtnFocus(4px, 3px, 1px, rgba(#cbcbcb, 0.3));
 
@@ -239,9 +237,9 @@
 .btn-white {
 	@include source-semibold();
 
-	@include min-vw(1400) {
-		height: 59px;
-	}
+	// @include min-vw($md) {
+	// 	height: 59px;
+	// }
 	@include onBtnFocus(3px, 2px, 1px, rgba(rgba(#8676b1, 0.035), 0.45));
 
 	@include btn();
@@ -429,8 +427,9 @@
 	@include source-regular();
 	border: 0;
 	background-color: transparent;
-	color: #7158ad;
-	font-size: 16px;
+	color: #7156ad;
+	font-size: 14px;
+	letter-spacing: 0.3px;
 	transition: color 0.3s;
 
 	&.gray {
@@ -480,7 +479,7 @@
 .btn-square {
 	@include onBtnFocus(3px, 2px, 2px, rgba(#43d7ad, 0.45));
 	@include btn();
-	@include min-vw(1400) {
+	@include min-vw($md) {
 		width: 42px;
 		height: 42px;
 	}
@@ -513,9 +512,9 @@
 .btn-modal {
 	@include onBtnFocus(50px, 2px, 2px, rgba(#fff, 0.3));
 	@include source-semibold();
-	@include min-vw(1400) {
-		height: 59px;
-	}
+	// @include min-vw($md) {
+	// 	height: 59px;
+	// }
 	height: 41px;
 	padding: 6px 3em;
 	border: 1px solid rgba(#a8aab7, 0.4);
@@ -539,10 +538,10 @@
 .btn-modal-primary {
 	@include source-semibold();
 
-	@include min-vw(1400) {
-		height: 59px;
-		font-size: 19px;
-	}
+	// @include min-vw($md) {
+	// 	height: 59px;
+	// 	font-size: 19px;
+	// }
 	@include onBtnFocus(50px, 2px, 2px, rgba(#43d7ad, 0.45));
 
 	@include btn();
@@ -614,6 +613,9 @@
 
 	button {
 		&:not(:last-child) {
+			@include min-vw($md) {
+				margin-right: 15px;
+			}
 			margin-right: 9px;
 		}
 	}

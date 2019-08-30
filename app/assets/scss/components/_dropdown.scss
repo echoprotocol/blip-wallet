@@ -10,7 +10,7 @@
 .dropdown-wrap {
 	.dropdown-label {
 		@include source-regular();
-		@include min-vw(1400) {
+		@include min-vw($md) {
 			font-size: 16px;
 			line-height: 22px;
 		}
@@ -23,9 +23,9 @@
 }
 
 .dropdown-toggle {
-	@include min-vw(1400) {
-		height: 60px;
-	}
+	// @include min-vw($lg) {
+	// 	height: 60px;
+	// }
 	align-items: center;
 	justify-content: space-between;
 	position: relative;
@@ -99,7 +99,7 @@
 // &.select-account
 .select-account {
 	.avatar-image {
-		@include min-vw(1400) {
+		@include min-vw($md) {
 			width: 32px;
 			min-width: 32px;
 			max-width: 32px;
@@ -314,7 +314,6 @@
 
 		&:focus {
 			border: 1px solid #737d83;
-			background-color: #fff;
 		}
 	}
 

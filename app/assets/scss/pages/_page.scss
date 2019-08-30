@@ -3,7 +3,7 @@
 	border-radius: 0 0 4px 4px;
 
 	.page {
-		@include min-vw(1400) {
+		@include min-vw($md) {
 			width: calc(100vw - 225px);
 		}
 		flex-direction: column;
@@ -16,23 +16,17 @@
 			align-items: center;
 			justify-content: space-between;
 			display: flex;
+			height: 17px;
 		}
 
 		.title {
-			@include source-semibold();
-			@include min-vw(1400) {
-				font-size: 15px;
-			}
-			color: #33353f;
-			font-size: 13px;
-			letter-spacing: 1.4px;
-			text-transform: uppercase;
+			@include page-title();
 		}
 	}
 
 	&.open {
 		.page {
-			@include min-vw(1400) {
+			@include min-vw($md) {
 				width: calc(100vw - 255px);
 				transform: translateX(-443px);
 			}
@@ -56,58 +50,12 @@
 	height: calc(100vh - 34px);
 }
 
-.page-in-wrap {
-	@include min-vw(1400) {
-		padding: 40px 50px;
-	}
-
-	padding: 40px 35px;
-
-	.title {
-		@include source-semibold();
-		@include min-vw(1400) {
-			font-size: 18px;
-		}
-		height: 30px;
-		color: #33353f;
-		font-size: 16px;
-		letter-spacing: 0.2em;
-		line-height: 30px;
-	}
-
-	.form-wrap {
-		flex-direction: column;
-		justify-content: center;
-		display: flex;
-		margin: 4em 0 2em;
-		padding: 65px 50px;
-		background-color: #e8e8ea;
-
-		.line-label {
-			@include source-semibold();
-			color: #3f4a52;
-		}
-	}
-
-	.page-in-action {
-		align-items: center;
-		justify-content: center;
-		display: flex;
-		height: 140px;
-
-		button {
-			padding-right: 3em;
-			padding-left: 3em;
-		}
-	}
-}
-
 .page-footer {
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
 	display: flex;
-	padding: 2.5em;
+	padding: 25px 22px 28px;
 	background-color: #e8e8e8;
 	box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
 }
@@ -119,16 +67,24 @@
 	margin-top: auto;
 
 	.btn-wrap {
+		
+		@include min-vw($md) {
+			.button {
+				min-width: 200px;
+			}
+		}
+
 		button {
 			width: 100%;
 			min-width: 140px;
 			max-width: 10em;
 		}
+
 	}
 
 	.footer-info {
 		@include source-regular();
-		font-size: 1.4em;
+		font-size: 14px;
 		text-align: right;
 
 		.mode {
