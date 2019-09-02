@@ -23,9 +23,6 @@
 }
 
 .dropdown-toggle {
-	// @include min-vw($lg) {
-	// 	height: 60px;
-	// }
 	align-items: center;
 	justify-content: space-between;
 	position: relative;
@@ -35,7 +32,8 @@
 	padding: 0 14px;
 	border-radius: 3px;
 	background-color: transparent;
-	font-size: 1.7em;
+	font-size: 17px;
+	letter-spacing: 1px;
 	outline: none;
 	transition: border $speed, background-color $speed, color $speed;
 	will-change: transform;
@@ -132,7 +130,7 @@
 
 .networks {
 	.dropdown-toggle {
-		padding: 0 18px;
+		padding: 0 12px;
 	}
 
 	.dropdown-toggle-text {
@@ -223,10 +221,10 @@
 	.dropdown-item {
 		display: block;
 		margin-bottom: 2px;
-		padding: 10px 14px;
+		padding: 7px 13px;
 		border-radius: 3px;
 		color: #000;
-		font-size: 1.6em;
+		font-size: 16px;
 		white-space: nowrap;
 		transition: background-color $speed, color $speed;
 
@@ -323,12 +321,15 @@
 	}
 
 	.dropdown-item {
+		@include source-regular();
+
 		display: block;
 		margin-bottom: 2px;
-		padding: 10px 14px;
+		padding: 7px 13px;
 		border-radius: 3px;
 		color: #000;
-		font-size: 1.6em;
+		font-size: 16px;
+		line-height: initial;
 		white-space: nowrap;
 		transition: background-color $speed, color $speed;
 

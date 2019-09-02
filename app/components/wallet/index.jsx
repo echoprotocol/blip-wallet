@@ -292,7 +292,7 @@ class Wallet extends React.Component {
 				<div className="page">
 					<PerfectScrollbar className="page-scroll">
 						<div className="wallet-wrap">
-							<div className="title"><FormattedMessage id="wallet.balance" /></div>
+							<div className="page-title"><FormattedMessage id="wallet.balance" /></div>
 							<div className="wallet-container">
 								<div className="balance-info">
 									<div className="balance">

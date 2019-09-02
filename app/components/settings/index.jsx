@@ -47,21 +47,23 @@ class Settings extends React.Component {
 				<div className="page">
 					<PerfectScrollbar className="page-scroll">
 						<div className="settings-page-wrap">
-							<div className="title">
-								<FormattedMessage id="settings.networks.title" />
-							</div>
-							<Networks
-								network={network}
-								connected={this.props.isConnected}
-								node={this.props.currentNode}
-								networks={this.props.networks}
-								changeNetwork={(value) => this.onChange('network', value)}
-								isDisabled={loading}
-							/>
+							<section className="rectangle">
+								<div className="title">
+									<FormattedMessage id="settings.networks.title" />
+								</div>
+								<Networks
+									network={network}
+									connected={this.props.isConnected}
+									node={this.props.currentNode}
+									networks={this.props.networks}
+									changeNetwork={(value) => this.onChange('network', value)}
+									isDisabled={loading}
+								/>
+							</section>
 						</div>
 
 					</PerfectScrollbar>
-					<div className="page-in-action">
+					<div className="page-action">
 						<div className="btn-wrap">
 							<Button
 								className="btn-primary white"

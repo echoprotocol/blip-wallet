@@ -20,9 +20,15 @@
 	}
 
 	&.filter {
+		.btn-inversed {
+			width: 138px;
+		}
+
 		.body {
+			padding: 24px 23px 0 29px;
+
 			.field {
-				margin-bottom: 24px;
+				margin-bottom: 25px;
 			}
 		}
 
@@ -37,6 +43,14 @@
 					padding: 0 60px;
 				}
 				padding: 0 30px;
+			}
+		}
+
+		.dropdown-wrap {
+			.dropdown-label {
+				@include min-vw($md) {
+					font-size: 14px;
+				}
 			}
 		}
 	}

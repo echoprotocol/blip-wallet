@@ -32,51 +32,53 @@ class Networks extends React.Component {
 
 		return (
 			<div className="form-wrap">
-				<div className="line">
-					<div className="line-label">
-						<span className="line-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
-					</div>
-					<div className="line-content">
-						<Dropdown className="white networks">
-							<Dropdown.Toggle variant="Info" disabled={isDisabled}>
-								<span className="dropdown-toggle-text">
-									{
-										!network ? (
-											<div className={classnames('connected-status', status)}>
-												<div className="connected-popover">
-													<FormattedMessage id={`settings.networks.status.${status}`} />
-												</div>
-											</div>
-										) : (<div className="connected-status" />)
-									}
-									{FormatHelper.capitalizeFirstLetter(current.get('id'))}
-								</span>
-								<span className="carret" />
-							</Dropdown.Toggle>
-
-							<Dropdown.Menu>
-								<PerfectScrollbar>
-									{
-										networks.map((value) => (
-											<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
-												{FormatHelper.capitalizeFirstLetter(value.get('id'))}
-											</Dropdown.Item>
-										))
-									}
-								</PerfectScrollbar>
-							</Dropdown.Menu>
-						</Dropdown>
-					</div>
-				</div>
-				<div className="line">
-					<div className="line-content">
-						<div className="line-vertical-label">
-							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.node.address" /></span>
+				<div className="lines">
+					<div className="line">
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
 						</div>
-						<div className="line-link">
-							{
-								node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl
-							}
+						<div className="line-content">
+							<Dropdown className="white networks">
+								<Dropdown.Toggle variant="Info" disabled={isDisabled}>
+									<span className="dropdown-toggle-text">
+										{
+											!network ? (
+												<div className={classnames('connected-status', status)}>
+													<div className="connected-popover">
+														<FormattedMessage id={`settings.networks.status.${status}`} />
+													</div>
+												</div>
+											) : (<div className="connected-status" />)
+										}
+										{FormatHelper.capitalizeFirstLetter(current.get('id'))}
+									</span>
+									<span className="carret" />
+								</Dropdown.Toggle>
+
+								<Dropdown.Menu>
+									<PerfectScrollbar>
+										{
+											networks.map((value) => (
+												<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+													{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+												</Dropdown.Item>
+											))
+										}
+									</PerfectScrollbar>
+								</Dropdown.Menu>
+							</Dropdown>
+						</div>
+					</div>
+					<div className="line">
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="settings.networks.node.address" /></span>
+						</div>
+						<div className="line-content">
+							<div className="line-link">
+								{
+									node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl
+								}
+							</div>
 						</div>
 					</div>
 				</div>

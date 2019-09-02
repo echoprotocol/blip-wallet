@@ -15,6 +15,7 @@
 		justify-content: center;
 		position: relative;
 		display: flex;
+		line-height: 42px;
 	}
 
 	.form-action {
@@ -23,10 +24,7 @@
 		}
 
 		.btn-primary {
-			@include min-vw($md) {
-				width: 270px;
-			}
-			width: 168px;
+			width: 184px;
 		}
 	}
 
@@ -45,39 +43,26 @@
 		display: flex;
 
 		&-label {
+			@include source-regular();
 			@include min-vw($md) {
 				font-size: 16px;
 			}
-			// @include min-vw($lg) {
-			// 	line-height: 60px;
-			// }
 			position: relative;
-			font-size: 15px;
-			letter-spacing: 0;
-			line-height: 44px;
-			white-space: nowrap;
-		}
-
-		&-label {
-			@include source-regular();
-			margin-right: 1.9em;
+			margin-right: 19px;
 			color: #fff;
+			font-size: 15px;
+			letter-spacing: .3px;
+			line-height: 40px;
 			text-align: right;
-		}
-
-		&-label-text {
-			position: absolute;
-			right: 0;
+			white-space: nowrap;
 		}
 
 		&-content {
 			@include min-vw($md) {
-				min-width: 420px;
+				line-height: 42px;
 			}
-			@include min-vw($md) {
-				min-width: 460px;
-			}
-			width: 400px;
+			width: 380px;
+			
 		}
 
 		&:not(:last-child) {
@@ -87,18 +72,6 @@
 			margin-bottom: 35px;
 		}
 	}
-
-	// &.horizontal {
-	// 	flex-direction: column;
-	// 	justify-content: center;
-	// 	display: flex;
-	// 	background-color: #e8e8ea;
-	
-	// 	.line-label {
-	// 		@include source-semibold();
-	// 		color: #3f4a52;
-	// 	}
-	// }
 }
 @include max-vw($md) {
 	.withSidebar {
@@ -113,10 +86,6 @@
 					&-text {
 						position: relative;
 					}
-				}
-
-				&-content {
-					width: 420px;
 				}
 			}
 

@@ -50,12 +50,7 @@
 
 .btn-primary {
 	@include source-semibold();
-	// @include min-vw($lg) {
-	// 	height: 59px;
-	// 	font-size: 19px;
-	// }
 	@include onBtnFocus(50px, 2px, 2px, rgba(#43d7ad, 0.45));
-
 	@include btn();
 
 	height: 41px;
@@ -110,10 +105,6 @@
 	}
 
 	&.ok {
-		// @include min-vw($lg) {
-		// 	width: 59px;
-		// 	height: 59px;
-		// }
 		width: 41px;
 		height: 41px;
 		border-radius: 50%;
@@ -144,15 +135,10 @@
 
 .btn-main {
 	@include source-semibold();
-
-	@include min-vw($md) {
-		font-size: 18px;
-	}
 	@include onBtnFocus(4px, 2px, 2px, rgba(#472e8a, 0.3));
-
 	@include btn();
 
-	height: 47px;
+	height: 41px;
 	border: 1px solid #7158ad;
 	border-radius: 4px;
 	background-color: #7158ad;
@@ -185,15 +171,10 @@
 
 .btn-gray {
 	@include source-semibold();
-
-	@include min-vw($md) {
-		font-size: 18px;
-	}
 	@include onBtnFocus(4px, 3px, 1px, rgba(#cbcbcb, 0.3));
-
 	@include btn();
-
-	height: 47px;
+	
+	height: 41px;
 	border: 1px solid #dedede;
 	border-radius: 4px;
 	background-color: #dedede;
@@ -236,12 +217,7 @@
 
 .btn-white {
 	@include source-semibold();
-
-	// @include min-vw($md) {
-	// 	height: 59px;
-	// }
 	@include onBtnFocus(3px, 2px, 1px, rgba(rgba(#8676b1, 0.035), 0.45));
-
 	@include btn();
 
 	height: 41px;
@@ -383,13 +359,13 @@
 .btn-inversed {
 	@include onBtnFocus(24px, 2px, 4px, rgba(#7158ad, 1));
 	@include source-semibold();
-	height: 41px;
+	height: 31px;
 	padding: 6px 16px;
 	border: 2px solid #d9c7fd;
 	border-radius: 24px;
 	background-color: transparent;
 	color: #d9c7fd;
-	font-size: 1.4em;
+	font-size: 14px;
 	line-height: 0;
 	white-space: nowrap;
 	transition: border 0.3s, color 0.3s;
@@ -425,12 +401,18 @@
 
 .btn-link {
 	@include source-regular();
+	align-items: center;
+	display: inline-flex;
 	border: 0;
 	background-color: transparent;
 	color: #7156ad;
 	font-size: 14px;
 	letter-spacing: 0.3px;
 	transition: color 0.3s;
+
+	.btn-icon {
+		margin-right: 9px;
+	}
 
 	&.gray {
 		color: #898f95;
@@ -453,14 +435,12 @@
 	}
 
 	&:focus {
-		span {
-			@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
+		@include onBtnFocus(50px, 2px, 2px, rgba(#7158ad, 0.35));
 
-			&:before {
-				right: -10px;
-				left: -10px;
-				border: 2px solid rgba(#7158ad, 0.35);
-			}
+		&:before {
+			right: -10px;
+			left: -10px;
+			border: 2px solid rgba(#7158ad, 0.35);
 		}
 	}
 

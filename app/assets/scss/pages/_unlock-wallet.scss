@@ -40,10 +40,11 @@
 .unlock-info {
 	@include min-vw($md) {
 		font-size: 28px;
+		letter-spacing: 0.9px;
 	}
 	@include source-regular();
 	margin: -2em 0 2em;
 	color: #fff;
 	font-size: 21px;
-	
+	letter-spacing: 0.7px;
 }

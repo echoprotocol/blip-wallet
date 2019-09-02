@@ -1,3 +1,54 @@
+.settings-page-wrap {
+	@include min-vw($md) {
+		padding: 30px 57px 0;
+	}
+	padding: 25px 33px 0;
+
+	.rectangle {
+		@include min-vw($md) {
+			padding: 33px 47px;
+		}
+		padding: 24px 27px;
+		background-color: #e8e8ea;
+
+		.title {
+			@include page-title();
+
+			@include min-vw($md) {
+				margin-bottom: 20px;
+			}
+			margin-bottom: 8px;
+		}
+
+		.form-wrap {			
+			.lines {
+				@include min-vh(680) {
+					min-height: auto;
+				}
+				padding: 0;
+			}
+
+			.line {
+				&:not(:last-child) {
+					@include min-vw($md) {
+						margin-bottom: 24px;
+					}
+					margin-bottom: 22px;
+				}
+			}
+
+			.line-label {
+				@include source-semibold();
+				@include min-vw($md) {
+					font-size: 15px;
+				}
+				margin-right: 31px;
+				color: #3f4a52;
+			}
+		}
+	}
+}
+
 .connected-status {
 	position: relative;
 	display: inline-flex;
@@ -35,14 +86,16 @@
 	.connected-popover {
 		@include source-semibold();
 		position: absolute;
-		top: -40px;
-		left: -5px;
+		top: -33px;
+		left: -3px;
 		display: none;
-		padding: 4px 10px 6px;
+		padding: 10px 9px 11px;
 		border-radius: 4px;
 		background-color: #3e4951;
 		color: #fff;
-		font-size: 16px;
+		font-size: 14px;
+		letter-spacing: 0.2px;
+		line-height: 4px;
 		white-space: nowrap;
 	}
 

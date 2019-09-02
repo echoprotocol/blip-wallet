@@ -1,14 +1,9 @@
 @mixin input {
 	@include min-vw($md) {
-		padding: 0 22px;
+		padding: 0 16px;
 		font-size: 17px;
 		letter-spacing: 0.12px;
 	}
-	// @include min-vw($lg) {
-	// 	height: 60px;
-	// 	padding: 0 22px;
-	// 	font-size: 20px;
-	// }
 	height: 44px;
 	padding: 0 14px;
 	border-radius: 3px;
@@ -207,18 +202,18 @@
 }
 
 .hints {
-	@include source-regular();
 
 	@include min-vw($md) {
-		font-size: 16px;
-		line-height: 22px;
+		font-size: 14px;
+		line-height: 20px;
 	}
 	margin-top: 0.8em;
-	font-size: 14px;
-	letter-spacing: 0;
+	font-size: 13px;
+	letter-spacing: 0.06px;
 	line-height: 20px;
 
 	.hint {
+		@include source-regular();
 		transition: color $speed ease;
 	}
 }
@@ -259,6 +254,7 @@ form {
 	padding: 5px 10px;
 	border-radius: 3px;
 	font-size: 13px;
+	line-height: initial;
 }
 
 // Password

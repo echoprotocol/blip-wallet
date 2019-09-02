@@ -2,8 +2,7 @@
 	flex-direction: column;
 	display: flex;
 
-	.transactions-wrap > .title {
-		@include page-title();
+	.transactions-wrap > .page-title {
 		@include min-vw($md) {
 			margin-left: 47px;
 		}
@@ -137,9 +136,12 @@
 	.line-details {
 		&-wrap {
 			@include source-regular();
+			@include min-vw($md) {
+				padding: 20px 0 20px 50px;
+			}
 			display: flex;
 			width: 0;
-			padding: 20px 0 20px 40px;
+			padding: 20px 0 20px 34px;
 
 			.status {
 				flex-direction: column;
@@ -224,7 +226,7 @@
 	}
 }
 
-@include max-vw(1000) {
+@include max-vw(999) {
 	.table-transactions {
 		.transaction-item {
 			display: flex;
@@ -325,7 +327,7 @@
 	}
 }
 
-@include min-vw(999) {
+@include min-vw(1000) {
 	.table-transactions {
 		position: relative;
 		display: table;
@@ -342,6 +344,9 @@
 					text-transform: capitalize;
 
 					&.type {
+						@include max-vw(1033) {
+							padding-left: 14px;
+						}
 						@include min-vw($md) {
 							padding-left: 46px;
 						}
@@ -412,6 +417,9 @@
 					}
 
 					.icon {
+						@include max-vw(1033) {
+							margin-left: 0;
+						}
 						@include min-vw($md) {
 							margin-left: 35px;
 						}
@@ -495,7 +503,6 @@
 				@include source-regular();
 				display: flex;
 				width: 0;
-				padding: 20px 0 20px 40px;
 
 				.status {
 					padding-right: 100px;

@@ -3,13 +3,12 @@
 
 	.menu {
 		@include min-vw($md) {
-			margin: 0 0 0 17vw;
-			padding: 0 0 36px;
+			margin: 0 0 0 17.5vw;
+			padding: 0 0 19px;
 		}
 		align-items: flex-end;
 		display: flex;
-		height: 16vh;
-		min-height: 126px;
+		height: 103px;
 		margin: 0 0 0 190px;
 		padding: 0 0 24px;
 
@@ -30,10 +29,10 @@
 			@include source-regular();
 
 			@include btn();
-			@include max-vw($md) {
-				margin-right: 13px;
-				font-size: 1.9em;
-				letter-spacing: 0.019em;
+			@include min-vw($md) {
+				margin-right: 19px;
+				font-size: 26px;
+				letter-spacing: 1px;
 			}
 
 			margin-right: 1.6em;
@@ -42,7 +41,7 @@
 			border-radius: 3px;
 			background-color: transparent;
 			color: #b89bf5;
-			font-size: 2.2em;
+			font-size: 19px;
 			letter-spacing: 0.022em;
 			line-height: 1;
 			user-select: none;
@@ -128,11 +127,15 @@
 		}
 
 		.avatar-desciption {
-			margin-left: 1.5em;
+			@include min-vw($md) {
+				font-size: 14px;
+			}
+			margin-left: 15px;
 			padding: 0 20px 0 0;
 			color: #b89bf5;
-			font-size: 1.4em;
-			line-height: 1.4em;
+			font-size: 13px;
+			letter-spacing: 0.06px;
+			line-height: 20px;
 		}
 	}
 }
@@ -151,7 +154,7 @@
 
 .logo-wrap {
 	@include min-vw($md) {
-		padding: 0 0 40px 5vw;
+		padding: 0 0 24px 5vw;
 
 		img {
 			width: 54px;
@@ -160,8 +163,7 @@
 	align-items: flex-end;
 	position: absolute;
 	display: flex;
-	height: 16vh;
-	min-height: 126px;
+	height: 104px;
 	padding: 0 0 28px 50px;
 }
 

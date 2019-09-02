@@ -19,6 +19,7 @@
 }
 
 .balance-info {
+	margin-top: 38px;
 	color: #33353f;
 
 	.info {
@@ -270,7 +271,7 @@
 		grid-template-columns: repeat(auto-fill, 266px);
 	}
 	display: grid;
-	margin: 40px 0;
+	margin: 100px 0 20px;
 	grid-template-columns: repeat(auto-fill, 250px);
 	grid-gap: 6px;
 

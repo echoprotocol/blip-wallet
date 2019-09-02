@@ -264,7 +264,7 @@ class History extends React.Component {
 				<div className="transactions page">
 					<PerfectScrollbar className="page-scroll" onYReachEnd={() => this.onLoadMore()}>
 						<div className="transactions-wrap">
-							<div className="title"><FormattedMessage id="history.table.title" /></div>
+							<div className="page-title"><FormattedMessage id="history.table.title" /></div>
 							{
 								loading ? (
 									<div className="dimmer">
