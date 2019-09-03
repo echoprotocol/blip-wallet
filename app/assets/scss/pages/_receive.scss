@@ -1,7 +1,8 @@
-.receive {
-	& > .title {
-		text-transform: uppercase;
+.receive-wrap {
+	@include min-vw($md) {
+		padding: 50px 57px 0;
 	}
+	padding: 50px 40px 0;
 
 	.description-block {
 		@include source-regular();

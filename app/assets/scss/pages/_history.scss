@@ -244,6 +244,7 @@
 				flex-wrap: wrap;
 				align-items: center;
 				justify-content: space-between;
+				position: relative;
 				display: flex;
 				width: 100%;
 				border: 1px solid transparent;
@@ -256,11 +257,14 @@
 					@include max-vw(1033) {
 						width: 30%;
 					}
+					@include max-vw(1000) {
+						width: 25%;
+					}
 					@include max-vw(920) {
 						width: 20%;
 					}
-					@include max-vw(920) {
-						width: 25%;
+					@include max-vw(846) {
+						width: 15%;
 					}
 
 					align-items: center;
@@ -279,7 +283,7 @@
 
 				.fee {
 					order: 3;
-					margin: 0 0 0 5px;
+					margin: 0 40px 0 5px;
 
 					&:before {
 						content: '(fee — ';
@@ -291,25 +295,27 @@
 				}
 
 				.handler {
-					order: 4;
+					position: absolute;
+					top: 20px;
+					right: 0;
 				}
 
 				.from {
-					order: 5;
+					order: 4;
 					margin-left: 32px;
 				}
 
 				.from-to-icon {
-					order: 6;
+					order: 5;
 				}
 
 				.to {
-					order: 7;
+					order: 6;
 					margin-right: auto;
 				}
 
 				.age {
-					order: 8;
+					order: 7;
 					margin-right: 40px;
 				}
 			}

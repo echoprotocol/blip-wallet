@@ -203,125 +203,132 @@ class Receive extends React.Component {
 		const QR_URL = QR_SERVER_URL[networkId];
 
 		return (
-			<div className="page receive">
-				<PerfectScrollbar className="page-in-scroll">
-					<div className="page-in-wrap">
-						<div className="title"><FormattedMessage id="receive.copy.account.title" /></div>
-						<p className="description-block">
-							<FormattedMessage id="receive.copy.account.description" />
-						</p>
-						<div className="accounts-list sm">
-							{this.renderAccountList()}
-						</div>
-
-						<div className="title"><FormattedMessage id="receive.copy.qrcode.title" /></div>
-						<p className="description-block">
-							<FormattedMessage id="receive.copy.qrcode.description" />
-						</p>
-
-						<div className="form-wrap">
-							<div className="line">
-
-								<div className="line-label">
-									<span className="line-label-text"><FormattedMessage id="receive.select.account.label" /></span>
-								</div>
-
-								<div className="line-content">
-									<Dropdown className="white select-account">
-										<Dropdown.Toggle variant="Info">
-											<Avatar accountName={selectedAccountName} />
-											<span className="dropdown-toggle-text">
-												{selectedAccountName}
-											</span>
-											<span className="carret" />
-										</Dropdown.Toggle>
-
-										<Dropdown.Menu>
-											<PerfectScrollbar>
-												{accounts && [...accounts.map((account, id) => (
-													<Dropdown.Item key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
-														{account.get('name')}
-													</Dropdown.Item>
-												)).values()]}
-											</PerfectScrollbar>
-										</Dropdown.Menu>
-									</Dropdown>
-								</div>
+			<div className="page-wrap">
+				<div className="page receive">
+					<PerfectScrollbar className="page-scroll">
+						<div className="receive-wrap">
+							<div className="page-title"><FormattedMessage id="receive.copy.account.title" /></div>
+							<p className="description-block">
+								<FormattedMessage id="receive.copy.account.description" />
+							</p>
+							<div className="accounts-list sm">
+								{this.renderAccountList()}
 							</div>
-							<div className="line">
-								<div className="line-label">
-									<span className="line-label-text"><FormattedMessage id="receive.select.amount.label" /></span>
-								</div>
-								<div className="line-content">
-									<FormattedMessage id="receive.select.amount.placeholder">
-										{
-											(content) => (
-												<InputDropdown
-													title="Amount"
-													name="amount"
-													value={form.get('amount').value}
-													errorText={form.get('amount').error}
-													path={{ field: 'selectedBalance' }}
-													onChange={(e) => this.onAmountChange(e)}
-													data={{
-														balances,
-														tokens,
-														from: form.get('selectedAccount').value || accounts.findKey((a) => a.get('primary')),
-														hiddenAssets,
-													}}
-													placeholder={content}
-													setValue={(field, value) => this.props.setValue(field, value)}
-												/>
-											)
-										}
-									</FormattedMessage>
-								</div>
+
+							<div className="page-title">
+								<FormattedMessage id="receive.copy.qrcode.title" />
 							</div>
-							<div className="line">
-								<div className="line-label" />
-								<div className="line-content">
-									<div className="qr-wrap">
-										<div className="qr">
-											<Qr
-												value={this.getQr(selectedAccountName, 'key')}
-												renderAs="svg"
-												fgColor="#3F4A52"
-												bgColor="transparent"
-											/>
-										</div>
-										<div className="qr-info">
-											<div className="qr-link">
-												<span className="qr-link-content">
-													{`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
-												</span>
-												<CopyToClipboard
-													onCopy={() => this.onCopyUrl()}
-													text={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
-												>
-													<Button
-														className="btn-copy gray sm"
-														content={(
-															<React.Fragment>
-																<Icon className="copy" />
-																{
-																	copied && <div className="copy-label"><FormattedMessage id="receive.hint.copied" /></div>
-																}
-															</React.Fragment>
-														)}
-													/>
-												</CopyToClipboard>
+
+							<p className="description-block">
+								<FormattedMessage id="receive.copy.qrcode.description" />
+							</p>
+							<section className="rectangle">
+								<div className="form-wrap">
+									<div className="lines">
+										<div className="line">
+
+											<div className="line-label">
+												<span className="line-label-text"><FormattedMessage id="receive.select.account.label" /></span>
 											</div>
-											<div className="qr-description">
-												<FormattedMessage id="receive.select.qr.description" />
+
+											<div className="line-content">
+												<Dropdown className="white select-account">
+													<Dropdown.Toggle variant="Info">
+														<Avatar accountName={selectedAccountName} />
+														<span className="dropdown-toggle-text">
+															{selectedAccountName}
+														</span>
+														<span className="carret" />
+													</Dropdown.Toggle>
+
+													<Dropdown.Menu>
+														<PerfectScrollbar>
+															{accounts && [...accounts.map((account, id) => (
+																<Dropdown.Item key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
+																	{account.get('name')}
+																</Dropdown.Item>
+															)).values()]}
+														</PerfectScrollbar>
+													</Dropdown.Menu>
+												</Dropdown>
+											</div>
+										</div>
+										<div className="line">
+											<div className="line-label">
+												<span className="line-label-text"><FormattedMessage id="receive.select.amount.label" /></span>
+											</div>
+											<div className="line-content">
+												<FormattedMessage id="receive.select.amount.placeholder">
+													{
+														(content) => (
+															<InputDropdown
+																title="Amount"
+																name="amount"
+																value={form.get('amount').value}
+																errorText={form.get('amount').error}
+																path={{ field: 'selectedBalance' }}
+																onChange={(e) => this.onAmountChange(e)}
+																data={{
+																	balances,
+																	tokens,
+																	from: form.get('selectedAccount').value || accounts.findKey((a) => a.get('primary')),
+																	hiddenAssets,
+																}}
+																placeholder={content}
+																setValue={(field, value) => this.props.setValue(field, value)}
+															/>
+														)
+													}
+												</FormattedMessage>
+											</div>
+										</div>
+										<div className="line">
+											<div className="line-label" />
+											<div className="line-content">
+												<div className="qr-wrap">
+													<div className="qr">
+														<Qr
+															value={this.getQr(selectedAccountName, 'key')}
+															renderAs="svg"
+															fgColor="#3F4A52"
+															bgColor="transparent"
+														/>
+													</div>
+													<div className="qr-info">
+														<div className="qr-link">
+															<span className="qr-link-content">
+																{`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
+															</span>
+															<CopyToClipboard
+																onCopy={() => this.onCopyUrl()}
+																text={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
+															>
+																<Button
+																	className="btn-copy gray sm"
+																	content={(
+																		<React.Fragment>
+																			<Icon className="copy" />
+																			{
+																				copied && <div className="copy-label"><FormattedMessage id="receive.hint.copied" /></div>
+																			}
+																		</React.Fragment>
+																	)}
+																/>
+															</CopyToClipboard>
+														</div>
+														<div className="qr-description">
+															<FormattedMessage id="receive.select.qr.description" />
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</section>
 						</div>
-
-					</div>
-				</PerfectScrollbar>
+					</PerfectScrollbar>
+				</div>
 			</div>
 		);
 	}
