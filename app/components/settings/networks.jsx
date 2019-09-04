@@ -58,10 +58,15 @@ class Networks extends React.Component {
 								<Dropdown.Menu>
 									<PerfectScrollbar>
 										{
-											networks.map((value) => (
-												<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+											networks.map((value) => (												
+												(value.get('id')) == (current.get('id')) ? 
+												<Dropdown.Item className="selected-network" key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value)) }>
+													
 													{FormatHelper.capitalizeFirstLetter(value.get('id'))}
-												</Dropdown.Item>
+												</Dropdown.Item> :
+												<Dropdown.Item  key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+												{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+											</Dropdown.Item>
 											))
 										}
 									</PerfectScrollbar>
@@ -74,11 +79,11 @@ class Networks extends React.Component {
 							<span className="line-label-text"><FormattedMessage id="settings.networks.node.address" /></span>
 						</div>
 						<div className="line-content">
-							<div className="line-link">
+							<a className="line-link" href={node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl}>
 								{
 									node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl
 								}
-							</div>
+							</a>
 						</div>
 					</div>
 				</div>

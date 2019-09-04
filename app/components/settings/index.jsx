@@ -63,26 +63,31 @@ class Settings extends React.Component {
 						</div>
 
 					</PerfectScrollbar>
-					<div className="page-action">
-						<div className="btn-wrap">
-							<Button
-								className="btn-primary white"
-								content={(
-									<div className="text"><FormattedMessage id="settings.apply" /></div>
-								)}
-								disabled={loading || !network}
-								onClick={() => this.onApply()}
-							/>
-							<Button
-								className="btn-gray round"
-								content={(
-									<div className="text"><FormattedMessage id="settings.cancel" /></div>
-								)}
-								disabled={loading || !network}
-								onClick={() => this.onCancel()}
-							/>
-						</div>
-					</div>
+					{
+						!(loading || !network) &&
+						(
+							<div className="page-action">
+								<div className="btn-wrap">
+									<Button
+										className="btn-primary white"
+										content={(
+											<div className="text"><FormattedMessage id="settings.apply" /></div>
+										)}
+										disabled={loading || !network}
+										onClick={() => this.onApply()}
+									/>
+									<Button
+										className="btn-gray round"
+										content={(
+											<div className="text"><FormattedMessage id="settings.cancel" /></div>
+										)}
+										disabled={loading || !network}
+										onClick={() => this.onCancel()}
+									/>
+								</div>
+							</div>
+						)
+					}
 				</div>
 			</div>
 

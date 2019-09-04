@@ -74,7 +74,7 @@
 	background-clip: padding-box;
 
 	.scrollbar-container {
-		padding: 10px 2px 8px;
+		padding: 7px 2px;
 	}
 
 	.dropdown-item {
@@ -331,6 +331,12 @@
 	.dropdown-menu {
 		background-color: #fff;
 		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06), 0 3px 20px rgba(0, 0, 0, 0.06);
+
+		.scrollbar-container.ps>a.dropdown-item.selected-network {
+			color: #c6c6c6;
+			cursor: default;
+			pointer-events: none;
+		}
 	}
 
 	.dropdown-item {
