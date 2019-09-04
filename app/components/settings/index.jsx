@@ -64,8 +64,8 @@ class Settings extends React.Component {
 
 					</PerfectScrollbar>
 					{
-						!(loading || !network) &&
-						(
+						!(loading || !network)
+						&& (
 							<div className="page-action">
 								<div className="btn-wrap">
 									<Button

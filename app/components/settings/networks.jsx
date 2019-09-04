@@ -58,15 +58,17 @@ class Networks extends React.Component {
 								<Dropdown.Menu>
 									<PerfectScrollbar>
 										{
-											networks.map((value) => (												
-												(value.get('id')) == (current.get('id')) ? 
-												<Dropdown.Item className="selected-network" key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value)) }>
-													
-													{FormatHelper.capitalizeFirstLetter(value.get('id'))}
-												</Dropdown.Item> :
-												<Dropdown.Item  key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
-												{FormatHelper.capitalizeFirstLetter(value.get('id'))}
-											</Dropdown.Item>
+											networks.map((value) => (
+												(value.get('id')) === (current.get('id'))
+													? (
+														<Dropdown.Item className="selected-network" key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+															{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+														</Dropdown.Item>
+													) : (
+														<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+															{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+														</Dropdown.Item>
+													)
 											))
 										}
 									</PerfectScrollbar>
