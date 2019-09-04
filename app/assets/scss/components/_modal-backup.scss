@@ -1,8 +1,8 @@
 .backup-list {
 	.backup-item {
+		width: 555px;
 		padding: 20px 40px 28px 40px;
 		background-color: #565468;
-		width: 555px;
 
 		&:not(:last-child) {
 			margin-bottom: 20px;
@@ -10,10 +10,10 @@
 
 		.key {
 			color: #fff;
+			font-family: 'SourceSansPro-Regular';
 			font-size: 15px;
 			line-height: 15px;
 			white-space: nowrap;
-			font-family: 'SourceSansPro-Regular';
 
 			&-wrap {
 				@include source-regular();

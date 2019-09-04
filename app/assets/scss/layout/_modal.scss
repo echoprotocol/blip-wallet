@@ -36,15 +36,15 @@
 }
 
 .modal-header {
+	@include source-semibold();
 	width: 100%;
 	padding: 37px 20px 28px 22px;
-	@include source-semibold();
 
 	.modal-title {
 		color: #fff;
 		font-size: 24px;
-		letter-spacing: 1px;
 		font-weight: 400;
+		letter-spacing: 1px;
 	}
 
 	.btn-modal-close {

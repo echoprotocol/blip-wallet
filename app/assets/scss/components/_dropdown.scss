@@ -74,7 +74,7 @@
 	background-clip: padding-box;
 
 	.scrollbar-container {
-		padding: 10px 2px 0;
+		padding: 10px 2px 8px;
 	}
 
 	.dropdown-item {
@@ -86,7 +86,6 @@
 .dropdown-menu.show {
 	display: block;
 }
-
 
 // &.dropdown-lang
 .dropdown-lang {
@@ -140,6 +139,9 @@
 		align-items: center;
 		position: relative;
 		display: flex;
+		font-size: 17px;
+		font-weight: 400;
+		letter-spacing: 0.3px;
 	}
 }
 
@@ -219,7 +221,6 @@
 
 	.dropdown-menu {
 		background-color: #dbd2f3;
-
 	}
 
 	.dropdown-item {
@@ -229,6 +230,8 @@
 		border-radius: 3px;
 		color: #000;
 		font-size: 16px;
+		font-weight: 400;
+		letter-spacing: 0.5px;
 		white-space: nowrap;
 		transition: background-color $speed, color $speed;
 
@@ -285,6 +288,7 @@
 
 	.dropdown-toggle {
 		border: 1px solid #a8abb7;
+		color: #3f4a52;
 
 		.carret {
 			&:after {
@@ -307,15 +311,20 @@
 		}
 
 		&:active {
+			background-color: #e8e8e9;
+			color: #3f4a52;
+			opacity: 0.6;
+
 			.carret {
 				&:after {
-					@include triangle(top, rgba(#a2a3a9, 0.6));
+					@include triangle(top, rgba(#9a9ba0, 0.6));
 				}
 			}
 		}
 
 		&:focus {
-			border: 1px solid #737d83;
+			border: 1px solid #bfbfbf;
+			box-shadow: 0 0 2px rgba(#cbcbcb, 0.64);
 		}
 	}
 

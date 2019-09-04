@@ -1,13 +1,15 @@
 .settings-page-wrap {
 	@include min-vw($md) {
-		padding: 30px 57px 0;
+		padding: 28px 57px 0;
 	}
-	padding: 25px 33px 0;
-	
+
+	padding: 20px 40px 0;
+
 	.rectangle {
 		@include min-vw($md) {
 			padding: 33px 47px;
 		}
+
 		padding: 24px 27px;
 	}
 }
