@@ -2,6 +2,7 @@
 	@include min-vw($md) {
 		width: 473px;
 	}
+
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -22,10 +23,16 @@
 	&.filter {
 		.btn-inversed {
 			width: 138px;
+			margin-top: -1px;
+			margin-left: -1px;
+			font-family: 'SourceSansPro-SemiBold';
+			font-size: 15px;
+			font-weight: 400;
+			letter-spacing: 0.3px;
 		}
 
 		.body {
-			padding: 24px 23px 0 29px;
+			padding: 25px 23px 0 29px;
 
 			.field {
 				margin-bottom: 25px;
@@ -40,8 +47,10 @@
 		.footer {
 			.btn-primary {
 				@include min-vw($md) {
-					padding: 0 60px;
+					margin: 10px 0 0 7px;
+					padding: 0 56px;
 				}
+
 				padding: 0 30px;
 			}
 		}
@@ -50,6 +59,8 @@
 			.dropdown-label {
 				@include min-vw($md) {
 					font-size: 14px;
+					font-weight: 400;
+					letter-spacing: 0.25px;
 				}
 			}
 		}
