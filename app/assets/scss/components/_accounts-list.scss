@@ -1,52 +1,64 @@
 .accounts-list {
-	@include min-vw($md) {
-		grid-template-columns: repeat(auto-fill, 265px);
+	@include max-vw($md) {
+		grid-gap: 3px;
+		grid-template-columns: repeat(auto-fill, 237px);
 	}
+
 	display: grid;
 	grid-gap: 6px;
-	grid-template-columns: repeat(auto-fill, 252px);
+	grid-template-columns: repeat(auto-fill, 265px);
 
-	& + .title {
+
+	&+.title {
 		margin-top: 60px;
 	}
 
 	&.sm {
 		.account-item {
-			height: auto;
-			padding: 10px;
+			padding: 8px 9px;
 		}
 
 		.avatar-image {
-			min-width: 24px;
-			max-width: 24px;
-			height: 24px;
+			min-width: 23px;
+			max-width: 23px;
+			height: 23px;
 		}
 
 		.btn-copy {
 			position: absolute;
-			right: 8px;
+			right: 10px;
 		}
 
 		.name {
 			@include source-semibold();
 			@include text-overflow();
 			max-width: calc(100% - 80px);
-			margin-left: 14px;
+			margin-left: 10px;
 			color: #3f4a52;
-			font-size: 16px;
+			font-size: 14px;
+			letter-spacing: 0.6px;
 		}
 
 		.currency-wrap {
-			margin: 20px 0 0 38px;
+			margin: 8px 0 0 32px;
 
 			.balance {
 				@include source-regular();
+
+				@include max-vw($md) {
+					font-size: 13px;
+				}
+
 				color: #3f4a52;
-				font-size: 16px;
+				font-size: 14px;
+
 			}
 
 			.currency {
+				@include source-regular();
 				margin-left: 4px;
+				font-size: 14px;
+				letter-spacing: 0.2px;
 			}
 
 			.assets {
@@ -69,7 +81,7 @@
 		justify-content: space-between;
 		position: relative;
 		display: flex;
-		height: 149px;
+		height: 150px;
 		padding: 9px 9px 35px 17px;
 		border: 1px solid rgba(#9c9ea8, 0.46);
 		border-radius: 4px;
@@ -85,9 +97,11 @@
 		&.primary {
 			.name-label {
 				@include source-semibold();
+
 				@include max-vw($md) {
 					margin-top: 4px;
 				}
+
 				align-items: center;
 				justify-content: center;
 				display: flex;
@@ -113,12 +127,13 @@
 			@include max-vw($md) {
 				display: none;
 			}
+
 			margin-top: 5px;
 			color: #898f95;
 			font-size: 14px;
 			letter-spacing: .4px;
 
-			& + .name {
+			&+.name {
 				@include min-vw($md) {
 					margin-top: 2px;
 				}
@@ -185,6 +200,7 @@
 
 	.dropdown.white:not(.show) {
 		.dropdown-toggle {
+
 			&:hover,
 			&:active,
 			&:focus {
@@ -200,7 +216,7 @@
 		}
 	}
 
-	.dropdown.select-account  {
+	.dropdown.select-account {
 		margin-right: -4px;
 
 		.dropdown-toggle {
@@ -275,7 +291,7 @@
 				padding: 4.3px 13px;
 				color: #3f4a52;
 				font-size: 13px;
-				
+
 				&:last-child {
 					margin-bottom: 10px;
 				}

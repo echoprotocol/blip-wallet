@@ -5,7 +5,7 @@
 	display: flex;
 	width: 100%;
 
-	& > .title {
+	&>.title {
 		margin: -28px auto 20px 0;
 		text-transform: uppercase;
 	}
@@ -32,6 +32,7 @@
 		@include min-vh(680) {
 			min-height: calc(68vh - 35px);
 		}
+
 		flex-direction: column;
 		justify-content: center;
 		display: flex;
@@ -44,9 +45,11 @@
 
 		&-label {
 			@include source-regular();
+
 			@include min-vw($md) {
 				font-size: 16px;
 			}
+
 			position: relative;
 			margin-right: 19px;
 			color: #fff;
@@ -58,21 +61,24 @@
 		}
 
 		&-content {
-			@include min-vw($md) {
-				line-height: 42px;
+			@include max-vw($md) {
+				width: 360px;
 			}
-			width: 380px;
-			
+
+			width: 420px;
+			line-height: 42px;
 		}
 
 		&:not(:last-child) {
 			@include min-vw($md) {
 				margin-bottom: 40px;
 			}
+
 			margin-bottom: 35px;
 		}
 	}
 }
+
 @include max-vw($md) {
 	.withSidebar {
 		.form-wrap {

@@ -87,7 +87,7 @@
 		position: relative;
 		margin: auto;
 		transition: width 0.2s, border-radius 0.2s, padding 0.2s,
-		background-color 0.3s, color 0.3s, border 0.3s;
+			background-color 0.3s, color 0.3s, border 0.3s;
 
 		&:after {
 			content: '';
@@ -173,7 +173,7 @@
 	@include source-semibold();
 	@include onBtnFocus(4px, 3px, 1px, rgba(#cbcbcb, 0.3));
 	@include btn();
-	
+
 	height: 41px;
 	border: 1px solid #dedede;
 	border-radius: 4px;
@@ -579,8 +579,8 @@
 	}
 
 	&.sm {
-		width: 22px;
-		height: 22px;
+		width: 17px;
+		height: 17px;
 	}
 }
 
@@ -592,6 +592,7 @@
 			@include min-vw($md) {
 				margin-right: 15px;
 			}
+
 			margin-right: 9px;
 		}
 	}

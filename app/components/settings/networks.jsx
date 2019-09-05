@@ -61,7 +61,7 @@ class Networks extends React.Component {
 											networks.map((value) => (
 												(value.get('id')) === (current.get('id'))
 													? (
-														<Dropdown.Item className="selected-network" key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+														<Dropdown.Item className="selected-item" key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
 															{FormatHelper.capitalizeFirstLetter(value.get('id'))}
 														</Dropdown.Item>
 													) : (

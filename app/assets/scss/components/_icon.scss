@@ -7,9 +7,9 @@ i.icon {
 }
 
 .copy:before {
-	@include min-vw($md) {
-		font-size: 13px;
-	}
+	// @include min-vw($md) {
+	// 	font-size: 11px;
+	// }
 	content: '\e901';
 	font-size: 11px;
 }
@@ -43,28 +43,32 @@ i.icon {
 	content: '\e903';
 }
 
-.icon-account:before {
-	content: '\e904';
+.icon-account {
+	width: 11px;
+	height: 11px;
+	background-image: url(.././images/account.svg);
 }
 
 .icon-info:before {
 	content: '\e906';
 }
 
-.icon-contract:before {
-	content: '\e907';
+.icon-contract {
+	width: 10px;
+	height: 10px;
+	background-image: url(.././images/contract.svg);
 }
 
 .icon-receive-trans {
-	transform: rotate(90deg);
-
-	&:before {
-		content: '\e909';
-	}
+	width: 11px;
+	height: 11px;
+	background-image: url(.././images/receive-trans.svg);
 }
 
-.icon-send-trans:before {
-	content: '\e909';
+.icon-send-trans {
+	width: 11px;
+	height: 11px;
+	background-image: url(.././images/send-trans.svg);
 }
 
 .win-zoom-out:before {

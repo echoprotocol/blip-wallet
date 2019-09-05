@@ -8,32 +8,38 @@
 		@include min-vw($md) {
 			margin-bottom: 20px;
 		}
+
 		margin-bottom: 8px;
 	}
 
-	.form-wrap {			
+	.form-wrap {
 		.lines {
 			@include min-vh(680) {
 				min-height: auto;
 			}
+
 			padding: 0;
 		}
 
 		.line {
 			&:not(:last-child) {
-				@include min-vw($md) {
-					margin-bottom: 24px;
+				@include max-vw($md) {
+					margin-bottom: 14px;
 				}
-				margin-bottom: 22px;
+
+				margin-bottom: 31px;
 			}
 		}
 
 		.line-label {
 			@include source-semibold();
+
 			@include min-vw($md) {
-				font-size: 15px;
+				font-size: 16px;
+				line-height: 50px;
 			}
-			margin-right: 31px;
+
+			margin-right: 21px;
 			color: #3f4a52;
 		}
 	}

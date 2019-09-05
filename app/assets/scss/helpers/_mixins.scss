@@ -68,6 +68,7 @@
 		}
 	}
 }
+
 @mixin onIconFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
 	@include hardware-accel();
 	position: relative;
@@ -84,27 +85,31 @@
 		transition: border-color $speed;
 	}
 }
+
 @mixin onCheckboxFocus($color) {
 	@include hardware-accel();
 	box-shadow:
-    0 0 0 2px rgba($color, .2),
-    0 0 0 2px rgba($color, .2);
+		0 0 0 2px rgba($color, .2),
+		0 0 0 2px rgba($color, .2);
 }
 
 @mixin triangle($direction, $color: #000, $size: 4px) {
 	$perpendicular-borders: $size solid transparent;
 
-	@if $direction == top or $direction == bottom {
+	@if $direction==top or $direction==bottom {
 		border-right: $perpendicular-borders;
 		border-left: $perpendicular-borders;
 		transition: border-top-color $speed, border-bottom-color $speed;
 
-	} @else if $direction == right or $direction == left {
+	}
+
+	@else if $direction==right or $direction==left {
 		border-top: $perpendicular-borders;
 		border-bottom: $perpendicular-borders;
 		transition: border-left-color $speed, border-right-color $speed;
 
 	}
+
 	content: '';
 	z-index: 2;
 
@@ -140,18 +145,20 @@
 	line-height: 1;
 	text-transform: none;
 	speak: none;
-
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-};
+}
 
 @mixin page-title() {
 	@include source-semibold();
-	@include min-vw($md) {
-		letter-spacing: 3px;
+
+	@include max-vw($md) {
+		font-size: 12px;
+		letter-spacing: 2.8px;
 	}
+
 	color: #33353f;
 	font-size: 13px;
-	letter-spacing: 2px;
+	letter-spacing: 3px;
 	text-transform: uppercase;
 }

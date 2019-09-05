@@ -244,9 +244,17 @@ class Receive extends React.Component {
 													<Dropdown.Menu>
 														<PerfectScrollbar>
 															{accounts && [...accounts.map((account, id) => (
-																<Dropdown.Item key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
-																	{account.get('name')}
-																</Dropdown.Item>
+																(account.get('name') === selectedAccountName)
+																? (
+																	<Dropdown.Item className="selected-item" key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
+																		{account.get('name')}
+																	</Dropdown.Item>
+																) : (
+																	<Dropdown.Item key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
+																		{account.get('name')}
+																	</Dropdown.Item>
+																)
+																
 															)).values()]}
 														</PerfectScrollbar>
 													</Dropdown.Menu>
@@ -296,9 +304,9 @@ class Receive extends React.Component {
 													</div>
 													<div className="qr-info">
 														<div className="qr-link">
-															<span className="qr-link-content">
+															<a className="qr-link-content" href={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`} target="_blank">
 																{`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
-															</span>
+															</a>
 															<CopyToClipboard
 																onCopy={() => this.onCopyUrl()}
 																text={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}

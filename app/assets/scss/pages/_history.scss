@@ -2,10 +2,11 @@
 	flex-direction: column;
 	display: flex;
 
-	.transactions-wrap > .page-title {
+	.transactions-wrap>.page-title {
 		@include min-vw($md) {
 			margin-left: 47px;
 		}
+
 		margin-bottom: 13px;
 		margin-left: 30px;
 	}
@@ -31,12 +32,15 @@
 	.line {
 		font-size: 14px;
 		white-space: nowrap;
+		cursor: default;
 
 		.icon {
 			font-size: 40px;
 		}
 
 		&.contract {
+			cursor: pointer;
+
 			.handler {
 				&:before {
 					@include triangle(top, #9a9ba0);
@@ -54,6 +58,11 @@
 			position: relative;
 			width: 40px;
 		}
+	}
+
+	.line.contract:hover {
+		border: 1px solid #bfbfbf;
+		box-shadow: 0 0 2px rgba(#cbcbcb, 0.64);
 	}
 
 	.amount {
@@ -92,6 +101,8 @@
 
 	.from,
 	.to {
+		@include heebo-regular();
+
 		.line-content {
 			min-width: 50px;
 		}
@@ -136,9 +147,11 @@
 	.line-details {
 		&-wrap {
 			@include source-regular();
+
 			@include min-vw($md) {
 				padding: 20px 0 20px 50px;
 			}
+
 			display: flex;
 			width: 0;
 			padding: 20px 0 20px 34px;
@@ -204,9 +217,11 @@
 
 			.text {
 				@include text-overflow();
+
 				@include max-vw(1000) {
 					width: 260px;
 				}
+
 				width: 400px;
 				margin-right: 10px;
 			}
@@ -228,6 +243,13 @@
 
 @include max-vw(999) {
 	.table-transactions {
+		margin-top: 30px;
+
+		ul>li {
+			padding-top: 11px;
+			line-height: 12px;
+		}
+
 		.transaction-item {
 			display: flex;
 			width: 100%;
@@ -252,36 +274,34 @@
 
 				.type {
 					@include max-vw(1220) {
-						width: 34%;
-					}
-					@include max-vw(1033) {
 						width: 30%;
 					}
+
 					@include max-vw(1000) {
 						width: 25%;
-					}
-					@include max-vw(920) {
-						width: 20%;
-					}
-					@include max-vw(846) {
-						width: 15%;
 					}
 
 					align-items: center;
 					order: 1;
 					display: flex;
 					width: 38%;
-					margin-left: 18px;
+					margin-left: 40px;
 				}
 
 				.amount {
 					order: 2;
-					width: 40%;
+					width: 25%;
 					margin-left: auto;
 					text-align: right;
 				}
 
 				.fee {
+					@include max-vw(1000) {
+						width: 30%;
+						margin: 0 30px 0 10px;
+						text-align: right;
+					}
+
 					order: 3;
 					margin: 0 40px 0 5px;
 
@@ -297,12 +317,12 @@
 				.handler {
 					position: absolute;
 					top: 20px;
-					right: 0;
+					right: 0px;
 				}
 
 				.from {
 					order: 4;
-					margin-left: 32px;
+					margin-left: 40px;
 				}
 
 				.from-to-icon {
@@ -315,6 +335,10 @@
 				}
 
 				.age {
+					@include max-vw(1000) {
+						margin-right: 30px;
+					}
+
 					order: 7;
 					margin-right: 40px;
 				}
@@ -329,6 +353,19 @@
 				border: 1px solid #c2c2c2;
 				border-top: 0;
 			}
+		}
+
+		.type.icon {
+			margin-right: 5px;
+			margin-left: 18px;
+		}
+
+		.icon-receive-trans,
+		.icon-send-trans,
+		.icon-contract,
+		.icon-account {
+			display: inline-block;
+			margin-right: 10px;
 		}
 	}
 }
@@ -350,13 +387,7 @@
 					text-transform: capitalize;
 
 					&.type {
-						@include max-vw(1033) {
-							padding-left: 14px;
-						}
-						@include min-vw($md) {
-							padding-left: 46px;
-						}
-						padding-left: 32px;
+						padding-left: 46px;
 					}
 				}
 			}
@@ -410,29 +441,38 @@
 				}
 
 				&.type {
-					padding: 0;
+					padding: 0px;
 
-					.icon-receive-trans + .line-content {
-						top: 2px;
+					.icon-receive-trans+.line-content {
+						@include max-vw($md) {
+							top: 0;
+						}
+
+						top: -1px;
 					}
 
 					.line-content {
 						@include source-semibold();
+
 						left: -2px;
 						color: #5b5c63;
 					}
 
 					.icon {
-						@include max-vw(1033) {
-							margin-left: 0;
-						}
-						@include min-vw($md) {
-							margin-left: 35px;
-						}
+						margin-right: 10px;
 						margin-left: 18px;
 						font-size: 40px;
 						line-height: 0;
 						vertical-align: middle;
+					}
+
+					.icon-receive-trans,
+					.icon-send-trans,
+					.icon-contract,
+					.icon-account {
+						display: inline-block;
+						margin-right: 13px;
+						margin-left: 49px;
 					}
 				}
 
@@ -441,7 +481,7 @@
 				}
 
 				&.from,
-				&.to {
+				&.to{
 					a,
 					span {
 						@include text-overflow();
