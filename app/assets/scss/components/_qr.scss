@@ -43,6 +43,8 @@
 			margin-top: -2px;
 			border-bottom: 1px solid;
 			line-height: 19px;
+
+
 		}
 
 		.btn-copy {
@@ -55,6 +57,27 @@
 
 			i.icon {
 				line-height: 10px;
+			}
+		}
+
+		a {
+			padding: 1px;
+			color: #3f4a52;
+			font-size: 17px;
+
+			&:hover {
+				color: #7d62bc;
+			}
+
+			&:active {
+				color: #a595cd;
+			}
+
+			&:focus {
+				border: 1px solid #8675b1;
+				border-radius: 4px;
+				box-shadow: 0 0 3px rgba(#8675b1, 0.35);
+				color: #3f4a52;
 			}
 		}
 	}
