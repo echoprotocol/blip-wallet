@@ -269,7 +269,7 @@ class Receive extends React.Component {
 													{
 														(content) => (
 															<InputDropdown
-																title="Amount"
+																title="0.00000"
 																name="amount"
 																value={form.get('amount').value}
 																errorText={form.get('amount').error}
