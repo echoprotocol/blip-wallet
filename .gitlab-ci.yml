@@ -1,148 +1,37 @@
 stages:
-  - test
   - build
 
-eslint:
-  image: node:10.15
-  stage: test
-  script:
-    - npm i
-    - npm run lint    
-  only:
-    - merge_requests
-    - master
-    - develop
-  tags:
-    - docker
-
-tests:
-  image: node:10.15
-  stage: test
-  script:
-    - npm i    
-    - npm run build
-    - npm run test
-  only:
-    - merge_requests
-    - master
-    - develop
-  tags:
-    - docker
-
-build.develop:
-  stage: build
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - node_modules
-  script:
-    - npm config set unsafe-perm true
-    - rm -rf node_modules/node-sass
-    - npm i
-    - npm run build-web
-    - rm -rf /home/frontend
-    - cp -r ./dist /home/frontend
-  only:
-    - develop
-  tags:
-    - develop
-  environment:
-    name: development
-
-build.master:
-  stage: build
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - node_modules
-  script:
-    - npm config set unsafe-perm true
-    - rm -rf node_modules/node-sass
-    - npm i
-    - npm run build-web
-    - rm -rf /home/frontend
-    - cp -r ./dist /home/frontend
-  only:
-    - master
-  tags:
-    - stage
-  environment:
-    name: development
-
-build.package-linux:
-  image: electronuserland/builder:10
+build:
   stage: build
   variables:
-    DOWNLOAD_ECHO_NODE_URL: "https://github.com/echoprotocol/echo/releases/download/0.6.1/echo_node"
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - node_modules
+    CI_COMMIT_REF_NAME: develop
+    NODE_APP_INSTANCE: $CI_COMMIT_REF_NAME
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - npm config set unsafe-perm true
-    - rm -rf node_modules/node-sass
-    - npm i
-    - DEBUG_PROD=true npm run package-linux
+    - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   only:
     - master
     - develop
+    - DEVOPS-18
   tags:
-    - docker
-  artifacts:
-    name: 'artifacts_linux_$CI_COMMIT_REF_NAME'
-    paths:
-      - release/*.deb
-      - release/*.rpm
-    expire_in: 1 week
-  environment:
-    name: development
+    - echo-linux
 
-build.package-win:
-  image: electronuserland/builder:wine
-  stage: build
-  cache:
-    key: "win_$CI_COMMIT_REF_NAME"
-    paths:
-      - node_modules
+deploy:
+  stage: deploy
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - if [ "$CI_COMMIT_REF_NAME" != "master" ]; then export PORT=36640; fi
+  variables:
+    CI_COMMIT_REF_NAME: develop
+    CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    PORT: 26640
   script:
-    - npm config set unsafe-perm true
-    - rm -rf node_modules/node-sass
-    - npm i
-    - DEBUG_PROD=true npm run package-win
+    - docker-compose -p "blip-${CI_COMMIT_REF_NAME}" up -d
   only:
-    - master
     - develop
-  tags:
-    - docker
-  artifacts:
-    name: 'artifacts_win_$CI_COMMIT_REF_NAME'
-    paths:
-      - release/*.exe
-      - release/*.msi
-    expire_in: 1 week
-  environment:
-    name: development
-
-build.package-mac:
-  stage: build
-#   cache:
-#     key: $CI_COMMIT_REF_NAME
-#     paths:
-#       - node_modules
-  script:
-    - npm config set unsafe-perm true
-    - npm i
-    - DEBUG_PROD=true npm run package-mac
-  only:
     - master
-    - develop
+    - DEVOPS-18
   tags:
-    - echo-mac
-  artifacts:
-    name: 'artifacts_mac_$CI_COMMIT_REF_NAME'
-    paths:
-      - release/*.dmg
-      - release/*.zip
-    expire_in: 1 week
-  environment:
-    name: development
+    - echo-linux
