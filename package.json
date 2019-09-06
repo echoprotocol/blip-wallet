@@ -1,7 +1,7 @@
 {
   "name": "blip-wallet",
   "productName": "BlipWallet",
-  "version": "0.4.5-rc.1",
+  "version": "0.4.6-rc.1",
   "description": "Blip Wallet",
   "scripts": {
     "web": "cross-env NODE_ENV=development node --trace-warnings -r @babel/register ./node_modules/webpack-dev-server/bin/webpack-dev-server --config configs/webpack.config.web.babel.js --mode development --progress --colors --history-api-fallback --hot --inline",
@@ -14,7 +14,7 @@
     "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
     "flow": "flow",
     "flow-typed": "rimraf flow-typed/npm && flow-typed install --overwrite || true",
-    "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty 'app/**/*.jsx' 'app/**/*.js'",
+    "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty 'app/**/*.jsx' 'app/**/*.js' '__tests__/**/*.js'",
     "lint-fix": "yarn lint --fix; exit 0",
     "lint-styles": "stylelint --ignore-path .eslintignore '**/*.*(css|scss)' --syntax scss",
     "lint-styles-fix": "yarn --silent lint-styles --fix; exit 0",
@@ -124,7 +124,7 @@
     "url": "https://github.com/echoprotocol/blip-wallet.git"
   },
   "author": {
-    "name": "PixelPlex",
+    "name": "PixelPlex, Inc.",
     "email": "info@pixelplex.io",
     "url": "https://pixelplex.io"
   },
@@ -271,7 +271,7 @@
     "connected-react-router": "^5.0.1",
     "crypto-random-string": "^1.0.0",
     "devtron": "^1.4.0",
-    "echojs-lib": "^1.6.0-rc.3",
+    "echojs-lib": "^1.6.0",
     "echojs-ping": "^0.1.5",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
