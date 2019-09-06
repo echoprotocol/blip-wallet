@@ -245,16 +245,15 @@ class Receive extends React.Component {
 														<PerfectScrollbar>
 															{accounts && [...accounts.map((account, id) => (
 																(account.get('name') === selectedAccountName)
-																? (
-																	<Dropdown.Item className="selected-item" key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
-																		{account.get('name')}
-																	</Dropdown.Item>
-																) : (
-																	<Dropdown.Item key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
-																		{account.get('name')}
-																	</Dropdown.Item>
-																)
-																
+																	? (
+																		<Dropdown.Item className="selected-item" key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
+																			{account.get('name')}
+																		</Dropdown.Item>
+																	) : (
+																		<Dropdown.Item key={id.toString()} eventKey={id} onClick={(() => this.props.setFormValue('selectedAccount', id))}>
+																			{account.get('name')}
+																		</Dropdown.Item>
+																	)
 															)).values()]}
 														</PerfectScrollbar>
 													</Dropdown.Menu>
@@ -304,7 +303,7 @@ class Receive extends React.Component {
 													</div>
 													<div className="qr-info">
 														<div className="qr-link">
-															<a className="qr-link-content" href={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`} target="_blank">
+															<a className="qr-link-content" href={`${QR_URL}${this.getQr(selectedAccountName, 'url')}`} target="_blank" rel="noopener noreferrer">
 																{`${QR_URL}${this.getQr(selectedAccountName, 'url')}`}
 															</a>
 															<CopyToClipboard

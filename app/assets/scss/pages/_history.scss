@@ -241,6 +241,10 @@
 	}
 }
 
+.table-transactions .transaction-item.selected .line.contract {
+	background-color: rgba(0, 0, 0, 0);
+}
+
 @include max-vw(999) {
 	.table-transactions {
 		margin-top: 30px;
@@ -257,6 +261,11 @@
 
 			&.selected {
 				.line {
+					// @include min-vw(999) {
+					// 	background-color: transparent;
+					// }
+
+					// background-color: transparent;
 					border: 1px solid #c2c2c2;
 					border-bottom: 0;
 				}
@@ -273,19 +282,20 @@
 				border-bottom: 0;
 
 				.type {
-					@include max-vw(1220) {
+					@include max-vw(1000) {
 						width: 30%;
 					}
 
-					@include max-vw(1000) {
-						width: 25%;
+					@include min-vw($md) {
+						margin-left: 47px;
 					}
+
 
 					align-items: center;
 					order: 1;
 					display: flex;
 					width: 38%;
-					margin-left: 40px;
+					margin-left: 30px;
 				}
 
 				.amount {
@@ -322,11 +332,12 @@
 
 				.from {
 					order: 4;
-					margin-left: 40px;
+					margin-left: 30px;
 				}
 
 				.from-to-icon {
 					order: 5;
+					padding-top: 6px;
 				}
 
 				.to {
@@ -348,11 +359,19 @@
 		.line-details {
 			padding: 0 1px;
 
-			li:first-child {
-				margin-top: -1px;
-				border: 1px solid #c2c2c2;
-				border-top: 0;
+			li {
+				&:not(:first-child) {
+					line-height: 1;
+					padding-top: 0;
+				}
+
+				&:first-child {
+					margin-top: -1px;
+					border: 1px solid #c2c2c2;
+					border-top: 0;
+				}
 			}
+
 		}
 
 		.type.icon {
@@ -365,7 +384,8 @@
 		.icon-contract,
 		.icon-account {
 			display: inline-block;
-			margin-right: 10px;
+			padding-right: 27px;
+			background-repeat: no-repeat;
 		}
 	}
 }
@@ -386,8 +406,14 @@
 					color: #8e8e97;
 					text-transform: capitalize;
 
+
+
 					&.type {
-						padding-left: 46px;
+						@include min-vw($md) {
+							padding-left: 47px;
+						}
+
+						padding-left: 30px;
 					}
 				}
 			}
@@ -400,8 +426,15 @@
 
 		.selected {
 			.line {
+				// @include max-vw(1000) {
+				// 	background-color: transparent;
+				// }
+
+				// background-color: transparent;
+
 				li {
 					border-top: 1px solid #c2c2c2;
+					background-color: transparent;
 
 					&:first-child {
 						border-left: 1px solid #c2c2c2;
@@ -430,6 +463,10 @@
 
 				.line-content {
 					position: relative;
+
+					span {
+						padding-left: 5px;
+					}
 				}
 
 				&:first-child {
@@ -470,9 +507,14 @@
 					.icon-send-trans,
 					.icon-contract,
 					.icon-account {
+						@include min-vw($md) {
+							margin-left: 47px;
+						}
+
 						display: inline-block;
-						margin-right: 13px;
-						margin-left: 49px;
+						margin-left: 30px;
+						padding-right: 27px;
+						background-repeat: no-repeat;
 					}
 				}
 
@@ -481,7 +523,8 @@
 				}
 
 				&.from,
-				&.to{
+				&.to {
+
 					a,
 					span {
 						@include text-overflow();
