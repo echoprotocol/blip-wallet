@@ -106,19 +106,11 @@ class History extends React.Component {
 		return 'icon-receive-trans';
 	}
 
-	cutFee(transaction) {
+	cutAsset(transaction, type, value) {
 		return (
-			transaction.getIn(['fee', 'symbol']).length > MAX_ASSET_SYMBOL_LENGTH
-				? transaction.getIn(['fee', 'symbol']).slice(0, 5).concat('..')
-				: transaction.getIn(['fee', 'symbol'])
-		);
-	}
-
-	cutAsset(transaction) {
-		return (
-			transaction.getIn(['asset', 'value']).length > MAX_ASSET_SYMBOL_LENGTH
-				? transaction.getIn(['asset', 'value']).slice(0, 5).concat('..')
-				: transaction.getIn(['asset', 'value'])
+			transaction.getIn([type, value]).length > MAX_ASSET_SYMBOL_LENGTH
+				? transaction.getIn([type, value]).slice(0, 5).concat('..')
+				: transaction.getIn([type, value])
 		);
 	}
 
@@ -255,7 +247,7 @@ class History extends React.Component {
 								<span>
 									{
 										transaction.getIn(['asset', 'value'])
-											? this.cutAsset(transaction) : ECHO_ASSET_SYMBOL
+											? this.cutAsset(transaction, 'asset', 'value') : ECHO_ASSET_SYMBOL
 									}
 								</span>
 							</span>
@@ -267,7 +259,7 @@ class History extends React.Component {
 									transaction.getIn(['fee', 'precision']),
 								)} ${
 									transaction.getIn(['fee', 'symbol'])
-										? this.cutFee(transaction) : ECHO_ASSET_SYMBOL}`}
+										? this.cutAsset(transaction, 'fee', 'symbol') : ECHO_ASSET_SYMBOL}`}
 							</span>
 						</li>
 						<li className="handler" />
