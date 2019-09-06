@@ -139,7 +139,8 @@
 
 		&:nth-child(2n) {
 			.line {
-				background-color: rgba(#e3e3e3, 0.4);
+				background-color: rgba(#e3e3e3, 1);
+				// 
 			}
 		}
 	}
@@ -247,11 +248,20 @@
 
 @include max-vw(999) {
 	.table-transactions {
-		margin-top: 30px;
+		margin-top: 20px;
 
 		ul>li {
 			padding-top: 11px;
 			line-height: 12px;
+
+			&.from,
+			&.from-to-icon,
+			&.to,
+			&.age {
+				padding-top: 0px;
+				font-size: 13px;
+			}
+
 		}
 
 		.transaction-item {
@@ -261,11 +271,6 @@
 
 			&.selected {
 				.line {
-					// @include min-vw(999) {
-					// 	background-color: transparent;
-					// }
-
-					// background-color: transparent;
 					border: 1px solid #c2c2c2;
 					border-bottom: 0;
 				}
@@ -337,7 +342,7 @@
 
 				.from-to-icon {
 					order: 5;
-					padding-top: 6px;
+					height: 37px;
 				}
 
 				.to {
@@ -361,8 +366,8 @@
 
 			li {
 				&:not(:first-child) {
-					line-height: 1;
 					padding-top: 0;
+					line-height: 1;
 				}
 
 				&:first-child {
@@ -406,8 +411,6 @@
 					color: #8e8e97;
 					text-transform: capitalize;
 
-
-
 					&.type {
 						@include min-vw($md) {
 							padding-left: 47px;
@@ -426,12 +429,6 @@
 
 		.selected {
 			.line {
-				// @include max-vw(1000) {
-				// 	background-color: transparent;
-				// }
-
-				// background-color: transparent;
-
 				li {
 					border-top: 1px solid #c2c2c2;
 					background-color: transparent;
@@ -490,6 +487,10 @@
 
 					.line-content {
 						@include source-semibold();
+
+						@include max-vw($md) {
+							font-size: 13px;
+						}
 
 						left: -2px;
 						color: #5b5c63;

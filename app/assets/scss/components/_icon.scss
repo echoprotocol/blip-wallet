@@ -7,9 +7,6 @@ i.icon {
 }
 
 .copy:before {
-	// @include min-vw($md) {
-	// 	font-size: 11px;
-	// }
 	content: '\e901';
 	font-size: 11px;
 }
