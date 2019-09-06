@@ -13,25 +13,22 @@ env:
     - NODE_ENV="development"
 
 stages:
-  - lint
   - test
   - build
 
 jobs:
   include:
 
-    - stage: lint
-      name: "Lint"
+    - stage: test
+      name: "Test"
       if: type = push
       script:
         - NODE_ENV=development npm install
+        - npm run build
+        - npm run test
         - npm run lint
 
-    - stage: test
-      name: "test"
-      if: type = merge_requests
-      script:
-        - ls
+
 
 
     - stage: build
