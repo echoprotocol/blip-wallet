@@ -24,7 +24,10 @@ jobs:
       if: type = push
       script:
         - NODE_ENV=development npm install
+        - npm run build
+        - npm run test
         - npm run lint
+
 
 
 
