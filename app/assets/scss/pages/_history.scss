@@ -62,7 +62,7 @@
 
 	.line.contract:hover {
 		border: 1px solid #bfbfbf;
-		box-shadow: 0 0 2px rgba(#cbcbcb, 0.64);
+		box-shadow: 0 0 1px rgba(#cbcbcbcb, 0.64);
 	}
 
 	.amount {
@@ -150,7 +150,7 @@
 			@include source-regular();
 
 			@include min-vw($md) {
-				padding: 20px 0 20px 50px;
+				padding: 8px 0 13px 50px;
 			}
 
 			display: flex;
@@ -599,23 +599,25 @@
 					border-right: 1px solid #c2c2c2;
 
 					&-title {
-						padding-bottom: 10px;
+
+						padding-bottom: 7px;
 						color: #8e8e97;
-						font-size: 15px;
+						font-size: 13px;
 					}
 
 					&-content {
 						color: #5b5c63;
-						font-size: 15px;
+						font-size: 14px;
 					}
 				}
 
+				// 8px 0 13px 50px
 				.bytecode {
-					padding-left: 40px;
+					padding-left: 17px;
 
 					&-title {
 						color: #8e8e97;
-						font-size: 15px;
+						font-size: 13px;
 					}
 
 					.button {
@@ -623,7 +625,13 @@
 						border: 0;
 						background-color: transparent;
 						color: #5b5c63;
-						font-size: 16px;
+						font-size: 13px;
+
+						i.icon {
+							min-width: 17px;
+							width: 17px;
+							height: 17px;
+						}
 					}
 				}
 			}
