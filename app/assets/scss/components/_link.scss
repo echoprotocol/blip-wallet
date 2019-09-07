@@ -7,6 +7,10 @@
 
 .line-link {
 	@include source-regular();
+	@include min-vw($md) {
+		position: relative;
+		top: 5px;
+	}
 	display: inline;
 	border-bottom: 1px solid;
 	color: #3f4a52;

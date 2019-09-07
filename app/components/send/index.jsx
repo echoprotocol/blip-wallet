@@ -356,26 +356,29 @@ class Send extends React.Component {
 									</div>
 								</div>
 							</section>
-						</div>
-					</PerfectScrollbar>
-					<div className="page-action">
-						<FormattedMessage id="send.button">
 							{
-								(content) => (
-									<Button
-										className="btn-primary white"
-										content={(
-											<div className="text">
-												{content}
-											</div>
-										)}
-										onClick={() => this.onSend()}
-										disabled={!this.isTransactionValidate() || !this.isSuccessCheckAccount() || !!loading}
-									/>
+								!(!this.isTransactionValidate() || !this.isSuccessCheckAccount() || !!loading) && (
+									<div className="btn-wrap">
+										<FormattedMessage id="send.button">
+											{
+												(content) => (
+													<Button
+														className="btn-primary white"
+														content={(
+															<div className="text">
+																{content}
+															</div>
+														)}
+														onClick={() => this.onSend()}
+													/>
+												)
+											}
+										</FormattedMessage>
+									</div>
 								)
 							}
-						</FormattedMessage>
-					</div>
+						</div>
+					</PerfectScrollbar>
 				</div>
 			</div>
 		);

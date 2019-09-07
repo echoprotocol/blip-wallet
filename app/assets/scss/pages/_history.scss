@@ -525,11 +525,16 @@
 
 				&.from,
 				&.to {
-
 					a,
 					span {
 						@include text-overflow();
-						display: block;
+						@include max-vw(1100) {
+							max-width: 80px
+						}
+						@include max-vw(1050) {
+							max-width: 60px
+						}
+						display: inline-flex;
 						max-width: 160px;
 					}
 				}
@@ -540,6 +545,14 @@
 				}
 
 				&.to {
+					@include max-vw(1100) {
+						width: 12%;
+						padding: 0 8px;
+					}
+					@include max-vw(1050) {
+						width: 11%;
+						padding: 0 7px;
+					}
 					width: 16%;
 					padding: 0 10px;
 				}
@@ -564,7 +577,7 @@
 				}
 
 				&.fee {
-					padding: 0 10px;
+					padding: 0 0 0 10px;
 				}
 
 				&.handler {
