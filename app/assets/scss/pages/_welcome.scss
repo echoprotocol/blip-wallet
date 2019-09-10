@@ -17,16 +17,13 @@
 }
 
 .welcome-card {
-	@include min-vw(900) {
-		margin-left: 50px;
+	@include min-vw($md) {
+		width: 344px;
+		margin-right: 40px;
+		margin-left: 87px;
 	}
-	@include min-vw(1400) {
-		width: 420px;
-		margin-left: 100px;
-	}
-	width: 340px;
-	margin-top: 40px;
-	margin-left: 25px;
+	width: 299px;
+	margin-left: 61px;
 	border-radius: 3px;
 	background-color: #dbd2f3;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.02);
@@ -40,29 +37,36 @@
 
 	.head {
 		width: 100%;
+		min-height: 97px;
 		border-bottom: 1px solid #c3b9df;
 
 		.card-wrap {
 			align-items: center;
 			display: flex;
-			padding: 25px 38px;
+			padding: 18px 33px 14px;
 		}
 
 		.account-info {
-			margin-left: 1.8em;
+			margin-left: 18px;
 
 			.label {
 				@include source-regular();
 				color: rgba(#000, 0.5);
-				font-size: 1.4em;
+				font-size: 14px;
+				letter-spacing: 0.2px;
 			}
 
 			.name {
 				@include source-semibold();
+				@include min-vw($md) {
+					font-size: 18px;
+					letter-spacing: .54px;
+					line-height: 20px;
+				}
 				margin-top: 3px;
 				color: #000;
-				font-size: 1.8em;
-				line-height: 1.2em;
+				font-size: 14px;
+				letter-spacing: .9px;
 				word-break: break-all;
 			}
 		}
@@ -70,47 +74,55 @@
 
 	.body {
 		.card-wrap {
-			@include min-vw(1400) {
-                padding: 18px 38px 25px;
+			@include min-vw($md) {
+				padding: 13px 34px 25px;
 			}
 			flex-direction: column;
 			height: 100%;
-            padding: 18px 38px 25px;
+			padding: 18px 38px 25px;
 			color: #000;
 
 			span {
-				font-size: 1.6em;
+				@include min-vw($md) {
+					font-size: 16px;
+				}
+				font-size: 14px;
 				line-height: 1.3;
 			}
 
-            .wif-label {
-              color: rgba(#000, 0.5);
-              font-size: 14px;
+			.wif-label {
+				color: rgba(#000, 0.5);
+				font-size: 14px;
 
-              span {
-                font-size: 14px;
-                color: inherit;
-              }
-            }
+				span {
+					color: inherit;
+					font-size: 14px;
+				}
+			}
 
-            .name {
-              font-family: 'SourceSansPro-SemiBold';
-              font-size: 16px;
-              padding: 14px 0 33px;
-            }
+			.name {
+				padding: 8px 0 25px;
+				font-family: 'SourceSansPro-SemiBold';
+				font-size: 16px;
+			}
 		}
 
 		.wif-wrap {
-			padding: 0 0 3em;
-
+			margin: 5px 0 0;
+			padding: 0 0 17px;
+		
 			.wif-label {
+				padding-bottom: 10px;
 				color: rgba(#000, 0.5);
-				font-size: 1.4em;
-                padding-bottom: 10px;
+				font-size: 14px;
 			}
 
 			.wif {
-				margin: 8px 0 0;
+				&.white {
+					input:disabled {
+						background-color: #fff;
+					}
+				}
 			}
 		}
 
@@ -121,51 +133,58 @@
 }
 
 .welcome-info {
-	@include min-vw(1200) {
-		max-width: 34%;
+
+	@include min-vw($md) {
+		max-width: 33%;
 		margin-right: 50px;
-	}
-	@include min-vw(1400) {
-		max-width: 30%;
-		margin-right: 100px;
+		margin-left: 0;
 	}
 	flex-direction: column;
 	align-items: flex-start;
 	display: flex;
-	max-width: 40%;
+	max-width: 30%;
 	margin-right: 25px;
+	margin-left: 10px;
 
 	h1 {
 		@include source-semibold();
-		@include max-vw(900) {
-			font-size: 3em;
-			letter-spacing: 0.03em;
+		@include min-vw($md) {
+			margin: 26px 0 13px;
+			font-size: 35px;
+			letter-spacing: 1.2px;
+			line-height: 41px;
 		}
-		margin: 25px 0 0.6em;
+		margin: 26px 0 17px;
 		color: #fff;
-		font-size: 3.5em;
-		letter-spacing: 0.035em;
+		font-size: 30px;
+		letter-spacing: 1px;
+		line-height: 36px;
 		white-space: nowrap;
 	}
 
 	p {
 		@include source-regular();
+		@include min-vw($md) {
+			font-size: 16px;
+		}
 		color: #b89bf5;
-		font-size: 1.6em;
+		font-size: 14px;
+		letter-spacing: .25px;
 	}
 
 	.btn-primary {
-		margin: 10em 0 30px;
+		@include min-vw($md) {
+			margin: 13em 0 20px;
+		}
+		margin: 9em 0 20px;
 	}
 
 	&.import {
-		@include min-vw(1200) {
+		@include min-vw($md) {
 			max-width: 100%;
 			margin-right: 0;
 		}
-		@include min-vw(1400) {
-			max-width: 100%;
-		}
+
 		@include max-vw(900) {
 			width: 480px;
 			margin: auto;
@@ -187,7 +206,7 @@
 			text-align: left;
 
 			.account-info {
-                max-width: calc(100% - 80px);
+				max-width: calc(100% - 80px);
 				margin-left: 1.8em;
 
 				.label {
@@ -198,7 +217,7 @@
 
 				.name {
 					@include source-semibold();
-                    width: 100%;
+					width: 100%;
 					margin-top: 3px;
 					color: #fff;
 					font-size: 1.8em;
@@ -229,6 +248,6 @@
 	background-position: bottom;
 	background-repeat-y: no-repeat;
 	color: #b89bf5;
-	font-size: 1.4em;
+	font-size: 14px;
 	letter-spacing: 0.014em;
 }

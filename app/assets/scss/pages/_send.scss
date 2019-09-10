@@ -1,5 +1,37 @@
-.send {
-	.form-wrap {
-		min-height: calc(100vh - 284px - 6em);
+.send-wrap {
+	@include min-vw($md) {
+		padding: 50px 57px 0;
 	}
+	min-height: 100%;
+	padding: 50px 40px 0;
+	
+	.page-title {
+		margin-bottom: 41px;
+	}
+
+	.rectangle {
+		@include min-vw($md) {
+			padding: 33px 47px;
+		}
+		padding: 24px 27px;
+
+		& + .btn-wrap {
+			@include min-vw($md) {
+				max-width: 420px;
+			}
+			max-width: 360px;
+			margin: 63px auto 40px;
+			
+			.btn-primary {
+				@include min-vw($md) {
+					width: 197px;
+					height: 47px;
+					margin-left: 40px;
+					font-size: 17px;
+				}
+				padding: 0 30px;
+			}
+		}
+	}
+
 }

@@ -2,7 +2,7 @@
 	margin: 8vh 0 auto;
 
 	.animation-logo {
-		width: 240px;
+		width: 190px;
 		height: auto;
 		transition: all 0.35s ease-in-out;
 
@@ -21,24 +21,21 @@
 	margin: auto;
 
 	.animation-logo {
-		width: 240px;
+		width: 190px;
 		height: auto;
-		margin-left: calc(50vw - 120px);
-		transition: margin .4s;
+		margin-left: calc(50vw - 95px);
+		transition: margin 0.4s;
 
 		&.left {
+			margin: 12px 0 0 4px;
 
-			height: 16vh;
-			margin: 0 0 0 4vw;
-
-			&>div {
-				@include max-vw(1400) {
+			& > div {
+				@include max-vw($md) {
 					top: calc(100% - 89px) !important;
 					width: 170px;
 				}
 				top: calc(100% - 126px) !important;
 				left: -16px;
-
 			}
 		}
 	}

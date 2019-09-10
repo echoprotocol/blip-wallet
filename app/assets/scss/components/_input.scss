@@ -1,11 +1,8 @@
 @mixin input {
-	@include min-vw(1200) {
-		font-size: 18px;
-	}
-	@include min-vw(1400) {
-		height: 60px;
-		padding: 0 22px;
-		font-size: 20px;
+	@include min-vw($md) {
+		padding: 0 16px;
+		font-size: 17px;
+		letter-spacing: 0.12px;
 	}
 	height: 44px;
 	padding: 0 14px;
@@ -31,7 +28,6 @@
 		@include input();
 		@include source-semibold();
 		@include hardware-accel();
-		letter-spacing: 0.017em;
 
 		&::placeholder {
 			line-height: 44px;
@@ -50,7 +46,6 @@
 			width: 100%;
 		}
 	}
-
 
 	&.disabled {
 		input {
@@ -105,7 +100,6 @@
 
 		&::placeholder {
 			color: #624d9a;
-
 		}
 
 		&:hover {
@@ -133,7 +127,7 @@
 	}
 
 	& + .hints,
-	& +  .error-message + .hints {
+	& + .error-message + .hints {
 		color: #b89bf5;
 
 		.active {
@@ -194,7 +188,7 @@
 	}
 
 	& + .hints,
-	& +  .error-message + .hints {
+	& + .error-message + .hints {
 		color: #5b5c63;
 
 		.active {
@@ -208,18 +202,18 @@
 }
 
 .hints {
-	@include source-regular();
 
-	@include min-vw(1400) {
-		font-size: 16px;
-		line-height: 22px;
+	@include min-vw($md) {
+		font-size: 14px;
+		line-height: 20px;
 	}
 	margin-top: 0.8em;
-	font-size: 14px;
-	letter-spacing: 0;
+	font-size: 13px;
+	letter-spacing: 0.06px;
 	line-height: 20px;
 
 	.hint {
+		@include source-regular();
 		transition: color $speed ease;
 	}
 }
@@ -251,7 +245,6 @@ form {
 	}
 }
 
-
 .error-message {
 	@include source-regular();
 	position: absolute;
@@ -261,6 +254,7 @@ form {
 	padding: 5px 10px;
 	border-radius: 3px;
 	font-size: 13px;
+	line-height: initial;
 }
 
 // Password
@@ -281,13 +275,14 @@ form {
 		}
 
 		.icon-eye {
-			@include min-vw(1400) {
-				height: 60px;
-			}
+			// @include min-vw($lg) {
+			// 	width: 60px;
+			// 	height: 60px;
+			// }
 			position: absolute;
 			top: 0;
 			right: 0;
-			width: 60px;
+			width: 48px;
 			height: 44px;
 			border: 0;
 			background-color: transparent;
@@ -318,7 +313,10 @@ form {
 		}
 
 		input {
-			padding-right: 50px;
+			@include min-vw($md) {
+				padding-right: 52px;
+			}
+			padding-right: 43px;
 		}
 
 		.copy-wrap {

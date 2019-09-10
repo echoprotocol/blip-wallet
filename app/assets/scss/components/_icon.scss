@@ -1,16 +1,14 @@
-
-
 i.icon {
 	@include iconmoon();
 }
 
 .icon-spinner:before {
-	content: "\e900";
+	content: '\e900';
 }
 
 .copy:before {
 	content: '\e901';
-	font-size: 13px;
+	font-size: 11px;
 }
 
 .arrow-right:before {
@@ -33,7 +31,7 @@ i.icon {
 	}
 
 	&:before {
-		content: "\e90a";
+		content: '\e90a';
 		color: #9ba0a4;
 	}
 }
@@ -42,42 +40,46 @@ i.icon {
 	content: '\e903';
 }
 
-.icon-account:before {
-	content: "\e904";
+.icon-account {
+	width: 11px;
+	height: 11px;
+	background-image: url(.././images/account.svg);
 }
 
 .icon-info:before {
-	content: "\e906";
+	content: '\e906';
 }
 
-.icon-contract:before {
-	content: "\e907";
+.icon-contract {
+	width: 10px;
+	height: 10px;
+	background-image: url(.././images/contract.svg);
 }
 
 .icon-receive-trans {
-	transform: rotate(90deg);
-
-	&:before {
-		content: "\e909";
-	}
+	width: 11px;
+	height: 11px;
+	background-image: url(.././images/receive-trans.svg);
 }
 
-.icon-send-trans:before {
-	content: "\e909";
+.icon-send-trans {
+	width: 11px;
+	height: 11px;
+	background-image: url(.././images/send-trans.svg);
 }
 
 .win-zoom-out:before {
-	content: "\e910"
+	content: '\e910';
 }
 
 .win-zoom-in:before {
-	content: "\e90b"
+	content: '\e90b';
 }
 
 .win-minimize:before {
-	content: "\e90f"
+	content: '\e90f';
 }
 
 .win-close:before {
-	content: "\e90e";
+	content: '\e90e';
 }

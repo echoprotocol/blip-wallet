@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
+import info from '../../assets/images/info.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import { HISTORY } from '../../constants/routes-constants';
@@ -291,7 +292,7 @@ class Wallet extends React.Component {
 				<div className="page">
 					<PerfectScrollbar className="page-scroll">
 						<div className="wallet-wrap">
-							<div className="title"><FormattedMessage id="wallet.balance" /></div>
+							<div className="page-title"><FormattedMessage id="wallet.balance" /></div>
 							<div className="wallet-container">
 								<div className="balance-info">
 									<div className="balance">
@@ -304,8 +305,8 @@ class Wallet extends React.Component {
 									<div className="info">
 										<span className="coins">+ 0.00000 </span>
 										<span className="currency">{ECHO_ASSET_SYMBOL} </span>
-										<span className="message">(unclaimed)</span>
-										<span className="claim-link">Claim balance</span>
+										<span className="message">(unclaimed <img src={info} alt="" />)</span>
+										{/* <span className="claim-link">Claim balance</span> */}
 									</div>
 								</div>
 								<div className="balances-list">
@@ -320,13 +321,19 @@ class Wallet extends React.Component {
 						<Footer history={history} currentNode={currentNode} platform={this.props.platform} localNodePercent={this.props.localNodePercent} />
 					</div>
 					<div className="settings-wrap">
-						<Button
-							className="btn-settings"
-							onClick={(e) => { this.toggleSettings(e); }}
-							content={
-								<img src={settings} alt="" />
-							}
-						/>
+						{
+							showSettings ? (
+								<Button className="btn-close" onClick={(e) => this.toggleSettings(e)} />
+							) : (
+								<Button
+									className="btn-settings"
+									onClick={(e) => { this.toggleSettings(e); }}
+									content={
+										<img src={settings} alt="" />
+									}
+								/>
+							)
+						}
 					</div>
 					<Settings
 						open={showSettings}

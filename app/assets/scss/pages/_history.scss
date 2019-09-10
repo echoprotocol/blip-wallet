@@ -2,18 +2,18 @@
 	flex-direction: column;
 	display: flex;
 
-	.transactions-wrap > .title {
-		@include source-semibold();
-		margin-bottom: 25px;
-		margin-left: 40px;
-		color: #33353f;
-		font-size: 1.3em;
-		text-transform: uppercase;
+	.transactions-wrap>.page-title {
+		@include min-vw($md) {
+			margin-left: 47px;
+		}
+
+		margin-bottom: 13px;
+		margin-left: 30px;
 	}
 }
 
 .transactions-wrap {
-	padding: 40px 10px 0;
+	padding: 50px 10px 0;
 }
 
 .table-transactions {
@@ -30,18 +30,17 @@
 	}
 
 	.line {
-		@include min-vw(1300) {
-			font-size: 16px;
-		}
-
 		font-size: 14px;
 		white-space: nowrap;
+		cursor: default;
 
 		.icon {
 			font-size: 40px;
 		}
 
 		&.contract {
+			cursor: pointer;
+
 			.handler {
 				&:before {
 					@include triangle(top, #9a9ba0);
@@ -61,6 +60,11 @@
 		}
 	}
 
+	.line.contract:hover {
+		border: 1px solid #bfbfbf;
+		box-shadow: 0 0 1px rgba(#cbcbcbcb, 0.64);
+	}
+
 	.amount {
 		.line-content {
 			@include source-semibold();
@@ -76,6 +80,7 @@
 		.line-content {
 			@include source-semibold();
 			color: #5b5c63;
+			letter-spacing: 0.42px;
 		}
 	}
 
@@ -96,6 +101,8 @@
 
 	.from,
 	.to {
+		@include heebo-regular();
+
 		.line-content {
 			min-width: 50px;
 		}
@@ -132,7 +139,8 @@
 
 		&:nth-child(2n) {
 			.line {
-				background-color: rgba(#e3e3e3, .4);
+				background-color: rgba(#e3e3e3, 1);
+				// 
 			}
 		}
 	}
@@ -140,9 +148,14 @@
 	.line-details {
 		&-wrap {
 			@include source-regular();
+
+			@include min-vw($md) {
+				padding: 8px 0 13px 50px;
+			}
+
 			display: flex;
 			width: 0;
-			padding: 20px 0 20px 40px;
+			padding: 20px 0 20px 34px;
 
 			.status {
 				flex-direction: column;
@@ -156,7 +169,6 @@
 					padding-bottom: 10px;
 					color: #8e8e97;
 					font-size: 15px;
-
 				}
 
 				&-content {
@@ -200,15 +212,17 @@
 
 			&:focus:not(:active) {
 				.icon {
-					@include onIconFocus(50px, 2px, 2px, rgba(#9a9ba0, .3));
+					@include onIconFocus(50px, 2px, 2px, rgba(#9a9ba0, 0.3));
 				}
 			}
 
 			.text {
 				@include text-overflow();
+
 				@include max-vw(1000) {
 					width: 260px;
 				}
+
 				width: 400px;
 				margin-right: 10px;
 			}
@@ -222,14 +236,34 @@
 				height: 24px;
 				border-radius: 50%;
 				background-color: #cdd0d1;
-				transition: background-color .3s;
+				transition: background-color 0.3s;
 			}
 		}
 	}
 }
 
-@include max-vw(1300) {
+.table-transactions .transaction-item.selected .line.contract {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+@include max-vw(999) {
 	.table-transactions {
+		margin-top: 20px;
+
+		ul>li {
+			padding-top: 11px;
+			line-height: 12px;
+
+			&.from,
+			&.from-to-icon,
+			&.to,
+			&.age {
+				padding-top: 0px;
+				font-size: 13px;
+			}
+
+		}
+
 		.transaction-item {
 			display: flex;
 			width: 100%;
@@ -240,81 +274,88 @@
 					border: 1px solid #c2c2c2;
 					border-bottom: 0;
 				}
-
 			}
 
 			.line {
 				flex-wrap: wrap;
 				align-items: center;
 				justify-content: space-between;
+				position: relative;
 				display: flex;
 				width: 100%;
 				border: 1px solid transparent;
 				border-bottom: 0;
 
 				.type {
-
-					@include max-vw(1220) {
-						width: 34%;
-					}
-					@include max-vw(1033) {
+					@include max-vw(1000) {
 						width: 30%;
 					}
-					@include max-vw(920) {
-						width: 20%;
+
+					@include min-vw($md) {
+						margin-left: 47px;
 					}
-					@include max-vw(920) {
-						width: 25%;
-					}
+
 
 					align-items: center;
 					order: 1;
 					display: flex;
 					width: 38%;
-					margin-left: 18px;
+					margin-left: 30px;
 				}
 
 				.amount {
 					order: 2;
-					width: 40%;
+					width: 25%;
 					margin-left: auto;
 					text-align: right;
-
 				}
 
 				.fee {
+					@include max-vw(1000) {
+						width: 30%;
+						margin: 0 30px 0 10px;
+						text-align: right;
+					}
+
 					order: 3;
-					margin: 0 0 0 5px;
+					margin: 0 40px 0 5px;
 
 					&:before {
-						content: "(fee — ";
+						content: '(fee — ';
 					}
 
 					&:after {
-						content: ")";
+						content: ')';
 					}
 				}
 
 				.handler {
-					order: 4;
+					position: absolute;
+					top: 20px;
+					right: 0px;
 				}
 
 				.from {
-					order: 5;
-					margin-left: 32px;
+					order: 4;
+					margin-left: 30px;
 				}
 
 				.from-to-icon {
-					order: 6;
+					order: 5;
+					height: 37px;
 				}
 
 				.to {
-					order: 7;
+					order: 6;
 					margin-right: auto;
 				}
 
 				.age {
-					order: 8;
+					@include max-vw(1000) {
+						margin-right: 30px;
+					}
+
+					order: 7;
 					margin-right: 40px;
 				}
 			}
@@ -323,21 +364,42 @@
 		.line-details {
 			padding: 0 1px;
 
-			li:first-child {
-				margin-top: -1px;
-				border: 1px solid #c2c2c2;
-				border-top: 0;
+			li {
+				&:not(:first-child) {
+					padding-top: 0;
+					line-height: 1;
+				}
+
+				&:first-child {
+					margin-top: -1px;
+					border: 1px solid #c2c2c2;
+					border-top: 0;
+				}
 			}
+
+		}
+
+		.type.icon {
+			margin-right: 5px;
+			margin-left: 18px;
+		}
+
+		.icon-receive-trans,
+		.icon-send-trans,
+		.icon-contract,
+		.icon-account {
+			display: inline-block;
+			padding-right: 27px;
+			background-repeat: no-repeat;
 		}
 	}
 }
 
-@include min-vw(1300) {
+@include min-vw(1000) {
 	.table-transactions {
 		position: relative;
 		display: table;
 		width: 100%;
-		margin-top: 20px;
 
 		.transaction-header {
 			display: contents;
@@ -345,16 +407,19 @@
 			.line {
 				li {
 					@include source-regular();
-					height: 53px;
+					height: 54px;
 					color: #8e8e97;
 					text-transform: capitalize;
 
 					&.type {
-						padding-left: 40px;
+						@include min-vw($md) {
+							padding-left: 47px;
+						}
+
+						padding-left: 30px;
 					}
 				}
 			}
-
 		}
 
 		.transaction-item {
@@ -365,8 +430,8 @@
 		.selected {
 			.line {
 				li {
-
 					border-top: 1px solid #c2c2c2;
+					background-color: transparent;
 
 					&:first-child {
 						border-left: 1px solid #c2c2c2;
@@ -377,7 +442,6 @@
 					}
 				}
 			}
-
 		}
 
 		.line {
@@ -394,6 +458,14 @@
 				vertical-align: middle;
 				white-space: nowrap;
 
+				.line-content {
+					position: relative;
+
+					span {
+						padding-left: 5px;
+					}
+				}
+
 				&:first-child {
 					border-left: 1px solid transparent;
 				}
@@ -402,23 +474,48 @@
 					border-right: 1px solid transparent;
 				}
 
-				.line-content {
-					position: relative;
-				}
-
 				&.type {
-					padding: 0 10px 0 0;
+					padding: 0px;
+
+					.icon-receive-trans+.line-content {
+						@include max-vw($md) {
+							top: 0;
+						}
+
+						top: -1px;
+					}
 
 					.line-content {
 						@include source-semibold();
+
+						@include max-vw($md) {
+							font-size: 13px;
+						}
+
+						left: -2px;
 						color: #5b5c63;
 					}
 
-
 					.icon {
-						margin-left: 25px;
+						margin-right: 10px;
+						margin-left: 18px;
 						font-size: 40px;
+						line-height: 0;
 						vertical-align: middle;
+					}
+
+					.icon-receive-trans,
+					.icon-send-trans,
+					.icon-contract,
+					.icon-account {
+						@include min-vw($md) {
+							margin-left: 47px;
+						}
+
+						display: inline-block;
+						margin-left: 30px;
+						padding-right: 27px;
+						background-repeat: no-repeat;
 					}
 				}
 
@@ -428,19 +525,34 @@
 
 				&.from,
 				&.to {
-					a, span {
+					a,
+					span {
 						@include text-overflow();
-						display: block;
-						max-width: 180px;
+						@include max-vw(1100) {
+							max-width: 80px
+						}
+						@include max-vw(1050) {
+							max-width: 60px
+						}
+						display: inline-flex;
+						max-width: 160px;
 					}
 				}
 
 				&.from {
 					width: 1px;
-					padding: 0 10px;
+					padding: 0;
 				}
 
 				&.to {
+					@include max-vw(1100) {
+						width: 12%;
+						padding: 0 8px;
+					}
+					@include max-vw(1050) {
+						width: 11%;
+						padding: 0 7px;
+					}
 					width: 16%;
 					padding: 0 10px;
 				}
@@ -462,12 +574,10 @@
 
 				&.amount {
 					padding: 0 10px;
-
-
 				}
 
 				&.fee {
-					padding: 0 10px;
+					padding: 0 0 0 10px;
 				}
 
 				&.handler {
@@ -496,31 +606,31 @@
 				@include source-regular();
 				display: flex;
 				width: 0;
-				padding: 20px 0 20px 40px;
 
 				.status {
 					padding-right: 100px;
 					border-right: 1px solid #c2c2c2;
 
 					&-title {
-						padding-bottom: 10px;
-						color: #8e8e97;
-						font-size: 15px;
 
+						padding-bottom: 7px;
+						color: #8e8e97;
+						font-size: 13px;
 					}
 
 					&-content {
 						color: #5b5c63;
-						font-size: 15px;
+						font-size: 14px;
 					}
 				}
 
+				// 8px 0 13px 50px
 				.bytecode {
-					padding-left: 40px;
+					padding-left: 17px;
 
 					&-title {
 						color: #8e8e97;
-						font-size: 15px;
+						font-size: 13px;
 					}
 
 					.button {
@@ -528,7 +638,13 @@
 						border: 0;
 						background-color: transparent;
 						color: #5b5c63;
-						font-size: 16px;
+						font-size: 13px;
+
+						i.icon {
+							width: 17px;
+							min-width: 17px;
+							height: 17px;
+						}
 					}
 				}
 			}

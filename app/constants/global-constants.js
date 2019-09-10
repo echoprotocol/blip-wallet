@@ -27,7 +27,7 @@ export const NETWORKS = {
 	testnet: {
 		remote: {
 			name: 'Remote node',
-			url: 'wss://testnet.echo-dev.io/ws',
+			url: 'ws://testnet.echo-dev.io/ws',
 		},
 		local: {
 			name: 'Local node',
@@ -65,6 +65,7 @@ export const QR_SERVER_URL = {
 export const { ECHO_ASSET_ID } = constants;
 export const ECHO_ASSET_PRECISION = 8;
 export const ECHO_ASSET_SYMBOL = 'ECHO';
+export const MAX_ASSET_SYMBOL_LENGTH = 5;
 export const GLOBAL_ID_1 = constants.DYNAMIC_GLOBAL_OBJECT_ID;
 export const ECHO_PROXY_TO_SELF_ACCOUNT = '1.2.5';
 export const CONTRACT_ID_PREFIX = `1.${constants.OBJECT_TYPES.CONTRACT}`;

@@ -2,10 +2,10 @@
 	display: flex;
 
 	.qr {
-		min-width: 90px;
-		max-width: 90px;
-		min-height: 90px;
-		max-height: 90px;
+		min-width: 83px;
+		max-width: 83px;
+		min-height: 83px;
+		max-height: 83px;
 
 		svg {
 			width: 100%;
@@ -14,30 +14,37 @@
 	}
 
 	.qr-info {
+		@include max-vw($md) {
+			margin-left: 28px;
+		}
+
 		margin-left: 24px;
 	}
 
 	.qr-link {
 		@include source-semibold();
-		@include min-vw(1200) {
-			margin-bottom: 20px;
-			font-size: 19px;
+
+		@include max-vw($md) {
+			margin-bottom: 8px;
 		}
+
 		position: relative;
-		margin-bottom: 14px;
+		margin-bottom: 13px;
 		color: #3f4a52;
 		font-size: 17px;
+		letter-spacing: 0.2px;
 
 		.qr-link-content {
 			@include text-overflow();
-			@include min-vw(1400) {
-				max-width: 300px;
-			}
 			display: block;
-			max-width: 252px;
+			width: 260px;
+			min-width: 3%;
+			max-width: 80%;
 			margin-top: -2px;
 			border-bottom: 1px solid;
 			line-height: 19px;
+
+
 		}
 
 		.btn-copy {
@@ -47,15 +54,44 @@
 			bottom: 0;
 			margin: auto;
 			font-size: 15px;
+
+			i.icon {
+				line-height: 10px;
+			}
+		}
+
+		a {
+			padding: 1px;
+			color: #3f4a52;
+			font-size: 17px;
+
+			&:hover {
+				color: #7d62bc;
+			}
+
+			&:active {
+				color: #a595cd;
+			}
+
+			&:focus {
+				border: 1px solid #8675b1;
+				border-radius: 4px;
+				box-shadow: 0 0 3px rgba(#8675b1, 0.35);
+				color: #3f4a52;
+			}
 		}
 	}
 
 	.qr-description {
 		@include source-regular();
-		@include min-vw(1200) {
-			font-size: 16px;
+
+		@include max-vw($md) {
+			font-size: 14px;
 		}
+
 		color: #5b5c63;
 		font-size: 14px;
+		letter-spacing: 0.25px;
+		line-height: 20px;
 	}
 }

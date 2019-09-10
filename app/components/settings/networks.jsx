@@ -32,53 +32,60 @@ class Networks extends React.Component {
 
 		return (
 			<div className="form-wrap">
-				<div className="title"><FormattedMessage id="settings.networks.title" /></div>
-
-				<div className="line">
-					<div className="line-content">
-						<div className="line-vertical-label">
-							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
+				<div className="lines">
+					<div className="line">
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="settings.networks.select.network" /></span>
 						</div>
-						<Dropdown className="white networks">
-							<Dropdown.Toggle variant="Info" disabled={isDisabled}>
-								<span className="dropdown-toggle-text">
-									{
-										!network ? (
-											<div className={classnames('connected-status', status)}>
-												<div className="connected-popover">
-													<FormattedMessage id={`settings.networks.status.${status}`} />
+						<div className="line-content">
+							<Dropdown className="white networks">
+								<Dropdown.Toggle variant="Info" disabled={isDisabled}>
+									<span className="dropdown-toggle-text">
+										{
+											!network ? (
+												<div className={classnames('connected-status', status)}>
+													<div className="connected-popover">
+														<FormattedMessage id={`settings.networks.status.${status}`} />
+													</div>
 												</div>
-											</div>
-										) : (<div className="connected-status" />)
-									}
-									{FormatHelper.capitalizeFirstLetter(current.get('id'))}
-								</span>
-								<span className="carret" />
-							</Dropdown.Toggle>
+											) : (<div className="connected-status" />)
+										}
+										{FormatHelper.capitalizeFirstLetter(current.get('id'))}
+									</span>
+									<span className="carret" />
+								</Dropdown.Toggle>
 
-							<Dropdown.Menu>
-								<PerfectScrollbar>
-									{
-										networks.map((value) => (
-											<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
-												{FormatHelper.capitalizeFirstLetter(value.get('id'))}
-											</Dropdown.Item>
-										))
-									}
-								</PerfectScrollbar>
-							</Dropdown.Menu>
-						</Dropdown>
-					</div>
-				</div>
-				<div className="line">
-					<div className="line-content">
-						<div className="line-vertical-label">
-							<span className="line-vertical-label-text"><FormattedMessage id="settings.networks.node.address" /></span>
+								<Dropdown.Menu>
+									<PerfectScrollbar>
+										{
+											networks.map((value) => (
+												(value.get('id')) === (current.get('id'))
+													? (
+														<Dropdown.Item className="selected-item" key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+															{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+														</Dropdown.Item>
+													) : (
+														<Dropdown.Item key={value.get('id')} eventKey={value.get('id')} onClick={(() => this.onClick(value))}>
+															{FormatHelper.capitalizeFirstLetter(value.get('id'))}
+														</Dropdown.Item>
+													)
+											))
+										}
+									</PerfectScrollbar>
+								</Dropdown.Menu>
+							</Dropdown>
 						</div>
-						<div className="line-link">
-							{
-								node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl
-							}
+					</div>
+					<div className="line">
+						<div className="line-label">
+							<span className="line-label-text"><FormattedMessage id="settings.networks.node.address" /></span>
+						</div>
+						<div className="line-content">
+							<a className="line-link" href={node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl}>
+								{
+									node === REMOTE_NODE ? current.getIn(['remote', 'url']) : Services.getEcho().localNodeUrl
+								}
+							</a>
 						</div>
 					</div>
 				</div>

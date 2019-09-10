@@ -1,12 +1,12 @@
 .header {
-	@include min-vw(1400) {
-		padding: 0 0 40px;
+	@include min-vw($md) {
+		padding: 0 0 25px;
 	}
+
 	align-items: flex-end;
 	position: relative;
 	display: flex;
-	height: 16vh;
-	min-height: 126px;
+	height: 103px;
 	padding: 0 0 24px;
 
 	&:after {
@@ -28,10 +28,9 @@
 	.page-title {
 		@include source-regular();
 		margin: 0 5vw 0 auto;
-
 		color: #fff;
-		font-size: 2.2em;
-		letter-spacing: 0.022em;
+		font-size: 26px;
+		letter-spacing: 1px;
 		line-height: 1;
 	}
 }

@@ -11,6 +11,7 @@ import { MODAL_BACKUP, MODAL_LOGOUT } from '../../constants/modal-constants';
 import { ECHO_ASSET_PRECISION } from '../../constants/global-constants';
 import FormatHelper from '../../helpers/format-helper';
 import { AUTHORIZATION } from '../../constants/routes-constants';
+import rmIcon from '../../assets/images/rm-icon.svg';
 
 class ManageAccounts extends React.Component {
 
@@ -132,7 +133,7 @@ class ManageAccounts extends React.Component {
 					<PerfectScrollbar className="page-scroll">
 						<div className="manage-accounts-wrap">
 							<div className="title-wrap">
-								<div className="title">My accounts</div>
+								<div className="page-title">My accounts</div>
 								<Button
 									className="btn-link"
 									content={
@@ -148,9 +149,12 @@ class ManageAccounts extends React.Component {
 								<div className="btn-wrap">
 									<Button
 										className="btn-link gray"
-										content={
-											<span>Remove all accounts</span>
-										}
+										content={(
+											<React.Fragment>
+												<img src={rmIcon} alt="" className="btn-icon" />
+												<span>Remove all accounts</span>
+											</React.Fragment>
+										)}
 										onClick={() => this.onOpenModal(MODAL_LOGOUT, { all: true })}
 									/>
 								</div>
