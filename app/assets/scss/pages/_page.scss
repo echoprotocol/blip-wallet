@@ -3,8 +3,12 @@
 	border-radius: 0 0 4px 4px;
 
 	.page {
+		@include min-vw($md) {
+			width: calc(100vw - 225px);
+		}
 		flex-direction: column;
 		display: flex;
+		width: calc(100vw - 225px);
 		height: calc(100vh - 34px);
 		transition: transform 0.2s;
 
@@ -12,26 +16,25 @@
 			align-items: center;
 			justify-content: space-between;
 			display: flex;
+			height: 17px;
 		}
 
-		.title {
-			@include source-semibold();
-			color: #33353f;
-			font-size: 1.3em;
-			letter-spacing: 1.4px;
-			text-transform: uppercase;
+		.page-title {
+			@include page-title();
 		}
 	}
 
 	&.open {
 		.page {
-			@include min-vw(1000) {
-				transform: translateX(-480px);
+			@include min-vw($md) {
+				width: calc(100vw - 255px);
+				transform: translateX(-443px);
 			}
-			@include min-vw(1400) {
-				transform: translateX(-520px);
-			}
-			transform: translateX(-420px);
+			transform: translateX(-363px);
+		}
+
+		.sidebar-settings {
+			left: 100%;
 		}
 	}
 }
@@ -42,172 +45,90 @@
 	height: calc(100vh - 34px);
 }
 
-.page-in-scroll {
-	position: relative;
-	height: calc(100vh - 34px);
-}
-
-.page-in-wrap {
-	@include min-vw(1400) {
-		padding: 40px 50px;
-	}
-
-	padding: 40px 35px;
-
-	.title {
-		@include source-semibold();
-		@include min-vw(1400) {
-			font-size: 18px;
-		}
-		height: 30px;
-		color: #33353f;
-		font-size: 16px;
-		letter-spacing: 0.2em;
-		line-height: 30px;
-	}
-
-	.form-wrap {
-		flex-direction: column;
-		justify-content: center;
-		display: flex;
-		margin: 4em 0 2em;
-		padding: 65px 50px;
-		background-color: #e8e8ea;
-
-		.line-label {
-			@include source-semibold();
-			color: #3f4a52;
-		}
-	}
-
-	.page-in-action {
-		align-items: center;
-		justify-content: center;
-		display: flex;
-		height: 140px;
-
-		button {
-			padding-right: 3em;
-			padding-left: 3em;
-		}
-	}
-}
-
 .page-footer {
 	flex-direction: column;
 	justify-content: space-between;
 	position: relative;
 	display: flex;
-	padding: 2.5em;
-	background-color: #e8e8e8;
+	padding: 25px 22px 22px;
+	background-color: #e3e3e3;
 	box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+}
 
-	.last-transaction {
-		position: relative;
-		padding: 1.8em;
-		border: 1px solid #bcbcbc;
-		border-radius: 4px;
-		outline: none;
-		cursor: pointer;
-
-		.label {
-			@include source-semibold();
-			position: absolute;
-			top: 0;
-			margin: -0.5em 0 0 -10px;
-			padding: 0 10px;
-			background-color: #e8e8e8;
-			font-size: 1.2em;
-			letter-spacing: 0.2em;
-			line-height: 1;
-			text-transform: uppercase;
+.page-action,
+.footer-actions {
+	.btn-wrap {
+		.btn-main,
+		.btn-gray,
+		.btn-primary {
+			@include min-vw($md) {
+				height: 47px;
+				font-size: 18px;
+			}
 		}
+	
+	}
+}
 
-		.line {
-			@include source-regular();
-			display: flex;
-			color: #5b5c63;
+.footer-actions {
+	align-items: center;
+	justify-content: space-between;
+	display: flex;
+	margin-top: auto;
 
-			.date {
-				margin-right: 4em;
-				font-size: 1.4em;
-			}
-
-			.action {
-				font-size: 1.4em;
-			}
-
-			.balance {
-				@include source-semibold();
-				margin-left: auto;
-				color: #3f4a52;
-				font-size: inherit;
-
-				.coins {
-					margin-right: 5px;
-					font-size: 2.1em;
-				}
-
-				.currency {
-					font-size: 1.6em;
-				}
-			}
-
-			.action-info {
-				color: #8e8e97;
-				font-size: 1.4em;
-
-				& + .action-info {
-					margin-left: 4em;
-				}
-
-				.action-label {
-					margin-right: 5px;
-				}
-
-				a {
-					color: #7158ad;
-				}
+	.btn-wrap {
+		
+		@include min-vw($md) {
+			.button {
+				min-width: 200px;
 			}
 		}
 
-		& + .footer-actions {
-			margin-top: 1.5em;
+		button {
+			width: 100%;
+			min-width: 140px;
+			max-width: 10em;
 		}
+
 	}
 
-	.footer-actions {
-		align-items: center;
-		justify-content: space-between;
-		display: flex;
-		margin-top: auto;
+	.footer-info {
+		@include source-regular();
+		font-size: 14px;
+		text-align: right;
 
-		.btn-wrap {
-			button {
-				width: 100%;
-				min-width: 140px;
-				max-width: 10em;
-			}
+		.mode {
+			margin: 0 19px 0 0;
+			color: #8e8e97;
+		}
+		
+		.mode + .sync {
+			margin-top: 6px;
 		}
 
-		.footer-info {
-			@include source-regular();
-			font-size: 1.4em;
-			text-align: right;
+		.sync {
+			color: #5b5c63;
 
-			.mode {
-				margin-bottom: 6px;
-				color: #8e8e97;
+			.percent {
+				@include source-semibold();
+				color: #33353f;
 			}
+		}
+	}
+}
 
-			.sync {
-				color: #5b5c63;
+.page-action {
+	padding: 19px 24px;
+	
+	.btn-wrap {
+		.btn-primary {
+			min-width: 159px;
+			padding: 0 15px;
+		}
 
-				.percent {
-					@include source-semibold();
-					color: #33353f;
-				}
-			}
+		.btn-gray {
+			min-width: 124px;
+			padding: 0 15px;
 		}
 	}
 }

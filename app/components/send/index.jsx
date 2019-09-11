@@ -195,185 +195,191 @@ class Send extends React.Component {
 		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
 
 		return (
-			<div className="send page">
-				<PerfectScrollbar className="page-in-scroll">
-					<div className="page-in-wrap">
-						<div className="title"><FormattedMessage id="send.title" /></div>
-						<div className="form-wrap">
-							<div className="line">
+			<div className="page-wrap">
+				<div className="send page">
+					<PerfectScrollbar className="page-scroll">
+						<div className="send-wrap">
+							<div className="page-title"><FormattedMessage id="send.title" /></div>
+							<section className="rectangle">
+								<div className="form-wrap">
+									<div className="lines">
+										<div className="line">
 
-								<div className="line-label">
-									<span className="line-label-text"><FormattedMessage id="send.from" /></span>
-								</div>
+											<div className="line-label">
+												<span className="line-label-text"><FormattedMessage id="send.from" /></span>
+											</div>
 
-								<div className="line-content">
-									<Dropdown className="white select-account">
-										<Dropdown.Toggle variant="Info">
-											<Avatar accountName={fromAccountName} />
-											<span className="dropdown-toggle-text">
-												{fromAccountName}
-											</span>
-											<span className="carret" />
-										</Dropdown.Toggle>
+											<div className="line-content">
+												<Dropdown className="white select-account">
+													<Dropdown.Toggle variant="Info">
+														<Avatar accountName={fromAccountName} />
+														<span className="dropdown-toggle-text">
+															{fromAccountName}
+														</span>
+														<span className="carret" />
+													</Dropdown.Toggle>
 
-										<Dropdown.Menu>
-											<PerfectScrollbar>
+													<Dropdown.Menu>
+														<PerfectScrollbar>
 
-												{accounts && [...accounts.map((account, id) => {
-													const key = id;
+															{accounts && [...accounts.map((account, id) => {
+																const key = id;
 
-													return (
-														<Dropdown.Item key={key} eventKey={id} onClick={() => this.onChangeAccount(id, account.get('name'))}>
-															{accounts.getIn([id, 'name'])}
-														</Dropdown.Item>
-													);
-												}).values()]}
-											</PerfectScrollbar>
-										</Dropdown.Menu>
-									</Dropdown>
-								</div>
-							</div>
-							<div className="line">
+																return (
+																	<Dropdown.Item key={key} eventKey={id} onClick={() => this.onChangeAccount(id, account.get('name'))}>
+																		{accounts.getIn([id, 'name'])}
+																	</Dropdown.Item>
+																);
+															}).values()]}
+														</PerfectScrollbar>
+													</Dropdown.Menu>
+												</Dropdown>
+											</div>
+										</div>
+										<div className="line">
 
-								<div className="line-label">
-									<span className="line-label-text"><FormattedMessage id="send.to" /></span>
-								</div>
+											<div className="line-label">
+												<span className="line-label-text"><FormattedMessage id="send.to" /></span>
+											</div>
 
-								<div className="line-content">
-									<div className="field">
-										<FormattedMessage id="send.to.placeholder">
-											{
-												(content) => (
-													<Input
-														className={classnames('white', { success: this.isSuccessCheckAccount() })}
-														name="to"
-														placeholder={content}
-														error={!!form.get('to').error}
-														loading={form.get('isCheckLoading')}
-														fluid
-														onChange={(e) => this.onChange(e, fromAccountName)}
-														onKeyPress={(e) => this.onKeyPress(e)}
-														value={form.get('to').value}
-														autoFocus
-														disabled={!!loading}
-													/>
-												)
-											}
-										</FormattedMessage>
-										{
-											form.get('to').error
+											<div className="line-content">
+												<div className="field">
+													<FormattedMessage id="send.to.placeholder">
+														{
+															(content) => (
+																<Input
+																	className={classnames('white', { success: this.isSuccessCheckAccount() })}
+																	name="to"
+																	placeholder={content}
+																	error={!!form.get('to').error}
+																	loading={form.get('isCheckLoading')}
+																	fluid
+																	onChange={(e) => this.onChange(e, fromAccountName)}
+																	onKeyPress={(e) => this.onKeyPress(e)}
+																	value={form.get('to').value}
+																	autoFocus
+																	disabled={!!loading}
+																/>
+															)
+														}
+													</FormattedMessage>
+													{
+														form.get('to').error
 											&& (
 												<div className="error-message">
 													{form.get('to').error}
 												</div>
 											)
-										}
+													}
+												</div>
+											</div>
+										</div>
+										<div className="line">
+
+											<div className="line-label">
+												<FormattedMessage id="send.amount">
+													{
+														(content) => (
+															<span className="line-label-text">{content}</span>
+														)
+													}
+												</FormattedMessage>
+											</div>
+
+											<div className="line-content">
+												<FormattedMessage id="send.amount">
+													{
+														(content) => (
+															<InputDropdown
+																title={content}
+																name="amount"
+																value={form.get('amount').value}
+																hints={[`${amountTitle} ${form.get('minAmount').amount} ${form.get('minAmount').symbol}`]}
+																onChange={(e) => this.onAmountChange(e)}
+																errorText={form.get('amount').error}
+																setValue={(field, value) => this.props.setValue(field, value)}
+																onKeyPress={(e) => this.onKeyPress(e)}
+																path={{ field: 'selectedBalance' }}
+																data={{
+																	balances,
+																	tokens,
+																	from: form.get('from').value || form.get('initialData').accountId || accounts.findKey((a) => a.get('primary')),
+																	hiddenAssets,
+																}}
+																initialData={{
+																	selectedBalance: form.get('selectedBalance'),
+																	symbol: form.get('initialData').symbol,
+																}}
+																disable={!!loading}
+																globalLoading={!!loading}
+																setFee={this.props.setFeeFormValue}
+																placeholder={placeholderAmount}
+															/>
+														)
+													}
+												</FormattedMessage>
+											</div>
+										</div>
+										<div className="line">
+											<FormattedMessage id="send.fee">
+												{
+													(content) => (
+														<React.Fragment>
+															<div className="line-label">
+																<span className="line-label-text">{content}</span>
+															</div>
+
+															<div className="line-content">
+																<InputDropdown
+																	title={content}
+																	name="fee"
+																	disable
+																	globalLoading={!!loading}
+																	errorText={form.get('fee').error}
+																	setValue={(field, value) => this.props.setValue(field, value)}
+																	path={{ field: 'selectedFeeBalance' }}
+																	data={{
+																		balances,
+																		from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
+																		hiddenAssets,
+																	}}
+																	value={form.get('fee').value}
+																	setFee={this.props.setFeeFormValue}
+																	placeholder={placeholderFee}
+																/>
+															</div>
+														</React.Fragment>
+													)
+												}
+											</FormattedMessage>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div className="line">
-
-								<div className="line-label">
-									<FormattedMessage id="send.amount">
-										{
-											(content) => (
-												<span className="line-label-text">{content}</span>
-											)
-										}
-									</FormattedMessage>
-								</div>
-
-								<div className="line-content">
-									<FormattedMessage id="send.amount">
-										{
-											(content) => (
-												<InputDropdown
-													title={content}
-													name="amount"
-													value={form.get('amount').value}
-													hints={[`${amountTitle} ${form.get('minAmount').amount} ${form.get('minAmount').symbol}`]}
-													onChange={(e) => this.onAmountChange(e)}
-													errorText={form.get('amount').error}
-													setValue={(field, value) => this.props.setValue(field, value)}
-													onKeyPress={(e) => this.onKeyPress(e)}
-													path={{ field: 'selectedBalance' }}
-													data={{
-														balances,
-														tokens,
-														from: form.get('from').value || form.get('initialData').accountId || accounts.findKey((a) => a.get('primary')),
-														hiddenAssets,
-													}}
-													initialData={{
-														selectedBalance: form.get('selectedBalance'),
-														symbol: form.get('initialData').symbol,
-													}}
-													disable={!!loading}
-													globalLoading={!!loading}
-													setFee={this.props.setFeeFormValue}
-													placeholder={placeholderAmount}
-												/>
-											)
-										}
-									</FormattedMessage>
-								</div>
-							</div>
-							<div className="line">
-
-								<FormattedMessage id="send.fee">
-									{
-										(content) => (
-											<React.Fragment>
-												<div className="line-label">
-													<span className="line-label-text">{content}</span>
-												</div>
-
-												<div className="line-content">
-													<InputDropdown
-														title={content}
-														name="fee"
-														disable
-														globalLoading={!!loading}
-														errorText={form.get('fee').error}
-														setValue={(field, value) => this.props.setValue(field, value)}
-														path={{ field: 'selectedFeeBalance' }}
-														data={{
-															balances,
-															from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
-															hiddenAssets,
-														}}
-														value={form.get('fee').value}
-														setFee={this.props.setFeeFormValue}
-														placeholder={placeholderFee}
+							</section>
+							{
+								!(!this.isTransactionValidate() || !this.isSuccessCheckAccount() || !!loading) && (
+									<div className="btn-wrap">
+										<FormattedMessage id="send.button">
+											{
+												(content) => (
+													<Button
+														className="btn-primary white"
+														content={(
+															<div className="text">
+																{content}
+															</div>
+														)}
+														onClick={() => this.onSend()}
 													/>
-												</div>
-											</React.Fragment>
-										)
-									}
-								</FormattedMessage>
-							</div>
-
+												)
+											}
+										</FormattedMessage>
+									</div>
+								)
+							}
 						</div>
-
-						<div className="page-in-action">
-							<FormattedMessage id="send.button">
-								{
-									(content) => (
-										<Button
-											className="btn-primary white"
-											content={(
-												<div className="text">
-													{content}
-												</div>
-											)}
-											onClick={() => this.onSend()}
-											disabled={!this.isTransactionValidate() || !this.isSuccessCheckAccount() || !!loading}
-										/>
-									)
-								}
-							</FormattedMessage>
-						</div>
-					</div>
-				</PerfectScrollbar>
+					</PerfectScrollbar>
+				</div>
 			</div>
 		);
 	}

@@ -159,7 +159,7 @@ class Settings extends React.Component {
 						</div>
 						<div className="select-accounts">
 							<div className="title"><FormattedMessage id="wallet.select" /></div>
-							<div className="accounts-list">
+							<div className="select-accounts-list">
 								{this.renderAccounts()}
 							</div>
 						</div>
@@ -288,9 +288,6 @@ class Settings extends React.Component {
 
 		return (
 			<div className="sidebar-settings">
-				<div className="head">
-					<Button className="btn-close" onClick={(e) => this.onClose(e)} />
-				</div>
 				<div className="settings-tabs">
 					<div className="menu">
 						{

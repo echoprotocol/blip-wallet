@@ -254,7 +254,6 @@ class Filter extends React.Component {
 					<Button className="btn-inversed" onClick={(e) => this.onReset(e)}>
 						<span className="text"><FormattedMessage id="history.filter.buttons.reset" /></span>
 					</Button>
-					<Button className="btn-close" onClick={(e) => this.onClose(e)} />
 				</div>
 				<div className="body">
 					<div className="field">

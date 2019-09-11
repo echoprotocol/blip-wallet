@@ -1,0 +1,46 @@
+.rectangle {
+
+	background-color: #e8e8ea;
+
+	.title {
+		@include page-title();
+
+		@include min-vw($md) {
+			margin-bottom: 20px;
+		}
+
+		margin-bottom: 8px;
+	}
+
+	.form-wrap {
+		.lines {
+			@include min-vh(680) {
+				min-height: auto;
+			}
+
+			padding: 0;
+		}
+
+		.line {
+			&:not(:last-child) {
+				@include max-vw($md) {
+					margin-bottom: 14px;
+				}
+
+				margin-bottom: 31px;
+			}
+		}
+
+		.line-label {
+			@include source-semibold();
+
+			@include min-vw($md) {
+				font-size: 16px;
+				line-height: 50px;
+			}
+
+			margin-right: 21px;
+			color: #3f4a52;
+		}
+	}
+}

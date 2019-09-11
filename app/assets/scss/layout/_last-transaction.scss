@@ -1,0 +1,70 @@
+.last-transaction {
+	position: relative;
+	padding: 19px 32px;
+	border: 1px solid #bcbcbc;
+	border-radius: 4px;
+	outline: none;
+	cursor: pointer;
+
+	.label {
+		@include page-title();
+		position: absolute;
+		top: 0;
+		margin: -9px 0 0 -11px;
+		padding: 0 10px;
+		background-color: #e3e3e3;
+		line-height: 1;
+	}
+
+	.line {
+		@include source-regular();
+		display: flex;
+		color: #5b5c63;
+
+		.date {
+			margin-right: 4em;
+			font-size: 14px;
+		}
+
+		.action {
+			font-size: 14px;
+		}
+
+		.balance {
+			@include source-semibold();
+			margin-left: auto;
+			color: #3f4a52;
+			font-size: inherit;
+
+			.coins {
+				margin-right: 5px;
+				font-size: 21px;
+			}
+
+			.currency {
+				font-size: 16px;
+			}
+		}
+
+		.action-info {
+			color: #8e8e97;
+			font-size: 14px;
+
+			& + .action-info {
+				margin-left: 4em;
+			}
+
+			.action-label {
+				margin-right: 5px;
+			}
+
+			a {
+				color: #7158ad;
+			}
+		}
+	}
+
+	& + .footer-actions {
+		margin-top: 27px;
+	}
+}

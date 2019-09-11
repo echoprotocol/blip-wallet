@@ -12,7 +12,7 @@
 	padding: 5vh 5vw;
 
 	.blip-logo {
-		@include min-vw(1200) {
+		@include min-vw($md) {
 			width: 90px;
 		}
 		width: 64px;
@@ -38,8 +38,13 @@
 }
 
 .unlock-info {
+	@include min-vw($md) {
+		font-size: 28px;
+		letter-spacing: 0.9px;
+	}
 	@include source-regular();
 	margin: -2em 0 2em;
 	color: #fff;
-	font-size: 2.1em;
+	font-size: 21px;
+	letter-spacing: 0.7px;
 }

@@ -1,7 +1,8 @@
 .backup-list {
 	.backup-item {
-		padding: 20px 40px;
-		background-color: rgba(#565468, 0.4);
+		width: 555px;
+		padding: 20px 40px 28px 40px;
+		background-color: #565468;
 
 		&:not(:last-child) {
 			margin-bottom: 20px;
@@ -9,22 +10,33 @@
 
 		.key {
 			color: #fff;
-			font-size: 1.5em;
-			line-height: 32px;
+			font-family: 'SourceSansPro-Regular';
+			font-size: 15px;
+			line-height: 15px;
 			white-space: nowrap;
 
 			&-wrap {
 				@include source-regular();
+				margin: 0;
 
-				&:not(:last-child) {
-					margin-bottom: 18px;
+				&:first-child {
+					margin-bottom: 23px;
+
+					.key {
+						font-size: 14px;
+					}
+				}
+
+				&:nth-child(2) {
+					margin-bottom: 4px;
 				}
 			}
 
 			&-label {
-				margin-bottom: 8px;
-				color: #565468;
-				font-size: 1.3em;
+				margin-bottom: 9px;
+				color: #898f95;
+				font-size: 13px;
+				font-weight: 400;
 			}
 
 			&-action {
@@ -33,7 +45,9 @@
 
 				.key {
 					margin-right: 10px;
+
 				}
+
 			}
 
 		}

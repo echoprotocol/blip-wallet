@@ -141,7 +141,7 @@
 	"history": {
 		"loading": "Transactions are loading",
 		"table": {
-			"title": "My transitions",
+			"title": "My Transactions",
 			"type": "Type",
 			"age": "Age",
 			"from": "From",

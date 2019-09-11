@@ -5,7 +5,7 @@
 	display: flex;
 	width: 100%;
 
-	& > .title {
+	&>.title {
 		margin: -28px auto 20px 0;
 		text-transform: uppercase;
 	}
@@ -15,6 +15,7 @@
 		justify-content: center;
 		position: relative;
 		display: flex;
+		line-height: 42px;
 	}
 
 	.form-action {
@@ -23,10 +24,7 @@
 		}
 
 		.btn-primary {
-			@include min-vw(1400) {
-				width: 270px;
-			}
-			width: 168px;
+			width: 184px;
 		}
 	}
 
@@ -34,6 +32,7 @@
 		@include min-vh(680) {
 			min-height: calc(68vh - 35px);
 		}
+
 		flex-direction: column;
 		justify-content: center;
 		display: flex;
@@ -43,57 +42,44 @@
 	.line {
 		justify-content: flex-end;
 		display: flex;
-		
-		&-vertical-label {
-			@include source-semibold();
-			color: #3f4a52;
-		}
-
-		&-vertical-label,
-		&-label {
-
-			@include min-vw(1400) {
-				line-height: 60px;
-			}
-			position: relative;
-			font-size: 1.6em;
-			letter-spacing: 0;
-			line-height: 44px;
-			white-space: nowrap;
-		}
 
 		&-label {
 			@include source-regular();
-			margin-right: 1.9em;
-			color: #fff;
-			text-align: right;
-		}
 
-		&-label-text {
-			position: absolute;
-			right: 0;
+			@include min-vw($md) {
+				font-size: 16px;
+			}
+
+			position: relative;
+			margin-right: 19px;
+			color: #fff;
+			font-size: 15px;
+			letter-spacing: .3px;
+			line-height: 40px;
+			text-align: right;
+			white-space: nowrap;
 		}
 
 		&-content {
-			@include min-vw(1200) {
-				min-width: 420px;
+			@include max-vw($md) {
+				width: 360px;
 			}
-			@include min-vw(1400) {
-				min-width: 460px;
-			}
-			width: 400px;
+
+			width: 420px;
+			line-height: 42px;
 		}
 
 		&:not(:last-child) {
-			@include min-vw(1400) {
+			@include min-vw($md) {
 				margin-bottom: 40px;
 			}
+
 			margin-bottom: 35px;
 		}
 	}
 }
 
-@include max-vw(1200) {
+@include max-vw($md) {
 	.withSidebar {
 		.form-wrap {
 			.line {
@@ -106,10 +92,6 @@
 					&-text {
 						position: relative;
 					}
-				}
-
-				&-content {
-					width: 420px;
 				}
 			}
 

@@ -1,19 +1,83 @@
-.receive {
-	& > .title {
-		text-transform: uppercase;
+.receive-wrap {
+	@include max-vw($md) {
+		padding: 42px 36px 0;
 	}
+
+	padding: 50px 57px 0;
 
 	.description-block {
 		@include source-regular();
-		@include min-vw(1400) {
-			font-size: 18px;
+
+		@include max-vw($md) {
+			margin-top: 17px;
+			font-size: 14px;
+			letter-spacing: 0.2px;
 		}
-		margin-top: 40px;
+
+		margin-top: 28px;
+		margin-bottom: 22px;
 		color: #3f4a52;
 		font-size: 16px;
+		letter-spacing: 0.5px;
 
-		& + .accounts-list {
-			margin-top: 30px;
+		&+.accounts-list {
+			@include max-vw($md) {
+				margin-bottom: 40px;
+			}
+
+			margin-top: 22px;
+			margin-bottom: 50px;
+		}
+	}
+
+	.account-item {
+		height: 68px;
+		padding: 8px;
+	}
+
+	.rectangle {
+		@include max-vw($md) {
+			padding: 20px 55px 33px;
+		}
+
+		@media (max-width: 800px) {
+			padding: 20px 20px 33px;
+		}
+
+		margin-bottom: 30px;
+		padding: 58px 134px 68px;
+
+		.lines {
+			.line {
+				.line-label {
+					@include max-vw($md) {
+						margin-left: -2px;
+						line-height: 37px;
+					}
+				}
+
+				&:nth-child(2) {
+					@include max-vw($md) {
+						margin-bottom: 22px;
+					}
+
+					margin-bottom: 37px;
+
+				}
+
+				.line-content>.field .input-dropdown {
+					@include max-vw($md) {
+						height: 44px;
+					}
+
+					height: 50px;
+
+					.dropdown-toggle-text {
+						padding-right: 18px;
+						text-align: right;
+					}
+				}
+			}
 		}
 	}
 }

@@ -16,6 +16,7 @@
 @import 'layout/sidebar';
 @import 'layout/sidebar-settings';
 @import 'layout/modal';
+@import 'layout/last-transaction';
 
 @import 'components/button';
 @import 'components/link';
@@ -31,6 +32,7 @@
 @import 'components/accounts-list';
 @import 'components/qr';
 @import 'components/logo-animations';
+@import 'components/rectangle-section';
 
 @import 'pages/page';
 @import 'pages/auth';
@@ -45,3 +47,7 @@
 @import 'pages/settings';
 @import 'pages/receive';
 @import 'pages/password';
+
+body {
+	overflow: hidden;
+}
