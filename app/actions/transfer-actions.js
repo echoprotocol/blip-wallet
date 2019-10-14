@@ -183,7 +183,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 			const asset = selectedBalance
 				? objectsById.get(objectsById.getIn([selectedBalance, 'asset_type']))
 				: objectsById.get(ECHO_ASSET_ID);
-			type = 'transfer';
+			type = OPERATIONS_IDS.TRANSFER;
 
 			options = {
 				amount: {
@@ -384,7 +384,7 @@ export const send = () => async (dispatch, getState) => {
 			};
 		} else {
 
-			type = 'transfer';
+			type = OPERATIONS_IDS.TRANSFER;
 			options = {
 				amount: {
 					amount: parseFloat(amount),

@@ -27,7 +27,7 @@ export const NETWORKS = {
 	testnet: {
 		remote: {
 			name: 'Remote node',
-			url: 'ws://testnet.echo-dev.io/ws',
+			url: 'ws://195.201.164.54:36311/ws',
 		},
 		local: {
 			name: 'Local node',
@@ -68,7 +68,7 @@ export const ECHO_ASSET_SYMBOL = 'ECHO';
 export const MAX_ASSET_SYMBOL_LENGTH = 5;
 export const GLOBAL_ID_1 = constants.DYNAMIC_GLOBAL_OBJECT_ID;
 export const ECHO_PROXY_TO_SELF_ACCOUNT = '1.2.5';
-export const CONTRACT_ID_PREFIX = `1.${constants.OBJECT_TYPES.CONTRACT}`;
+export const CONTRACT_ID_PREFIX = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.CONTRACT}`;
 export const EETH_ASSET_SYMBOL = 'EETH';
 export const ERC20_TOKEN_PRECISION = 18;
 

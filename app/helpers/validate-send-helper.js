@@ -17,7 +17,7 @@ export default class ValidateSendHelper {
 
 	static isAccountBalanceId(v) {
 
-		const accountBalanceIdRegex = new RegExp(`^2\\.${constants.CHAIN_TYPES.IMPLEMENTATION_OBJECT_TYPE.ACCOUNT_BALANCE}\\.[1-9]+$`);
+		const accountBalanceIdRegex = new RegExp(`^2\\.${constants.CHAIN_TYPES.IMPLEMENTATION_OBJECT_TYPE_ID.ACCOUNT_BALANCE}\\.[1-9]+$`);
 
 		return typeof v === 'string' && accountBalanceIdRegex.test(v);
 	}

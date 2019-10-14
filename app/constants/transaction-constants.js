@@ -1,6 +1,6 @@
 import { OPERATIONS_IDS, constants } from 'echojs-lib';
 
-export const OPERATION_ID_PREFIX = `1.${constants.OBJECT_TYPES.OPERATION_HISTORY}.`;
+export const OPERATION_ID_PREFIX = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.OPERATION_HISTORY}.`;
 export const ASSET_TYPE = 'ASSET';
 export const TOKEN_TYPE = 'TOKEN';
 
@@ -32,9 +32,8 @@ export const CONTRACT_RESULT_TYPE_1 = 1;
 export const CONTRACT_RESULT_EXCEPTED_NONE = 'None';
 
 export const TRANSFER_KEYS = {
-	transfer: 'from',
-	contract: 'registrar',
 	[OPERATIONS_IDS.CONTRACT_CALL]: 'registrar',
+	[OPERATIONS_IDS.TRANSFER]: 'from',
 };
 
 export const OPERATIONS = {
