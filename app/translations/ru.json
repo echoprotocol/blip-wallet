@@ -303,6 +303,9 @@
             "title": "Запрос баланса",
             "subject": "Аккаунт"
         },
+        "balance_freeze": {
+			"title": "Заморозить баланс",
+		},
         "override_transfer": {
             "title": "Отменить перевод",
             "from": "Отправитель",
@@ -326,9 +329,11 @@
             "from": "Отправитель",
             "subject": "Получатель"
         },
-        "sidechain_change_config": {
-			"title": "Изменить конфигурацию sidechain"
-		},
+        "contract_update": {
+            "title": "Обновление контракта",
+            "from": "Аккаунт",
+            "subject": "Контракт"
+        },
 		"account_address_create": {
 			"title": "Создать адрес аккаунта",
 			"from": "Владелец"
@@ -371,12 +376,12 @@
             "from": "Аккаунт",
             "subject": "Контракт"
         },
-        "sidechain_eth_issue": {
+        "sidechain_issue": {
             "title": "Выпуск sidechain",
             "from": "Аккаунт",
             "subject": "Депозит"
         },
-        "sidechain_eth_burn": {
+        "sidechain_burn": {
             "title": "Сжечь sidechain",
             "from": "Аккаунт",
             "subject": "ID вывода"
@@ -401,10 +406,43 @@
             "from": "Член комитета",
             "subject": "Ethereum адрес"
         },
-        "contract_update": {
-            "title": "Обновление контракта",
+        "sidechain_erc20_issue": {
+            "title": "Выпуск ERC20 токена",
             "from": "Аккаунт",
-            "subject": "Контракт"
+            "subject": "Токен"
+        },
+        "sidechain_erc20_burn": {
+            "title": "Сжечь ERC20 токен",
+            "from": "Аккаунт",
+            "subject": "Токен"
+        },
+        "sidechain_btc_create_address": {
+            "title": "Создать BTC адрес",
+            "from": "Аккаунт"
+        },
+        "sidechain_btc_intermediate_deposit": {
+            "title": "Промежуточный BTC депозит",
+            "from": "Аккаунт",
+            "subject": "Промежуточный адрес"
+        },
+        "sidechain_btc_deposit": {
+            "title": "BTC депозит",
+            "from": "Аккаунт",
+            "subject": "ID промежуточного депозита"
+        },
+        "sidechain_btc_withdraw": {
+            "title": "BTC вывод",
+            "from": "Аккаунт",
+            "subject": "BTC адрес"
+        },
+        "sidechain_btc_approve_withdraw": {
+            "title": "Одобрение вывода BTC",
+            "from": "Член комитета",
+            "subject": "ID вывода"
+        },
+        "sidechain_btc_aggregate": {
+            "title": "Объединение BTC",
+            "subject": "ID транзакции"
         }
 	},
 

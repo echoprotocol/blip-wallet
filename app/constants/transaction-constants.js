@@ -112,24 +112,6 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	account_transfer: {
-		value: OPERATIONS_IDS.ACCOUNT_TRANSFER,
-		name: 'operations.account_transfer.title',
-		options: {
-			from: {
-				field: 'account_id',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.account_transfer.from',
-			},
-			subject: {
-				field: 'new_owner',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.account_transfer.subject',
-			},
-			amount: null,
-			asset: null,
-		},
-	},
 	asset_create: {
 		value: OPERATIONS_IDS.ASSET_CREATE,
 		name: 'operations.asset_create.title',
@@ -428,6 +410,20 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
+	balance_freeze: {
+		value: OPERATIONS_IDS.BALANCE_FREEZE,
+		name: 'operations.balance_freeze.title',
+		options: {
+			from: null,
+			subject: {
+				field: 'deposit_to_account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.balance_freeze.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
 	override_transfer: {
 		value: OPERATIONS_IDS.OVERRIDE_TRANSFER,
 		name: 'operations.override_transfer.title',
@@ -540,12 +536,20 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	sidechain_change_config: {
-		value: OPERATIONS_IDS.SIDECHAIN_CHANGE_CONFIG,
-		name: 'operations.sidechain_change_config.title',
+	contract_update: {
+		value: OPERATIONS_IDS.CONTRACT_UPDATE,
+		name: 'operations.contract_update.title',
 		options: {
-			from: null,
-			subject: null,
+			from: {
+				field: 'sender',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.contract_update.from',
+			},
+			subject: {
+				field: 'contract',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_update.subject',
+			},
 			amount: null,
 			asset: null,
 		},
@@ -722,19 +726,19 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	sidechain_eth_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ETH_ISSUE,
-		name: 'operations.sidechain_eth_issue.title',
+	sidechain_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
+		name: 'operations.sidechain_issue.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.sidechain_eth_issue.from',
+				label: 'operations.sidechain_issue.from',
 			},
 			subject: {
 				field: 'deposit_id',
 				type: OPTION_TYPES.NUMBER,
-				label: 'operations.sidechain_eth_issue.subject',
+				label: 'operations.sidechain_issue.subject',
 			},
 			amount: {
 				field: 'value.amount',
@@ -746,19 +750,19 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	sidechain_eth_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_ETH_BURN,
-		name: 'operations.sidechain_eth_burn.title',
+	sidechain_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_BURN,
+		name: 'operations.sidechain_burn.title',
 		options: {
 			from: {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.sidechain_eth_burn.from',
+				label: 'operations.sidechain_burn.from',
 			},
 			subject: {
 				field: 'withdraw_id',
 				type: OPTION_TYPES.NUMBER,
-				label: 'operations.sidechain_eth_burn.subject',
+				label: 'operations.sidechain_burn.subject',
 			},
 			amount: {
 				field: 'value.amount',
@@ -857,22 +861,150 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	contract_update: {
-		value: OPERATIONS_IDS.CONTRACT_UPDATE,
-		name: 'operations.contract_update.title',
+	sidechain_erc20_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE,
+		name: 'operations.sidechain_erc20_issue.title',
 		options: {
 			from: {
-				field: 'sender',
+				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.contract_update.from',
+				label: 'operations.sidechain_erc20_issue.from',
 			},
 			subject: {
-				field: 'contract',
-				type: OPTION_TYPES.CONTRACT,
-				label: 'operations.contract_update.subject',
+				field: 'token',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_erc20_issue.subject',
+			},
+			amount: {
+				field: 'amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: null,
+		},
+	},
+	sidechain_erc20_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_BURN,
+		name: 'operations.sidechain_erc20_burn.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_erc20_burn.from',
+			},
+			subject: {
+				field: 'token',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_erc20_burn.subject',
+			},
+			amount: {
+				field: 'amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: null,
+		},
+	},
+	sidechain_btc_create_address: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS,
+		name: 'operations.sidechain_btc_create_address.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_create_address.from',
+			},
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_btc_intermediate_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT,
+		name: 'operations.sidechain_btc_intermediate_deposit.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_intermediate_deposit.from',
+			},
+			subject: {
+				field: 'intermediate_address',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_intermediate_deposit.subject',
 			},
 			amount: null,
 			asset: null,
 		},
 	},
+	sidechain_btc_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT,
+		name: 'operations.sidechain_btc_deposit.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_deposit.from',
+			},
+			subject: {
+				field: 'intermediate_deposit_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_deposit.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_btc_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW,
+		name: 'operations.sidechain_btc_withdraw.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_withdraw.from',
+			},
+			subject: {
+				field: 'btc_addr',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_withdraw.subject',
+			},
+			amount: {
+				field: 'value',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: null,
+		},
+	},
+	sidechain_btc_approve_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_WITHDRAW,
+		name: 'operations.sidechain_btc_approve_withdraw.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_approve_withdraw.from',
+			},
+			subject: {
+				field: 'withdraw_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_approve_withdraw.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_btc_aggregate: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE,
+		name: 'operations.sidechain_btc_aggregate.title',
+		options: {
+			from: null,
+			subject: {
+				field: 'transaction_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_aggregate.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
+
 };
