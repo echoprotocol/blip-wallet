@@ -414,14 +414,20 @@ export const OPERATIONS = {
 		value: OPERATIONS_IDS.BALANCE_FREEZE,
 		name: 'operations.balance_freeze.title',
 		options: {
-			from: null,
-			subject: {
-				field: 'deposit_to_account',
+			from: {
+				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.balance_freeze.subject',
+				label: 'operations.balance_freeze.from',
 			},
-			amount: null,
-			asset: null,
+			subject: null,
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
 		},
 	},
 	override_transfer: {

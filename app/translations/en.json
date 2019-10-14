@@ -286,6 +286,7 @@
 		},
 		"balance_freeze": {
 			"title": "Freeze balance",
+			"from": "Account"
 		},
 		"override_transfer": {
 			"title": "Override transfer",

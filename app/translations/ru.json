@@ -305,6 +305,7 @@
         },
         "balance_freeze": {
 			"title": "Заморозить баланс",
+            "from": "Аккаунт"
 		},
         "override_transfer": {
             "title": "Отменить перевод",
