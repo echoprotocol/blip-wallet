@@ -288,6 +288,10 @@
 			"title": "Freeze balance",
 			"from": "Account"
 		},
+		"balance_unfreeze": {
+			"title": "Unfreeze balance",
+			"from": "Account"
+		},
 		"override_transfer": {
 			"title": "Override transfer",
 			"from": "From",
@@ -425,6 +429,10 @@
 		"sidechain_btc_aggregate": {
 			"title": "Aggregate BTC",
 			"subject": "Transaction ID"
+		},
+		"block_reward": {
+			"title": "Block reward",
+			"subject": "Account"
 		}
 	},
 

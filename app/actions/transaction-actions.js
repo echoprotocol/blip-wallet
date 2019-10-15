@@ -86,7 +86,6 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 	}
 
 	const block = await Services.getEcho().api.getBlock(blockNumber);
-	const feeAsset = await Services.getEcho().api.getObject(operation.getIn(['fee', 'asset_id']));
 
 	let { name, options } = Object.values(OPERATIONS).find((i) => i.value === type);
 
@@ -98,12 +97,16 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 		type,
 		name,
 		timestamp: block.timestamp,
-		fee: {
+	};
+
+	if (operation.get('fee')) {
+		const feeAsset = await Services.getEcho().api.getObject(operation.getIn(['fee', 'asset_id']));
+		object.fee = {
 			amount: operation.getIn(['fee', 'amount']),
 			precision: feeAsset.precision,
 			symbol: feeAsset.symbol,
-		},
-	};
+		};
+	}
 
 	if (CONTRACT_TYPES.includes(type)) {
 		const result = await Services.getEcho().api.getContractResult(resultId);
@@ -138,8 +141,9 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 					value: field,
 					id: field,
 				};
+			case OPTION_TYPES.ECHO_ASSET:
 			case OPTION_TYPES.ASSET:
-				response = await Services.getEcho().api.getObject(field);
+				response = await Services.getEcho().api.getObject(field || ECHO_ASSET_ID);
 
 				return {
 					...base,
@@ -257,11 +261,11 @@ const getFilteredHistory = async (filter, offset = 0, count = DEFAULT_HISTORY_CO
 	);
 
 	let transactions = items.map(({
-		id, body, transaction, result,
+		id, body, transaction, result, virtual, block,
 	}) => formatTransaction(
 		Number(id),
 		fromJS(body),
-		transaction.block.round,
+		virtual ? block.round : transaction.block.round,
 		result,
 		selectedAccounts,
 	));
@@ -319,10 +323,7 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 	coins = coins.map((i) => ({ ...i, selected: true }));
 	filter = filter.set('coins', fromJS(coins));
 
-	// TODO: delete slice after adding new operation to graphql
-	const oldOperations = Object.keys(OPERATIONS).slice(0, Object.keys(OPERATIONS).length - 7);
-
-	filter = filter.set('types', fromJS(oldOperations.map((type) => ({
+	filter = filter.set('types', fromJS(Object.keys(OPERATIONS).map((type) => ({
 		type,
 		name: OPERATIONS[type].name,
 		selected: true,
@@ -449,7 +450,7 @@ export const loadMoreTransactions = () => async (dispatch, getState) => {
  * @returns {Function}
  */
 export const setNewTransaction = ({
-	id, body, transaction, result,
+	id, body, transaction, result, virtual, block,
 }) => async (dispatch, getState) => {
 
 	const selectedAccounts = getState().wallet.getIn(['history', 'filter', 'accounts'])
@@ -459,7 +460,7 @@ export const setNewTransaction = ({
 	const operation = await formatTransaction(
 		Number(id),
 		fromJS(body),
-		transaction.block.round,
+		virtual ? block.round : transaction.block.round,
 		result,
 		selectedAccounts,
 	);

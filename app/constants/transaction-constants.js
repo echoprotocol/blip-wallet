@@ -14,6 +14,7 @@ export const OPTION_TYPES = {
 	CONTRACT_ADDRESS: 'eth_address',
 	EETH_ASSET: 'eEth',
 	ERC20_TOKEN: 'erc20_token',
+	ECHO_ASSET: 'ECHO',
 };
 
 export const CONTRACT_TYPES = [
@@ -147,7 +148,7 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	asset_bitasset_update: {
+	asset_update_bitasset: {
 		value: OPERATIONS_IDS.ASSET_UPDATE_BITASSET,
 		name: 'operations.asset_bitasset_update.title',
 		options: {
@@ -417,6 +418,26 @@ export const OPERATIONS = {
 				field: 'account',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.balance_freeze.from',
+			},
+			subject: null,
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	balance_unfreeze: {
+		value: OPERATIONS_IDS.BALANCE_UNFREEZE,
+		name: 'operations.balance_unfreeze.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.balance_unfreeze.from',
 			},
 			subject: null,
 			amount: {
@@ -1011,5 +1032,23 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-
+	block_reward_operation: {
+		value: OPERATIONS_IDS.BLOCK_REWARD,
+		name: 'operations.block_reward.title',
+		options: {
+			from: null,
+			subject: {
+				field: 'reciever',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.block_reward.subject',
+			},
+			amount: {
+				field: 'amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				type: OPTION_TYPES.ECHO_ASSET,
+			},
+		},
+	},
 };

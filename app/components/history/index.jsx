@@ -226,7 +226,7 @@ class History extends React.Component {
 						<li className="from-to-icon">
 							{
 								/* left */
-								transaction.get('subject') ? (
+								transaction.get('from') && transaction.get('subject') ? (
 									<Icon className="arrow-direction" />
 								) : null
 							}

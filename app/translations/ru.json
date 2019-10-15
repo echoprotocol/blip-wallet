@@ -307,6 +307,10 @@
 			"title": "Заморозить баланс",
             "from": "Аккаунт"
 		},
+        "balance_unfreeze": {
+			"title": "Разморозить баланс",
+			"from": "Аккаунт"
+		},
         "override_transfer": {
             "title": "Отменить перевод",
             "from": "Отправитель",
@@ -444,7 +448,11 @@
         "sidechain_btc_aggregate": {
             "title": "Объединение BTC",
             "subject": "ID транзакции"
-        }
+        },
+        "block_reward": {
+			"title": "Вознаграждение за блок",
+			"subject": "Аккаунт"
+		}
 	},
 
     "send": {
