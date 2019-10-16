@@ -14,7 +14,11 @@ export const getHistoryByAccounts = (accounts, assets, tokens, operations, offse
 						round
 					}
 				},
-				result
+				result,
+				block {
+					round
+				},
+				virtual
 			},
 			total
 		}

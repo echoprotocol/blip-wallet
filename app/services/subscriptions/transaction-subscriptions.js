@@ -33,7 +33,11 @@ export const newOperation = (filter) => {
 					round
 				}
 			},
-			result
+			result,
+			block {
+				round
+			},
+			virtual
 		}
 	}
 	`;

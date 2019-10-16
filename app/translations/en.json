@@ -247,7 +247,7 @@
 			"title": "Publish feed",
 			"from": "Publisher",
 			"subject": "Asset"
-		},		
+		},
 		"proposal_create": {
 			"title": "Create proposal",
 			"from": "Account"
@@ -259,7 +259,7 @@
 		"proposal_delete": {
 			"title": "Delete proposal",
 			"from": "Account"
-		},		
+		},
 		"committee_member_create": {
 			"title": "Create committee member",
 			"from": "Account"
@@ -284,6 +284,14 @@
 			"title": "Claim balance",
 			"subject": "Account"
 		},
+		"balance_freeze": {
+			"title": "Freeze balance",
+			"from": "Account"
+		},
+		"balance_unfreeze": {
+			"title": "Unfreeze balance",
+			"from": "Account"
+		},
 		"override_transfer": {
 			"title": "Override transfer",
 			"from": "From",
@@ -307,8 +315,10 @@
 			"from": "From",
 			"subject": "To"
 		},
-		"sidechain_change_config": {
-			"title": "Change sidechain config"
+		"contract_update": {
+			"title": "Contract update",
+			"from": "Account",
+			"subject": "Contract"
 		},
 		"account_address_create": {
 			"title": "Create account address",
@@ -352,12 +362,12 @@
 			"from": "Account",
 			"subject": "Contract"
 		},
-		"sidechain_eth_issue": {
+		"sidechain_issue": {
 			"title": "Sidechain issue",
 			"from": "Account",
 			"subject": "Deposit"
 		},
-		"sidechain_eth_burn": {
+		"sidechain_burn": {
 			"title": "Sidechain burn",
 			"from": "Account",
 			"subject": "Withdrawal ID"
@@ -382,10 +392,47 @@
 			"from": "Committee member",
 			"subject": "Ethereum address"
 		},
-		"contract_update": {
-			"title": "Contract update",
+		"sidechain_erc20_issue": {
+			"title": "Issue ERC20 token",
 			"from": "Account",
-			"subject": "Contract"
+			"subject": "Token"
+		},
+		"sidechain_erc20_burn": {
+			"title": "Burn ERC20 token",
+			"from": "Account",
+			"subject": "Token"
+		},
+		"sidechain_btc_create_address": {
+			"title": "Create BTC address",
+			"from": "Account"
+		},
+		"sidechain_btc_intermediate_deposit": {
+			"title": "Intermediate BTC deposit",
+			"from": "Account",
+			"subject": "Intermediate address"
+		},
+		"sidechain_btc_deposit": {
+			"title": "BTC deposit",
+			"from": "Account",
+			"subject": "Intermediate deposit ID"
+		},
+		"sidechain_btc_withdraw": {
+			"title": "BTC withdraw",
+			"from": "Account",
+			"subject": "BTC address"
+		},
+		"sidechain_btc_approve_withdraw": {
+			"title": "Approve BTC withdraw",
+			"from": "Committee member",
+			"subject": "Withdraw ID"
+		},
+		"sidechain_btc_aggregate": {
+			"title": "Aggregate BTC",
+			"subject": "Transaction ID"
+		},
+		"block_reward": {
+			"title": "Block reward",
+			"subject": "Account"
 		}
 	},
 
