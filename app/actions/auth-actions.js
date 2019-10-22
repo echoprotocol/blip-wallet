@@ -49,11 +49,11 @@ export const getAccountCreateFee = async (accountId, name = '') => {
 		options: {
 			voting_account: config.ECHO_PROXY_TO_SELF_ACCOUNT,
 			delegating_account: accountId,
-			delegate_share: 20 * config.ECHO_1_PERCENT,
 			num_committee: 0,
+			delegate_share: 0,
 			votes: [],
-			extensions: [],
 		},
+		extensions: [],
 	};
 
 	return getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);

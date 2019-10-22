@@ -120,22 +120,25 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 				const config = await Services.getEcho().api.getConfig();
 
 				const options = {
-					echorand_key: publicKey,
 					registrar: account.id,
 					name: accountName,
 					active: {
 						weight_threshold: 1,
 						account_auths: [],
-						key_auths: [[publicKey, 1]],
+						key_auths: [[
+							publicKey,
+							1,
+						]],
 					},
+					echorand_key: publicKey,
 					options: {
 						voting_account: config.ECHO_PROXY_TO_SELF_ACCOUNT,
 						delegating_account: account.id,
-						delegate_share: 20 * config.ECHO_1_PERCENT,
 						num_committee: 0,
+						delegate_share: 0,
 						votes: [],
-						extensions: [],
 					},
+					extensions: [],
 				};
 
 				const balance = getState().echoCache.getIn([
