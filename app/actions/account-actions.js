@@ -6,14 +6,12 @@ import Services from '../services';
 import CryptoService from '../services/crypto-service';
 import { FORM_SIGN_IN, FORM_SIGN_UP } from '../constants/form-constants';
 import {
-	ECHO_PROXY_TO_SELF_ACCOUNT,
 	ECHO_ASSET_ID,
 	GLOBAL_ID_1,
 	EXPIRATION_INFELICITY,
 } from '../constants/global-constants';
 import { toggleLoading, setValue } from './form-actions';
 import { setValue as setGlobal, setValue as setValueGlobal, setAccounts } from './global-actions';
-import { getOperationFee } from './transaction-actions';
 import ValidateAccountHelper from '../helpers/validate-account-helper';
 import ViewHelper from '../helpers/view-helper';
 import GlobalReducer from '../reducers/global-reducer';
@@ -119,6 +117,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 
 			} else {
 				const account = await Services.getEcho().api.getAccountByName(registrator.account);
+				const config = await Services.getEcho().api.getConfig();
 
 				const options = {
 					echorand_key: publicKey,
@@ -130,8 +129,9 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 						key_auths: [[publicKey, 1]],
 					},
 					options: {
-						voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
+						voting_account: config.ECHO_PROXY_TO_SELF_ACCOUNT,
 						delegating_account: account.id,
+						delegate_share: 20 * config.ECHO_1_PERCENT,
 						num_committee: 0,
 						votes: [],
 						extensions: [],
@@ -143,15 +143,15 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 					getState().echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, account.id, 'balances', ECHO_ASSET_ID]),
 					'balance',
 				]);
-				const fee = await getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);
-
-				if (BN(fee).gt(balance)) {
-					dispatch(setValue(FORM_SIGN_UP, 'error', 'Insufficient funds'));
-					return resolve(false);
-				}
 
 				const tx = Services.getEcho().api.createTransaction();
 				tx.addOperation(OPERATIONS_IDS.ACCOUNT_CREATE, options);
+				await tx.setRequiredFees();
+
+				if (BN(tx.operations[0][1].fee.amount).gt(balance)) {
+					dispatch(setValue(FORM_SIGN_UP, 'error', 'Insufficient funds'));
+					return resolve(false);
+				}
 
 				const dynamicGlobalChainData = await Services.getEcho().api.getObject(GLOBAL_ID_1, true);
 
