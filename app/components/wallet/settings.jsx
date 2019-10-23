@@ -236,7 +236,7 @@ class Settings extends React.Component {
 						</div>
 						<div className="col">
 							<Button
-								onClick={() => changeVisibilityAsset(token.getIn(['contract', 'id']))}
+								onClick={(e) => changeVisibilityAsset(e, token.getIn(['contract', 'id']))}
 								className="btn-inversed"
 								content="Unarchive"
 							/>
@@ -270,7 +270,7 @@ class Settings extends React.Component {
 								</div>
 								<div className="col">
 									<Button
-										onClick={() => changeVisibilityAsset(asset.id)}
+										onClick={(e) => changeVisibilityAsset(e, asset.id)}
 										className="btn-inversed"
 										content="Unarchive"
 									/>

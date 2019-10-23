@@ -137,7 +137,9 @@ class Wallet extends React.Component {
 		});
 	}
 
-	changeVisibilityAsset(idAsset) {
+	changeVisibilityAsset(e, idAsset) {
+		e.stopPropagation();
+
 		this.props.toggleVisibiltyAsset(idAsset);
 	}
 
@@ -200,7 +202,7 @@ class Wallet extends React.Component {
 								content={
 									<Icon className="icon-close-big" />
 								}
-								onClick={() => this.changeVisibilityAsset(token.getIn(['contract', 'id']))}
+								onClick={(e) => this.changeVisibilityAsset(e, token.getIn(['contract', 'id']))}
 							/>
 						</div>
 					</div>
@@ -250,7 +252,7 @@ class Wallet extends React.Component {
 								content={
 									<Icon className="icon-close-big" />
 								}
-								onClick={() => this.changeVisibilityAsset(id)}
+								onClick={(e) => this.changeVisibilityAsset(e, id)}
 							/>
 						</div>
 					</div>
@@ -343,7 +345,7 @@ class Wallet extends React.Component {
 						updateBalance={updBalance}
 						assets={this.getAssets(balances) || []}
 						hiddenAssets={hiddenAssets}
-						changeVisibilityAsset={(id) => this.changeVisibilityAsset(id)}
+						changeVisibilityAsset={(e, id) => this.changeVisibilityAsset(e, id)}
 						tokens={stateTokens}
 					/>
 
