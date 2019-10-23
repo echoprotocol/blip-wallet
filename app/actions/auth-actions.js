@@ -34,7 +34,9 @@ export const changeActiveTabIndex = (value) => (dispatch) => {
  * @param {String} accountId
  * @returns {Function}
  */
-export const getAccountCreateFee = (accountId, name = '') => {
+export const getAccountCreateFee = async (accountId, name = '') => {
+	const config = await Services.getEcho().api.getConfig();
+
 	const options = {
 		echorand_key: TEMPLATE_ECHO_KEY,
 		registrar: accountId,
@@ -47,6 +49,7 @@ export const getAccountCreateFee = (accountId, name = '') => {
 		options: {
 			voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
 			delegating_account: accountId,
+			delegate_share: 20 * config.ECHO_1_PERCENT,
 			num_committee: 0,
 			votes: [],
 			extensions: [],
