@@ -145,7 +145,7 @@ class AccountCreated extends React.Component {
 
 									</div>
 								</div>
-								<span classNames="hints">
+								<span classnames="hints">
 									{hint1}
 									<br />
 									{hint2}
