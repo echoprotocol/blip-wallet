@@ -11,7 +11,7 @@ import CreateAccount from './create-account';
 
 import ImportAccount from './import-account';
 import blipLogo from '../../assets/images/blip-logo.svg';
-import AccountCreated from '../account-сreated';
+import AccountCreated from '../account-created';
 import AccountImported from '../account-imported';
 
 import { startAnimation } from '../../actions/animation-actions';
