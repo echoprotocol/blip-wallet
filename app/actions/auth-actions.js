@@ -1,6 +1,6 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
 
-import { ECHO_PROXY_TO_SELF_ACCOUNT, TEMPLATE_ECHO_KEY } from '../constants/global-constants';
+import { TEMPLATE_ECHO_KEY } from '../constants/global-constants';
 import { FORM_SIGN_UP } from '../constants/form-constants';
 import { getOperationFee } from './transaction-actions';
 import { setInValue } from './form-actions';
@@ -47,13 +47,13 @@ export const getAccountCreateFee = async (accountId, name = '') => {
 			key_auths: [[TEMPLATE_ECHO_KEY, 1]],
 		},
 		options: {
-			voting_account: ECHO_PROXY_TO_SELF_ACCOUNT,
+			voting_account: config.ECHO_PROXY_TO_SELF_ACCOUNT,
 			delegating_account: accountId,
-			delegate_share: 20 * config.ECHO_1_PERCENT,
 			num_committee: 0,
+			delegate_share: 0,
 			votes: [],
-			extensions: [],
 		},
+		extensions: [],
 	};
 
 	return getOperationFee(OPERATIONS_IDS.ACCOUNT_CREATE, options);

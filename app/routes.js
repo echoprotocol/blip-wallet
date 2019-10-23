@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import App from './containers/app';
 import Authorization from './containers/authorization';
-import accountCreated from './containers/account-сreated';
+import accountCreated from './containers/account-created';
 import accountImported from './containers/account-imported';
 import CreatePassword from './containers/create-password';
 import RestorePassword from './containers/restore-password';
