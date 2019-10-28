@@ -4,7 +4,9 @@ import { Animated } from 'react-animated-css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
-import { Sidebar, Button, Icon } from 'semantic-ui-react';
+import {
+	Sidebar, Button, Icon, Popup,
+} from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import {
@@ -68,6 +70,37 @@ class SideMenu extends React.Component {
 										)
 									}
 								</FormattedMessage>
+							</li>
+							<li>
+								<Button
+									className="sidebar-nav-link sub"
+									onClick={(e) => this.goTo(e, WALLET)}
+								>
+									<span>
+										Balance
+									</span>
+									<span>
+										12123.213 ECHO
+									</span>
+								</Button>
+							</li>
+							<li>
+								<Button
+									className="sidebar-nav-link sub"
+									onClick={(e) => this.goTo(e, WALLET)}
+									// {(e) => this.goTo(e,FROZEN_FUNDS)}
+									content={(
+										<React.Fragment>
+											<span>Frozen funds</span>
+											<Popup
+												content="blblbblblb blbl bblb lbblbl bb lblbb lbl bblbl"
+												className="tooltip-frozen"
+												trigger={<Icon className="icon-info" />}
+											/>
+											<span>121 ECHO</span>
+										</React.Fragment>
+									)}
+								/>
 							</li>
 							<li className={classnames({ active: pathname === HISTORY })}>
 								<FormattedMessage id="wallet.menu.history">
