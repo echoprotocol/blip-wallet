@@ -3,9 +3,9 @@
 	border-radius: 0 0 4px 4px;
 
 	.page {
-		@include min-vw($md) {
-			width: calc(100vw - 300px);
-		}
+		// @include min-vw($md) {
+		// 	width: calc(100vw - 300px);
+		// }
 
 		flex-direction: column;
 		display: flex;
@@ -28,7 +28,7 @@
 	&.open {
 		.page {
 			@include min-vw($md) {
-				width: calc(100vw - 330px);
+				width: calc(100vw - 255px);
 				transform: translateX(-443px);
 			}
 

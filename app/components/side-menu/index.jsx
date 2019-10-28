@@ -71,20 +71,23 @@ class SideMenu extends React.Component {
 									}
 								</FormattedMessage>
 							</li>
-							<li>
+
+							<li className="submenu">
 								<Button
 									className="sidebar-nav-link sub"
 									onClick={(e) => this.goTo(e, WALLET)}
-								>
-									<span>
-										Balance
-									</span>
-									<span>
-										12123.213 ECHO
-									</span>
-								</Button>
+									content={(
+										<React.Fragment>
+											<span>
+												Balance
+											</span>
+											<span>12213211</span> ECHO
+										</React.Fragment>
+									)}
+								/>
+
 							</li>
-							<li>
+							<li className="submenu">
 								<Button
 									className="sidebar-nav-link sub"
 									onClick={(e) => this.goTo(e, WALLET)}
@@ -93,11 +96,11 @@ class SideMenu extends React.Component {
 										<React.Fragment>
 											<span>Frozen funds</span>
 											<Popup
-												content="blblbblblb blbl bblb lbblbl bb lblbb lbl bblbl"
+												content="Frozen funds allow you to get bigger reward for participating in blocks creation."
 												className="tooltip-frozen"
-												trigger={<Icon className="icon-info" />}
+												trigger={<Icon className="info-empty" />}
 											/>
-											<span>121 ECHO</span>
+											<span>12213211</span> ECHO
 										</React.Fragment>
 									)}
 								/>
