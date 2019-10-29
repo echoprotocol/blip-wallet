@@ -41,7 +41,7 @@ class FrozenFunds extends React.Component {
 										<Button
 											className="btn-freeze"
 											onClick={this.showForm}
-											content="Freeze Funds"
+											content="Freeze funds"
 										/>
 									</React.Fragment>
 								)
