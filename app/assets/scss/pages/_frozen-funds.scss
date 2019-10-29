@@ -270,7 +270,7 @@
 
                     span {
                         display: inline-block;
-                        max-width: 50%;
+                        max-width: 120px;
                         line-height: 12px;
                         @include text-overflow();
                     }
@@ -282,7 +282,7 @@
                 }
 
                 .account {
-                    max-width: 35%;
+                    max-width: 350px;
                     width: 35%;
 
                     @include max-vw($md) {
