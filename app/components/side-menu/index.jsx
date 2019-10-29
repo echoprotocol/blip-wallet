@@ -10,7 +10,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import {
-	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE,
+	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE, FROZEN_FUNDS,
 } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.svg';
@@ -90,8 +90,7 @@ class SideMenu extends React.Component {
 							<li className="submenu">
 								<Button
 									className="sidebar-nav-link sub"
-									onClick={(e) => this.goTo(e, WALLET)}
-									// {(e) => this.goTo(e,FROZEN_FUNDS)}
+									onClick={(e) => this.goTo(e, FROZEN_FUNDS)}
 									content={(
 										<React.Fragment>
 											<span>Frozen funds</span>

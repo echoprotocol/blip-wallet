@@ -9,6 +9,7 @@ import Avatar from '../avatar';
 
 class FrozenFundsForm extends React.Component {
 
+
 	render() {
 		return (
 			<div>
