@@ -146,13 +146,15 @@
             font-size: 13px;
             line-height: 26px;
             color: #C1AEEE;
+            transition: background-color $speed;
 
             .info-empty {
                 z-index: 10;
-                margin-left: 5px;
-                line-height: 26px;
+                margin-left: 3px;
+                line-height: 29px;
                 color: #C1AEEE;
-                font-size: 13px;
+                font-size: 10px;
+                transition: color $speed;
 
                 &:hover {
                     &:before {
@@ -168,6 +170,9 @@
                 margin-right: 5px;
             }
 
+            span:first-child {
+                transition: color $speed;
+            }
 
             &:hover {
                 background-color: rgba(#573D88, 0.7);
