@@ -33,11 +33,9 @@ class FrozenFunds extends React.Component {
 									<React.Fragment>
 										<h1 className="frozen-page-title">frozen funds</h1>
 										<div className="text-about">
-									If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward
+											If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward
 										</div>
-										{showTable
-											? <FrozenTable />
-											: null}
+										{showTable && <FrozenTable /> }
 										<Button
 											className="btn-freeze"
 											onClick={this.showForm}

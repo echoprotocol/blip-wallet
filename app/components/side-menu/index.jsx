@@ -58,7 +58,7 @@ class SideMenu extends React.Component {
 						}
 
 						<ul className="sidebar-nav">
-							<li className={classnames({ active: pathname === WALLET })}>
+							<li className={classnames({ active: pathname === WALLET || pathname === FROZEN_FUNDS })}>
 								<FormattedMessage id="wallet.menu.mywallet">
 									{
 										(content) => (
@@ -74,7 +74,7 @@ class SideMenu extends React.Component {
 
 							<li className="submenu">
 								<Button
-									className="sidebar-nav-link sub"
+									className={classnames('sidebar-nav-link sub', { active: pathname === WALLET })}
 									onClick={(e) => this.goTo(e, WALLET)}
 									content={(
 										<React.Fragment>
@@ -89,7 +89,7 @@ class SideMenu extends React.Component {
 							</li>
 							<li className="submenu">
 								<Button
-									className="sidebar-nav-link sub"
+									className={classnames('sidebar-nav-link sub', { active: pathname === FROZEN_FUNDS })}
 									onClick={(e) => this.goTo(e, FROZEN_FUNDS)}
 									content={(
 										<React.Fragment>
