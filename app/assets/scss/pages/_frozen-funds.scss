@@ -227,16 +227,17 @@
     }
 
     .text-about {
+        font-family: 'SourceSansPro-Regular';
         margin: 37px 45px 25px 45px;
         color: #5F686E;
-        letter-spacing: 0px;
+        letter-spacing: 0.37px;
         font-size: 15px;
         line-height: 21px;
 
         @include max-vw($md) {
-            margin: 27px 45px 12px 45px;
+            margin: 27px 45px 20px 45px;
             font-size: 14px;
-            line-height: 20px;
+            line-height: 18px;
         }
     }
 
@@ -383,12 +384,18 @@
     .btn-freeze {
         @include source-semibold();
         border: 2px solid #7156AD;
-        padding: 10px 40px;
+        padding: 10px 45px;
         color: #7156AD;
-        font-size: 16px;
+        font-size: 18px;
         background-color: transparent;
         margin: 0 45px 45px;
         border-radius: 3px;
+        letter-spacing: 1px;
+
+        @include max-vw($md) {
+            padding: 10px 45px;
+            font-size: 18px;
+        }
 
         &:hover {
             background-color: #7156AD;
