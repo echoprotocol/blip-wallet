@@ -4,11 +4,13 @@ import { Animated } from 'react-animated-css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
-import { Sidebar, Button, Icon } from 'semantic-ui-react';
+import {
+	Sidebar, Button, Icon, Popup,
+} from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { lockApp } from '../../actions/global-actions';
 import {
-	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE,
+	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE, FROZEN_FUNDS,
 } from '../../constants/routes-constants';
 
 import lock from '../../assets/images/lock.svg';
@@ -56,7 +58,7 @@ class SideMenu extends React.Component {
 						}
 
 						<ul className="sidebar-nav">
-							<li className={classnames({ active: pathname === WALLET })}>
+							<li className={classnames({ active: pathname === WALLET || pathname === FROZEN_FUNDS })}>
 								<FormattedMessage id="wallet.menu.mywallet">
 									{
 										(content) => (
@@ -68,6 +70,39 @@ class SideMenu extends React.Component {
 										)
 									}
 								</FormattedMessage>
+							</li>
+
+							<li className="submenu">
+								<Button
+									className={classnames('sidebar-nav-link sub', { active: pathname === WALLET })}
+									onClick={(e) => this.goTo(e, WALLET)}
+									content={(
+										<React.Fragment>
+											<span>
+												Balance
+											</span>
+											<span>12213211</span> ECHO
+										</React.Fragment>
+									)}
+								/>
+
+							</li>
+							<li className="submenu">
+								<Button
+									className={classnames('sidebar-nav-link sub', { active: pathname === FROZEN_FUNDS })}
+									onClick={(e) => this.goTo(e, FROZEN_FUNDS)}
+									content={(
+										<React.Fragment>
+											<span>Frozen funds</span>
+											<Popup
+												content="Frozen funds allow you to get bigger reward for participating in blocks creation."
+												className="tooltip-frozen"
+												trigger={<Icon className="info-empty" />}
+											/>
+											<span>12213211</span> ECHO
+										</React.Fragment>
+									)}
+								/>
 							</li>
 							<li className={classnames({ active: pathname === HISTORY })}>
 								<FormattedMessage id="wallet.menu.history">
