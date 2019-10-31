@@ -1,4 +1,5 @@
 import { constants } from 'echojs-lib';
+import { explorerUrl, echodbUrl, qrServerUrl } from '../../configs/urls.config';
 
 export const DB_NAME = 'keyval-store';
 export const STORE = 'keyval';
@@ -12,6 +13,7 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 	SALT_BYTES_LENGTH: 256,
 };
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
+
 
 export const NETWORKS = {
 	devnet: {
@@ -41,26 +43,11 @@ export const NETWORK_STATUS = {
 	OFFLINE: 'offline',
 };
 
-export const EXPLORER_URL = {
-	devnet: 'https://656-echo-explorer.pixelplex-test.by',
-	testnet: 'https://explorer.echo.org',
-};
+export const EXPLORER_URL = explorerUrl;
 
-export const ECHODB = {
-	devnet: {
-		HTTP_LINK: 'https://645-echodb.pixelplex-test.by/graphql',
-		WS_LINK: 'wss://645-echodb.pixelplex-test.by/graphql',
-	},
-	testnet: {
-		HTTP_LINK: 'https://645-echodb.pixelplexlabs.com/graphql',
-		WS_LINK: 'wss://645-echodb.pixelplexlabs.com/graphql',
-	},
-};
+export const ECHODB = echodbUrl;
 
-export const QR_SERVER_URL = {
-	devnet: 'https://649-bridge-landing.pixelplex-test.by/receive/',
-	testnet: 'https://649-bridge-landing.pixelplexlabs.com/receive/',
-};
+export const QR_SERVER_URL = qrServerUrl;
 
 export const { ECHO_ASSET_ID } = constants;
 export const ECHO_ASSET_PRECISION = 8;
