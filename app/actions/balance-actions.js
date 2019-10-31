@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { Set, Map, fromJS } from 'immutable';
 import { validators } from 'echojs-lib';
 import { history } from '../store/configureStore';
@@ -5,9 +6,11 @@ import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
 import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
+import FormatHelper from '../helpers/format-helper';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
 import { SEND } from '../constants/routes-constants';
+import { ECHO_ASSET_ID } from '../constants/global-constants';
 import { FORM_SEND } from '../constants/form-constants';
 
 /**
@@ -271,4 +274,46 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 
 	return true;
+};
+
+export const totalFreezeSum = (frozenBalances) => {
+	let totalAmount = 0;
+	for (const fBalance in frozenBalances) {
+		if (frozenBalances[fBalance].balance) {
+			totalAmount += frozenBalances[fBalance].balance.amount;
+		}
+	}
+	return totalAmount;
+};
+
+export const getFrozenBalance = () => async (dispatch, getState) => {
+	const accounts = getState().global.get('accounts').toJS();
+	let currentAccId;
+	for (const account in accounts) {
+		if (accounts[account].selected) {
+			currentAccId = account;
+		}
+	}
+	const frozenBalances = await Services.getEcho().api.getFrozenBalances(currentAccId);
+	const freezeSum = totalFreezeSum(frozenBalances);
+	dispatch(setValue('frozenBalances', frozenBalances));
+	dispatch(setValue('freezeSum', freezeSum));
+};
+
+export const getBalance = (balances) => {
+	if (!balances.size) {
+		return null;
+	}
+	const amounts = [];
+
+	balances.forEach((b) => {
+		if (b.asset.get('id') === ECHO_ASSET_ID) {
+			amounts.push(b.amount);
+		}
+	});
+	const result = FormatHelper.accumulateBalances(amounts);
+
+	const precision = [...balances.values()][0].asset.get('precision');
+
+	return FormatHelper.formatAmount(result, precision);
 };

@@ -12,11 +12,17 @@ import { lockApp } from '../../actions/global-actions';
 import {
 	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE, FROZEN_FUNDS,
 } from '../../constants/routes-constants';
+import Services from '../../services';
+import { getBalance, getFrozenBalance } from '../../actions/balance-actions';
 
 import lock from '../../assets/images/lock.svg';
 
 
 class SideMenu extends React.Component {
+
+	componentDidMount() {
+		this.props.getFrozenBalance();
+	}
 
 	lock() {
 		this.props.lock();
@@ -29,8 +35,10 @@ class SideMenu extends React.Component {
 
 
 	render() {
-		const { pathname, locked, history } = this.props;
-
+		const {
+			pathname, locked, history, balances, freezeSum,
+		} = this.props;
+		const balance = getBalance(balances);
 		return (
 			<Sidebar direction="right">
 				<div className="sidebar-wrap">
@@ -81,7 +89,7 @@ class SideMenu extends React.Component {
 											<span>
 												Balance
 											</span>
-											<span>12213211</span> ECHO
+											<span>{balance}</span> ECHO
 										</React.Fragment>
 									)}
 								/>
@@ -99,7 +107,7 @@ class SideMenu extends React.Component {
 												className="tooltip-frozen"
 												trigger={<Icon className="info-empty" />}
 											/>
-											<span>12213211</span> ECHO
+											<span>{freezeSum}</span> ECHO
 										</React.Fragment>
 									)}
 								/>
@@ -167,16 +175,26 @@ class SideMenu extends React.Component {
 SideMenu.propTypes = {
 	pathname: PropTypes.string.isRequired,
 	history: PropTypes.object.isRequired,
+	balances: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
 	lock: PropTypes.func.isRequired,
+	getFrozenBalance: PropTypes.func.isRequired,
+	freezeSum: PropTypes.number.isRequired,
 };
 
 export default withRouter(connect(
-	(state) => ({
-		pathname: state.router.location.pathname,
-		locked: state.global.get('locked'),
-	}),
+	(state) => {
+		const balanceSelector = Services.getSelector().getSelectedAccountBalancesSelector();
+		return ({
+			pathname: state.router.location.pathname,
+			locked: state.global.get('locked'),
+			balances: balanceSelector(state),
+			freezeSum: state.wallet.get('freezeSum'),
+			accounts: state.global.get('accounts'),
+		});
+	},
 	(dispatch) => ({
 		lock: () => dispatch(lockApp()),
+		getFrozenBalance: () => dispatch(getFrozenBalance()),
 	}),
 )(SideMenu));
