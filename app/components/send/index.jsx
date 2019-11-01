@@ -71,13 +71,13 @@ class Send extends React.Component {
 	onAmountChange(e) {
 
 		const {
-			form, balances, tokens,
+			form, fullBalances, balances, tokens,
 		} = this.props;
 		const { amountTimeout } = this.state;
 
 		const field = e.target.name;
 		const value = e.target.value.replace(/\s+/g, '');
-		const balance = getBalance(balances);
+		const balance = getBalance(fullBalances);
 
 		let precision = null;
 		let symbol = null;
@@ -118,7 +118,7 @@ class Send extends React.Component {
 			return false;
 		}
 		this.props.setFormValue(field, validatedValue);
-		if (value > balance) {
+		if (validatedValue > balance) {
 			this.props.setFormError(field, 'Not enough funds');
 			return false;
 		}
@@ -392,6 +392,7 @@ Send.propTypes = {
 	loading: PropTypes.string.isRequired,
 	accounts: PropTypes.object,
 	balances: PropTypes.object,
+	fullBalances: PropTypes.object,
 	tokens: PropTypes.object,
 	hiddenAssets: PropTypes.object,
 	setValue: PropTypes.func.isRequired,
@@ -409,6 +410,7 @@ Send.propTypes = {
 Send.defaultProps = {
 	accounts: null,
 	balances: null,
+	fullBalances: null,
 	tokens: null,
 	hiddenAssets: null,
 };

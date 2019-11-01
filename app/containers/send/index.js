@@ -11,13 +11,15 @@ import {
 import Send from '../../components/send';
 import Services from '../../services';
 
-const balanceSelector = Services.getSelector().getSelectedAccountBalancesSelector();
+const balanceSelector = Services.getSelector().getTransferBalanceSelector();
+const fullBalanceSelector = Services.getSelector().getSelectedAccountBalancesSelector();
 
 export default connect(
 	(state) => ({
 		form: state.form.get(FORM_SEND),
 		accounts: state.global.get('accounts'),
 		balances: balanceSelector(state),
+		fullBalances: fullBalanceSelector(state),
 		tokens: state.wallet.get('tokens'),
 		loading: state.global.get('loading'),
 		hiddenAssets: state.wallet.get('hiddenAssets').get(Services.getUserStorage().getNetworkId()),
