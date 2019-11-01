@@ -1,11 +1,11 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Button } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {
 	// FormattedMessage,
 	injectIntl,
-	intlShape,
+	// intlShape,
 } from 'react-intl';
 
 import FrozenForm from './form';
@@ -22,7 +22,7 @@ class FrozenFunds extends React.Component {
 	}
 
 	toggleForm(state) {
-		this.setState(() => ({ showForm: state }));
+		this.setState(({ showForm: state }));
 	}
 
 	render() {
@@ -36,7 +36,7 @@ class FrozenFunds extends React.Component {
 							{showForm
 								? (
 									<FrozenForm
-										return={() => this.toggleForm(false)}
+										hideForm={() => this.toggleForm(false)}
 										{...this.props}
 									/>
 								) : (
@@ -63,28 +63,5 @@ class FrozenFunds extends React.Component {
 
 }
 
-FrozenFunds.propTypes = {
-	form: PropTypes.object.isRequired,
-	loading: PropTypes.string.isRequired,
-	accounts: PropTypes.object,
-	balances: PropTypes.object,
-	hiddenAssets: PropTypes.object,
-	setValue: PropTypes.func.isRequired,
-	setFormValue: PropTypes.func.isRequired,
-	setFormError: PropTypes.func.isRequired,
-	checkAccount: PropTypes.func.isRequired,
-	send: PropTypes.func.isRequired,
-	setFeeFormValue: PropTypes.func.isRequired,
-	clearForm: PropTypes.func.isRequired,
-	setMinAmount: PropTypes.func.isRequired,
-	changeAccount: PropTypes.func.isRequired,
-	intl: intlShape.isRequired,
-};
-
-FrozenFunds.defaultProps = {
-	accounts: null,
-	balances: null,
-	hiddenAssets: null,
-};
 
 export default injectIntl(FrozenFunds);

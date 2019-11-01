@@ -5,8 +5,8 @@ import {
 	clearForm, setFormError, setFormValue, setValue,
 } from '../../actions/form-actions';
 import {
-	checkAccount, send, setFeeFormValue, setMinAmount, changeAccount,
-} from '../../actions/transfer-actions';
+	send, setFeeFormValue, setMinAmount, changeAccount,
+} from '../../actions/freeze-funds';
 
 import Services from '../../services';
 
@@ -22,7 +22,6 @@ export default connect(
 	}),
 	(dispatch) => ({
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_FREEZE, field, value)),
-		checkAccount: (from, to) => dispatch(checkAccount(from, to)),
 		setValue: (field, value) => dispatch(setValue(FORM_FREEZE, field, value)),
 		setFormError: (field, value) => dispatch(setFormError(FORM_FREEZE, field, value)),
 		send: () => dispatch(send()),

@@ -80,7 +80,7 @@ const DEFAULT_FORM_FIELDS = {
 			value: '',
 			error: null,
 		},
-		coefficient: '',
+		duration: '',
 		selectedBalance: '',
 		selectedFeeBalance: '',
 		minAmount: {

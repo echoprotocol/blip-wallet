@@ -454,6 +454,19 @@
 		}
 	},
 
+	"freeze_funds": {
+		"loading": "Transaction in processing",
+		"title": "SEND TRANSACTION",
+		"from": "From",
+		"amount": "Amount",
+		"amount.title": "Minimal amount is",
+		"fee": "Fee",
+		"button": {
+			"send": "Freeze funds",
+			"cancel": "Cancel"
+		}
+	},
+
 	"backup": {
 		"info": "Backup info",
 		"public_key": "Public key",
