@@ -1,6 +1,13 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Button } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import {
+	// FormattedMessage,
+	injectIntl,
+	intlShape,
+} from 'react-intl';
+
 import FrozenForm from './form';
 import FrozenTable from './table';
 
@@ -12,11 +19,10 @@ class FrozenFunds extends React.Component {
 			showForm: false,
 			showTable: true,
 		};
-		this.showForm = this.showForm.bind(this);
 	}
 
-	showForm() {
-		this.setState((prevState) => ({ showForm: !prevState.showForm }));
+	toggleForm(state) {
+		this.setState(() => ({ showForm: state }));
 	}
 
 	render() {
@@ -28,8 +34,12 @@ class FrozenFunds extends React.Component {
 					<PerfectScrollbar className="page-scroll">
 						<div className="frozen-wrap">
 							{showForm
-								? <FrozenForm />
-								: (
+								? (
+									<FrozenForm
+										return={() => this.toggleForm(false)}
+										{...this.props}
+									/>
+								) : (
 									<React.Fragment>
 										<h1 className="frozen-page-title">frozen funds</h1>
 										<div className="text-about">
@@ -38,7 +48,7 @@ class FrozenFunds extends React.Component {
 										{showTable && <FrozenTable /> }
 										<Button
 											className="btn-freeze"
-											onClick={this.showForm}
+											onClick={() => this.toggleForm(true)}
 											content="Freeze funds"
 										/>
 									</React.Fragment>
@@ -53,4 +63,28 @@ class FrozenFunds extends React.Component {
 
 }
 
-export default FrozenFunds;
+FrozenFunds.propTypes = {
+	form: PropTypes.object.isRequired,
+	loading: PropTypes.string.isRequired,
+	accounts: PropTypes.object,
+	balances: PropTypes.object,
+	hiddenAssets: PropTypes.object,
+	setValue: PropTypes.func.isRequired,
+	setFormValue: PropTypes.func.isRequired,
+	setFormError: PropTypes.func.isRequired,
+	checkAccount: PropTypes.func.isRequired,
+	send: PropTypes.func.isRequired,
+	setFeeFormValue: PropTypes.func.isRequired,
+	clearForm: PropTypes.func.isRequired,
+	setMinAmount: PropTypes.func.isRequired,
+	changeAccount: PropTypes.func.isRequired,
+	intl: intlShape.isRequired,
+};
+
+FrozenFunds.defaultProps = {
+	accounts: null,
+	balances: null,
+	hiddenAssets: null,
+};
+
+export default injectIntl(FrozenFunds);
