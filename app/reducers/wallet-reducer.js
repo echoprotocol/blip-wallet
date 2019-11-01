@@ -16,6 +16,8 @@ const DEFAULT_FIELDS = Map({
 	}),
 	tokens: new List([]),
 	hiddenAssets: new Map({}),
+	frozenBalances: [],
+	freezeSum: 0,
 });
 
 export default createModule({

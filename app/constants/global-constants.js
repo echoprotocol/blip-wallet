@@ -125,3 +125,10 @@ export const APP_WINDOW_HEIGHT = 728;
 export const APP_WINDOW_MIN_WIDTH = 1024;
 export const APP_WINDOW_MIN_HEIGHT = 728;
 export const TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS = 12000;
+
+export const FREEZE_COEF_BY_TIME = {
+	1.3: '3 months',
+	1.4: '6 months',
+	1.5: '12 months',
+};
+export const FREEZE_COEF_FACTOR = 10000;

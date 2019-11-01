@@ -1,5 +1,6 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import FrozenForm from './form';
 import FrozenTable from './table';
@@ -15,13 +16,17 @@ class FrozenFunds extends React.Component {
 		this.showForm = this.showForm.bind(this);
 	}
 
+	componentDidMount() {
+		this.props.getFrozenBalance();
+	}
+
 	showForm() {
 		this.setState((prevState) => ({ showForm: !prevState.showForm }));
 	}
 
 	render() {
 		const { showTable, showForm } = this.state;
-
+		const { frozenBalances } = this.props;
 		return (
 			<div className="page-wrap">
 				<div className="page">
@@ -35,7 +40,7 @@ class FrozenFunds extends React.Component {
 										<div className="text-about">
 											If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward
 										</div>
-										{showTable && <FrozenTable /> }
+										{showTable && <FrozenTable frozenBalances={frozenBalances} />}
 										<Button
 											className="btn-freeze"
 											onClick={this.showForm}
@@ -52,5 +57,13 @@ class FrozenFunds extends React.Component {
 	}
 
 }
+FrozenFunds.defaultProps = {
+	frozenBalances: [],
+};
+
+FrozenFunds.propTypes = {
+	frozenBalances: PropTypes.array,
+	getFrozenBalance: PropTypes.func.isRequired,
+};
 
 export default FrozenFunds;

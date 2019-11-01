@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { Set, Map, fromJS } from 'immutable';
 import { validators } from 'echojs-lib';
 import { history } from '../store/configureStore';
@@ -271,4 +272,38 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 
 	return true;
+};
+
+export const totalFreezeSum = (frozenBalances) => {
+	let totalAmount = 0;
+	for (const fBalance in frozenBalances) {
+		if (frozenBalances[fBalance].balance) {
+			totalAmount += frozenBalances[fBalance].balance.amount;
+		}
+	}
+	return totalAmount;
+};
+
+export const getFrozenBalance = () => async (dispatch, getState) => {
+	const accounts = getState().global.get('accounts').toJS();
+	let currentAccId;
+	for (const account in accounts) {
+		if (accounts[account].selected) {
+			currentAccId = account;
+		}
+	}
+	const frozenBalances = await Services.getEcho().api.getFrozenBalances(currentAccId);
+	if (frozenBalances) {
+		const promises = [];
+		for (let i = 0; i < frozenBalances.length; i += 1) {
+			promises.push((async () => {
+				const owner = await Services.getEcho().api.getObject(frozenBalances[i].owner);
+				frozenBalances[i].ownerName = owner.name;
+			})());
+		}
+		await Promise.all(promises);
+		const freezeSum = totalFreezeSum(frozenBalances);
+		dispatch(setValue('frozenBalances', frozenBalances));
+		dispatch(setValue('freezeSum', freezeSum));
+	}
 };
