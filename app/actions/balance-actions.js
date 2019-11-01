@@ -304,15 +304,8 @@ export const getBalance = (balances) => {
 	if (!balances.size) {
 		return null;
 	}
-	const amounts = [];
-
-	balances.forEach((b) => {
-		if (b.asset.get('id') === ECHO_ASSET_ID) {
-			amounts.push(b.amount);
-		}
-	});
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, v.amount] : null), []);
 	const result = FormatHelper.accumulateBalances(amounts);
-
 	const precision = [...balances.values()][0].asset.get('precision');
 
 	return FormatHelper.formatAmount(result, precision);
