@@ -10,6 +10,7 @@ import Avatar from '../avatar';
 import InputDropdown from '../input-dropdown';
 import ValidateSendHelper from '../../helpers/validate-send-helper';
 import { ECHO_ASSET_ID, KEY_CODE_ENTER, TIME_SHOW_ERROR_ASSET } from '../../constants/global-constants';
+import { getBalance } from '../../actions/balance-actions';
 
 class Send extends React.Component {
 
@@ -66,6 +67,7 @@ class Send extends React.Component {
 		this.setFee({ to: value });
 	}
 
+
 	onAmountChange(e) {
 
 		const {
@@ -74,9 +76,8 @@ class Send extends React.Component {
 		const { amountTimeout } = this.state;
 
 		const field = e.target.name;
-
 		const value = e.target.value.replace(/\s+/g, '');
-
+		const balance = getBalance(balances);
 
 		let precision = null;
 		let symbol = null;
@@ -105,7 +106,6 @@ class Send extends React.Component {
 			precision: precision || asset.precision,
 			symbol: symbol || asset.symbol,
 		});
-
 		if (error) {
 			this.props.setFormError(field, error);
 
@@ -117,9 +117,11 @@ class Send extends React.Component {
 
 			return false;
 		}
-
 		this.props.setFormValue(field, validatedValue);
-
+		if (value > balance) {
+			this.props.setFormError(field, 'Not enough funds');
+			return false;
+		}
 		this.setFee({ amount: validatedValue });
 
 		return true;
@@ -193,7 +195,6 @@ class Send extends React.Component {
 
 		const placeholderAmount = intl.formatMessage({ id: 'send.dropdown.input.placeholder.amount' });
 		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
-
 		return (
 			<div className="page-wrap">
 				<div className="send page">
@@ -265,11 +266,11 @@ class Send extends React.Component {
 													</FormattedMessage>
 													{
 														form.get('to').error
-											&& (
-												<div className="error-message">
-													{form.get('to').error}
-												</div>
-											)
+														&& (
+															<div className="error-message">
+																{form.get('to').error}
+															</div>
+														)
 													}
 												</div>
 											</div>

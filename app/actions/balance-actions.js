@@ -5,8 +5,10 @@ import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
 import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
+import FormatHelper from '../helpers/format-helper';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
+import { ECHO_ASSET_ID } from '../constants/global-constants';
 import { SEND } from '../constants/routes-constants';
 import { FORM_SEND } from '../constants/form-constants';
 
@@ -271,4 +273,21 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 
 	return true;
+};
+export const getBalance = (balances) => {
+	if (!balances.size) {
+		return null;
+	}
+	const amounts = [];
+
+	balances.forEach((b) => {
+		if (b.asset.get('id') === ECHO_ASSET_ID) {
+			amounts.push(b.amount);
+		}
+	});
+	const result = FormatHelper.accumulateBalances(amounts);
+
+	const precision = [...balances.values()][0].asset.get('precision');
+
+	return FormatHelper.formatAmount(result, precision);
 };

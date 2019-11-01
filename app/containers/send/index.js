@@ -11,7 +11,7 @@ import {
 import Send from '../../components/send';
 import Services from '../../services';
 
-const balanceSelector = Services.getSelector().getTransferBalanceSelector();
+const balanceSelector = Services.getSelector().getSelectedAccountBalancesSelector();
 
 export default connect(
 	(state) => ({

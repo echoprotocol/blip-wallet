@@ -273,11 +273,9 @@ class Wallet extends React.Component {
 		const {
 			accounts, saveSelectedAccounts: saveAccounts, balances, updateBalance: updBalance, currentNode, language, transaction, hiddenAssets, tokens: stateTokens, history,
 		} = this.props;
-
 		const { showSettings } = this.state;
 
 		const balance = this.getBalance(balances);
-
 		const assets = this.renderAssets();
 		const tokens = this.renderTokens();
 		const precision = ![...balances.values()][0] ? ECHO_ASSET_PRECISION : [...balances.values()][0].asset.get('precision');
