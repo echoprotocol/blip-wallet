@@ -5,6 +5,7 @@ import { getFrozenBalance } from '../../actions/balance-actions';
 export default connect(
 	(state) => ({
 		frozenBalances: state.wallet.get('frozenBalances'),
+		filter: state.wallet.getIn(['history', 'filter']),
 	}),
 
 	(dispatch) => ({

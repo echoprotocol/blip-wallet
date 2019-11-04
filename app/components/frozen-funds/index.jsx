@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import FrozenForm from './form';
 import FrozenTable from './table';
+import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
+
 
 class FrozenFunds extends React.Component {
 
@@ -13,18 +15,39 @@ class FrozenFunds extends React.Component {
 		this.state = {
 			showForm: false,
 			showTable: true,
-			t: null,
+			// t: null,
 		};
 		this.showForm = this.showForm.bind(this);
+		this.subscription = null;
 	}
 
 	componentDidMount() {
 		this.props.getFrozenBalance();
-		this.setState({ t: setInterval(this.props.getFrozenBalance, 3000) });
+		this.subscribe();
+		// this.setState({ t: setInterval(this.props.getFrozenBalance, 3000) });
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.state.t);
+		this.unsubscribe();
+		// clearInterval(this.state.t);
+	}
+
+	subscribe() {
+		this.subscription = newOperationSubscription(this.props.filter);
+
+		if (this.subscription) {
+			this.subscription = this.subscription.subscribe(({ data: { newOperation } }) => {
+				console.log(newOperation);
+				// this.props.setNewTransaction(newOperation);
+			});
+		}
+	}
+
+	unsubscribe() {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+			this.subscription = null;
+		}
 	}
 
 	showForm() {
@@ -73,6 +96,7 @@ FrozenFunds.defaultProps = {
 
 FrozenFunds.propTypes = {
 	frozenBalances: PropTypes.array,
+	filter: PropTypes.object.isRequired,
 	getFrozenBalance: PropTypes.func.isRequired,
 	intl: intlShape.isRequired,
 };
