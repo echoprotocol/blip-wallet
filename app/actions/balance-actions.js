@@ -7,6 +7,7 @@ import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
+import { ECHO_ASSET_ID } from '../constants/global-constants';
 import { SEND } from '../constants/routes-constants';
 import { FORM_SEND } from '../constants/form-constants';
 
@@ -271,4 +272,14 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 
 	return true;
+};
+export const getBalance = (balances) => {
+	if (!balances.size) {
+		return null;
+	}
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
+		amount: v.amount,
+		precision: v.asset.precision,
+	}] : acc), []);
+	return amounts.reduce((acc, amount) => (acc + amount.amount / (10 ** amount.precision)), 0);
 };
