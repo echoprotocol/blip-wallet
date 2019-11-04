@@ -457,13 +457,25 @@
 	"freeze_funds": {
 		"loading": "Transaction in processing",
 		"title": "SEND TRANSACTION",
+		"pageTitle": "freeze funds",
 		"from": "From",
-		"amount": "Amount",
-		"amount.title": "Minimal amount is",
 		"fee": "Fee",
+		"amount": {
+			"label": "Amount, ECHO",
+			"placeholder": "Amount"
+		},
+		"period": {
+			"label": "Period",
+			"placeholder": "Select period"
+		},
+		"coefficient": {
+			"label": "Coefficient",
+			"popup": "This is the coefficient that will be used to calculate the reward for participating in blocks creation."
+		},
 		"button": {
 			"send": "Freeze funds",
-			"cancel": "Cancel"
+			"cancel": "Cancel",
+			"return": "Return"
 		}
 	},
 
