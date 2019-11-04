@@ -1,11 +1,8 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Button } from 'semantic-ui-react';
-// import PropTypes from 'prop-types';
 import {
-	// FormattedMessage,
 	injectIntl,
-	// intlShape,
 } from 'react-intl';
 
 import FrozenForm from './form';

@@ -12,7 +12,11 @@ import Avatar from '../avatar';
 
 import InputDropdown from '../input-dropdown';
 import ValidateSendHelper from '../../helpers/validate-send-helper';
-import { ECHO_ASSET_ID, KEY_CODE_ENTER, TIME_SHOW_ERROR_ASSET } from '../../constants/global-constants';
+import {
+	ECHO_ASSET_ID, KEY_CODE_ENTER,
+	TIME_SHOW_ERROR_ASSET,
+	FREEZE_FUNDS_PERIODS,
+} from '../../constants/global-constants';
 
 
 class FrozenFundsForm extends React.Component {
@@ -147,12 +151,6 @@ class FrozenFundsForm extends React.Component {
 			accounts, form, balances, loading, intl, hiddenAssets,
 		} = this.props;
 
-		const periods = [
-			{ text: '3 months', value: 90, coefficient: '1.3' },
-			{ text: '6 months', value: 180, coefficient: '1.4' },
-			{ text: '12 months', value: 360, coefficient: '1.5' },
-		];
-
 		const fromAccountName = accounts && (
 			accounts.getIn([form.get('from').value, 'name'])
 			|| accounts.getIn([form.get('initialData').accountId, 'name'])
@@ -160,7 +158,16 @@ class FrozenFundsForm extends React.Component {
 		);
 
 		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
-		const durationObject = periods.find(({ value }) => value === form.get('duration')) || {};
+		const returnButtonText = intl.formatMessage({ id: 'freeze_funds.button.return' });
+		const pageTitle = intl.formatMessage({ id: 'freeze_funds.pageTitle' });
+		const amountLabel = intl.formatMessage({ id: 'freeze_funds.amount.label' });
+		const periodLabel = intl.formatMessage({ id: 'freeze_funds.period.label' });
+		const periodPlaceholder = intl.formatMessage({ id: 'freeze_funds.period.placeholder' });
+		const coefficientLabel = intl.formatMessage({ id: 'freeze_funds.coefficient.label' });
+		const coefficientPopup = intl.formatMessage({ id: 'freeze_funds.coefficient.popup' });
+		const fromLabel = intl.formatMessage({ id: 'freeze_funds.from' });
+
+		const durationObject = FREEZE_FUNDS_PERIODS.find(({ value }) => value === form.get('duration')) || {};
 
 		return (
 			<div>
@@ -170,23 +177,23 @@ class FrozenFundsForm extends React.Component {
 						content={(
 							<React.Fragment>
 								<Icon className="arrow-left" />
-								<div className="text">Return</div>
+								<div className="text">{returnButtonText}</div>
 							</React.Fragment>
 						)}
 						onClick={this.props.hideForm}
 					/>
 				</div>
 				<section className="frozen-form-wrap">
-					<h1 className="page-title">freeze funds</h1>
+					<h1 className="page-title">{pageTitle}</h1>
 
 					<div className="form">
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">Amount, ECHO</span>
+								<span className="line-label-text">{amountLabel}</span>
 							</div>
 							<div className="line-content">
-								<FormattedMessage id="freeze_funds.amount">
+								<FormattedMessage id="freeze_funds.amount.placeholder">
 									{
 										(content) => (
 											<Input
@@ -216,20 +223,20 @@ class FrozenFundsForm extends React.Component {
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">Period</span>
+								<span className="line-label-text">{periodLabel}</span>
 							</div>
 							<div className="line-content">
 								<Dropdown className="white select-period">
 									<Dropdown.Toggle variant="Info">
 										<span className="dropdown-toggle-text">
-											{durationObject.text || 'Select period'}
+											{durationObject.text || periodPlaceholder}
 										</span>
 										<span className="carret" />
 									</Dropdown.Toggle>
 
 									<Dropdown.Menu>
 										<PerfectScrollbar>
-											{periods && periods.map(({ text, value }, id) => {
+											{FREEZE_FUNDS_PERIODS && FREEZE_FUNDS_PERIODS.map(({ text, value }, id) => {
 												const key = id;
 
 												return (
@@ -250,9 +257,9 @@ class FrozenFundsForm extends React.Component {
 								durationObject.coefficient && (
 									<div className="line">
 										<div className="line-label">
-											<span className="line-label-text">Coefficient
+											<span className="line-label-text">{coefficientLabel}
 												<Popup
-													content="This is the coefficient that will be used to calculate the reward for participating in blocks creation."
+													content={coefficientPopup}
 													className="tooltip-frozen"
 													trigger={<Icon className="icon-info" />}
 												/>
@@ -307,7 +314,7 @@ class FrozenFundsForm extends React.Component {
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">From</span>
+								<span className="line-label-text">{fromLabel}</span>
 							</div>
 							<div className="line-content">
 								<Dropdown className="white select-account">

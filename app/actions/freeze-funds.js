@@ -15,6 +15,7 @@ import {
 	ECHO_ASSET_ID,
 	EXPIRATION_INFELICITY,
 	GLOBAL_ID_1,
+	FREEZE_FUNDS_PERIODS,
 } from '../constants/global-constants';
 import { TRANSFER_KEYS } from '../constants/transaction-constants';
 import { FORM_FREEZE } from '../constants/form-constants';
@@ -118,7 +119,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 		const fromId = accounts.findKey((a, id) => id === form.get('from').value)
 			|| accounts.findKey((a, id) => id === form.get('initialData').accountId) || [...accounts.keys()][0];
 
-		const duration = form.get('duration') || 90;
+		const duration = form.get('duration') || FREEZE_FUNDS_PERIODS[0].value;
 
 		const asset = selectedBalance
 			? objectsById.get(objectsById.getIn([selectedBalance, 'asset_type']))
@@ -230,7 +231,7 @@ export const freezeFunds = () => async (dispatch, getState) => {
 
 	const selectedBalance = defaultSelected;
 	const selectedFeeBalance = getState().form.getIn([FORM_FREEZE, 'selectedFeeBalance']) || defaultSelected;
-	const selectedDuration = getState().form.getIn([FORM_FREEZE, 'duration']) || 90;
+	const selectedDuration = getState().form.getIn([FORM_FREEZE, 'duration']) || FREEZE_FUNDS_PERIODS[0].value;
 
 	if (!selectedBalance || !selectedFeeBalance) {
 		dispatch(setFormError(FORM_FREEZE, 'amount', 'Insufficient funds'));
