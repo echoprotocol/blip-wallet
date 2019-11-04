@@ -17,7 +17,7 @@ import {
 	GLOBAL_ID_1,
 	FREEZE_FUNDS_PERIODS,
 } from '../constants/global-constants';
-import { TRANSFER_KEYS } from '../constants/transaction-constants';
+import { FREEZE_FUNDS_KEYS } from '../constants/transaction-constants';
 import { FORM_FREEZE } from '../constants/form-constants';
 import { WALLET } from '../constants/routes-constants';
 
@@ -171,7 +171,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
  * @param options
  */
 const sendTransaction = async (type, options) => {
-	const accountId = options[TRANSFER_KEYS[type]];
+	const accountId = options[FREEZE_FUNDS_KEYS[type]];
 	const account = await Services.getEcho().api.getObject(accountId);
 
 	let tr = Services.getEcho().api.createTransaction();
