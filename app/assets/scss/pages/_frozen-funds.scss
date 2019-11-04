@@ -78,10 +78,10 @@
             }
 
             &:not(:last-child) {
-                margin-bottom: 30px;
+                margin-bottom: 35px;
 
                 @include max-vw($md) {
-                    margin-bottom: 25px;
+                    margin-bottom: 28px;
                 }
             }
 
@@ -150,6 +150,7 @@
 
             .line-content {
                 min-width: 59%;
+                position: relative;
 
                 .dropdown-toggle,
                 input {

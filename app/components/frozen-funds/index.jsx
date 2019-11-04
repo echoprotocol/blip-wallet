@@ -3,6 +3,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+
 import FrozenForm from './form';
 import FrozenTable from './table';
 import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
@@ -50,8 +51,8 @@ class FrozenFunds extends React.Component {
 		}
 	}
 
-	showForm() {
-		this.setState((prevState) => ({ showForm: !prevState.showForm }));
+	toggleForm(state) {
+		this.setState(({ showForm: state }));
 	}
 
 	render() {
@@ -64,8 +65,12 @@ class FrozenFunds extends React.Component {
 					<PerfectScrollbar className="page-scroll">
 						<div className="frozen-wrap">
 							{showForm
-								? <FrozenForm />
-								: (
+								? (
+									<FrozenForm
+										hideForm={() => this.toggleForm(false)}
+										{...this.props}
+									/>
+								) : (
 									<React.Fragment>
 										<h1 className="frozen-page-title">
 											<FormattedMessage id="frozenFunds.title" />
@@ -76,8 +81,8 @@ class FrozenFunds extends React.Component {
 										{showTable && <FrozenTable frozenBalances={frozenBalances} />}
 										<Button
 											className="btn-freeze"
-											onClick={this.showForm}
 											content={buttonTitle}
+											onClick={() => this.toggleForm(true)}
 										/>
 									</React.Fragment>
 								)
