@@ -1,15 +1,13 @@
 import BN from 'bignumber.js';
 import { CACHE_MAPS, OPERATIONS_IDS } from 'echojs-lib';
 
-import { getOperationFee } from './transaction-actions';
-import { signTransaction } from './sign-actions';
 import {
 	setFormError, setFormValue, setValue,
 } from './form-actions';
 
 import {
-	checkFeePool,
-} from './operation-actions';
+	checkFeePool, getTransactionFee, sendTransaction,
+} from './transaction-actions';
 
 import ValidateSendHelper from '../helpers/validate-send-helper';
 import FormatHelper from '../helpers/format-helper';
@@ -17,11 +15,8 @@ import FormatHelper from '../helpers/format-helper';
 import {
 	BROADCAST_LIMIT,
 	ECHO_ASSET_ID,
-	EXPIRATION_INFELICITY,
-	GLOBAL_ID_1,
 	FREEZE_FUNDS_PERIODS,
 } from '../constants/global-constants';
-import { FREEZE_FUNDS_KEYS } from '../constants/transaction-constants';
 import { FORM_FREEZE } from '../constants/form-constants';
 import { WALLET } from '../constants/routes-constants';
 
@@ -33,45 +28,6 @@ export const changeAccount = (fromId) => (dispatch) => {
 	dispatch(setFormValue(FORM_FREEZE, 'from', fromId));
 	dispatch(setFormError(FORM_FREEZE, 'fee', ''));
 	dispatch(setFormError(FORM_FREEZE, 'amount', ''));
-};
-
-/**
- *  @method getTransactionFee
- *
- * 	Get operation fee
- *
- * 	@param type
- * 	@param {Object} options
- */
-const getTransactionFee = (type, options) => async (dispatch) => {
-
-	try {
-		const { fee } = options;
-		const core = await Services.getEcho().api.getObject(ECHO_ASSET_ID);
-		const feeAsset = await Services.getEcho().api.getObject(fee.asset_id);
-
-		let amount = await getOperationFee(type, options);
-
-		if (feeAsset.id !== ECHO_ASSET_ID) {
-			const price = new BN(feeAsset.options.core_exchange_rate.quote.amount)
-				.div(feeAsset.options.core_exchange_rate.base.amount)
-				.times(10 ** (core.precision - feeAsset.precision));
-
-			amount = new BN(amount).div(10 ** core.precision);
-			amount = price.times(amount).times(10 ** feeAsset.precision);
-		}
-
-		return {
-			amount: new BN(amount).integerValue(BN.ROUND_UP).toString(),
-			asset_id: fee.asset_id,
-		};
-	} catch (err) {
-		console.log('err', err);
-		dispatch(setFormError(FORM_FREEZE, 'fee', 'Can\'t be calculated'));
-	}
-
-
-	return null;
 };
 
 /**
@@ -123,7 +79,7 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 			return false;
 		}
 
-		const resultFee = await dispatch(getTransactionFee(type, options));
+		const resultFee = await dispatch(getTransactionFee(type, options, FORM_FREEZE));
 
 		if (!resultFee) {
 			return false;
@@ -140,33 +96,6 @@ export const setFeeFormValue = () => async (dispatch, getState) => {
 	}
 
 	return true;
-};
-
-/**
- *  @method sendTransaction
- *
- *    Send transaction
- *
- * @param type
- * @param options
- */
-const sendTransaction = async (type, options) => {
-	const accountId = options[FREEZE_FUNDS_KEYS[type]];
-	const account = await Services.getEcho().api.getObject(accountId);
-
-	let tr = Services.getEcho().api.createTransaction();
-
-	tr = tr.addOperation(type, options);
-
-	const dynamicGlobalChainData = await Services.getEcho().api.getObject(GLOBAL_ID_1, true);
-
-	const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
-
-	tr.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
-
-	await signTransaction(account, tr);
-
-	return tr.broadcast();
 };
 
 /**
@@ -257,7 +186,7 @@ export const freezeFunds = () => async (dispatch, getState) => {
 		}
 
 		if (!options.fee.amount) {
-			options.fee = await dispatch(getTransactionFee(type, options));
+			options.fee = await dispatch(getTransactionFee(type, options, FORM_FREEZE));
 
 			if (!options.fee) {
 				return false;

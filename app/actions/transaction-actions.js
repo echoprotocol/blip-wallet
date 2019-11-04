@@ -1,16 +1,31 @@
 import { Map, fromJS } from 'immutable';
 import { validators, CACHE_MAPS } from 'echojs-lib';
+import BN from 'bignumber.js';
+
+import {
+	setFormError,
+} from './form-actions';
+
+import { signTransaction } from './sign-actions';
 
 import WalletReducer from '../reducers/wallet-reducer';
 
 import {
 	OPERATION_ID_PREFIX, OPTION_TYPES, OPERATIONS,
 	CONTRACT_TYPES, CONTRACT_RESULT_TYPE_0, CONTRACT_RESULT_EXCEPTED_NONE,
+	OPERATION_KEYS,
 } from '../constants/transaction-constants';
 import { ASSET_TYPE, TOKEN_TYPE, DEFAULT_HISTORY_COUNT } from '../constants/graphql-constants';
 import {
-	ECHO_ASSET_ID, ECHO_ASSET_SYMBOL, ECHO_ASSET_PRECISION, EETH_ASSET_SYMBOL, ERC20_TOKEN_PRECISION,
+	ECHO_ASSET_ID,
+	ECHO_ASSET_SYMBOL,
+	ECHO_ASSET_PRECISION,
+	EETH_ASSET_SYMBOL,
+	ERC20_TOKEN_PRECISION,
+	EXPIRATION_INFELICITY,
+	GLOBAL_ID_1,
 } from '../constants/global-constants';
+
 import ViewHelper from '../helpers/view-helper';
 import Services from '../services';
 import { getHistoryByAccounts, getCoinsByAccounts } from '../services/queries/transaction-queries';
@@ -523,4 +538,93 @@ export const getOperationFee = async (type, transaction) => {
 	tr = await tr.setRequiredFees();
 
 	return tr.operations[0][1].fee.amount;
+};
+
+/**
+ *  @method checkFeePool
+ *
+ * 	Remove balances and assets by deleted user's id
+ *
+ * 	@param {Object} coreAsset
+ * 	@param {Object} asset
+ * 	@param {Number} fee
+ */
+export const checkFeePool = (coreAsset, asset, fee) => {
+	if (coreAsset.get('id') === asset.get('id')) { return true; }
+
+	let feePool = new BN(asset.getIn(['dynamic', 'fee_pool'])).div(10 ** coreAsset.get('precision'));
+
+	const base = asset.getIn(['options', 'core_exchange_rate', 'base']);
+	const quote = asset.getIn(['options', 'core_exchange_rate', 'quote']);
+	const precision = coreAsset.get('precision') - asset.get('precision');
+	const price = new BN(quote.get('amount')).div(base.get('amount')).times(10 ** precision);
+	feePool = price.times(feePool).times(10 ** asset.get('precision'));
+
+	return feePool.gt(fee);
+};
+
+/**
+ *  @method getTransactionFee
+ *
+ * 	Get operation fee
+ *
+ * 	@param type
+ * 	@param {Object} options
+ */
+export const getTransactionFee = (type, options, form) => async (dispatch) => {
+
+	try {
+		const { fee } = options;
+		const core = await Services.getEcho().api.getObject(ECHO_ASSET_ID);
+		const feeAsset = await Services.getEcho().api.getObject(fee.asset_id);
+
+		let amount = await getOperationFee(type, options);
+
+		if (feeAsset.id !== ECHO_ASSET_ID) {
+			const price = new BN(feeAsset.options.core_exchange_rate.quote.amount)
+				.div(feeAsset.options.core_exchange_rate.base.amount)
+				.times(10 ** (core.precision - feeAsset.precision));
+
+			amount = new BN(amount).div(10 ** core.precision);
+			amount = price.times(amount).times(10 ** feeAsset.precision);
+		}
+
+		return {
+			amount: new BN(amount).integerValue(BN.ROUND_UP).toString(),
+			asset_id: fee.asset_id,
+		};
+	} catch (err) {
+		console.log('err', err);
+		dispatch(setFormError(form, 'fee', 'Can\'t be calculated'));
+	}
+
+
+	return null;
+};
+
+/**
+ *  @method sendTransaction
+ *
+ *    Send transaction
+ *
+ * @param type
+ * @param options
+ */
+export const sendTransaction = async (type, options) => {
+	const accountId = options[OPERATION_KEYS[type]];
+	const account = await Services.getEcho().api.getObject(accountId);
+
+	let tr = Services.getEcho().api.createTransaction();
+
+	tr = tr.addOperation(type, options);
+
+	const dynamicGlobalChainData = await Services.getEcho().api.getObject(GLOBAL_ID_1, true);
+
+	const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
+
+	tr.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
+
+	await signTransaction(account, tr);
+
+	return tr.broadcast();
 };

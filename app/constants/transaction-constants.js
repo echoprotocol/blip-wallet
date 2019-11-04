@@ -32,11 +32,8 @@ export const CONTRACT_RESULT_TYPE_0 = 0;
 export const CONTRACT_RESULT_TYPE_1 = 1;
 export const CONTRACT_RESULT_EXCEPTED_NONE = 'None';
 
-export const FREEZE_FUNDS_KEYS = {
+export const OPERATION_KEYS = {
 	[OPERATIONS_IDS.BALANCE_FREEZE]: 'account',
-};
-
-export const TRANSFER_KEYS = {
 	[OPERATIONS_IDS.CONTRACT_CALL]: 'registrar',
 	[OPERATIONS_IDS.TRANSFER]: 'from',
 };
