@@ -74,7 +74,6 @@ export const clearValue = (field) => (dispatch) => {
  */
 export const initNetworks = (store) => async (dispatch) => {
 	let current = Services.getLocalStorage().getData('current_network');
-	console.log(NETWORKS);
 	if (!current || !NETWORKS[current]) {
 		current = DEFAULT_NETWORK_ID;
 		Services.getLocalStorage().setData('current_network', current);
