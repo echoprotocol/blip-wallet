@@ -139,3 +139,5 @@ export const FREEZE_COEF_BY_TIME = {
 };
 export const FREEZE_COEF_FACTOR = 10e3;
 export const FREEZE_BALANCE_PERCISION = 10e7;
+export const BALANCE_FREEZE_OPERATION_ID = '21';
+export const BALANCE_UNFREEZE_OPERATION_ID = '22';

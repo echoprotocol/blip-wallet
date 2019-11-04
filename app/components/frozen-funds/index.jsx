@@ -4,6 +4,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
+import { BALANCE_FREEZE_OPERATION_ID, BALANCE_UNFREEZE_OPERATION_ID } from '../../constants/global-constants';
 import FrozenForm from './form';
 import FrozenTable from './table';
 import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
@@ -16,30 +17,28 @@ class FrozenFunds extends React.Component {
 		this.state = {
 			showForm: false,
 			showTable: true,
-			// t: null,
 		};
-		this.showForm = this.showForm.bind(this);
 		this.subscription = null;
 	}
 
 	componentDidMount() {
 		this.props.getFrozenBalance();
-		this.subscribe();
-		// this.setState({ t: setInterval(this.props.getFrozenBalance, 3000) });
+		this.subscribe(this.props.filter);
 	}
 
 	componentWillUnmount() {
 		this.unsubscribe();
-		// clearInterval(this.state.t);
 	}
 
-	subscribe() {
-		this.subscription = newOperationSubscription(this.props.filter);
-
+	subscribe(filter) {
+		this.subscription = newOperationSubscription(filter);
+		console.log(this.subscription);
 		if (this.subscription) {
+			console.log('#########');
 			this.subscription = this.subscription.subscribe(({ data: { newOperation } }) => {
-				console.log(newOperation);
-				// this.props.setNewTransaction(newOperation);
+				if (newOperation.id === BALANCE_FREEZE_OPERATION_ID || newOperation.id === BALANCE_UNFREEZE_OPERATION_ID) {
+					this.props.getFrozenBalance();
+				}
 			});
 		}
 	}
