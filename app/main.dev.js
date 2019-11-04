@@ -328,7 +328,6 @@ async function createWindow() {
 		startNode(processCounterId += 1, options, []);
 
 		ipcMain.on('startNode', async (event, args) => {
-			console.info('START NODE WITH ARGUMENTS', args);
 
 			const NETWORK_ID = args && args.networkId ? args.networkId : DEFAULT_NETWORK_ID;
 
