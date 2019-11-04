@@ -13,7 +13,6 @@ import { HISTORY } from '../../constants/routes-constants';
 import { TOKEN_TYPE } from '../../constants/graphql-constants';
 import Footer from '../footer';
 import LastTransaction from './last-transaction';
-import { getBalance } from '../../actions/balance-actions';
 
 class Wallet extends React.Component {
 
@@ -78,6 +77,26 @@ class Wallet extends React.Component {
 		});
 
 		return this.sortAssets(assets);
+	}
+
+	getBalance(balances) {
+		if (!balances.size) {
+			return null;
+		}
+
+		const amounts = [];
+
+		balances.forEach((b) => {
+			if (b.asset.get('id') === ECHO_ASSET_ID) {
+				amounts.push(b.amount);
+			}
+		});
+
+		const result = FormatHelper.accumulateBalances(amounts);
+
+		const precision = [...balances.values()][0].asset.get('precision');
+
+		return FormatHelper.formatAmount(result, precision);
 	}
 
 	sortAssets(assets) {
@@ -257,7 +276,7 @@ class Wallet extends React.Component {
 
 		const { showSettings } = this.state;
 
-		const balance = getBalance(balances);
+		const balance = this.getBalance(balances);
 
 		const assets = this.renderAssets();
 		const tokens = this.renderTokens();

@@ -6,7 +6,6 @@ import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
 import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
-import FormatHelper from '../helpers/format-helper';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
 import { SEND } from '../constants/routes-constants';
@@ -304,9 +303,9 @@ export const getBalance = (balances) => {
 	if (!balances.size) {
 		return null;
 	}
-	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, v.amount] : null), []);
-	const result = FormatHelper.accumulateBalances(amounts);
-	const precision = [...balances.values()][0].asset.get('precision');
-
-	return FormatHelper.formatAmount(result, precision);
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
+		amount: v.amount,
+		precision: v.asset.precision,
+	}] : acc), []);
+	return amounts.reduce((acc, amount) => (acc + amount.amount / (10 ** amount.precision)), 0);
 };
