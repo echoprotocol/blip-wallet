@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
@@ -8,7 +9,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import {
 	OPERATION_DEFINITION, SUBSCRIPTION,
 } from '../constants/graphql-constants';
-import { ECHODB, MAX_RETRIES } from '../constants/global-constants';
+import { MAX_RETRIES } from '../constants/global-constants';
 
 const cache = new InMemoryCache({
 	dataIdFromObject: (o) => (o._id ? `${o.__typename}:${o._id}` : null), // eslint-disable-line no-underscore-dangle

@@ -1,5 +1,4 @@
 import { constants } from 'echojs-lib';
-import { explorerUrl, echodbUrl, qrServerUrl } from '../../configs/urls.config';
 
 export const DB_NAME = 'keyval-store';
 export const STORE = 'keyval';
@@ -15,39 +14,11 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
 
 
-export const NETWORKS = {
-	devnet: {
-		remote: {
-			name: 'Remote node',
-			url: 'wss://devnet.echo-dev.io/ws',
-		},
-		local: {
-			name: 'Local node',
-			seed: 'node1.devnet.echo-dev.io:6310',
-		},
-	},
-	testnet: {
-		remote: {
-			name: 'Remote node',
-			url: 'ws://testnet.echo-dev.io/ws',
-		},
-		local: {
-			name: 'Local node',
-			seed: 'node1.devnet.echo-dev.io:6310',
-		},
-	},
-};
 export const DEFAULT_NETWORK_ID = 'testnet';
 export const NETWORK_STATUS = {
 	ONLINE: 'online',
 	OFFLINE: 'offline',
 };
-
-export const EXPLORER_URL = explorerUrl;
-
-export const ECHODB = echodbUrl;
-
-export const QR_SERVER_URL = qrServerUrl;
 
 export const { ECHO_ASSET_ID } = constants;
 export const ECHO_ASSET_PRECISION = 8;
