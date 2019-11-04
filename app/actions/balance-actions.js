@@ -273,11 +273,12 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 	return true;
 };
-export const getBalance = (balances) => {
+
+export const getCurrentBalance = (balances, accountId) => {
 	if (!balances.size) {
 		return null;
 	}
-	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => ((v.asset.id === ECHO_ASSET_ID && v.owner === accountId) ? [...acc, {
 		amount: v.amount,
 		precision: v.asset.precision,
 	}] : acc), []);
