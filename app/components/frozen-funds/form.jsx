@@ -7,7 +7,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import PropTypes from 'prop-types';
-// import classnames from 'classnames';
 
 import Avatar from '../avatar';
 
@@ -22,7 +21,6 @@ class FrozenFundsForm extends React.Component {
 		super(props);
 
 		this.state = {
-			timeout: null,
 			feeTimeout: null,
 			amountTimeout: null,
 		};
@@ -45,29 +43,10 @@ class FrozenFundsForm extends React.Component {
 		this.props.clearForm();
 	}
 
-	onChange(e) {
-		const { timeout } = this.state;
-
-		if (timeout) {
-			clearTimeout(timeout);
-		}
-
-		const field = e.target.name;
-		const { value } = e.target;
-
-		this.props.setFormValue(field, value);
-
-		if (field === 'to' && value) {
-			this.props.setValue('isCheckLoading', true);
-		} else {
-			this.props.setValue('isCheckLoading', false);
-		}
-
-		this.setFee({ to: value });
-	}
-
 	onChangeDuration(value) {
 		this.props.setValue('duration', value);
+
+		this.setFee({ duration: value });
 	}
 
 	onAmountChange(e) {
@@ -81,7 +60,6 @@ class FrozenFundsForm extends React.Component {
 
 		const value = e.target.value.replace(/\s+/g, '');
 
-
 		const precision = null;
 		const symbol = null;
 
@@ -89,14 +67,6 @@ class FrozenFundsForm extends React.Component {
 			clearTimeout(amountTimeout);
 		}
 
-		if (!ValidateSendHelper.validateContractId(form.get('selectedBalance'))) {
-			// tokens.forEach((token) => {
-			// 	if (token.getIn(['contract', 'id']) === form.get('selectedBalance')) {
-			// 		precision = token.getIn(['contract', 'token', 'decimals']);
-			// 		symbol = token.getIn(['contract', 'token', 'symbol']);
-			// 	}
-			// });
-		}
 		let assetId = balances.getIn([form.get('selectedBalance'), 'assetId']);
 
 		if (!assetId) {
@@ -129,15 +99,15 @@ class FrozenFundsForm extends React.Component {
 		return true;
 	}
 
-	onSend() {
-		this.props.send();
+	onApply() {
+		this.props.freezeFunds();
 	}
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
 
-		if (KEY_CODE_ENTER === code) {
-			this.onSend();
+		if (KEY_CODE_ENTER === code && this.isTransactionValidate()) {
+			this.onApply();
 		}
 	}
 
@@ -152,8 +122,8 @@ class FrozenFundsForm extends React.Component {
 
 		const { form } = this.props;
 		const amount = Object.prototype.hasOwnProperty.call(data, 'amount') ? data.amount : form.get('amount').value;
-		const to = Object.prototype.hasOwnProperty.call(data, 'to') ? data.to : form.get('to').value;
-		if (to && amount && !form.get('loading')) {
+		const duration = Object.prototype.hasOwnProperty.call(data, 'duration') ? data.duration : form.get('duration');
+		if (duration && amount && !form.get('loading')) {
 			this.setState({
 				feeTimeout: setTimeout(() => {
 					this.props.setFeeFormValue();
@@ -198,11 +168,12 @@ class FrozenFundsForm extends React.Component {
 					<Button
 						className="btn-return"
 						content={(
-							<React.Fragment onClick={this.props.hideForm}>
+							<React.Fragment>
 								<Icon className="arrow-left" />
 								<div className="text">Return</div>
 							</React.Fragment>
 						)}
+						onClick={this.props.hideForm}
 					/>
 				</div>
 				<section className="frozen-form-wrap">
@@ -228,6 +199,7 @@ class FrozenFundsForm extends React.Component {
 												className="white"
 												autoFocus
 												onChange={(e) => this.onAmountChange(e)}
+												onKeyPress={(e) => this.onKeyPress(e)}
 											/>
 										)
 									}
@@ -379,7 +351,7 @@ class FrozenFundsForm extends React.Component {
 									content={(
 										<div className="text">{content}</div>
 									)}
-									disable={!this.isTransactionValidate() || !!loading}
+									disabled={!this.isTransactionValidate() || !!loading}
 									onClick={() => this.onApply()}
 								/>
 							)
@@ -393,8 +365,8 @@ class FrozenFundsForm extends React.Component {
 									content={(
 										<div className="text">{content}</div>
 									)}
-									disable={!!loading}
-									onClick={() => this.onCancel()}
+									disabled={!!loading}
+									onClick={() => this.props.hideForm()}
 								/>
 							)
 						}
@@ -416,7 +388,7 @@ FrozenFundsForm.propTypes = {
 	setValue: PropTypes.func.isRequired,
 	setFormValue: PropTypes.func.isRequired,
 	setFormError: PropTypes.func.isRequired,
-	send: PropTypes.func.isRequired,
+	freezeFunds: PropTypes.func.isRequired,
 	setFeeFormValue: PropTypes.func.isRequired,
 	clearForm: PropTypes.func.isRequired,
 	setMinAmount: PropTypes.func.isRequired,

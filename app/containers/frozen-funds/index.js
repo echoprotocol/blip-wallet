@@ -5,7 +5,7 @@ import {
 	clearForm, setFormError, setFormValue, setValue,
 } from '../../actions/form-actions';
 import {
-	send, setFeeFormValue, setMinAmount, changeAccount,
+	freezeFunds, setFeeFormValue, setMinAmount, changeAccount,
 } from '../../actions/freeze-funds';
 
 import Services from '../../services';
@@ -24,7 +24,7 @@ export default connect(
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_FREEZE, field, value)),
 		setValue: (field, value) => dispatch(setValue(FORM_FREEZE, field, value)),
 		setFormError: (field, value) => dispatch(setFormError(FORM_FREEZE, field, value)),
-		send: () => dispatch(send()),
+		freezeFunds: () => dispatch(freezeFunds()),
 		setFeeFormValue: () => dispatch(setFeeFormValue()),
 		clearForm: () => dispatch(clearForm(FORM_FREEZE)),
 		setMinAmount: () => dispatch(setMinAmount()),

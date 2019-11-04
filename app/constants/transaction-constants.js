@@ -35,6 +35,7 @@ export const CONTRACT_RESULT_EXCEPTED_NONE = 'None';
 export const TRANSFER_KEYS = {
 	[OPERATIONS_IDS.CONTRACT_CALL]: 'registrar',
 	[OPERATIONS_IDS.TRANSFER]: 'from',
+	[OPERATIONS_IDS.BALANCE_FREEZE]: 'account',
 };
 
 export const OPERATIONS = {

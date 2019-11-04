@@ -1,5 +1,4 @@
 import BN from 'bignumber.js';
-import { keccak256 } from 'js-sha3';
 import { CACHE_MAPS, OPERATIONS_IDS } from 'echojs-lib';
 
 import { getOperationFee } from './transaction-actions';
@@ -24,16 +23,6 @@ import { WALLET } from '../constants/routes-constants';
 import GlobalReducer from '../reducers/global-reducer';
 import { history } from '../store/configureStore';
 import Services from '../services';
-
-const getTransferCode = (id, amount) => {
-	const method = keccak256('transfer(address,uint256)').substr(0, 8);
-
-	const idArg = Number(id.split('.')[2]).toString(16).padStart(64, '0');
-
-	const amountArg = amount.toString(16).padStart(64, '0');
-
-	return method + idArg + amountArg;
-};
 
 export const changeAccount = (fromId) => (dispatch) => {
 	dispatch(setFormValue(FORM_FREEZE, 'from', fromId));
@@ -200,20 +189,18 @@ const sendTransaction = async (type, options) => {
 };
 
 /**
- *  @method send
+ *  @method freezeFunds
  *
  * 	Transfer transaction
  */
-export const send = () => async (dispatch, getState) => {
-
+export const freezeFunds = () => async (dispatch, getState) => {
 	const form = getState().form.get(FORM_FREEZE);
 
 	const amount = new BN(form.get('amount').value).toString();
 
-	const to = form.get('to');
 	const fee = form.get('fee');
 
-	if (to.error || form.get('amount').error || fee.error) {
+	if (form.get('amount').error || fee.error || !form.get('duration')) {
 		return false;
 	}
 
@@ -241,8 +228,9 @@ export const send = () => async (dispatch, getState) => {
 
 	defaultSelected = defaultSelected && defaultSelected.get('id');
 
-	const selectedBalance = getState().form.getIn([FORM_FREEZE, 'selectedBalance']) || defaultSelected;
+	const selectedBalance = defaultSelected;
 	const selectedFeeBalance = getState().form.getIn([FORM_FREEZE, 'selectedFeeBalance']) || defaultSelected;
+	const selectedDuration = getState().form.getIn([FORM_FREEZE, 'duration']) || 90;
 
 	if (!selectedBalance || !selectedFeeBalance) {
 		dispatch(setFormError(FORM_FREEZE, 'amount', 'Insufficient funds'));
@@ -250,26 +238,11 @@ export const send = () => async (dispatch, getState) => {
 		return false;
 	}
 
-	let isToken = false;
-
-	if (!ValidateSendHelper.validateContractId(selectedBalance)) {
-		isToken = true;
-	}
-
-	const tokens = getState().wallet.get('tokens');
-
-	const token = tokens.find((t) => t.getIn(['account', 'id']) === fromId && t.getIn(['contract', 'id']) === selectedBalance);
-	const balance = isToken
-		? {
-			symbol: token.getIn(['contract', 'token', 'symbol']),
-			precision: token.getIn(['contract', 'token', 'decimals']),
-			balance: token.get('amount'),
-		}
-		: {
-			symbol: objectsById.getIn([objectsById.getIn([selectedBalance, 'asset_type']), 'symbol']),
-			precision: objectsById.getIn([objectsById.getIn([selectedBalance, 'asset_type']), 'precision']),
-			balance: objectsById.getIn([selectedBalance, 'balance']),
-		};
+	const balance = {
+		symbol: objectsById.getIn([objectsById.getIn([selectedBalance, 'asset_type']), 'symbol']),
+		precision: objectsById.getIn([objectsById.getIn([selectedBalance, 'asset_type']), 'precision']),
+		balance: objectsById.getIn([selectedBalance, 'balance']),
+	};
 
 	const amountError = ValidateSendHelper.validateAmount(amount, balance);
 
@@ -278,53 +251,28 @@ export const send = () => async (dispatch, getState) => {
 		return false;
 	}
 
-	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'send.loading' }));
+	dispatch(GlobalReducer.actions.set({ field: 'loading', value: 'freeze_funds.loading' }));
 
 	try {
-
-		const [toAccount] = await Services.getEcho().api.getFullAccounts([to.value]);
-
-		let options = {};
-
 		const assetId = objectsById.getIn([selectedBalance, 'asset_type']) || ECHO_ASSET_ID;
 		const assetIdFee = objectsById.getIn([selectedFeeBalance, 'asset_type']) || ECHO_ASSET_ID;
+		const duration = selectedDuration;
 
-		let type = null;
-		if (isToken) {
-			const code = getTransferCode(toAccount.id, new BN(amount).times(10 ** balance.precision));
+		const type = OPERATIONS_IDS.BALANCE_FREEZE;
+		const options = {
+			amount: {
+				amount: parseFloat(amount),
+				asset_id: assetId,
+			},
+			fee: {
+				asset_id: assetIdFee,
+			},
+			account: fromAccount.id,
+			duration,
+		};
 
-			type = OPERATIONS_IDS.CONTRACT_CALL;
-			options = {
-				code,
-				fee: {
-					amount: fee.value || 0,
-					asset_id: assetIdFee,
-				},
-				callee: selectedBalance,
-				registrar: fromAccount.id,
-				value: {
-					asset_id: assetIdFee,
-					amount: 0,
-				},
-			};
-		} else {
-
-			type = OPERATIONS_IDS.TRANSFER;
-			options = {
-				amount: {
-					amount: parseFloat(amount),
-					asset_id: assetId,
-				},
-				fee: {
-					asset_id: assetIdFee,
-				},
-				from: fromAccount.id,
-				to: toAccount.id,
-			};
-
-			if (fee.value) {
-				options.fee.amount = fee.value;
-			}
+		if (fee.value) {
+			options.fee.amount = fee.value;
 		}
 
 		if (!options.fee.amount) {
@@ -349,34 +297,20 @@ export const send = () => async (dispatch, getState) => {
 		const feePrecision = new BN(10).pow(feeAsset.get('precision'));
 		const feeAmount = new BN(options.fee.amount).times(feePrecision);
 
-		if (!isToken && options.amount.asset_id === options.fee.asset_id) {
+		if (options.amount.asset_id === options.fee.asset_id) {
 			const totalAmount = new BN(amount).times(feePrecision).plus(feeAmount);
 
 			if (totalAmount.gt(objectsById.getIn([selectedBalance, 'balance']))) {
 				dispatch(setFormError(FORM_FREEZE, 'fee', 'Insufficient funds for fee'));
 				return false;
 			}
-		} else {
-			const feeBalance = objectsById
-				.filter((o, id) => ValidateSendHelper.isAccountBalanceId(id))
-				.find((val) => val.get('asset_type') === feeAsset.get('id') && val.get('owner') === fromAccount.id)
-				.get('balance');
-
-			if (feeAmount.gt(feeBalance)) {
-				dispatch(setFormError(FORM_FREEZE, 'fee', 'Insufficient funds for fee'));
-				return false;
-			}
 		}
 
 		const feeAssetPrecision = new BN(10).pow(feeAsset.get('precision'));
-		if (isToken) {
-			options.value.amount = 0;
-			options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString();
-		} else {
-			const amountAsset = objectsById.get(options.amount.asset_id);
-			options.amount.amount = new BN(options.amount.amount).times(new BN(10).pow(amountAsset.get('precision'))).toString();
-			options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString();
-		}
+
+		const amountAsset = objectsById.get(options.amount.asset_id);
+		options.amount.amount = new BN(options.amount.amount).times(new BN(10).pow(amountAsset.get('precision'))).toString();
+		options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString();
 
 		const start = new Date().getTime();
 
