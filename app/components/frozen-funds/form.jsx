@@ -2,6 +2,7 @@ import React from 'react';
 import {
 	Input, Button, Icon, Popup,
 } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -9,8 +10,9 @@ import Avatar from '../avatar';
 
 class FrozenFundsForm extends React.Component {
 
-
 	render() {
+		const { intl } = this.props;
+		const aboutText = intl.formatMessage({ id: 'frozenFunds.form.about' });
 		return (
 			<div>
 				<div className="return">
@@ -19,19 +21,19 @@ class FrozenFundsForm extends React.Component {
 						content={(
 							<React.Fragment>
 								<Icon className="arrow-left" />
-								<div className="text">Return</div>
+								<div className="text"><FormattedMessage id="frozenFunds.form.return" /></div>
 							</React.Fragment>
 						)}
 					/>
 				</div>
 				<section className="frozen-form-wrap">
-					<h1 className="page-title">freeze funds</h1>
+					<h1 className="page-title"><FormattedMessage id="frozenFunds.form.title" /></h1>
 
 					<div className="form">
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">Amount, ECHO</span>
+								<span className="line-label-text"><FormattedMessage id="frozenFunds.form.amount" />, ECHO</span>
 							</div>
 							<div className="line-content">
 								<Input
@@ -46,14 +48,14 @@ class FrozenFundsForm extends React.Component {
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">Period</span>
+								<span className="line-label-text"><FormattedMessage id="frozenFunds.form.period" /></span>
 							</div>
 
 							<div className="line-content">
 								<Dropdown className="white select-period">
 									<Dropdown.Toggle variant="Info">
 										<span className="dropdown-toggle-text">
-											Select period
+											<FormattedMessage id="frozenFunds.form.periodPlaceholder" />
 										</span>
 										<span className="carret" />
 									</Dropdown.Toggle>
@@ -61,13 +63,13 @@ class FrozenFundsForm extends React.Component {
 									<Dropdown.Menu>
 										<PerfectScrollbar>
 											<Dropdown.Item>
-												3 months
+												3 <FormattedMessage id="frozenFunds.form.months" />
 											</Dropdown.Item>
 											<Dropdown.Item>
-												6 months
+												6 <FormattedMessage id="frozenFunds.form.months" />
 											</Dropdown.Item>
 											<Dropdown.Item>
-												12 months
+												12 <FormattedMessage id="frozenFunds.form.months" />
 											</Dropdown.Item>
 										</PerfectScrollbar>
 									</Dropdown.Menu>
@@ -75,9 +77,10 @@ class FrozenFundsForm extends React.Component {
 							</div>
 							<div className="line">
 								<div className="line-label">
-									<span className="line-label-text">Coefficient
+									<span className="line-label-text">
+										<FormattedMessage id="frozenFunds.form.coef" />
 										<Popup
-											content="This is the coefficient that will be used to calculate the reward for participating in blocks creation."
+											content={aboutText}
 											className="tooltip-frozen"
 											trigger={<Icon className="icon-info" />}
 										/>
@@ -97,7 +100,7 @@ class FrozenFundsForm extends React.Component {
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">Transaction Fee, ECHO</span>
+								<span className="line-label-text"><FormattedMessage id="frozenFunds.form.fee" />, ECHO</span>
 							</div>
 							<div className="line-content">
 								<Input
@@ -111,14 +114,14 @@ class FrozenFundsForm extends React.Component {
 
 						<div className="line">
 							<div className="line-label">
-								<span className="line-label-text">From</span>
+								<span className="line-label-text"><FormattedMessage id="frozenFunds.form.from" /></span>
 							</div>
 							<div className="line-content">
 								<Dropdown className="white select-account">
 									<Dropdown.Toggle variant="Info">
 										<Avatar accountName="test" />
 										<span className="dropdown-toggle-text">
-											AccountName
+											<FormattedMessage id="frozenFunds.form.fromPlaceholder" />
 										</span>
 										<span className="carret" />
 									</Dropdown.Toggle>
@@ -141,14 +144,14 @@ class FrozenFundsForm extends React.Component {
 					<Button
 						className="btn-primary white"
 						content={(
-							<div className="text">Freeze funds</div>
+							<div className="text"><FormattedMessage id="frozenFunds.form.buttonTitle" /></div>
 						)}
 						onClick={() => this.onApply()}
 					/>
 					<Button
 						className="btn-gray round"
 						content={(
-							<div className="text">Cancel</div>
+							<div className="text"><FormattedMessage id="frozenFunds.form.buttonCancel" /></div>
 						)}
 						onClick={() => this.onCancel()}
 					/>
@@ -159,4 +162,8 @@ class FrozenFundsForm extends React.Component {
 
 }
 
-export default FrozenFundsForm;
+FrozenFundsForm.propTypes = {
+	intl: intlShape.isRequired,
+};
+
+export default injectIntl(FrozenFundsForm);

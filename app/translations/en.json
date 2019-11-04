@@ -506,5 +506,35 @@
 
 	"animations": {
 		"loading": "Blip is loading. Wait a bit."
+	},
+
+	"frozenFunds": {
+		"title": "frozen funds",
+		"about": "If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward",
+		"buttonTitle": "Freeze funds",
+		"table": {
+			"amount": "Amount",
+			"account": "Account",
+			"coef": "Coefficient",
+			"coefSmall": "Coeff.",
+			"period": "Period",
+			"expiration": "Expiration",
+			"months": "months"
+		},
+		"form": {
+			"return": "Return",
+			"title": "freeze funds",
+			"amount": "Amount",
+			"coef": "Coefficient",
+			"period": "Period",
+			"periodPlaceholder": "Select period",
+			"fee": "Transaction Fee",
+			"from": "From",
+			"fromPlaceholder": "AccountName",
+			"buttonTitle": "Freeze funds",
+			"buttonCancel":  "Cancel",
+			"about": "This is the coefficient that will be used to calculate the reward for participating in blocks creation.",
+			"months": "months"
+		}
 	}
 }

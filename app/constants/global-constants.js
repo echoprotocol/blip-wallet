@@ -127,8 +127,9 @@ export const APP_WINDOW_MIN_HEIGHT = 728;
 export const TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS = 12000;
 
 export const FREEZE_COEF_BY_TIME = {
-	1.3: '3 months',
-	1.4: '6 months',
-	1.5: '12 months',
+	1.3: '3 ',
+	1.4: '6 ',
+	1.5: '12 ',
 };
-export const FREEZE_COEF_FACTOR = 10000;
+export const FREEZE_COEF_FACTOR = 10e3;
+export const FREEZE_BALANCE_PERCISION = 10e7;

@@ -1,7 +1,8 @@
 import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
-import { FREEZE_COEF_BY_TIME, FREEZE_COEF_FACTOR } from '../../constants/global-constants';
+import { FormattedMessage } from 'react-intl';
+import { FREEZE_COEF_BY_TIME, FREEZE_COEF_FACTOR, FREEZE_BALANCE_PERCISION } from '../../constants/global-constants';
 import Avatar from '../avatar';
 
 class FrozenFundsTable extends React.Component {
@@ -22,7 +23,7 @@ class FrozenFundsTable extends React.Component {
 				return (
 					<tr className="line" key={fBalance.id}>
 						<td className="amount">
-							<span>{fBalance.balance.amount}</span> ECHO
+							<span>{fBalance.balance.amount / FREEZE_BALANCE_PERCISION}</span> ECHO
 						</td>
 						<td className="account">
 							<Avatar accountName="test" /> <span>{fBalance.ownerName}</span>
@@ -31,7 +32,7 @@ class FrozenFundsTable extends React.Component {
 							{fBalance.multiplier / 10000}
 						</td>
 						<td className="period">
-							{period}
+							{period} <FormattedMessage id="frozenFunds.table.months" />
 						</td>
 						<td className="expiration">
 							{formattedDate}
@@ -51,20 +52,20 @@ class FrozenFundsTable extends React.Component {
 			<table className="frozen-table-wrap">
 				<thead className="frozen-table-header">
 					<tr className="line">
-						<th className="amount">Amount</th>
-						<th className="account">Account</th>
+						<th className="amount"><FormattedMessage id="frozenFunds.table.amount" /></th>
+						<th className="account"><FormattedMessage id="frozenFunds.table.account" /></th>
 						<th className="coefficient">
 							<Media queries={{ small: { maxWidth: 1132 } }}>
 								{(matches) => (matches.small ? (
-									<p>Coeff.</p>
+									<p><FormattedMessage id="frozenFunds.table.coefSmall" /></p>
 								) : (
-									<p>Coefficient</p>
+									<p><FormattedMessage id="frozenFunds.table.coef" /></p>
 								))
 								}
 							</Media>
 						</th>
-						<th className="period">Period</th>
-						<th className="expiration">Expiration</th>
+						<th className="period"><FormattedMessage id="frozenFunds.table.period" /></th>
+						<th className="expiration"><FormattedMessage id="frozenFunds.table.expiration" /></th>
 					</tr>
 				</thead>
 				<tbody className="frozen-table-body">

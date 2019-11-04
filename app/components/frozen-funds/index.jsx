@@ -1,5 +1,6 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import FrozenForm from './form';
@@ -12,12 +13,18 @@ class FrozenFunds extends React.Component {
 		this.state = {
 			showForm: false,
 			showTable: true,
+			t: null,
 		};
 		this.showForm = this.showForm.bind(this);
 	}
 
 	componentDidMount() {
 		this.props.getFrozenBalance();
+		this.setState({ t: setInterval(this.props.getFrozenBalance, 3000) });
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.state.t);
 	}
 
 	showForm() {
@@ -26,7 +33,8 @@ class FrozenFunds extends React.Component {
 
 	render() {
 		const { showTable, showForm } = this.state;
-		const { frozenBalances } = this.props;
+		const { frozenBalances, intl } = this.props;
+		const buttonTitle = intl.formatMessage({ id: 'frozenFunds.buttonTitle' });
 		return (
 			<div className="page-wrap">
 				<div className="page">
@@ -36,15 +44,17 @@ class FrozenFunds extends React.Component {
 								? <FrozenForm />
 								: (
 									<React.Fragment>
-										<h1 className="frozen-page-title">frozen funds</h1>
+										<h1 className="frozen-page-title">
+											<FormattedMessage id="frozenFunds.title" />
+										</h1>
 										<div className="text-about">
-											If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward
+											<FormattedMessage id="frozenFunds.about" />
 										</div>
 										{showTable && <FrozenTable frozenBalances={frozenBalances} />}
 										<Button
 											className="btn-freeze"
 											onClick={this.showForm}
-											content="Freeze funds"
+											content={buttonTitle}
 										/>
 									</React.Fragment>
 								)
@@ -64,6 +74,7 @@ FrozenFunds.defaultProps = {
 FrozenFunds.propTypes = {
 	frozenBalances: PropTypes.array,
 	getFrozenBalance: PropTypes.func.isRequired,
+	intl: intlShape.isRequired,
 };
 
-export default FrozenFunds;
+export default injectIntl(FrozenFunds);
