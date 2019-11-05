@@ -47,6 +47,48 @@ export default merge.smart(baseConfig, {
 			path: path.join(dist, '[name].json'),
 			name: '[name]',
 		}),
+		new webpack.DefinePlugin({
+			NETWORKS: {
+				devnet: {
+					remote: {
+						name: JSON.stringify('Remote node'),
+						url: JSON.stringify('wss://devnet.echo-dev.io/ws'),
+					},
+					local: {
+						name: JSON.stringify('Local node'),
+						seed: JSON.stringify('node1.devnet.echo-dev.io:6310'),
+					},
+				},
+				testnet: {
+					remote: {
+						name: JSON.stringify('Remote node'),
+						url: JSON.stringify('ws://testnet.echo-dev.io/ws'),
+					},
+					local: {
+						name: JSON.stringify('Local node'),
+						seed: JSON.stringify('node1.devnet.echo-dev.io:6310'),
+					},
+				},
+			},
+			EXPLORER_URL: {
+				devnet: JSON.stringify('https://656-echo-explorer.pixelplex-test.by'),
+				testnet: JSON.stringify('https://explorer.echo.org'),
+			},
+			ECHODB: {
+				devnet: {
+					HTTP_LINK: JSON.stringify('https://645-echodb.pixelplex-test.by/graphql'),
+					WS_LINK: JSON.stringify('wss://645-echodb.pixelplex-test.by/graphql'),
+				},
+				testnet: {
+					HTTP_LINK: JSON.stringify('https://645-echodb.pixelplexlabs.com/graphql'),
+					WS_LINK: JSON.stringify('wss://645-echodb.pixelplexlabs.com/graphql'),
+				},
+			},
+			QR_SERVER_URL: {
+				devnet: JSON.stringify('https://649-bridge-landing.pixelplex-test.by/receive/'),
+				testnet: JSON.stringify('https://649-bridge-landing.pixelplexlabs.com/receive/'),
+			},
+		}),
 
 		/**
      * Create global constants which can be configured at compile time.

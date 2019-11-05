@@ -14,8 +14,17 @@ const DEFAULT_FIELDS = Map({
 			accounts: null,
 		}),
 	}),
+	freeze: new Map({
+		filter: new Map({
+			coins: null,
+			types: null,
+			accounts: null,
+		}),
+	}),
 	tokens: new List([]),
 	hiddenAssets: new Map({}),
+	frozenBalances: [],
+	freezeSum: 0,
 });
 
 export default createModule({

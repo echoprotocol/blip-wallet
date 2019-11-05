@@ -12,6 +12,7 @@ import Receive from './containers/receive';
 import Wallet from './containers/wallet';
 import History from './containers/history';
 import Settings from './containers/settings';
+import FrozenFunds from './containers/frozen-funds';
 
 import Page404 from './components/page404/page404';
 
@@ -20,7 +21,7 @@ import {
 	RESTORE_PASSWORD, ACCOUNT_CREATED,
 	ACCOUNT_IMPORTED, RECEIVE,
 	WALLET, SEND, MANAGE_ACCOUNTS,
-	HISTORY, SETTINGS,
+	HISTORY, SETTINGS, FROZEN_FUNDS,
 } from './constants/routes-constants';
 
 
@@ -38,6 +39,7 @@ export default () => (
 			<Route exact path={SEND} component={Send} />
 			<Route exact path={SETTINGS} component={Settings} />
 			<Route exact path={RECEIVE} component={Receive} />
+			<Route exact path={FROZEN_FUNDS} component={FrozenFunds} />
 
 			<Route exact path="*" component={Page404} />
 

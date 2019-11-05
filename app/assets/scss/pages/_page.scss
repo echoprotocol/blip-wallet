@@ -3,9 +3,10 @@
 	border-radius: 0 0 4px 4px;
 
 	.page {
-		@include min-vw($md) {
-			width: calc(100vw - 225px);
-		}
+		// @include min-vw($md) {
+		// 	width: calc(100vw - 300px);
+		// }
+
 		flex-direction: column;
 		display: flex;
 		width: calc(100vw - 225px);
@@ -30,6 +31,7 @@
 				width: calc(100vw - 255px);
 				transform: translateX(-443px);
 			}
+
 			transform: translateX(-363px);
 		}
 
@@ -58,6 +60,7 @@
 .page-action,
 .footer-actions {
 	.btn-wrap {
+
 		.btn-main,
 		.btn-gray,
 		.btn-primary {
@@ -66,7 +69,6 @@
 				font-size: 18px;
 			}
 		}
-	
 	}
 }
 
@@ -77,7 +79,7 @@
 	margin-top: auto;
 
 	.btn-wrap {
-		
+
 		@include min-vw($md) {
 			.button {
 				min-width: 200px;
@@ -101,8 +103,8 @@
 			margin: 0 19px 0 0;
 			color: #8e8e97;
 		}
-		
-		.mode + .sync {
+
+		.mode+.sync {
 			margin-top: 6px;
 		}
 
@@ -119,7 +121,7 @@
 
 .page-action {
 	padding: 19px 24px;
-	
+
 	.btn-wrap {
 		.btn-primary {
 			min-width: 159px;
