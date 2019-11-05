@@ -360,6 +360,7 @@ export const setFreezeDefaultFilter = () => async (dispatch, getState) => {
 	}))));
 	dispatch(setIn('freeze', { filter }));
 };
+
 /**
  * Update history filters
  * @returns {Function}
