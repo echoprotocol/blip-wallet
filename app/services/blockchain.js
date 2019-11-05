@@ -1,7 +1,7 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 import { Echo, constants } from 'echojs-lib';
 import {
-	NETWORKS,
 	CONNECTION_TIMEOUT,
 	MAX_RETRIES,
 	PING_INTERVAL,

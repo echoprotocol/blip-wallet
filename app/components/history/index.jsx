@@ -14,7 +14,7 @@ import settings from '../../assets/images/settings.svg';
 import dimmerLoading from '../../assets/images/dimmer-loader.png';
 
 import {
-	EXPLORER_URL, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL, MAX_ASSET_SYMBOL_LENGTH,
+	ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL, MAX_ASSET_SYMBOL_LENGTH,
 } from '../../constants/global-constants';
 import { CONTRACT_TYPES, ACCOUNT_TYPES } from '../../constants/transaction-constants';
 import FormatHelper from '../../helpers/format-helper';
@@ -143,6 +143,7 @@ class History extends React.Component {
 		const networkId = Services.getUserStorage().getNetworkId();
 
 		return !accounts.has(field.get('id')) ? (
+			// eslint-disable-next-line no-undef
 			<a target="_blank" href={`${EXPLORER_URL[networkId]}${field.get('link')}`}>
 				{field.get('value')}
 			</a>

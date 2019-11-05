@@ -9,6 +9,7 @@ import {
 	FORM_SIGN_UP,
 	FORM_SEND,
 	FORM_RECEIVE,
+	FORM_FREEZE,
 } from '../constants/form-constants';
 
 const DEFAULT_FIELDS = Map({
@@ -65,6 +66,36 @@ const DEFAULT_FORM_FIELDS = {
 			symbol: '',
 		},
 	}),
+	[FORM_FREEZE]: Map({
+		from: {
+			value: '',
+			error: null,
+		},
+		isCheckLoading: false,
+		amount: {
+			value: '',
+			error: null,
+		},
+		fee: {
+			value: '',
+			error: null,
+		},
+		duration: '',
+		selectedBalance: '',
+		selectedFeeBalance: '',
+		minAmount: {
+			amount: '',
+			symbol: '',
+		},
+		echoAsset: {
+			symbol: '',
+			precision: '',
+		},
+		initialData: {
+			accountId: '',
+			symbol: '',
+		},
+	}),
 	[FORM_RECEIVE]: Map({
 		selectedAccount: {
 			value: '',
@@ -87,6 +118,7 @@ export default createModule({
 		[FORM_SIGN_IN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SIGN_IN]),
 		[FORM_SEND]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_SEND]),
 		[FORM_RECEIVE]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_RECEIVE]),
+		[FORM_FREEZE]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_FREEZE]),
 	}),
 	transformations: {
 		set: {
