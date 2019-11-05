@@ -277,7 +277,7 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 	return true;
 };
 
-export const totalFreezeSum = (frozenBalanc) => (frozenBalanc.balance ? new BN(frozenBalanc.balance.amount).div(10 ** ECHO_ASSET_PRECISION) : new BN(0));
+export const totalFreezeSum = (frozenBalance) => (frozenBalance.balance ? new BN(frozenBalance.balance.amount) : new BN(0));
 
 export const getFrozenBalance = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts').toJS();
@@ -292,7 +292,7 @@ export const getFrozenBalance = () => async (dispatch, getState) => {
 		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
 	}
 	const res = (await Promise.all(results)).flat();
-	const freezeSum = res.reduce((acc, f) => acc.plus(totalFreezeSum(f)), new BN(0)).toString(10);
+	const freezeSum = res.reduce((acc, f) => acc.plus(totalFreezeSum(f)), new BN(0)).div(10 ** ECHO_ASSET_PRECISION).toString(10);
 	const finalRes = res.map(async (f) => {
 		const accName = (await Services.getEcho().api.getObject(f.owner)).name;
 		f.ownerName = accName;
