@@ -224,11 +224,8 @@ export const freezeFunds = () => async (dispatch, getState) => {
 
 		const feeError = ValidateSendHelper.validateAmount(options.fee.amount, feeBalance);
 
-		console.log('options.fee.amount ', options.fee.amount);
-		console.log('feeBalance ', feeBalance);
-		console.log('feeError ', feeError);
-
 		if (feeError) {
+			dispatch(setFormError(FORM_FREEZE, 'fee', 'Insufficient funds for fee'));
 			return false;
 		}
 

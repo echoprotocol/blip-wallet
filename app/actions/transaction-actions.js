@@ -590,19 +590,7 @@ export const getTransactionFee = (type, options, form) => async (dispatch) => {
 
 	try {
 		const { fee } = options;
-		const core = await Services.getEcho().api.getObject(ECHO_ASSET_ID);
-		const feeAsset = await Services.getEcho().api.getObject(fee.asset_id);
-
-		let amount = await getOperationFee(type, options);
-
-		if (feeAsset.id !== ECHO_ASSET_ID) {
-			const price = new BN(feeAsset.options.core_exchange_rate.quote.amount)
-				.div(feeAsset.options.core_exchange_rate.base.amount)
-				.times(10 ** (core.precision - feeAsset.precision));
-
-			amount = new BN(amount).div(10 ** core.precision);
-			amount = price.times(amount).times(10 ** feeAsset.precision);
-		}
+		const amount = await getOperationFee(type, options);
 
 		return {
 			amount: new BN(amount).integerValue(BN.ROUND_UP).toString(),
@@ -638,6 +626,8 @@ export const sendTransaction = async (type, options) => {
 	const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
 
 	tr.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
+
+	await tr.setRequiredFees();
 
 	await signTransaction(account, tr);
 
