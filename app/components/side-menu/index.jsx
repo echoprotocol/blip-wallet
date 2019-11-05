@@ -179,7 +179,10 @@ SideMenu.propTypes = {
 	locked: PropTypes.bool.isRequired,
 	lock: PropTypes.func.isRequired,
 	getFrozenBalance: PropTypes.func.isRequired,
-	freezeSum: PropTypes.number.isRequired,
+	freezeSum: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+	]).isRequired,
 };
 
 export default withRouter(connect(

@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { Set, Map, fromJS } from 'immutable';
+import BN from 'bignumber.js';
 import { validators } from 'echojs-lib';
 import { history } from '../store/configureStore';
 import Services from '../services';
@@ -9,7 +10,7 @@ import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
 import { SEND } from '../constants/routes-constants';
-import { ECHO_ASSET_ID } from '../constants/global-constants';
+import { ECHO_ASSET_ID, FREEZE_BALANCE_PERCISION } from '../constants/global-constants';
 import { FORM_SEND } from '../constants/form-constants';
 
 /**
@@ -276,13 +277,13 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 };
 
 export const totalFreezeSum = (frozenBalances) => {
-	let totalAmount = 0;
+	let totalAmount = '0';
 	for (const fBalance in frozenBalances) {
 		if (frozenBalances[fBalance].balance) {
-			totalAmount += frozenBalances[fBalance].balance.amount;
+			totalAmount = new BN(totalAmount).plus(new BN(frozenBalances[fBalance].balance.amount).div(FREEZE_BALANCE_PERCISION));
 		}
 	}
-	return totalAmount;
+	return totalAmount.toString();
 };
 
 export const getFrozenBalance = () => async (dispatch, getState) => {
@@ -304,8 +305,8 @@ export const getBalance = (balances) => {
 		return null;
 	}
 	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
-		amount: v.amount,
+		amount: v.amount.toString(),
 		precision: v.asset.precision,
 	}] : acc), []);
-	return amounts.reduce((acc, amount) => (acc + amount.amount / (10 ** amount.precision)), 0);
+	return amounts.reduce((acc, amount) => (acc.plus(new BN(amount.amount).div(10 ** amount.precision))), new BN(0)).toString();
 };
