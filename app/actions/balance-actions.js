@@ -1,6 +1,5 @@
 import { Set, Map, fromJS } from 'immutable';
 import { validators } from 'echojs-lib';
-import BN from 'bignumber.js';
 import { history } from '../store/configureStore';
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
@@ -8,7 +7,7 @@ import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
-import { ECHO_ASSET_ID } from '../constants/global-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { SEND } from '../constants/routes-constants';
 import { FORM_SEND } from '../constants/form-constants';
 import FormatHelper from '../helpers/format-helper';
@@ -283,7 +282,5 @@ export const getBalance = (balances) => {
 
 	const result = FormatHelper.accumulateBalances(amounts);
 
-	const precision = [...balances.values()][0].asset.get('precision');
-
-	return FormatHelper.formatAmount(result, precision);
+	return FormatHelper.formatAmount(result, ECHO_ASSET_PRECISION);
 };

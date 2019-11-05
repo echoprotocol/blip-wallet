@@ -262,8 +262,6 @@ class Wallet extends React.Component {
 		const assets = this.renderAssets();
 		const tokens = this.renderTokens();
 
-		const precision = ![...balances.values()][0] ? ECHO_ASSET_PRECISION : [...balances.values()][0].asset.get('precision');
-
 		return (
 			<div
 				className={
@@ -282,7 +280,7 @@ class Wallet extends React.Component {
 									<div className="balance">
 										<span className="coins">
 											<span className="int">{balance ? `${balance.split('.')[0]}` : '0'}</span>
-											<span className="fraction">{FormatHelper.getFraction(balance, precision)} </span>
+											<span className="fraction">{FormatHelper.getFraction(balance, ECHO_ASSET_PRECISION)} </span>
 										</span>
 										<span className="currency">{ECHO_ASSET_SYMBOL}</span>
 									</div>
