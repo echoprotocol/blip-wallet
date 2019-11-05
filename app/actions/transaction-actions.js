@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import { validators, CACHE_MAPS } from 'echojs-lib';
+import { validators, CACHE_MAPS, OPERATIONS_IDS } from 'echojs-lib';
 import BN from 'bignumber.js';
 
 import {
@@ -346,6 +346,21 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 
 	dispatch(setIn('history', { filter }));
 	saveHistoryFilter(filter);
+};
+
+export const setFreezeDefaultFilter = () => async (dispatch, getState) => {
+	let filter = getState().wallet.getIn(['history', 'filter']);
+	const accounts = getState().global.get('accounts');
+	const coins = [];
+	filter = filter.set('coins', fromJS(coins));
+	filter = filter.set('accounts', accounts.map((a, id) => a.set('id', id).set('selected', true)).toList());
+
+	filter = filter.set('types', fromJS(Object.keys(OPERATIONS).map((type, i) => ({
+		type,
+		name: OPERATIONS[type].name,
+		selected: (i === OPERATIONS_IDS.BALANCE_FREEZE || i === OPERATIONS_IDS.BALANCE_UNFREEZE),
+	}))));
+	dispatch(setIn('freeze', { filter }));
 };
 
 /**
