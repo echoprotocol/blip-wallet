@@ -42,7 +42,6 @@ class SideMenu extends React.Component {
 		this.subscription = newOperationSubscription(filter);
 		if (this.subscription) {
 			this.subscription = this.subscription.subscribe(() => {
-				console.log(1);
 				this.props.getFrozenBalance();
 			});
 		}

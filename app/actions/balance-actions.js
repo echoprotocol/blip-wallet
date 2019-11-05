@@ -10,7 +10,7 @@ import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
 import { SEND } from '../constants/routes-constants';
-import { ECHO_ASSET_ID, FREEZE_BALANCE_PERCISION } from '../constants/global-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { FORM_SEND } from '../constants/form-constants';
 
 /**
@@ -283,7 +283,7 @@ export const totalFreezeSum = (frozenBalances) => {
 			totalAmount = totalAmount.plus(new BN(frozenBalances[fBalance].balance.amount));
 		}
 	}
-	return totalAmount.div(FREEZE_BALANCE_PERCISION).toString(10);
+	return totalAmount.div(10 ** ECHO_ASSET_PRECISION).toString(10);
 };
 
 export const getFrozenBalance = () => async (dispatch, getState) => {
