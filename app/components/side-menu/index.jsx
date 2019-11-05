@@ -14,14 +14,45 @@ import {
 } from '../../constants/routes-constants';
 import Services from '../../services';
 import { getBalance, getFrozenBalance } from '../../actions/balance-actions';
+import { setFreezeDefaultFilter } from '../../actions/transaction-actions';
+import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
 
 import lock from '../../assets/images/lock.svg';
 
 
 class SideMenu extends React.Component {
 
+	constructor(props) {
+		super(props);
+		this.subscription = null;
+	}
+
 	componentDidMount() {
 		this.props.getFrozenBalance();
+		this.subscribe();
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
+
+	async subscribe() {
+		await this.props.setFreezeDefaultFilter();
+		const { filter } = this.props;
+		this.subscription = newOperationSubscription(filter);
+		if (this.subscription) {
+			this.subscription = this.subscription.subscribe(() => {
+				console.log(1);
+				this.props.getFrozenBalance();
+			});
+		}
+	}
+
+	unsubscribe() {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+			this.subscription = null;
+		}
 	}
 
 	lock() {
@@ -178,11 +209,13 @@ SideMenu.propTypes = {
 	balances: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
 	lock: PropTypes.func.isRequired,
+	setFreezeDefaultFilter: PropTypes.func.isRequired,
 	getFrozenBalance: PropTypes.func.isRequired,
 	freezeSum: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.number,
 	]).isRequired,
+	filter: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
@@ -194,10 +227,12 @@ export default withRouter(connect(
 			balances: balanceSelector(state),
 			freezeSum: state.wallet.get('freezeSum'),
 			accounts: state.global.get('accounts'),
+			filter: state.wallet.getIn(['freeze', 'filter']),
 		});
 	},
 	(dispatch) => ({
 		lock: () => dispatch(lockApp()),
 		getFrozenBalance: () => dispatch(getFrozenBalance()),
+		setFreezeDefaultFilter: () => dispatch(setFreezeDefaultFilter()),
 	}),
 )(SideMenu));

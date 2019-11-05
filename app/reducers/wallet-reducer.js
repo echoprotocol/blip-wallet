@@ -16,6 +16,13 @@ const DEFAULT_FIELDS = Map({
 	}),
 	tokens: new List([]),
 	hiddenAssets: new Map({}),
+	freeze: new Map({
+		filter: new Map({
+			coins: null,
+			types: null,
+			accounts: null,
+		}),
+	}),
 	frozenBalances: new List([]),
 	freezeSum: 0,
 });
