@@ -10,7 +10,7 @@ import Avatar from '../avatar';
 import InputDropdown from '../input-dropdown';
 import ValidateSendHelper from '../../helpers/validate-send-helper';
 import { ECHO_ASSET_ID, KEY_CODE_ENTER, TIME_SHOW_ERROR_ASSET } from '../../constants/global-constants';
-import { getCurrentBalance } from '../../actions/balance-actions';
+import { getBalance } from '../../actions/balance-actions';
 
 class Send extends React.Component {
 
@@ -77,7 +77,7 @@ class Send extends React.Component {
 		const accountId = form.get('from').value || accounts.findKey((a) => a.get('primary'));
 		const field = e.target.name;
 		const value = e.target.value.replace(/\s+/g, '');
-		const balance = getCurrentBalance(fullBalances, accountId);
+		const balance = getBalance(fullBalances, accountId);
 		let precision = null;
 		let symbol = null;
 

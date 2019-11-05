@@ -1,5 +1,6 @@
 import { Set, Map, fromJS } from 'immutable';
 import { validators } from 'echojs-lib';
+import BN from 'bignumber.js';
 import { history } from '../store/configureStore';
 import Services from '../services';
 import { setValue as setGlobal } from './global-actions'; // eslint-disable-line import/no-cycle
@@ -274,13 +275,13 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 	return true;
 };
 
-export const getCurrentBalance = (balances, accountId) => {
+export const getBalance = (balances) => {
 	if (!balances.size) {
 		return null;
 	}
-	const amounts = Object.values(balances.toJS()).reduce((acc, v) => ((v.asset.id === ECHO_ASSET_ID && v.owner === accountId) ? [...acc, {
-		amount: v.amount,
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
+		amount: v.amount.toString(),
 		precision: v.asset.precision,
 	}] : acc), []);
-	return amounts.reduce((acc, amount) => (acc + amount.amount / (10 ** amount.precision)), 0);
+	return amounts.reduce((acc, amount) => (acc.plus(new BN(amount.amount).div(10 ** amount.precision))), new BN(0)).toString(10);
 };
