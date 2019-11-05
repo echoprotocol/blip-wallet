@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'semantic-ui-react';
@@ -14,7 +15,6 @@ import ValidateSendHelper from '../../helpers/validate-send-helper';
 import {
 	ECHO_ASSET_ID,
 	ECHO_ASSET_SYMBOL,
-	QR_SERVER_URL,
 	TIME_SHOW_ERROR_ASSET,
 } from '../../constants/global-constants';
 import Services from '../../services';

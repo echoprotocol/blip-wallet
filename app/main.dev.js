@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint global-require: off */
 /* eslint-disable no-underscore-dangle */
 /**
@@ -41,7 +42,6 @@ import {
 	APP_WINDOW_MIN_HEIGHT,
 	APP_WINDOW_MIN_WIDTH,
 	TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS,
-	NETWORKS,
 	DEFAULT_NETWORK_ID,
 	LOCAL_NODE,
 } from './constants/global-constants';
