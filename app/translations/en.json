@@ -12,10 +12,10 @@
 		"createPassword": "Create Password",
 		"repeatError": "Password does not match",
 		"title": "Create Password",
-		"hint1":"English letters from 8 to 32 characters",
-		"hint2":"One uppercase letter",
-		"hint3":"One lowercase letter",
-		"hint4":"One number"
+		"hint1": "English letters from 8 to 32 characters",
+		"hint2": "One uppercase letter",
+		"hint3": "One lowercase letter",
+		"hint4": "One number"
 	},
 	"restorePassword": {
 		"title": "Your Password cannot be restored",
@@ -27,7 +27,6 @@
 	"global": {
 		"loading": "Loading data"
 	},
-
 	"account": {
 		"import": {
 			"title": "Import account",
@@ -39,14 +38,12 @@
 			"loading": "Account is about to be imported",
 			"button": "Import account"
 		},
-
 		"imported": {
 			"title1": "New Echo account is",
 			"title2": "successfully bound to Blip wallet",
 			"name": "Account name",
 			"button": "Proceed to Blip"
 		},
-
 		"create": {
 			"title": "Create new account",
 			"name": "Account name",
@@ -80,9 +77,7 @@
 					"hint2": "A fee will be charged upon new account creation from one of your Blip accounts. Please, make sure that you have a positive balance at one of the accounts attached to Blip."
 				}
 			}
-
 		},
-
 		"created": {
 			"title1": "New Echo account is",
 			"title2": "successfully created",
@@ -100,7 +95,6 @@
 			"button": "Proceed to Blip"
 		}
 	},
-
 	"unlock": {
 		"title": "Unlock your wallet",
 		"placeholder": "Enter Password",
@@ -111,20 +105,19 @@
 			"Please, enter correct password": "Please, enter correct password"
 		}
 	},
-
 	"wallet": {
 		"balance": "My balance",
 		"unclaimed": "unclaimed",
 		"send": "Send",
 		"receive": "Receive",
-        "filter": "If you have more than one account, your accounts balances will be displayed together. You can filter your balances by account.",
-        "select": "Select accounts",
-        "archived": "If you do not want some assets to be shown in the general list you can hide them from My Wallet page. To make them visible again click Unarchive button near the asset needed.",
-        "filtert": "Filter by accounts",
-        "archivedt": "Archived balances",
-        "Remote node": "Remote node",
-        "Local node": "Local node",
-        "save": "Save changes",
+		"filter": "If you have more than one account, your accounts balances will be displayed together. You can filter your balances by account.",
+		"select": "Select accounts",
+		"archived": "If you do not want some assets to be shown in the general list you can hide them from My Wallet page. To make them visible again click Unarchive button near the asset needed.",
+		"filtert": "Filter by accounts",
+		"archivedt": "Archived balances",
+		"Remote node": "Remote node",
+		"Local node": "Local node",
+		"save": "Save changes",
 		"menu": {
 			"mywallet": "My Wallet",
 			"history": "Transaction History",
@@ -137,7 +130,6 @@
 		},
 		"syncing_with_network": "Syncing with network:"
 	},
-
 	"history": {
 		"loading": "Transactions are loading",
 		"table": {
@@ -149,10 +141,10 @@
 			"amount": "Amount",
 			"fee": "Fee",
 			"status": {
-                "title": "Status",
-                "success": "Success",
-                "fail": "Fail"
-            },
+				"title": "Status",
+				"success": "Success",
+				"fail": "Fail"
+			},
 			"bytecode": "Bytecode"
 		},
 		"filter": {
@@ -182,7 +174,6 @@
 			}
 		}
 	},
-
 	"operations": {
 		"transfer": {
 			"title": "Transfer",
@@ -435,7 +426,6 @@
 			"subject": "Account"
 		}
 	},
-
 	"send": {
 		"loading": "Transaction in processing",
 		"title": "SEND TRANSACTION",
@@ -453,7 +443,6 @@
 			"tokens": "Tokens"
 		}
 	},
-
 	"freeze_funds": {
 		"loading": "Transaction in processing",
 		"title": "SEND TRANSACTION",
@@ -476,9 +465,22 @@
 			"send": "Freeze funds",
 			"cancel": "Cancel",
 			"return": "Return"
+		},
+		"global": {
+			"title": "frozen funds",
+			"about": "If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward",
+			"buttonTitle": "Freeze funds"
+		},
+		"table": {
+			"amount": "Amount",
+			"account": "Account",
+			"coef": "Coefficient",
+			"coefSmall": "Coeff.",
+			"period": "Period",
+			"expiration": "Expiration",
+			"months": "months"
 		}
 	},
-
 	"backup": {
 		"info": "Backup info",
 		"public_key": "Public key",
@@ -486,7 +488,6 @@
 		"account_id": "Account ID",
 		"close": "Close"
 	},
-
 	"receive": {
 		"copy": {
 			"account": {
@@ -510,13 +511,11 @@
 			"qr.description": "QR code and link are generated automatically. You can copy it and send to someone for payment."
 		}
 	},
-
 	"notifications": {
 		"title": "Blip Wallet",
 		"consensus_message": "You need to have an Echo account and log into the application to participate in block production.",
 		"windows_doesnt_support_local_node": "This version of the wallet does not support local Echo nodes on Windows OS. Your wallet will be connected to a remote node."
 	},
-
 	"settings": {
 		"networks": {
 			"title": "Network",
@@ -528,23 +527,7 @@
 		"apply": "Apply changes",
 		"cancel": "Cancel"
 	},
-
 	"animations": {
 		"loading": "Blip is loading. Wait a bit."
-	},
-
-	"frozenFunds": {
-		"title": "frozen funds",
-		"about": "If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward",
-		"buttonTitle": "Freeze funds",
-		"table": {
-			"amount": "Amount",
-			"account": "Account",
-			"coef": "Coefficient",
-			"coefSmall": "Coeff.",
-			"period": "Period",
-			"expiration": "Expiration",
-			"months": "months"
-		}
 	}
 }

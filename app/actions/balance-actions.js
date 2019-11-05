@@ -295,14 +295,19 @@ export const getFrozenBalance = () => async (dispatch, getState) => {
 			currentAccIds.push(account);
 		}
 	}
-	const frozenBalances = [];
 	const results = [];
 	for (let i = 0; i < currentAccIds.length; i += 1) {
 		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
 	}
-	const res = await Promise.all(results);
+	const res = (await Promise.all(results)).flat();
 	const freezeSum = res.reduce((acc, f) => acc.plus(new BN(totalFreezeSum(f))), new BN(0)).toString(10);
-	dispatch(setValue('frozenBalances', frozenBalances));
+	const finalRes = res.map(async (f) => {
+		const accName = (await Services.getEcho().api.getObject(f.owner)).name;
+		f.ownerName = accName;
+		return f;
+	});
+	const freezeBalanceWithOwners = await Promise.all(finalRes);
+	dispatch(setValue('frozenBalances', freezeBalanceWithOwners));
 	dispatch(setValue('freezeSum', freezeSum));
 };
 

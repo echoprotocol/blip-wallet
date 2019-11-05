@@ -31,13 +31,13 @@ class FrozenFundsTable extends React.Component {
 								<span>{formattedAmount}</span> ECHO
 							</td>
 							<td className="account">
-								<Avatar accountName="test" /> <span>{fBalance.ownerName}</span>
+								<Avatar accountName={fBalance.ownerName} /> <span>{fBalance.ownerName}</span>
 							</td>
 							<td className="coefficient">
 								{freezeData.coefficient}
 							</td>
 							<td className="period">
-								{freezeData.shortText}&nbsp;<FormattedMessage id="frozenFunds.table.months" />
+								{freezeData.shortText}&nbsp;<FormattedMessage id="freeze_funds.table.months" />
 							</td>
 							<td className="expiration">
 								{formattedDate}
@@ -53,29 +53,31 @@ class FrozenFundsTable extends React.Component {
 	render() {
 		const { frozenBalances } = this.props;
 		return (
-			<table className="frozen-table-wrap">
-				<thead className="frozen-table-header">
-					<tr className="line">
-						<th className="amount"><FormattedMessage id="frozenFunds.table.amount" /></th>
-						<th className="account"><FormattedMessage id="frozenFunds.table.account" /></th>
-						<th className="coefficient">
-							<Media queries={{ small: { maxWidth: 1132 } }}>
-								{(matches) => (matches.small ? (
-									<p><FormattedMessage id="frozenFunds.table.coefSmall" /></p>
-								) : (
-									<p><FormattedMessage id="frozenFunds.table.coef" /></p>
-								))
-								}
-							</Media>
-						</th>
-						<th className="period"><FormattedMessage id="frozenFunds.table.period" /></th>
-						<th className="expiration"><FormattedMessage id="frozenFunds.table.expiration" /></th>
-					</tr>
-				</thead>
-				<tbody className="frozen-table-body">
-					{this.renderRows(frozenBalances)}
-				</tbody>
-			</table>
+			frozenBalances.length && (
+				<table className="frozen-table-wrap">
+					<thead className="frozen-table-header">
+						<tr className="line">
+							<th className="amount"><FormattedMessage id="freeze_funds.table.amount" /></th>
+							<th className="account"><FormattedMessage id="freeze_funds.table.account" /></th>
+							<th className="coefficient">
+								<Media queries={{ small: { maxWidth: 1132 } }}>
+									{(matches) => (matches.small ? (
+										<p><FormattedMessage id="freeze_funds.table.coefSmall" /></p>
+									) : (
+										<p><FormattedMessage id="freeze_funds.table.coef" /></p>
+									))
+									}
+								</Media>
+							</th>
+							<th className="period"><FormattedMessage id="freeze_funds.table.period" /></th>
+							<th className="expiration"><FormattedMessage id="freeze_funds.table.expiration" /></th>
+						</tr>
+					</thead>
+					<tbody className="frozen-table-body">
+						{this.renderRows(frozenBalances)}
+					</tbody>
+				</table>
+			)
 		);
 	}
 

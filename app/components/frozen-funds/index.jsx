@@ -54,7 +54,7 @@ class FrozenFunds extends React.Component {
 	render() {
 		const { showTable, showForm } = this.state;
 		const { frozenBalances, intl } = this.props;
-		const buttonTitle = intl.formatMessage({ id: 'frozenFunds.buttonTitle' });
+		const buttonTitle = intl.formatMessage({ id: 'freeze_funds.global.buttonTitle' });
 		return (
 			<div className="page-wrap">
 				<div className="page">
@@ -69,10 +69,10 @@ class FrozenFunds extends React.Component {
 								) : (
 									<React.Fragment>
 										<h1 className="frozen-page-title">
-											<FormattedMessage id="frozenFunds.title" />
+											<FormattedMessage id="freeze_funds.global.title" />
 										</h1>
 										<div className="text-about">
-											<FormattedMessage id="frozenFunds.about" />
+											<FormattedMessage id="freeze_funds.global.about" />
 										</div>
 										{showTable && <FrozenTable frozenBalances={frozenBalances} />}
 										<Button
