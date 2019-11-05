@@ -250,6 +250,12 @@ export const send = () => async (dispatch, getState) => {
 			balance: objectsById.getIn([selectedBalance, 'balance']),
 		};
 
+	const feeBalanceObject = {
+		symbol: objectsById.getIn([objectsById.getIn([selectedFeeBalance, 'asset_type']), 'symbol']),
+		precision: objectsById.getIn([objectsById.getIn([selectedFeeBalance, 'asset_type']), 'precision']),
+		balance: objectsById.getIn([selectedFeeBalance, 'balance']),
+	};
+
 	const amountError = ValidateSendHelper.validateAmount(amount, balance);
 
 	if (amountError) {
@@ -328,6 +334,13 @@ export const send = () => async (dispatch, getState) => {
 				'fee',
 				`${feeAsset.get('symbol')} fee pool balance is less than fee amount`,
 			));
+			return false;
+		}
+
+		const feeError = ValidateSendHelper.validateAmount(options.fee.amount, feeBalanceObject);
+
+		if (feeError) {
+			dispatch(setFormError(FORM_SEND, 'fee', 'Insufficient funds for fee'));
 			return false;
 		}
 
