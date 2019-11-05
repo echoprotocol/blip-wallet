@@ -10,6 +10,7 @@ import {
 } from '../../actions/freeze-funds';
 
 import Services from '../../services';
+import { setFreezeDefaultFilter } from '../../actions/transaction-actions';
 
 const balanceSelector = Services.getSelector().getTransferBalanceSelector();
 
@@ -21,7 +22,7 @@ export default connect(
 		loading: state.global.get('loading'),
 		hiddenAssets: state.wallet.get('hiddenAssets').get(Services.getUserStorage().getNetworkId()),
 		frozenBalances: state.wallet.get('frozenBalances'),
-		filter: state.wallet.getIn(['history', 'filter']),
+		filter: state.wallet.getIn(['freeze', 'filter']),
 	}),
 	(dispatch) => ({
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_FREEZE, field, value)),
@@ -33,5 +34,6 @@ export default connect(
 		setMinAmount: () => dispatch(setMinAmount()),
 		getFrozenBalance: () => dispatch(getFrozenBalance()),
 		changeAccount: (id) => dispatch(changeAccount(id)),
+		setFreezeDefaultFilter: () => dispatch(setFreezeDefaultFilter()),
 	}),
 )(FrozenFunds);

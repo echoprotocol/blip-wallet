@@ -4,7 +4,6 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
-import { BALANCE_FREEZE_OPERATION_ID, BALANCE_UNFREEZE_OPERATION_ID } from '../../constants/global-constants';
 import FrozenForm from './form';
 import FrozenTable from './table';
 import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
@@ -23,22 +22,20 @@ class FrozenFunds extends React.Component {
 
 	componentDidMount() {
 		this.props.getFrozenBalance();
-		this.subscribe(this.props.filter);
+		this.subscribe();
 	}
 
 	componentWillUnmount() {
 		this.unsubscribe();
 	}
 
-	subscribe(filter) {
+	async subscribe() {
+		await this.props.setFreezeDefaultFilter();
+		const { filter } = this.props;
 		this.subscription = newOperationSubscription(filter);
-		console.log(this.subscription);
 		if (this.subscription) {
-			console.log('#########');
-			this.subscription = this.subscription.subscribe(({ data: { newOperation } }) => {
-				if (newOperation.id === BALANCE_FREEZE_OPERATION_ID || newOperation.id === BALANCE_UNFREEZE_OPERATION_ID) {
-					this.props.getFrozenBalance();
-				}
+			this.subscription = this.subscription.subscribe(() => {
+				this.props.getFrozenBalance();
 			});
 		}
 	}
@@ -102,6 +99,7 @@ FrozenFunds.propTypes = {
 	frozenBalances: PropTypes.array,
 	filter: PropTypes.object.isRequired,
 	getFrozenBalance: PropTypes.func.isRequired,
+	setFreezeDefaultFilter: PropTypes.func.isRequired,
 	intl: intlShape.isRequired,
 };
 
