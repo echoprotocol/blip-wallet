@@ -116,9 +116,8 @@ class History extends React.Component {
 
 	subscribe(filter) {
 		this.subscription = newOperationSubscription(filter);
-		console.log(this.subscription)
+		console.log(filter)
 		if (this.subscription) {
-			console.log('@@@@@@');
 			this.subscription = this.subscription.subscribe(({ data: { newOperation } }) => {
 				this.props.setNewTransaction(newOperation);
 			});
