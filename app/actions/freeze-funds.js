@@ -189,6 +189,7 @@ export const freezeFunds = () => async (dispatch, getState) => {
 			options.fee = await dispatch(getTransactionFee(type, options, FORM_FREEZE));
 
 			if (!options.fee) {
+
 				return false;
 			}
 		}
@@ -201,12 +202,12 @@ export const freezeFunds = () => async (dispatch, getState) => {
 				'fee',
 				`${feeAsset.get('symbol')} fee pool balance is less than fee amount`,
 			));
+
 			return false;
 		}
 
 		const feePrecision = new BN(10).pow(feeAsset.get('precision'));
 		const feeAmount = new BN(options.fee.amount).times(feePrecision);
-
 		if (options.amount.asset_id === options.fee.asset_id) {
 			const totalAmount = new BN(amount).times(feePrecision).plus(feeAmount);
 
