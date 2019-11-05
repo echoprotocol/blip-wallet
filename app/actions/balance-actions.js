@@ -288,17 +288,29 @@ export const totalFreezeSum = (frozenBalances) => {
 
 export const getFrozenBalance = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts').toJS();
-	let currentAccId;
+	const currentAccIds = [];
 	for (const account in accounts) {
 		if (accounts[account].selected) {
-			currentAccId = account;
+			currentAccIds.push(account);
 		}
 	}
-	const frozenBalances = await Services.getEcho().api.getFrozenBalances(currentAccId);
-	const freezeSum = totalFreezeSum(frozenBalances);
-	dispatch(setValue('frozenBalances', frozenBalances));
-	dispatch(setValue('freezeSum', freezeSum));
+	const frozenBalances = [];
+	const results = [];
+	for (let i = 0; i < currentAccIds.length; i += 1) {
+		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
+	}
+	await Promise.all(results).then((res) => {
+		let freezeSum = new BN(0);
+		for (let i = 0; i < res.length; i += 1) {
+			const fSum = new BN(totalFreezeSum(res[i]));
+			freezeSum = freezeSum.plus(fSum);
+		}
+		freezeSum = freezeSum.toString();
+		dispatch(setValue('frozenBalances', frozenBalances));
+		dispatch(setValue('freezeSum', freezeSum));
+	});
 };
+
 
 export const getBalance = (balances) => {
 	if (!balances.size) {
