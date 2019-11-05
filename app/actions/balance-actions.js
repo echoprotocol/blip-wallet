@@ -277,13 +277,13 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 };
 
 export const totalFreezeSum = (frozenBalances) => {
-	let totalAmount = '0';
+	let totalAmount = new BN(0);
 	for (const fBalance in frozenBalances) {
 		if (frozenBalances[fBalance].balance) {
-			totalAmount = new BN(totalAmount).plus(new BN(frozenBalances[fBalance].balance.amount).div(FREEZE_BALANCE_PERCISION));
+			totalAmount = totalAmount.plus(new BN(frozenBalances[fBalance].balance.amount));
 		}
 	}
-	return totalAmount.toString();
+	return totalAmount.div(FREEZE_BALANCE_PERCISION).toString(10);
 };
 
 export const getFrozenBalance = () => async (dispatch, getState) => {
@@ -308,5 +308,5 @@ export const getBalance = (balances) => {
 		amount: v.amount.toString(),
 		precision: v.asset.precision,
 	}] : acc), []);
-	return amounts.reduce((acc, amount) => (acc.plus(new BN(amount.amount).div(10 ** amount.precision))), new BN(0)).toString();
+	return amounts.reduce((acc, amount) => (acc.plus(new BN(amount.amount).div(10 ** amount.precision))), new BN(0)).toString(10);
 };
