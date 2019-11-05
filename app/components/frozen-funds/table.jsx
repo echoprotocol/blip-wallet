@@ -3,7 +3,7 @@ import Media from 'react-media';
 import PropTypes from 'prop-types';
 import BN from 'bignumber.js';
 import { FormattedMessage } from 'react-intl';
-import { FREEZE_COEF_BY_TIME, ECHO_ASSET_PRECISION } from '../../constants/global-constants';
+import { FREEZE_FUNDS_PERIODS, ECHO_ASSET_PRECISION } from '../../constants/global-constants';
 import Avatar from '../avatar';
 
 class FrozenFundsTable extends React.Component {
@@ -22,7 +22,7 @@ class FrozenFundsTable extends React.Component {
 		if (frozenBalances) {
 			return frozenBalances.sort((f1, f2) => Date.parse(f1.unfreeze_time) - Date.parse(f2.unfreeze_time))
 				.map((fBalance) => {
-					const period = FREEZE_COEF_BY_TIME[fBalance.multiplier];
+					const period = FREEZE_FUNDS_PERIODS.find((f) => f.fullCoefficient === fBalance.multiplier).shortText;
 					const formattedDate = this.formatDate(fBalance.unfreeze_time);
 					const formattedAmount = this.formatAmount(fBalance.balance.amount);
 					return (
@@ -37,7 +37,7 @@ class FrozenFundsTable extends React.Component {
 								{fBalance.multiplier / 10000}
 							</td>
 							<td className="period">
-								{period} <FormattedMessage id="frozenFunds.table.months" />
+								{period}&nbsp;<FormattedMessage id="frozenFunds.table.months" />
 							</td>
 							<td className="expiration">
 								{formattedDate}
