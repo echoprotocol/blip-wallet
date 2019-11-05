@@ -545,21 +545,6 @@
 			"period": "Period",
 			"expiration": "Expiration",
 			"months": "months"
-		},
-		"form": {
-			"return": "Return",
-			"title": "freeze funds",
-			"amount": "Amount",
-			"coef": "Coefficient",
-			"period": "Period",
-			"periodPlaceholder": "Select period",
-			"fee": "Transaction Fee",
-			"from": "From",
-			"fromPlaceholder": "AccountName",
-			"buttonTitle": "Freeze funds",
-			"buttonCancel":  "Cancel",
-			"about": "This is the coefficient that will be used to calculate the reward for participating in blocks creation.",
-			"months": "months"
 		}
 	}
 }

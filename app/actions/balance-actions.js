@@ -12,6 +12,7 @@ import { TOKEN_TYPE } from '../constants/graphql-constants';
 import { SEND } from '../constants/routes-constants';
 import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { FORM_SEND } from '../constants/form-constants';
+import FormatHelper from '../helpers/format-helper';
 
 /**
  *  @method setValue
@@ -310,9 +311,9 @@ export const getBalance = (balances) => {
 	if (!balances.size) {
 		return null;
 	}
-	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
-		amount: v.amount.toString(),
-		precision: v.asset.precision,
-	}] : acc), []);
-	return amounts.reduce((acc, amount) => (acc.plus(new BN(amount.amount).div(10 ** amount.precision))), new BN(0)).toString(10);
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, v.amount.toString()] : acc), []);
+
+	const result = FormatHelper.accumulateBalances(amounts);
+
+	return FormatHelper.formatAmount(result, ECHO_ASSET_PRECISION);
 };

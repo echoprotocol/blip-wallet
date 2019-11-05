@@ -22,7 +22,7 @@ class FrozenFundsTable extends React.Component {
 		if (frozenBalances) {
 			return frozenBalances.sort((f1, f2) => Date.parse(f1.unfreeze_time) - Date.parse(f2.unfreeze_time))
 				.map((fBalance) => {
-					const period = FREEZE_FUNDS_PERIODS.find((f) => f.fullCoefficient === fBalance.multiplier).shortText;
+					const freezeData = FREEZE_FUNDS_PERIODS.find((f) => f.fullCoefficient === fBalance.multiplier);
 					const formattedDate = this.formatDate(fBalance.unfreeze_time);
 					const formattedAmount = this.formatAmount(fBalance.balance.amount);
 					return (
@@ -34,10 +34,10 @@ class FrozenFundsTable extends React.Component {
 								<Avatar accountName="test" /> <span>{fBalance.ownerName}</span>
 							</td>
 							<td className="coefficient">
-								{fBalance.multiplier / 10000}
+								{freezeData.coefficient}
 							</td>
 							<td className="period">
-								{period}&nbsp;<FormattedMessage id="frozenFunds.table.months" />
+								{freezeData.shortText}&nbsp;<FormattedMessage id="frozenFunds.table.months" />
 							</td>
 							<td className="expiration">
 								{formattedDate}
