@@ -13,53 +13,11 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 };
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
 
-export const NETWORKS = {
-	devnet: {
-		remote: {
-			name: 'Remote node',
-			url: 'wss://devnet.echo-dev.io/ws',
-		},
-		local: {
-			name: 'Local node',
-			seed: 'node1.devnet.echo-dev.io:6310',
-		},
-	},
-	testnet: {
-		remote: {
-			name: 'Remote node',
-			url: 'ws://testnet.echo-dev.io/ws',
-		},
-		local: {
-			name: 'Local node',
-			seed: 'node1.devnet.echo-dev.io:6310',
-		},
-	},
-};
+
 export const DEFAULT_NETWORK_ID = 'testnet';
 export const NETWORK_STATUS = {
 	ONLINE: 'online',
 	OFFLINE: 'offline',
-};
-
-export const EXPLORER_URL = {
-	devnet: 'https://656-echo-explorer.pixelplex-test.by',
-	testnet: 'https://explorer.echo.org',
-};
-
-export const ECHODB = {
-	devnet: {
-		HTTP_LINK: 'https://645-echodb.pixelplex-test.by/graphql',
-		WS_LINK: 'wss://645-echodb.pixelplex-test.by/graphql',
-	},
-	testnet: {
-		HTTP_LINK: 'https://645-echodb.pixelplexlabs.com/graphql',
-		WS_LINK: 'wss://645-echodb.pixelplexlabs.com/graphql',
-	},
-};
-
-export const QR_SERVER_URL = {
-	devnet: 'https://649-bridge-landing.pixelplex-test.by/receive/',
-	testnet: 'https://649-bridge-landing.pixelplexlabs.com/receive/',
 };
 
 export const { ECHO_ASSET_ID } = constants;
