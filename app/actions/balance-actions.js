@@ -9,10 +9,9 @@ import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
-import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { SEND } from '../constants/routes-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { FORM_SEND } from '../constants/form-constants';
-import FormatHelper from '../helpers/format-helper';
 
 /**
  *  @method setValue
@@ -300,16 +299,10 @@ export const getFrozenBalance = () => async (dispatch, getState) => {
 	for (let i = 0; i < currentAccIds.length; i += 1) {
 		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
 	}
-	await Promise.all(results).then((res) => {
-		let freezeSum = new BN(0);
-		for (let i = 0; i < res.length; i += 1) {
-			const fSum = new BN(totalFreezeSum(res[i]));
-			freezeSum = freezeSum.plus(fSum);
-		}
-		freezeSum = freezeSum.toString();
-		dispatch(setValue('frozenBalances', frozenBalances));
-		dispatch(setValue('freezeSum', freezeSum));
-	});
+	const res = await Promise.all(results);
+	const freezeSum = res.reduce((acc, f) => acc.plus(new BN(totalFreezeSum(f))), new BN(0)).toString(10);
+	dispatch(setValue('frozenBalances', frozenBalances));
+	dispatch(setValue('freezeSum', freezeSum));
 };
 
 
@@ -317,9 +310,9 @@ export const getBalance = (balances) => {
 	if (!balances.size) {
 		return null;
 	}
-	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, v.amount.toString()] : acc), []);
-
-	const result = FormatHelper.accumulateBalances(amounts);
-
-	return FormatHelper.formatAmount(result, ECHO_ASSET_PRECISION);
+	const amounts = Object.values(balances.toJS()).reduce((acc, v) => (v.asset.id === ECHO_ASSET_ID ? [...acc, {
+		amount: v.amount.toString(),
+		precision: v.asset.precision,
+	}] : acc), []);
+	return amounts.reduce((acc, amount) => (acc.plus(new BN(amount.amount).div(10 ** amount.precision))), new BN(0)).toString(10);
 };
