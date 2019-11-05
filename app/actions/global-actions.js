@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Map, fromJS } from 'immutable';
 import { PrivateKey } from 'echojs-lib';
 
@@ -12,7 +13,7 @@ import {
 } from '../constants/routes-constants';
 import { startAnimation, setValue as setAnamationValue } from './animation-actions';
 import { setValue as setValueToForm } from './form-actions';
-import { NETWORKS, DEFAULT_NETWORK_ID } from '../constants/global-constants';
+import { DEFAULT_NETWORK_ID } from '../constants/global-constants';
 import LanguageService from '../services/language';
 import Listeners from '../services/listeners';
 import { initTokens, subscribeTokens, updateBalance } from './balance-actions'; // eslint-disable-line import/no-cycle
