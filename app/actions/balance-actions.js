@@ -1,4 +1,6 @@
+/* eslint-disable no-restricted-syntax */
 import { Set, Map, fromJS } from 'immutable';
+import BN from 'bignumber.js';
 import { validators } from 'echojs-lib';
 import { history } from '../store/configureStore';
 import Services from '../services';
@@ -274,6 +276,31 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 	return true;
 };
+
+export const totalFreezeSum = (frozenBalances) => {
+	let totalAmount = new BN(0);
+	for (const fBalance in frozenBalances) {
+		if (frozenBalances[fBalance].balance) {
+			totalAmount = totalAmount.plus(new BN(frozenBalances[fBalance].balance.amount));
+		}
+	}
+	return totalAmount.div(10 ** ECHO_ASSET_PRECISION).toString(10);
+};
+
+export const getFrozenBalance = () => async (dispatch, getState) => {
+	const accounts = getState().global.get('accounts').toJS();
+	let currentAccId;
+	for (const account in accounts) {
+		if (accounts[account].selected) {
+			currentAccId = account;
+		}
+	}
+	const frozenBalances = await Services.getEcho().api.getFrozenBalances(currentAccId);
+	const freezeSum = totalFreezeSum(frozenBalances);
+	dispatch(setValue('frozenBalances', frozenBalances));
+	dispatch(setValue('freezeSum', freezeSum));
+};
+
 export const getBalance = (balances) => {
 	if (!balances.size) {
 		return null;

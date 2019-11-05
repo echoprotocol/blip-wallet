@@ -12,11 +12,47 @@ import { lockApp } from '../../actions/global-actions';
 import {
 	WALLET, MANAGE_ACCOUNTS, SEND, HISTORY, SETTINGS, RECEIVE, FROZEN_FUNDS,
 } from '../../constants/routes-constants';
+import Services from '../../services';
+import { getBalance, getFrozenBalance } from '../../actions/balance-actions';
+import { setFreezeDefaultFilter } from '../../actions/transaction-actions';
+import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
 
 import lock from '../../assets/images/lock.svg';
 
 
 class SideMenu extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.subscription = null;
+	}
+
+	componentDidMount() {
+		this.props.getFrozenBalance();
+		this.subscribe();
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
+
+	async subscribe() {
+		await this.props.setFreezeDefaultFilter();
+		const { filter } = this.props;
+		this.subscription = newOperationSubscription(filter);
+		if (this.subscription) {
+			this.subscription = this.subscription.subscribe(() => {
+				this.props.getFrozenBalance();
+			});
+		}
+	}
+
+	unsubscribe() {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+			this.subscription = null;
+		}
+	}
 
 	lock() {
 		this.props.lock();
@@ -29,8 +65,10 @@ class SideMenu extends React.Component {
 
 
 	render() {
-		const { pathname, locked, history } = this.props;
-
+		const {
+			pathname, locked, history, balances, freezeSum,
+		} = this.props;
+		const balance = getBalance(balances);
 		return (
 			<Sidebar direction="right">
 				<div className="sidebar-wrap">
@@ -81,7 +119,7 @@ class SideMenu extends React.Component {
 											<span>
 												Balance
 											</span>
-											<span>12213211</span> ECHO
+											<span>{balance}</span> ECHO
 										</React.Fragment>
 									)}
 								/>
@@ -99,7 +137,7 @@ class SideMenu extends React.Component {
 												className="tooltip-frozen"
 												trigger={<Icon className="info-empty" />}
 											/>
-											<span>12213211</span> ECHO
+											<span>{freezeSum}</span> ECHO
 										</React.Fragment>
 									)}
 								/>
@@ -167,16 +205,33 @@ class SideMenu extends React.Component {
 SideMenu.propTypes = {
 	pathname: PropTypes.string.isRequired,
 	history: PropTypes.object.isRequired,
+	balances: PropTypes.object.isRequired,
 	locked: PropTypes.bool.isRequired,
 	lock: PropTypes.func.isRequired,
+	setFreezeDefaultFilter: PropTypes.func.isRequired,
+	getFrozenBalance: PropTypes.func.isRequired,
+	freezeSum: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+	]).isRequired,
+	filter: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
-	(state) => ({
-		pathname: state.router.location.pathname,
-		locked: state.global.get('locked'),
-	}),
+	(state) => {
+		const balanceSelector = Services.getSelector().getSelectedAccountBalancesSelector();
+		return ({
+			pathname: state.router.location.pathname,
+			locked: state.global.get('locked'),
+			balances: balanceSelector(state),
+			freezeSum: state.wallet.get('freezeSum'),
+			accounts: state.global.get('accounts'),
+			filter: state.wallet.getIn(['freeze', 'filter']),
+		});
+	},
 	(dispatch) => ({
 		lock: () => dispatch(lockApp()),
+		getFrozenBalance: () => dispatch(getFrozenBalance()),
+		setFreezeDefaultFilter: () => dispatch(setFreezeDefaultFilter()),
 	}),
 )(SideMenu));
