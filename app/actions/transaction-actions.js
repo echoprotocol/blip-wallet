@@ -347,40 +347,11 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 };
 
 export const setFreezeDefaultFilter = () => async (dispatch, getState) => {
-	let accounts = getState().global.get('accounts');
 	let filter = getState().wallet.getIn(['history', 'filter']);
-
-	filter = filter.set('accounts', accounts.map((a, id) => a.set('id', id).set('selected', true)).toList());
-
-	accounts = accounts.reduce((arr, name, id) => ([...arr, id]), []);
-
-	let coins = await getCoinsByAccounts(accounts);
-	coins = coins.reduce((arr, c) => {
-		if (c.type === ASSET_TYPE && arr.find((i) => i.asset && i.asset.id === c.asset.id)) {
-			return arr;
-		}
-
-		if (c.type === TOKEN_TYPE && arr.find((i) => i.contract && i.contract.id === c.contract.id)) {
-			return arr;
-		}
-
-		return [...arr, c];
-	}, []);
-
-	if (!coins.length) {
-		coins.push({
-			type: ASSET_TYPE,
-			asset: {
-				id: ECHO_ASSET_ID,
-				symbol: ECHO_ASSET_SYMBOL,
-				precision: ECHO_ASSET_PRECISION,
-			},
-			contract: null,
-		});
-	}
-
-	coins = coins.map((i) => ({ ...i, selected: true }));
+	const accounts = getState().global.get('accounts');
+	const coins = [];
 	filter = filter.set('coins', fromJS(coins));
+	filter = filter.set('accounts', accounts.map((a, id) => a.set('id', id).set('selected', true)).toList());
 
 	filter = filter.set('types', fromJS(Object.keys(OPERATIONS).map((type, i) => ({
 		type,

@@ -96,4 +96,3 @@ export const FREEZE_COEF_BY_TIME = {
 	1.5: '12 ',
 };
 export const FREEZE_COEF_FACTOR = 10e3;
-export const FREEZE_BALANCE_PERCISION = 10e7;
