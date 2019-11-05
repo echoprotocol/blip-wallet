@@ -101,7 +101,6 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 	}
 
 	const block = await Services.getEcho().api.getBlock(blockNumber);
-
 	let { name, options } = Object.values(OPERATIONS).find((i) => i.value === type);
 
 	if (type === OPERATIONS.transfer.value) {
@@ -343,7 +342,6 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 		name: OPERATIONS[type].name,
 		selected: true,
 	}))));
-
 	dispatch(setIn('history', { filter }));
 	saveHistoryFilter(filter);
 };

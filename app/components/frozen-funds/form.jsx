@@ -2,9 +2,9 @@ import React from 'react';
 import {
 	Input, Button, Icon, Popup,
 } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import PropTypes from 'prop-types';
 

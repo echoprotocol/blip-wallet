@@ -9,8 +9,8 @@ import { setValue as setForm } from './form-actions';
 import WalletReducer from '../reducers/wallet-reducer';
 import { getBalances } from '../services/queries/balances';
 import { TOKEN_TYPE } from '../constants/graphql-constants';
-import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { SEND } from '../constants/routes-constants';
+import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION } from '../constants/global-constants';
 import { FORM_SEND } from '../constants/form-constants';
 import FormatHelper from '../helpers/format-helper';
 
@@ -289,17 +289,28 @@ export const totalFreezeSum = (frozenBalances) => {
 
 export const getFrozenBalance = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts').toJS();
-	let currentAccId;
+	const currentAccIds = [];
 	for (const account in accounts) {
 		if (accounts[account].selected) {
-			currentAccId = account;
+			currentAccIds.push(account);
 		}
 	}
-	const frozenBalances = await Services.getEcho().api.getFrozenBalances(currentAccId);
-	const freezeSum = totalFreezeSum(frozenBalances);
-	dispatch(setValue('frozenBalances', frozenBalances));
+	const results = [];
+	for (let i = 0; i < currentAccIds.length; i += 1) {
+		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
+	}
+	const res = (await Promise.all(results)).flat();
+	const freezeSum = res.reduce((acc, f) => acc.plus(new BN(totalFreezeSum(f))), new BN(0)).toString(10);
+	const finalRes = res.map(async (f) => {
+		const accName = (await Services.getEcho().api.getObject(f.owner)).name;
+		f.ownerName = accName;
+		return f;
+	});
+	const freezeBalanceWithOwners = await Promise.all(finalRes);
+	dispatch(setValue('frozenBalances', freezeBalanceWithOwners));
 	dispatch(setValue('freezeSum', freezeSum));
 };
+
 
 export const getBalance = (balances) => {
 	if (!balances.size) {
