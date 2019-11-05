@@ -154,6 +154,12 @@ export const freezeFunds = () => async (dispatch, getState) => {
 		balance: objectsById.getIn([selectedBalance, 'balance']),
 	};
 
+	const feeBalance = {
+		symbol: objectsById.getIn([objectsById.getIn([selectedFeeBalance, 'asset_type']), 'symbol']),
+		precision: objectsById.getIn([objectsById.getIn([selectedFeeBalance, 'asset_type']), 'precision']),
+		balance: objectsById.getIn([selectedFeeBalance, 'balance']),
+	};
+
 	const amountError = ValidateSendHelper.validateAmount(amount, balance);
 
 	if (amountError) {
@@ -216,11 +222,21 @@ export const freezeFunds = () => async (dispatch, getState) => {
 			}
 		}
 
+		const feeError = ValidateSendHelper.validateAmount(options.fee.amount, feeBalance);
+
+		console.log('options.fee.amount ', options.fee.amount);
+		console.log('feeBalance ', feeBalance);
+		console.log('feeError ', feeError);
+
+		if (feeError) {
+			return false;
+		}
+
 		const feeAssetPrecision = new BN(10).pow(feeAsset.get('precision'));
 
 		const amountAsset = objectsById.get(options.amount.asset_id);
 		options.amount.amount = new BN(options.amount.amount).times(new BN(10).pow(amountAsset.get('precision'))).toString();
-		options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString();
+		options.fee.amount = new BN(options.fee.amount).times(feeAssetPrecision).toString(10);
 
 		const start = new Date().getTime();
 
