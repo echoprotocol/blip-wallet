@@ -14,8 +14,6 @@ const DEFAULT_FIELDS = Map({
 			accounts: null,
 		}),
 	}),
-	tokens: new List([]),
-	hiddenAssets: new Map({}),
 	freeze: new Map({
 		filter: new Map({
 			coins: null,
@@ -23,7 +21,9 @@ const DEFAULT_FIELDS = Map({
 			accounts: null,
 		}),
 	}),
-	frozenBalances: new List([]),
+	tokens: new List([]),
+	hiddenAssets: new Map({}),
+	frozenBalances: [],
 	freezeSum: 0,
 });
 

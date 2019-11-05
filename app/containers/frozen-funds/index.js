@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import FrozenFunds from '../../components/frozen-funds';
+import { getFrozenBalance } from '../../actions/balance-actions';
 import { FORM_FREEZE } from '../../constants/form-constants';
 import {
 	clearForm, setFormError, setFormValue, setValue,
@@ -9,6 +10,7 @@ import {
 } from '../../actions/freeze-funds';
 
 import Services from '../../services';
+import { setFreezeDefaultFilter } from '../../actions/transaction-actions';
 
 const balanceSelector = Services.getSelector().getTransferBalanceSelector();
 
@@ -19,6 +21,8 @@ export default connect(
 		balances: balanceSelector(state),
 		loading: state.global.get('loading'),
 		hiddenAssets: state.wallet.get('hiddenAssets').get(Services.getUserStorage().getNetworkId()),
+		frozenBalances: state.wallet.get('frozenBalances'),
+		filter: state.wallet.getIn(['freeze', 'filter']),
 	}),
 	(dispatch) => ({
 		setFormValue: (field, value) => dispatch(setFormValue(FORM_FREEZE, field, value)),
@@ -28,6 +32,8 @@ export default connect(
 		setFeeFormValue: () => dispatch(setFeeFormValue()),
 		clearForm: () => dispatch(clearForm(FORM_FREEZE)),
 		setMinAmount: () => dispatch(setMinAmount()),
+		getFrozenBalance: () => dispatch(getFrozenBalance()),
 		changeAccount: (id) => dispatch(changeAccount(id)),
+		setFreezeDefaultFilter: () => dispatch(setFreezeDefaultFilter()),
 	}),
 )(FrozenFunds);
