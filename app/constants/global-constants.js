@@ -13,53 +13,11 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 };
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
 
-export const NETWORKS = {
-	devnet: {
-		remote: {
-			name: 'Remote node',
-			url: 'wss://devnet.echo-dev.io/ws',
-		},
-		local: {
-			name: 'Local node',
-			seed: 'node1.devnet.echo-dev.io:6310',
-		},
-	},
-	testnet: {
-		remote: {
-			name: 'Remote node',
-			url: 'ws://testnet.echo-dev.io/ws',
-		},
-		local: {
-			name: 'Local node',
-			seed: 'node1.devnet.echo-dev.io:6310',
-		},
-	},
-};
+
 export const DEFAULT_NETWORK_ID = 'testnet';
 export const NETWORK_STATUS = {
 	ONLINE: 'online',
 	OFFLINE: 'offline',
-};
-
-export const EXPLORER_URL = {
-	devnet: 'https://656-echo-explorer.pixelplex-test.by',
-	testnet: 'https://explorer.echo.org',
-};
-
-export const ECHODB = {
-	devnet: {
-		HTTP_LINK: 'https://645-echodb.pixelplex-test.by/graphql',
-		WS_LINK: 'wss://645-echodb.pixelplex-test.by/graphql',
-	},
-	testnet: {
-		HTTP_LINK: 'https://645-echodb.pixelplexlabs.com/graphql',
-		WS_LINK: 'wss://645-echodb.pixelplexlabs.com/graphql',
-	},
-};
-
-export const QR_SERVER_URL = {
-	devnet: 'https://649-bridge-landing.pixelplex-test.by/receive/',
-	testnet: 'https://649-bridge-landing.pixelplexlabs.com/receive/',
 };
 
 export const { ECHO_ASSET_ID } = constants;
@@ -97,6 +55,28 @@ export const RU_LOCALE = 'ru';
 export const LOCK_TIMEOUT = 3 * 60 * 1000; // 3 min
 export const TIME_LOADING = 1000; // 1s
 export const TIME_SHOW_ERROR_ASSET = 10000; // 10s
+
+export const FREEZE_FUNDS_PERIODS = [{
+	text: '3 months',
+	shortText: '3',
+	value: 90,
+	coefficient: '1.3',
+	fullCoefficient: 13000,
+},
+{
+	text: '6 months',
+	shortText: '4',
+	value: 180,
+	coefficient: '1.4',
+	fullCoefficient: 14000,
+},
+{
+	text: '12 months',
+	shortText: '5',
+	value: 360,
+	coefficient: '1.5',
+	fullCoefficient: 15000,
+}];
 
 export const LOCK_TIMER_EVENTS = [
 	// 'mousemove',
