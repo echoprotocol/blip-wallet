@@ -343,7 +343,7 @@ app.on('before-quit', (event) => {
 		restartTimer = null;
 	}
 
-	console.log('Caught before-quit. Exiting in 30 seconds.');
+	console.log(`Caught before-quit. Exiting in ${TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS} seconds.`);
 
 	event.preventDefault();
 

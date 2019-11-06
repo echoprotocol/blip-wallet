@@ -88,7 +88,7 @@ export const initNetworks = (store) => async (dispatch) => {
 	await Services.getGraphql().init(current);
 	await Services.getEcho().init(current, { store });
 
-	Services.getEcho().setOptions([], current, null);
+	Services.getEcho().setOptions([], current);
 
 	dispatch(setValue('networks', fromJS(networks)));
 };
