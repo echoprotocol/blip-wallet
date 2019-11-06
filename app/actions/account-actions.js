@@ -395,6 +395,7 @@ export const logoutAccount = (accountId) => async (dispatch, getState) => {
 	dispatch(WalletReducer.actions.set({ field: 'tokens', value: tokens }));
 
 	dispatch(subscribeTokens());
+	dispatch(setAccounts());
 };
 /**
  *
@@ -440,4 +441,5 @@ export const removeAllAccounts = () => async (dispatch) => {
 	dispatch(WalletReducer.actions.clear({ field: 'hiddenAssets' }));
 
 	dispatch(subscribeTokens());
+	dispatch(setAccounts());
 };
