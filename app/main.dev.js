@@ -118,7 +118,6 @@ app.on('window-all-closed', () => {
 	}
 });
 
-// const echoNode = new EchoNode();
 let lastNode = null;
 let restartTimer = null;
 let tray = null;
