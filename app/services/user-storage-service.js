@@ -152,8 +152,6 @@ class UserStorageService {
 
 		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
 
-		console.log('decryptedData', decryptedData);
-
 		const networkId = this.getNetworkId();
 		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
 
