@@ -1,8 +1,10 @@
 import appRootDir from 'app-root-dir';
 import { join as joinPath, dirname } from 'path';
 import _spawn from 'cross-spawn';
+import fs from 'fs';
 
 import getPlatform from './get-platform';
+import NodeFileEncryptor from '../services/node.file.encryptor';
 
 class EchoNode {
 
@@ -16,7 +18,7 @@ class EchoNode {
 	 * @param {Array} accounts
 	 * @return {Promise.<*>}
 	 */
-	async start(params, accounts = []) {
+	async start(params, accounts = [], chainToken) {
 
 		await this.stop();
 
@@ -28,7 +30,44 @@ class EchoNode {
 
 		const binPath = `${joinPath(execPath, 'echo_node')}`;
 
-		const child = this.spawn(binPath, params, accounts);
+		const keyConfigPath = `${params['data-dir']}/.key.config`;
+
+		const fileExists = await new Promise((resolve) => {
+			fs.stat(keyConfigPath, (err) => {
+				if (err) {
+					return resolve(false);
+				}
+
+				return resolve(true);
+
+			});
+		});
+
+		if (fileExists) {
+			await new Promise((resolve, reject) => {
+				fs.unlink(keyConfigPath, (err) => {
+					if (err) {
+						return reject(err);
+					}
+
+					return resolve();
+				});
+			});
+		}
+
+		if (chainToken && chainToken.token) {
+			const fileHex = NodeFileEncryptor.getFileBytes(chainToken.token, accounts);
+			await new Promise((resolve, reject) => {
+				fs.writeFile(keyConfigPath, Buffer.from(fileHex, 'hex'), (err) => {
+					if (err) {
+						return reject(err);
+					}
+					return resolve();
+				});
+			});
+		}
+
+		const child = this.spawn(binPath, params, chainToken);
 
 		this.child = child;
 
@@ -58,7 +97,10 @@ class EchoNode {
 				return resolve();
 			});
 
-			child.kill('SIGINT');
+			if (!child.siginted) {
+				child.siginted = true;
+				child.kill('SIGINT');
+			}
 
 			return true;
 
@@ -91,28 +133,22 @@ class EchoNode {
 	 *
 	 * @param {String} binPath
 	 * @param {Object} opts
-	 * @param {Array} accounts
 	 * @return {*}
 	 */
-	spawn(binPath, opts, accounts = []) {
+	spawn(binPath, opts, chainToken) {
 
 		const args = this.flags(opts);
 
-		const env = Object.create(process.env);
-
-		let accountsStr = '';
-
-		accounts.forEach((account) => {
-			accountsStr += `--account-info=${JSON.stringify([account.id, account.key])} `;
-		});
-
-		args.push(accountsStr);
-
 		console.info(`spawning: echo_node ${args.join(' ')}`);
+
+		const env = {};
+
+		if (chainToken) {
+			env.ECHO_KEY_PASSWORD = chainToken.token;
+		}
 
 		const start = Date.now();
 		const child = _spawn(binPath, args, {
-			// shell: true,
 			detached: true,
 			env,
 		});
@@ -122,13 +158,12 @@ class EchoNode {
 		child.unref();
 
 		process.once('exit', () => {
-			child.kill('SIGINT');
+			console.log('EXIT');
 		});
 
 		if (child.stdout) {
-			child.stdout.pipe(process.stdout);
-			child.stderr.pipe(process.stderr);
-
+			// child.stdout.pipe(process.stdout);
+			// child.stderr.pipe(process.stderr);
 		}
 
 		const promise = new Promise((resolve, reject) => {

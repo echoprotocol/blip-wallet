@@ -22,11 +22,13 @@ import notifier from 'node-notifier';
 import { join as joinPath, dirname } from 'path';
 import rimraf from 'rimraf';
 import i18next from 'i18next';
+import config from 'config';
 
 import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
 import getPlatform from './main/get-platform';
+
 
 import {
 	DATA_DIR,
@@ -50,7 +52,8 @@ import EN_TRANSLATION from './translations/en';
 
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
-
+const { NETWORKS } = config;
+let quited = false;
 export default class AppUpdater {
 
 	constructor() {
@@ -165,7 +168,7 @@ async function createWindow() {
 
 	await i18next.init({
 		lng: 'en',
-		debug: true,
+		debug: false,
 		resources: {
 			en: {
 				translation: EN_TRANSLATION,
@@ -252,17 +255,23 @@ async function createWindow() {
 		const countAttempts = {};
 		let startingError = false;
 		let processCounterId = 1;
-		const options = {
-			echorand: null,
-			'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${DEFAULT_NETWORK_ID}`,
-			'rpc-endpoint': `127.0.0.1:${port}`,
-			'seed-node': NETWORKS[DEFAULT_NETWORK_ID][LOCAL_NODE].seed,
-		};
 
-		const tryStart = (processId, params, accounts) => {
+		// const options = {
+		// 	'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${DEFAULT_NETWORK_ID}`,
+		// 	'rpc-endpoint': `127.0.0.1:${port}`,
+		// 	'seed-node': NETWORKS[DEFAULT_NETWORK_ID][LOCAL_NODE].seed,
+		// 	plugin: 'registration',
+		// 	testnet: null,
+		// 	'replay-blockchain': null,
+		// };
+
+		const tryStart = (processId, params, accounts, chainToken) => {
 
 			if (processId < processCounterId) {
 				return false;
+			}
+			if (quited) {
+				return console.log('Quited!');
 			}
 
 			clearTimeout(restartTimer);
@@ -271,7 +280,7 @@ async function createWindow() {
 				.then(() => {
 					restartTimer = setTimeout(() => {
 						/* eslint-disable no-use-before-define */
-						startNode(processId, params, accounts);
+						startNode(processId, params, accounts, chainToken);
 					}, RESTART_PAUSE_MS);
 				});
 
@@ -287,7 +296,7 @@ async function createWindow() {
 			countAttempts[processId] += 1;
 		};
 
-		const startNode = (processId, params, accounts) => {
+		const startNode = (processId, params, accounts, chainToken) => {
 
 			clearTimeout(restartTimer);
 
@@ -298,7 +307,7 @@ async function createWindow() {
 
 			try {
 				incrementCounterId(processId);
-				echoNode.start(params, accounts)
+				echoNode.start(params, accounts, chainToken)
 					.then((data) => {
 						console.log('[NODE] child then', data);
 					})
@@ -306,11 +315,11 @@ async function createWindow() {
 						console.log('[NODE] child err', err);
 						if (countAttempts[processId] === 1) {
 							console.info('TRY TO START');
-							tryStart(processId, params, accounts);
+							tryStart(processId, params, accounts, chainToken);
 						} else if (countAttempts[processId] === 2) {
 							rimraf(params['data-dir'], () => {
 								console.info('TRY TO REMOVE FOLDER');
-								tryStart(processId, params, accounts);
+								tryStart(processId, params, accounts, chainToken);
 							});
 						} else {
 							startingError = true;
@@ -325,20 +334,23 @@ async function createWindow() {
 			return true;
 		};
 
-		startNode(processCounterId += 1, options, []);
+		// startNode(processCounterId += 1, options, []);
 
 		ipcMain.on('startNode', async (event, args) => {
 
 			const NETWORK_ID = args && args.networkId ? args.networkId : DEFAULT_NETWORK_ID;
+			const chainToken = args && args.chainToken ? args.chainToken : null;
 
 			const networkOptions = {
-				echorand: null,
 				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
 				'rpc-endpoint': `127.0.0.1:${port}`,
 				'seed-node': NETWORKS[NETWORK_ID][LOCAL_NODE].seed,
+				plugin: 'registration',
+				testnet: null,
+				// 'replay-blockchain': null,
 			};
 
-			tryStart(processCounterId += 1, networkOptions, args && args.accounts ? args.accounts : []);
+			tryStart(processCounterId += 1, networkOptions, args && args.accounts ? args.accounts : [], chainToken);
 		});
 
 	});
@@ -363,12 +375,14 @@ async function createWindow() {
 }
 app.on('before-quit', (event) => {
 
+	quited = true;
+
 	if (restartTimer) {
 		clearTimeout(restartTimer);
 		restartTimer = null;
 	}
 
-	console.log('Caught before-quit. Exiting in 5 seconds.');
+	console.log('Caught before-quit. Exiting in 12 seconds.');
 
 	event.preventDefault();
 

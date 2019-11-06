@@ -512,15 +512,16 @@ class Blockchain {
 	 *
 	 * @param {Array} accounts
 	 * @param {String} networkId
+	 * @param {Object} chainToken
 	 * @return {boolean}
 	 */
-	setOptions(accounts = [], networkId) {
+	setOptions(accounts = [], networkId, chainToken) {
 
 		if (!ipcRenderer) {
 			return false;
 		}
 
-		ipcRenderer.send('startNode', { accounts, networkId });
+		ipcRenderer.send('startNode', { accounts, networkId, chainToken });
 
 		return true;
 	}

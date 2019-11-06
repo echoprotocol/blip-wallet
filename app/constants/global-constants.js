@@ -41,7 +41,7 @@ export const RANDOM_SIZE = 2048;
 export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
 
-export const CONNECTION_TIMEOUT = 5000;
+export const CONNECTION_TIMEOUT = 3000;
 export const MAX_RETRIES = 999999999;
 export const PING_TIMEOUT = 7000;
 export const PING_INTERVAL = 7000;

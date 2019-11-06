@@ -196,6 +196,9 @@ export default merge.smart(baseConfig, {
 			debug: true,
 		}),
 		new webpack.DefinePlugin({
+			'process.env': {
+				NETWORKS: JSON.stringify('Remote node@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2'),
+			},
 			NETWORKS: {
 				devnet: {
 					remote: {

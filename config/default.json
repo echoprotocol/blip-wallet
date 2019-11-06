@@ -1,0 +1,24 @@
+{
+	"NETWORKS": {
+		"devnet": {
+			"remote": {
+				"name": "Remote node",
+				"url": "wss://devnet.echo-dev.io/ws"
+			},
+			"local": {
+				"name": "Local node",
+				"seed": "node1.devnet.echo-dev.io:6310"
+			}
+		},
+		"testnet": {
+			"remote": {
+				"name": "Remote node",
+				"url": "ws://testnet.echo-dev.io/ws"
+			},
+			"local": {
+				"name": "Local node",
+				"seed": "node1.devnet.echo-dev.io:6310"
+			}
+		}
+	}
+}

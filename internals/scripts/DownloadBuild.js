@@ -1,27 +1,51 @@
+import path from "path";
 import fs from "fs";
 import download from "download";
+import { parse } from "url";
+import tar from "tar";
 
 /**
  * 
  * @param {String} url 
- * @param {String} os 
+ * @param {String} os
+ * @param {String} filename
  */
 const downloadBuild = async (url, os, filename) => {
    
-    console.log(`[${os}] Downloading build... ${url}`);        
+    console.log(`[${os}] Downloading the build... ${url}`);        
 
-    const destination = `resources/${os}/bin`;
+	const destination = `resources/${os}/bin`;
+	
+	const parsed = parse(url);
+	const urlFilename = path.basename(parsed.pathname);	
+	const tarDestination = `${destination}/${urlFilename}`;
 
     if (fs.existsSync(url)) { // check local file
         fs.copyFileSync(url, `${destination}/${filename}`);
     } else {
-        await download(url, destination, { filename });
-    }
-    
+        await download(url, destination);
+    }	
 
-    fs.chmodSync(`${destination}/${filename}`, 0o777);
+	const extractedFolder = urlFilename.split('.').slice(0, -1).join('.');	
 
-    console.log(`[${os}] Downloaded.`);
+	console.log(`[${os}] Extracting to ${destination}/${extractedFolder}...`);
+
+	await tar.x({
+		file: tarDestination,
+		C: `${destination}`,
+	});
+	
+	const nodeFilePath = `${destination}/${extractedFolder}/${filename}`;
+
+	console.log(`[${os}] Copying to ${destination}/${filename}...`);
+
+	fs.copyFileSync(nodeFilePath, `${destination}/${filename}`);	
+	
+	console.log(`[${os}] Setting permissions ${filename}...`);
+
+	fs.chmodSync(`${destination}/${filename}`, 0o777);
+
+	console.log(`[${os}] Done.`);
 
 };
 
@@ -39,7 +63,7 @@ const downloadBuild = async (url, os, filename) => {
         }
 
         if (!downloadOS) {
-            throw new Error('You need to set process.env.DOWNLOAD_ECHO_NODE_OS');            
+			throw new Error('You need to set process.env.DOWNLOAD_ECHO_NODE_OS');			
         }
 
         await downloadBuild(downloadUrl, downloadOS, 'echo_node');
