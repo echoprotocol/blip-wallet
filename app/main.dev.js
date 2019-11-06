@@ -16,13 +16,16 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import getPort from 'get-port';
+import { xor } from 'lodash';
 import log from 'electron-log';
 import appRootDir from 'app-root-dir';
 import notifier from 'node-notifier';
 import { join as joinPath, dirname } from 'path';
 import rimraf from 'rimraf';
 import i18next from 'i18next';
-import config from 'config';
+import { PrivateKey } from 'echojs-lib';
+import { Subject, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
@@ -32,8 +35,6 @@ import getPlatform from './main/get-platform';
 
 import {
 	DATA_DIR,
-	// SEED_NODE,
-	RESTART_PAUSE_MS,
 	CHAIN_MIN_RANGE_PORT,
 	CHAIN_MAX_RANGE_PORT,
 } from './constants/chain-constants';
@@ -45,14 +46,13 @@ import {
 	APP_WINDOW_MIN_WIDTH,
 	TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS,
 	DEFAULT_NETWORK_ID,
-	LOCAL_NODE,
 } from './constants/global-constants';
 import { WIN_PLATFORM } from './constants/platform-constants';
 import EN_TRANSLATION from './translations/en';
 
+
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
-const { NETWORKS } = config;
 let quited = false;
 export default class AppUpdater {
 
@@ -118,7 +118,8 @@ app.on('window-all-closed', () => {
 	}
 });
 
-const echoNode = new EchoNode();
+// const echoNode = new EchoNode();
+let lastNode = null;
 let restartTimer = null;
 let tray = null;
 
@@ -252,91 +253,39 @@ async function createWindow() {
 
 		sendPort();
 
-		const countAttempts = {};
-		let startingError = false;
-		let processCounterId = 1;
+		const subject = new Subject();
+		let previousPublicKeys = [];
 
-		// const options = {
-		// 	'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${DEFAULT_NETWORK_ID}`,
-		// 	'rpc-endpoint': `127.0.0.1:${port}`,
-		// 	'seed-node': NETWORKS[DEFAULT_NETWORK_ID][LOCAL_NODE].seed,
-		// 	plugin: 'registration',
-		// 	testnet: null,
-		// 	'replay-blockchain': null,
-		// };
+		function removeFolderAndRetrySyncNode(dataDir) {
+			previousPublicKeys = [];
+			rimraf(dataDir, () => {});
+			lastNode = null;
+		}
 
-		const tryStart = (processId, params, accounts, chainToken) => {
+		subject.pipe(
+			switchMap((data) => {
+				const promise = data.lastNode ? data.lastNode.stop() : Promise.resolve();
+				return from(promise.then(() => ({
+					networkOptions: data.networkOptions,
+					accounts: data.accounts,
+					chainToken: data.chainToken,
+				})));
+			}),
+		).subscribe((data) => {
+			lastNode = new EchoNode();
+			const dataDir = data.networkOptions['data-dir'];
+			lastNode.start(data.networkOptions, data.accounts, data.chainToken).then(() => {
+				if (!quited && !lastNode.stopInProcess) {
+					removeFolderAndRetrySyncNode(dataDir);
+				}
+			}).catch(() => {
+				if (!quited && !lastNode.stopInProcess) {
+					removeFolderAndRetrySyncNode(dataDir);
+				}
+			});
+		});
 
-			if (processId < processCounterId) {
-				return false;
-			}
-			if (quited) {
-				return console.log('Quited!');
-			}
-
-			clearTimeout(restartTimer);
-
-			echoNode.stop()
-				.then(() => {
-					restartTimer = setTimeout(() => {
-						/* eslint-disable no-use-before-define */
-						startNode(processId, params, accounts, chainToken);
-					}, RESTART_PAUSE_MS);
-				});
-
-			return true;
-
-		};
-
-		const incrementCounterId = (processId) => {
-			if (!countAttempts[processId]) {
-				countAttempts[processId] = 0;
-			}
-
-			countAttempts[processId] += 1;
-		};
-
-		const startNode = (processId, params, accounts, chainToken) => {
-
-			clearTimeout(restartTimer);
-
-			if (startingError) {
-				console.warn('startingError', startingError);
-				return false;
-			}
-
-			try {
-				incrementCounterId(processId);
-				echoNode.start(params, accounts, chainToken)
-					.then((data) => {
-						console.log('[NODE] child then', data);
-					})
-					.catch((err) => {
-						console.log('[NODE] child err', err);
-						if (countAttempts[processId] === 1) {
-							console.info('TRY TO START');
-							tryStart(processId, params, accounts, chainToken);
-						} else if (countAttempts[processId] === 2) {
-							rimraf(params['data-dir'], () => {
-								console.info('TRY TO REMOVE FOLDER');
-								tryStart(processId, params, accounts, chainToken);
-							});
-						} else {
-							startingError = true;
-						}
-
-					});
-
-			} catch (e) {
-				console.log('[NODE] error:', e);
-			}
-
-			return true;
-		};
-
-		// startNode(processCounterId += 1, options, []);
-
-		ipcMain.on('startNode', async (event, args) => {
+		ipcMain.on('startNode', async (_, args) => {
 
 			const NETWORK_ID = args && args.networkId ? args.networkId : DEFAULT_NETWORK_ID;
 			const chainToken = args && args.chainToken ? args.chainToken : null;
@@ -344,13 +293,26 @@ async function createWindow() {
 			const networkOptions = {
 				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
 				'rpc-endpoint': `127.0.0.1:${port}`,
-				'seed-node': NETWORKS[NETWORK_ID][LOCAL_NODE].seed,
 				plugin: 'registration',
 				testnet: null,
 				// 'replay-blockchain': null,
 			};
 
-			tryStart(processCounterId += 1, networkOptions, args && args.accounts ? args.accounts : [], chainToken);
+			const accounts = args && args.accounts ? args.accounts : [];
+
+			const receivedPublicKeys = accounts.map(({ key }) => PrivateKey.fromWif(key).toPublicKey().toString());
+
+			if (!lastNode || previousPublicKeys.length !== receivedPublicKeys.length || xor(receivedPublicKeys, previousPublicKeys).length) {
+				subject.next({
+					lastNode,
+					networkOptions,
+					accounts,
+					chainToken,
+				});
+			}
+
+			previousPublicKeys = receivedPublicKeys;
+
 		});
 
 	});
@@ -382,18 +344,18 @@ app.on('before-quit', (event) => {
 		restartTimer = null;
 	}
 
-	console.log('Caught before-quit. Exiting in 12 seconds.');
+	console.log('Caught before-quit. Exiting in 30 seconds.');
 
 	event.preventDefault();
 
-	if (echoNode.child) {
-		echoNode.child.then(() => {
+	if (lastNode.child) {
+		lastNode.child.then(() => {
 			process.exit(0);
 		}).catch(() => {
 			process.exit(0);
 		});
 
-		echoNode.stop();
+		lastNode.stop();
 
 		setTimeout(() => { process.exit(0); }, TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS);
 

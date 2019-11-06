@@ -10,6 +10,7 @@ class EchoNode {
 
 	constructor() {
 		this.child = null;
+		this.stopInProcess = false;
 	}
 
 	/**
@@ -20,13 +21,7 @@ class EchoNode {
 	 */
 	async start(params, accounts = [], chainToken) {
 
-		await this.stop();
-
-		console.log('appRootDir.get()', appRootDir.get());
-
 		const execPath = process.env.NODE_ENV === 'production' ? joinPath(dirname(appRootDir.get()), 'bin') : joinPath(appRootDir.get(), 'resources', getPlatform(), 'bin');
-
-		console.log('execPath', execPath);
 
 		const binPath = `${joinPath(execPath, 'echo_node')}`;
 
@@ -43,7 +38,20 @@ class EchoNode {
 			});
 		});
 
+		let bytes = null;
+
 		if (fileExists) {
+
+			bytes = await new Promise((resolve, reject) => {
+				fs.readFile(keyConfigPath, (err, data) => {
+					if (err) {
+						return reject(err);
+					}
+
+					return resolve(data.toString('hex'));
+				});
+			});
+
 			await new Promise((resolve, reject) => {
 				fs.unlink(keyConfigPath, (err) => {
 					if (err) {
@@ -57,14 +65,17 @@ class EchoNode {
 
 		if (chainToken && chainToken.token) {
 			const fileHex = NodeFileEncryptor.getFileBytes(chainToken.token, accounts);
-			await new Promise((resolve, reject) => {
-				fs.writeFile(keyConfigPath, Buffer.from(fileHex, 'hex'), (err) => {
-					if (err) {
-						return reject(err);
-					}
-					return resolve();
+
+			if (bytes !== fileHex) {
+				await new Promise((resolve, reject) => {
+					fs.writeFile(keyConfigPath, Buffer.from(fileHex, 'hex'), (err) => {
+						if (err) {
+							return reject(err);
+						}
+						return resolve();
+					});
 				});
-			});
+			}
 		}
 
 		const child = this.spawn(binPath, params, chainToken);
@@ -76,6 +87,8 @@ class EchoNode {
 
 	async stop() {
 		return new Promise((resolve) => {
+
+			this.stopInProcess = true;
 
 			const { child } = this;
 
@@ -157,13 +170,9 @@ class EchoNode {
 
 		child.unref();
 
-		process.once('exit', () => {
-			console.log('EXIT');
-		});
-
 		if (child.stdout) {
-			// child.stdout.pipe(process.stdout);
-			// child.stderr.pipe(process.stderr);
+			child.stdout.pipe(process.stdout);
+			child.stderr.pipe(process.stderr);
 		}
 
 		const promise = new Promise((resolve, reject) => {
