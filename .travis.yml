@@ -23,7 +23,6 @@ jobs:
       name: "Test"
       if: type = push
       script:
-        - rm -rf node_modules && rm package-lock.json
         - NODE_ENV=development npm install
         - npm run build
         - npm run test
