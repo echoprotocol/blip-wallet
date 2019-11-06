@@ -115,7 +115,8 @@
 				letter-spacing: 1.2px;
 				text-transform: uppercase;
 
-				&:after {
+				.icon-info {
+					cursor: pointer;
 					@include iconmoon();
 					content: '\e906';
 					margin-left: 5px;
