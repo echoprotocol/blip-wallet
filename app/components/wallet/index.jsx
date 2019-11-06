@@ -284,12 +284,12 @@ class Wallet extends React.Component {
 										</span>
 										<span className="currency">{ECHO_ASSET_SYMBOL}</span>
 									</div>
-									<div className="info">
+									{/* <div className="info">
 										<span className="coins">+ 0.00000 </span>
 										<span className="currency">{ECHO_ASSET_SYMBOL} </span>
 										<span className="message">(unclaimed <img src={info} alt="" />)</span>
-										{/* <span className="claim-link">Claim balance</span> */}
-									</div>
+										<span className="claim-link">Claim balance</span> 
+									</div> */}
 								</div>
 								<div className="balances-list">
 									{assets ? assets.concat(tokens) : tokens}
