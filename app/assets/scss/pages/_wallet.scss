@@ -22,28 +22,6 @@
 	margin-top: 38px;
 	color: #33353f;
 
-	.info {
-		@include source-semibold();
-		margin-top: 10px;
-		color: rgba(#33353f, 0.5);
-		font-size: 14px;
-
-		.coins {
-			font-size: 20px;
-		}
-
-		.currency {
-			text-transform: uppercase;
-		}
-
-		.claim-link {
-			@include heebo-regular();
-			margin-left: 5px;
-			color: #7156ad;
-			font-size: 14px;
-		}
-	}
-
 	.balance {
 		@include source-semibold();
 

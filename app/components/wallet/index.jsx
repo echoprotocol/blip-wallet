@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
-import info from '../../assets/images/info.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import { HISTORY } from '../../constants/routes-constants';
@@ -283,12 +282,6 @@ class Wallet extends React.Component {
 											<span className="fraction">{FormatHelper.getFraction(balance, ECHO_ASSET_PRECISION)} </span>
 										</span>
 										<span className="currency">{ECHO_ASSET_SYMBOL}</span>
-									</div>
-									<div className="info">
-										<span className="coins">+ 0.00000 </span>
-										<span className="currency">{ECHO_ASSET_SYMBOL} </span>
-										<span className="message">(unclaimed <img src={info} alt="" />)</span>
-										{/* <span className="claim-link">Claim balance</span> */}
 									</div>
 								</div>
 								<div className="balances-list">
