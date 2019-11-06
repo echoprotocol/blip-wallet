@@ -347,7 +347,7 @@ app.on('before-quit', (event) => {
 
 	event.preventDefault();
 
-	if (lastNode.child) {
+	if (lastNode && lastNode.child) {
 		lastNode.child.then(() => {
 			process.exit(0);
 		}).catch(() => {
