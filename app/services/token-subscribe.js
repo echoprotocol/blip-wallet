@@ -29,7 +29,6 @@ class TokenSubscribe {
 		}
 
 		const updatedItems = await balanceUpdated(accounts, this.graphql);
-
 		const nextupdate = (data) => {
 			const v = data.data.balanceUpdated;
 			const findIndex = source.findIndex((token) => {

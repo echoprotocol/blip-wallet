@@ -214,7 +214,6 @@ const validateImportAccount = async (accountName) => {
 	if (error) {
 		return error;
 	}
-
 	const result = await Services.getEcho().api.lookupAccounts(accountName);
 
 	if (!result.find((i) => i[0] === accountName)) {
