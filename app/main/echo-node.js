@@ -1,6 +1,7 @@
 import appRootDir from 'app-root-dir';
 import { join as joinPath, dirname } from 'path';
 import _spawn from 'cross-spawn';
+import mkdirp from 'mkdirp';
 import fs from 'fs';
 
 import getPlatform from './get-platform';
@@ -41,7 +42,6 @@ class EchoNode {
 		let bytes = null;
 
 		if (fileExists) {
-
 			bytes = await new Promise((resolve, reject) => {
 				fs.readFile(keyConfigPath, (err, data) => {
 					if (err) {
@@ -61,7 +61,10 @@ class EchoNode {
 					return resolve();
 				});
 			});
+
 		}
+
+		await mkdirp(dirname(keyConfigPath));
 
 		if (chainToken && chainToken.token) {
 			const fileHex = NodeFileEncryptor.getFileBytes(chainToken.token, accounts);

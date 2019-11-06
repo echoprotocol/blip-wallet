@@ -254,17 +254,26 @@ async function createWindow() {
 
 		const subject = new Subject();
 		let previousPublicKeys = [];
+		let removeBeforeStart;
 
 		function removeFolderAndRetrySyncNode(dataDir) {
-			previousPublicKeys = [];
-			rimraf(dataDir, () => {});
-			lastNode = null;
+			return new Promise((resolve) => {
+				previousPublicKeys = [];
+				lastNode = null;
+
+				if (removeBeforeStart) {
+					removeBeforeStart = false;
+					return rimraf(dataDir, () => resolve());
+				}
+
+				return resolve();
+			});
 		}
 
 		subject.pipe(
 			switchMap((data) => {
 				const promise = data.lastNode ? data.lastNode.stop() : Promise.resolve();
-				return from(promise.then(() => ({
+				return from(promise.then(() => removeFolderAndRetrySyncNode(data.networkOptions['data-dir'])).then(() => ({
 					networkOptions: data.networkOptions,
 					accounts: data.accounts,
 					chainToken: data.chainToken,
@@ -272,14 +281,13 @@ async function createWindow() {
 			}),
 		).subscribe((data) => {
 			lastNode = new EchoNode();
-			const dataDir = data.networkOptions['data-dir'];
 			lastNode.start(data.networkOptions, data.accounts, data.chainToken).then(() => {
 				if (!quited && !lastNode.stopInProcess) {
-					removeFolderAndRetrySyncNode(dataDir);
+					removeBeforeStart = true;
 				}
 			}).catch(() => {
 				if (!quited && !lastNode.stopInProcess) {
-					removeFolderAndRetrySyncNode(dataDir);
+					removeBeforeStart = true;
 				}
 			});
 		});
