@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import { Button, Popup } from 'semantic-ui-react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Dropdown } from 'react-bootstrap';
 import classnames from 'classnames';
@@ -65,7 +65,13 @@ class ManageAccounts extends React.Component {
 								? (
 									<React.Fragment>
 										<div className="name">{account.get('name')}</div>
-										<div className="name-label">Primary account</div>
+										<div className="name-label">Primary account
+											<Popup
+												content="This account will be set by default while making any transactions."
+												className="tooltip-frozen"
+												trigger={<span className="icon-info" />}
+											/>
+										</div>
 									</React.Fragment>
 								)
 								: (

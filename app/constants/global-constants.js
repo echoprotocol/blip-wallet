@@ -56,11 +56,27 @@ export const LOCK_TIMEOUT = 3 * 60 * 1000; // 3 min
 export const TIME_LOADING = 1000; // 1s
 export const TIME_SHOW_ERROR_ASSET = 10000; // 10s
 
-export const FREEZE_FUNDS_PERIODS = [
-	{ text: '3 months', value: 90, coefficient: '1.3' },
-	{ text: '6 months', value: 180, coefficient: '1.4' },
-	{ text: '12 months', value: 360, coefficient: '1.5' },
-];
+export const FREEZE_FUNDS_PERIODS = [{
+	text: '3 months',
+	shortText: '3',
+	value: 90,
+	coefficient: '1.3',
+	fullCoefficient: 13000,
+},
+{
+	text: '6 months',
+	shortText: '4',
+	value: 180,
+	coefficient: '1.4',
+	fullCoefficient: 14000,
+},
+{
+	text: '12 months',
+	shortText: '5',
+	value: 360,
+	coefficient: '1.5',
+	fullCoefficient: 15000,
+}];
 
 export const LOCK_TIMER_EVENTS = [
 	// 'mousemove',

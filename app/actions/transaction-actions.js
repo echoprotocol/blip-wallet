@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import { validators, CACHE_MAPS } from 'echojs-lib';
+import { validators, CACHE_MAPS, OPERATIONS_IDS } from 'echojs-lib';
 import BN from 'bignumber.js';
 
 import {
@@ -101,7 +101,6 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 	}
 
 	const block = await Services.getEcho().api.getBlock(blockNumber);
-
 	let { name, options } = Object.values(OPERATIONS).find((i) => i.value === type);
 
 	if (type === OPERATIONS.transfer.value) {
@@ -343,9 +342,23 @@ export const setDefaultFilters = () => async (dispatch, getState) => {
 		name: OPERATIONS[type].name,
 		selected: true,
 	}))));
-
 	dispatch(setIn('history', { filter }));
 	saveHistoryFilter(filter);
+};
+
+export const setFreezeDefaultFilter = () => async (dispatch, getState) => {
+	let filter = getState().wallet.getIn(['history', 'filter']);
+	const accounts = getState().global.get('accounts');
+	const coins = [];
+	filter = filter.set('coins', fromJS(coins));
+	filter = filter.set('accounts', accounts.map((a, id) => a.set('id', id).set('selected', true)).toList());
+
+	filter = filter.set('types', fromJS(Object.keys(OPERATIONS).map((type, i) => ({
+		type,
+		name: OPERATIONS[type].name,
+		selected: (i === OPERATIONS_IDS.BALANCE_FREEZE || i === OPERATIONS_IDS.BALANCE_UNFREEZE),
+	}))));
+	dispatch(setIn('freeze', { filter }));
 };
 
 /**
@@ -575,19 +588,7 @@ export const getTransactionFee = (type, options, form) => async (dispatch) => {
 
 	try {
 		const { fee } = options;
-		const core = await Services.getEcho().api.getObject(ECHO_ASSET_ID);
-		const feeAsset = await Services.getEcho().api.getObject(fee.asset_id);
-
-		let amount = await getOperationFee(type, options);
-
-		if (feeAsset.id !== ECHO_ASSET_ID) {
-			const price = new BN(feeAsset.options.core_exchange_rate.quote.amount)
-				.div(feeAsset.options.core_exchange_rate.base.amount)
-				.times(10 ** (core.precision - feeAsset.precision));
-
-			amount = new BN(amount).div(10 ** core.precision);
-			amount = price.times(amount).times(10 ** feeAsset.precision);
-		}
+		const amount = await getOperationFee(type, options);
 
 		return {
 			amount: new BN(amount).integerValue(BN.ROUND_UP).toString(),
@@ -623,6 +624,8 @@ export const sendTransaction = async (type, options) => {
 	const headBlockTimeSeconds = Math.ceil(new Date(`${dynamicGlobalChainData.time}Z`).getTime() / 1000);
 
 	tr.expiration = headBlockTimeSeconds + EXPIRATION_INFELICITY;
+
+	await tr.setRequiredFees();
 
 	await signTransaction(account, tr);
 

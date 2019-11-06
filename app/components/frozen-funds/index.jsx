@@ -1,12 +1,13 @@
 import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
-import {
-	injectIntl,
-} from 'react-intl';
 
 import FrozenForm from './form';
 import FrozenTable from './table';
+import { newOperation as newOperationSubscription } from '../../services/subscriptions/transaction-subscriptions';
+
 
 class FrozenFunds extends React.Component {
 
@@ -16,6 +17,34 @@ class FrozenFunds extends React.Component {
 			showForm: false,
 			showTable: true,
 		};
+		this.subscription = null;
+	}
+
+	componentDidMount() {
+		this.props.getFrozenBalance();
+		this.subscribe();
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
+
+	async subscribe() {
+		await this.props.setFreezeDefaultFilter();
+		const { filter } = this.props;
+		this.subscription = newOperationSubscription(filter);
+		if (this.subscription) {
+			this.subscription = this.subscription.subscribe(() => {
+				this.props.getFrozenBalance();
+			});
+		}
+	}
+
+	unsubscribe() {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+			this.subscription = null;
+		}
 	}
 
 	toggleForm(state) {
@@ -24,7 +53,8 @@ class FrozenFunds extends React.Component {
 
 	render() {
 		const { showTable, showForm } = this.state;
-
+		const { frozenBalances, intl } = this.props;
+		const buttonTitle = intl.formatMessage({ id: 'freeze_funds.global.buttonTitle' });
 		return (
 			<div className="page-wrap">
 				<div className="page">
@@ -38,15 +68,17 @@ class FrozenFunds extends React.Component {
 									/>
 								) : (
 									<React.Fragment>
-										<h1 className="frozen-page-title">frozen funds</h1>
+										<h1 className="frozen-page-title">
+											<FormattedMessage id="freeze_funds.global.title" />
+										</h1>
 										<div className="text-about">
-											If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward
+											<FormattedMessage id="freeze_funds.global.about" />
 										</div>
-										{showTable && <FrozenTable /> }
+										{showTable && <FrozenTable frozenBalances={frozenBalances} />}
 										<Button
 											className="btn-freeze"
+											content={buttonTitle}
 											onClick={() => this.toggleForm(true)}
-											content="Freeze funds"
 										/>
 									</React.Fragment>
 								)
@@ -59,6 +91,16 @@ class FrozenFunds extends React.Component {
 	}
 
 }
+FrozenFunds.defaultProps = {
+	frozenBalances: [],
+};
 
+FrozenFunds.propTypes = {
+	frozenBalances: PropTypes.array,
+	filter: PropTypes.object.isRequired,
+	getFrozenBalance: PropTypes.func.isRequired,
+	setFreezeDefaultFilter: PropTypes.func.isRequired,
+	intl: intlShape.isRequired,
+};
 
 export default injectIntl(FrozenFunds);

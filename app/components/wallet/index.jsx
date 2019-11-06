@@ -6,13 +6,13 @@ import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import FormatHelper from '../../helpers/format-helper';
 import settings from '../../assets/images/settings.svg';
-import info from '../../assets/images/info.svg';
 import Settings from './settings';
 import { ECHO_ASSET_ID, ECHO_ASSET_PRECISION, ECHO_ASSET_SYMBOL } from '../../constants/global-constants';
 import { HISTORY } from '../../constants/routes-constants';
 import { TOKEN_TYPE } from '../../constants/graphql-constants';
 import Footer from '../footer';
 import LastTransaction from './last-transaction';
+import { getBalance } from '../../actions/balance-actions';
 
 class Wallet extends React.Component {
 
@@ -77,26 +77,6 @@ class Wallet extends React.Component {
 		});
 
 		return this.sortAssets(assets);
-	}
-
-	getBalance(balances) {
-		if (!balances.size) {
-			return null;
-		}
-
-		const amounts = [];
-
-		balances.forEach((b) => {
-			if (b.asset.get('id') === ECHO_ASSET_ID) {
-				amounts.push(b.amount);
-			}
-		});
-
-		const result = FormatHelper.accumulateBalances(amounts);
-
-		const precision = [...balances.values()][0].asset.get('precision');
-
-		return FormatHelper.formatAmount(result, precision);
 	}
 
 	sortAssets(assets) {
@@ -193,7 +173,7 @@ class Wallet extends React.Component {
 					onClick={() => this.switchToSend(token.getIn(['contract', 'id']))}
 					role="button"
 					tabIndex="0"
-					onKeyPress={() => {}}
+					onKeyPress={() => { }}
 				>
 					<div className="balance-item-header">
 						<div className="wrap">
@@ -243,7 +223,7 @@ class Wallet extends React.Component {
 					onClick={() => this.switchToSend(asset.id)}
 					role="button"
 					tabIndex="0"
-					onKeyPress={() => {}}
+					onKeyPress={() => { }}
 				> {/* add class hide */}
 					<div className="balance-item-header">
 						<div className="wrap">
@@ -276,11 +256,10 @@ class Wallet extends React.Component {
 
 		const { showSettings } = this.state;
 
-		const balance = this.getBalance(balances);
+		const balance = getBalance(balances);
 
 		const assets = this.renderAssets();
 		const tokens = this.renderTokens();
-		const precision = ![...balances.values()][0] ? ECHO_ASSET_PRECISION : [...balances.values()][0].asset.get('precision');
 
 		return (
 			<div
@@ -300,15 +279,9 @@ class Wallet extends React.Component {
 									<div className="balance">
 										<span className="coins">
 											<span className="int">{balance ? `${balance.split('.')[0]}` : '0'}</span>
-											<span className="fraction">{FormatHelper.getFraction(balance, precision)} </span>
+											<span className="fraction">{FormatHelper.getFraction(balance, ECHO_ASSET_PRECISION)} </span>
 										</span>
 										<span className="currency">{ECHO_ASSET_SYMBOL}</span>
-									</div>
-									<div className="info">
-										<span className="coins">+ 0.00000 </span>
-										<span className="currency">{ECHO_ASSET_SYMBOL} </span>
-										<span className="message">(unclaimed <img src={info} alt="" />)</span>
-										{/* <span className="claim-link">Claim balance</span> */}
 									</div>
 								</div>
 								<div className="balances-list">
