@@ -388,16 +388,18 @@
                 }
 
                 &-body {
-                    &:not(.amount) {
-                        @include source-semibold();
+                    @include source-semibold();
+
+                    .expiration {
+                        @include source-regular();
                     }
 
                     &:not(.account):not(.amount) {
-                        color: #3F4A52;
+                        color: #5F686E;
                     }
 
                     .account {
-                        color: #5F686E;
+                        color: #3F4A52;
                         line-height: 16px;
 
                         @include max-vw($md) {
