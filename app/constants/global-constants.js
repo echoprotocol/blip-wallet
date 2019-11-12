@@ -65,14 +65,14 @@ export const FREEZE_FUNDS_PERIODS = [{
 },
 {
 	text: '6 months',
-	shortText: '4',
+	shortText: '6',
 	value: 180,
 	coefficient: '1.4',
 	fullCoefficient: 14000,
 },
 {
 	text: '12 months',
-	shortText: '5',
+	shortText: '12',
 	value: 360,
 	coefficient: '1.5',
 	fullCoefficient: 15000,
