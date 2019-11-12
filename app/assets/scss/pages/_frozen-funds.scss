@@ -325,15 +325,18 @@
 
                     .avatar-image {
                         display: inline-block;
-                        min-width: 20px;
-                        max-width: 20px;
-                        height: 20px;
-                        margin-right: 10px;
+                        min-width: 19px;
+                        max-width: 19px;
+                        height: 19px;
+                        margin-right: 8px;
+                        margin-bottom: -2px;
 
                         @include max-vw($md) {
                             min-width: 14px;
                             max-width: 14px;
                             height: 14px;
+                            margin-right: 5px;
+                            margin-bottom: 0px;
                         }
                     }
 
@@ -395,6 +398,11 @@
 
                     .account {
                         color: #5F686E;
+                        line-height: 16px;
+
+                        @include max-vw($md) {
+                            line-height: 11px;
+                        }
                     }
 
                     .amount {
