@@ -468,7 +468,7 @@
 		},
 		"global": {
 			"title": "frozen funds",
-			"about": "If you take part in the blocks creation process, the sum you freeze will turn into a new amount after unfreezing (depending on the duration of freezing) when re-calculated with the coefficient and considered while distributing the reward",
+			"about": "The sum you freeze will affect the reward for participating in blocks creation when re-calculated with the coefficient (the longer the period, the bigger reward you receive).",
 			"buttonTitle": "Freeze funds"
 		},
 		"table": {
