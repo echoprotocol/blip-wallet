@@ -57,9 +57,7 @@ class InputDropdown extends React.Component {
 		const { opened: prevOpened } = prevState;
 
 		if (opened && (opened !== prevOpened)) {
-			console.log('kek');
 			this.searchInput.focus();
-			console.log('lol');
 		}
 
 		const { from } = this.props.data;
@@ -370,7 +368,6 @@ class InputDropdown extends React.Component {
 								show={opened && isDropdownActive}
 							>
 								<Dropdown.Toggle
-
 									onClick={isDropdownActive ? () => this.toggleDropdown() : () => {}}
 									variant="Info"
 								>
