@@ -343,6 +343,7 @@ class InputDropdown extends React.Component {
 			});
 		}
 
+		const isDropdownActive = (assetsList.length + tokensList.length) > 1;
 		const isResultsExists = dropdownData.some((d) => d.list.length);
 
 		return (
@@ -353,7 +354,7 @@ class InputDropdown extends React.Component {
 					error={!!errorText}
 					disabled={disable}
 					ref={(amountInput) => { this.amountInput = amountInput; }}
-					className={classnames('field input-dropdown', { focus })}
+					className={classnames('field input-dropdown', { focus }, { disabled: isDropdownActive })}
 					placeholder={title}
 					onFocus={() => this.setFocus(true)}
 					onBlur={() => this.setFocus(false)}
@@ -362,13 +363,12 @@ class InputDropdown extends React.Component {
 					action={(
 						<div ref={this.setMenuRef}>
 							<Dropdown
-								onFocus={() => this.setFocus(true)}
+								onFocus={isDropdownActive ? () => this.setFocus(true) : () => {}}
 								onBlur={() => this.setFocus(false)}
-								show={opened}
+								show={opened && isDropdownActive}
 							>
 								<Dropdown.Toggle
-
-									onClick={() => this.toggleDropdown()}
+									onClick={isDropdownActive ? () => this.toggleDropdown() : () => {}}
 									variant="Info"
 								>
 									<span className="dropdown-toggle-text">{currentVal || 'ECHO'}</span>
