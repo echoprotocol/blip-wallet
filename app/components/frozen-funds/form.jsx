@@ -5,6 +5,7 @@ import {
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import classnames from 'classnames';
 
 import PropTypes from 'prop-types';
 
@@ -27,6 +28,7 @@ class FrozenFundsForm extends React.Component {
 		this.state = {
 			feeTimeout: null,
 			amountTimeout: null,
+			accountsDropdownShow: false,
 		};
 	}
 
@@ -119,6 +121,14 @@ class FrozenFundsForm extends React.Component {
 		this.props.changeAccount(id);
 	}
 
+	onAccountsDropdownToggle() {
+		const { accountsDropdownShow } = this.state;
+
+		this.setState({
+			accountsDropdownShow: !accountsDropdownShow,
+		});
+	}
+
 	setFee(data) {
 		if (this.state.feeTimeout) {
 			clearTimeout(this.state.feeTimeout);
@@ -146,7 +156,7 @@ class FrozenFundsForm extends React.Component {
 	}
 
 	render() {
-
+		const { accountsDropdownShow } = this.state;
 		const {
 			accounts, form, balances, loading, intl, hiddenAssets,
 		} = this.props;
@@ -228,7 +238,7 @@ class FrozenFundsForm extends React.Component {
 							<div className="line-content">
 								<Dropdown className="white select-period">
 									<Dropdown.Toggle variant="Info">
-										<span className="dropdown-toggle-text">
+										<span className={classnames('dropdown-toggle-text', { disabled: (durationObject.text || periodPlaceholder) === periodPlaceholder })}>
 											{durationObject.text || periodPlaceholder}
 										</span>
 										<span className="carret" />
@@ -317,7 +327,11 @@ class FrozenFundsForm extends React.Component {
 								<span className="line-label-text">{fromLabel}</span>
 							</div>
 							<div className="line-content">
-								<Dropdown className="white select-account">
+								<Dropdown
+									className="white select-account"
+									show={accountsDropdownShow && accounts && accounts.size > 1}
+									onToggle={() => this.onAccountsDropdownToggle()}
+								>
 									<Dropdown.Toggle variant="Info">
 										<Avatar accountName={fromAccountName} />
 										<span className="dropdown-toggle-text">
