@@ -337,7 +337,7 @@ class FrozenFundsForm extends React.Component {
 										<span className="dropdown-toggle-text">
 											{fromAccountName}
 										</span>
-										<span className="carret" />
+										{accounts && accounts.size > 1 ? <span className="carret" /> : null}
 									</Dropdown.Toggle>
 
 									<Dropdown.Menu>
