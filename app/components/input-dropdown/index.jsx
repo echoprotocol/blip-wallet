@@ -372,7 +372,7 @@ class InputDropdown extends React.Component {
 									variant="Info"
 								>
 									<span className="dropdown-toggle-text">{currentVal || 'ECHO'}</span>
-									<span className="carret" />
+									{isDropdownActive ? <span className="carret" /> : null}
 								</Dropdown.Toggle>
 
 								<Dropdown.Menu role="menu" alignRight>
