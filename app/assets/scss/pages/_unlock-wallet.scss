@@ -15,6 +15,7 @@
 		@include min-vw($md) {
 			width: 90px;
 		}
+
 		width: 64px;
 		margin: 8vh 0 auto;
 
@@ -31,8 +32,7 @@
 		margin: auto 0 1em;
 
 		.btn-primary:not(.ok) {
-			width: 200px;
-			padding: 0 20px;
+			padding: 0px 45px;
 		}
 	}
 }
@@ -42,6 +42,7 @@
 		font-size: 28px;
 		letter-spacing: 0.9px;
 	}
+
 	@include source-regular();
 	margin: -2em 0 2em;
 	color: #fff;
