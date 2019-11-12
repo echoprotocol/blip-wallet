@@ -15,7 +15,6 @@ class FrozenFunds extends React.Component {
 		super(props);
 		this.state = {
 			showForm: false,
-			showTable: true,
 		};
 		this.subscription = null;
 	}
@@ -52,7 +51,7 @@ class FrozenFunds extends React.Component {
 	}
 
 	render() {
-		const { showTable, showForm } = this.state;
+		const { showForm } = this.state;
 		const { frozenBalances, intl } = this.props;
 		const buttonTitle = intl.formatMessage({ id: 'freeze_funds.global.buttonTitle' });
 		return (
@@ -74,7 +73,7 @@ class FrozenFunds extends React.Component {
 										<div className="text-about">
 											<FormattedMessage id="freeze_funds.global.about" />
 										</div>
-										{showTable && <FrozenTable frozenBalances={frozenBalances} />}
+										{frozenBalances.length > 0 && <FrozenTable frozenBalances={frozenBalances} />}
 										<Button
 											className="btn-freeze"
 											content={buttonTitle}

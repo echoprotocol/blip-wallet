@@ -260,14 +260,14 @@
 
     .text-about {
         font-family: 'SourceSansPro-Regular';
-        margin: 37px 45px 25px 45px;
+        margin: 37px 45px 0px 45px;
         color: #5F686E;
         letter-spacing: 0.37px;
         font-size: 15px;
         line-height: 21px;
 
         @include max-vw($md) {
-            margin: 27px 45px 20px 45px;
+            margin: 27px 45px 0px 45px;
             font-size: 14px;
             line-height: 18px;
         }
@@ -277,11 +277,11 @@
         &-wrap {
             font-family: 'SourceSansPro-Regular';
             font-weight: 100;
-            margin: 0px 45px 45px 45px;
+            margin: 25px 45px 0px 45px;
             width: calc(100% - 90px);
 
             @include max-vw($md) {
-                margin: 0px 30px 30px 30px;
+                margin: 20px 30px 0px 30px;
                 width: calc(100% - 60px);
             }
 
@@ -420,13 +420,14 @@
         color: #7156AD;
         font-size: 18px;
         background-color: transparent;
-        margin: 0 45px 45px;
+        margin: 45px;
         border-radius: 3px;
         letter-spacing: 1px;
 
         @include max-vw($md) {
             padding: 10px 45px;
             font-size: 18px;
+            margin: 35px 45px;
         }
 
         &:hover {
