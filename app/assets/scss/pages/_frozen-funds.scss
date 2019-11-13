@@ -153,6 +153,10 @@
                 min-width: 59%;
                 position: relative;
 
+                .input {
+                    max-height: 50px;
+                }
+
                 .dropdown-toggle,
                 input {
                     width: 100%;
@@ -167,10 +171,14 @@
 
                 .disabled:not(.dropdown-toggle-text) {
                     background-color: #DADADD;
+                    border-color: #DADADD;
+                    border-radius: 3px;
 
                     &>input,
                     button {
                         color: #828491;
+                        border-color: #DADADD;
+                        border-radius: 3px;
                     }
                 }
 
@@ -193,6 +201,10 @@
                             width: 100%;
                         }
                     }
+                }
+
+                .error-message {
+                    z-index: 1;
                 }
             }
 
