@@ -14,6 +14,7 @@ import {
 	ECHO_ASSET_SYMBOL,
 	KEY_CODE_ENTER,
 	KEY_CODE_SPACE,
+	MIN_DROPDOWN_ITEMS_COUNT,
 } from '../../constants/global-constants';
 
 class InputDropdown extends React.Component {
@@ -343,7 +344,7 @@ class InputDropdown extends React.Component {
 			});
 		}
 
-		const isDropdownActive = (assetsList.length + tokensList.length) > 1;
+		const isDropdownActive = (assetsList.length + tokensList.length) > MIN_DROPDOWN_ITEMS_COUNT;
 		const isResultsExists = dropdownData.some((d) => d.list.length);
 
 		return (
