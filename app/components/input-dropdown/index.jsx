@@ -345,7 +345,7 @@ class InputDropdown extends React.Component {
 
 		const isDropdownActive = (assetsList.length + tokensList.length) > 1;
 		const isResultsExists = dropdownData.some((d) => d.list.length);
-		console.log(isFreeze)
+
 		return (
 			<div className="field">
 				<Input
