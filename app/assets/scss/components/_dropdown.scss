@@ -314,9 +314,8 @@
 		}
 
 		&:active {
-			background-color: #e8e8e9;
+			background-color: rgba(#9A9BA0, 0.1);
 			color: #3f4a52;
-			opacity: 0.6;
 
 			.carret {
 				&:after {
@@ -327,7 +326,8 @@
 
 		&:focus {
 			border: 1px solid #bfbfbf;
-			box-shadow: 0 0 2px rgba(#cbcbcb, 0.64);
+			box-shadow: 0 0 3px rgba(#000000, 0.16);
+			color: #3f4a52;
 		}
 	}
 

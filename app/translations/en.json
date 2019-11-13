@@ -448,7 +448,6 @@
 		"title": "SEND TRANSACTION",
 		"pageTitle": "freeze funds",
 		"from": "From",
-		"fee": "Fee",
 		"amount": {
 			"label": "Amount, ECHO",
 			"placeholder": "Amount"
@@ -460,6 +459,10 @@
 		"coefficient": {
 			"label": "Coefficient",
 			"popup": "This is the coefficient that will be used to calculate the reward for participating in blocks creation."
+		},
+		"fee": {
+			"label": "Transaction Fee",
+			"placeholder": "Fee"
 		},
 		"button": {
 			"send": "Freeze funds",

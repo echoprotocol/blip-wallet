@@ -14,6 +14,7 @@ import {
 	ECHO_ASSET_SYMBOL,
 	KEY_CODE_ENTER,
 	KEY_CODE_SPACE,
+	MIN_DROPDOWN_ITEMS_COUNT,
 } from '../../constants/global-constants';
 
 class InputDropdown extends React.Component {
@@ -343,7 +344,7 @@ class InputDropdown extends React.Component {
 			});
 		}
 
-		const isDropdownActive = (assetsList.length + tokensList.length) > 1;
+		const isDropdownActive = (assetsList.length + tokensList.length) > MIN_DROPDOWN_ITEMS_COUNT;
 		const isResultsExists = dropdownData.some((d) => d.list.length);
 
 		return (
@@ -353,8 +354,9 @@ class InputDropdown extends React.Component {
 					value={inputValue}
 					error={!!errorText}
 					disabled={disable || isFreeze}
+					tabIndex={disable ? '-1' : '0'}
 					ref={(amountInput) => { this.amountInput = amountInput; }}
-					className={classnames('field input-dropdown', { focus }, { disabled: isDropdownActive })}
+					className={classnames('field input-dropdown', { focus }, { pointer: isDropdownActive })}
 					placeholder={title}
 					onFocus={isFreeze ? () => this.setFocus(true) : () => {}}
 					onBlur={isFreeze ? () => this.setFocus(false) : () => {}}
@@ -376,6 +378,7 @@ class InputDropdown extends React.Component {
 										<Dropdown.Toggle
 											onClick={isDropdownActive ? () => this.toggleDropdown() : () => {}}
 											variant="Info"
+											tabIndex={disable ? '-1' : '0'}
 										>
 											<span className="dropdown-toggle-text">{currentVal || 'ECHO'}</span>
 											{isDropdownActive ? <span className="carret" /> : null}

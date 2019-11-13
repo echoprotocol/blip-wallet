@@ -17,6 +17,7 @@ import {
 	ECHO_ASSET_ID, KEY_CODE_ENTER,
 	TIME_SHOW_ERROR_ASSET,
 	FREEZE_FUNDS_PERIODS,
+	MIN_DROPDOWN_ITEMS_COUNT,
 } from '../../constants/global-constants';
 
 
@@ -168,6 +169,8 @@ class FrozenFundsForm extends React.Component {
 		);
 
 		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
+		const feeLabel = intl.formatMessage({ id: 'freeze_funds.fee.label' });
+		const feePlaceholder = intl.formatMessage({ id: 'freeze_funds.fee.placeholder' });
 		const returnButtonText = intl.formatMessage({ id: 'freeze_funds.button.return' });
 		const pageTitle = intl.formatMessage({ id: 'freeze_funds.pageTitle' });
 		const amountLabel = intl.formatMessage({ id: 'freeze_funds.amount.label' });
@@ -289,38 +292,31 @@ class FrozenFundsForm extends React.Component {
 							}
 						</div>
 						<div className="line">
-							<FormattedMessage id="freeze_funds.fee">
-								{
-									(content) => (
-										<React.Fragment>
-											<div className="line-label">
-												<span className="line-label-text">{content}</span>
-											</div>
+							<React.Fragment>
+								<div className="line-label">
+									<span className="line-label-text">{feeLabel}</span>
+								</div>
 
-											<div className="line-content">
-												<InputDropdown
-													title={content}
-													name="fee"
-													disable
-													globalLoading={!!loading}
-													errorText={form.get('fee').error}
-													setValue={(field, value) => this.props.setValue(field, value)}
-													path={{ field: 'selectedFeeBalance' }}
-													data={{
-														balances,
-														from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
-														hiddenAssets,
-													}}
-													value={form.get('fee').value}
-													setFee={this.props.setFeeFormValue}
-													placeholder={placeholderFee}
-													isFreeze
-												/>
-											</div>
-										</React.Fragment>
-									)
-								}
-							</FormattedMessage>
+								<div className="line-content">
+									<InputDropdown
+										title={feePlaceholder}
+										name="fee"
+										disable
+										globalLoading={!!loading}
+										errorText={form.get('fee').error}
+										setValue={(field, value) => this.props.setValue(field, value)}
+										path={{ field: 'selectedFeeBalance' }}
+										data={{
+											balances,
+											from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
+											hiddenAssets,
+										}}
+										value={form.get('fee').value}
+										setFee={this.props.setFeeFormValue}
+										placeholder={placeholderFee}
+									/>
+								</div>
+							</React.Fragment>
 						</div>
 
 						<div className="line">
@@ -329,16 +325,19 @@ class FrozenFundsForm extends React.Component {
 							</div>
 							<div className="line-content">
 								<Dropdown
-									className="white select-account"
-									show={accountsDropdownShow && accounts && accounts.size > 1}
+									className={classnames('white select-account ', { disabled: !(accounts.size > MIN_DROPDOWN_ITEMS_COUNT) })}
+									show={accountsDropdownShow && accounts && accounts.size > MIN_DROPDOWN_ITEMS_COUNT}
 									onToggle={() => this.onAccountsDropdownToggle()}
 								>
-									<Dropdown.Toggle variant="Info">
+									<Dropdown.Toggle
+										variant="Info"
+										tabIndex={(accounts.size > MIN_DROPDOWN_ITEMS_COUNT) ? '0' : '-1'}
+									>
 										<Avatar accountName={fromAccountName} />
 										<span className="dropdown-toggle-text">
 											{fromAccountName}
 										</span>
-										{accounts && accounts.size > 1 ? <span className="carret" /> : null}
+										{accounts && accounts.size > MIN_DROPDOWN_ITEMS_COUNT && <span className="carret" />}
 									</Dropdown.Toggle>
 
 									<Dropdown.Menu>
