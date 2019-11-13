@@ -158,6 +158,8 @@ class FrozenFundsForm extends React.Component {
 		);
 
 		const placeholderFee = intl.formatMessage({ id: 'send.dropdown.input.placeholder.fee' });
+		const feeLabel = intl.formatMessage({ id: 'freeze_funds.fee.label' });
+		const feePlaceholder = intl.formatMessage({ id: 'freeze_funds.fee.placeholder' });
 		const returnButtonText = intl.formatMessage({ id: 'freeze_funds.button.return' });
 		const pageTitle = intl.formatMessage({ id: 'freeze_funds.pageTitle' });
 		const amountLabel = intl.formatMessage({ id: 'freeze_funds.amount.label' });
@@ -279,37 +281,31 @@ class FrozenFundsForm extends React.Component {
 							}
 						</div>
 						<div className="line">
-							<FormattedMessage id="freeze_funds.fee">
-								{
-									(content) => (
-										<React.Fragment>
-											<div className="line-label">
-												<span className="line-label-text">{content}</span>
-											</div>
+							<React.Fragment>
+								<div className="line-label">
+									<span className="line-label-text">{feeLabel}</span>
+								</div>
 
-											<div className="line-content">
-												<InputDropdown
-													title={content}
-													name="fee"
-													disable
-													globalLoading={!!loading}
-													errorText={form.get('fee').error}
-													setValue={(field, value) => this.props.setValue(field, value)}
-													path={{ field: 'selectedFeeBalance' }}
-													data={{
-														balances,
-														from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
-														hiddenAssets,
-													}}
-													value={form.get('fee').value}
-													setFee={this.props.setFeeFormValue}
-													placeholder={placeholderFee}
-												/>
-											</div>
-										</React.Fragment>
-									)
-								}
-							</FormattedMessage>
+								<div className="line-content">
+									<InputDropdown
+										title={feePlaceholder}
+										name="fee"
+										disable
+										globalLoading={!!loading}
+										errorText={form.get('fee').error}
+										setValue={(field, value) => this.props.setValue(field, value)}
+										path={{ field: 'selectedFeeBalance' }}
+										data={{
+											balances,
+											from: form.get('from').value || accounts.findKey((a) => a.get('primary')),
+											hiddenAssets,
+										}}
+										value={form.get('fee').value}
+										setFee={this.props.setFeeFormValue}
+										placeholder={placeholderFee}
+									/>
+								</div>
+							</React.Fragment>
 						</div>
 
 						<div className="line">
