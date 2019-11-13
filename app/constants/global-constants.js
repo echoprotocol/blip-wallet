@@ -42,7 +42,6 @@ export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
 
 export const MIN_DROPDOWN_ITEMS_COUNT = 1;
-export const MIN_ACCOUNTS_COUNT = 1;
 
 export const CONNECTION_TIMEOUT = 5000;
 export const MAX_RETRIES = 999999999;

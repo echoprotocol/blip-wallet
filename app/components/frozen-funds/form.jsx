@@ -18,7 +18,6 @@ import {
 	TIME_SHOW_ERROR_ASSET,
 	FREEZE_FUNDS_PERIODS,
 	MIN_DROPDOWN_ITEMS_COUNT,
-	MIN_ACCOUNTS_COUNT,
 } from '../../constants/global-constants';
 
 
@@ -326,11 +325,14 @@ class FrozenFundsForm extends React.Component {
 							</div>
 							<div className="line-content">
 								<Dropdown
-									className={classnames('white select-account ', { disabled: !(accounts.size > MIN_ACCOUNTS_COUNT) })}
+									className={classnames('white select-account ', { disabled: !(accounts.size > MIN_DROPDOWN_ITEMS_COUNT) })}
 									show={accountsDropdownShow && accounts && accounts.size > MIN_DROPDOWN_ITEMS_COUNT}
 									onToggle={() => this.onAccountsDropdownToggle()}
 								>
-									<Dropdown.Toggle variant="Info">
+									<Dropdown.Toggle
+										variant="Info"
+										tabIndex={(accounts.size > MIN_DROPDOWN_ITEMS_COUNT) ? '0' : '-1'}
+									>
 										<Avatar accountName={fromAccountName} />
 										<span className="dropdown-toggle-text">
 											{fromAccountName}

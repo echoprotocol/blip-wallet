@@ -179,6 +179,19 @@
                         color: #828491;
                         border-color: #DADADD;
                         border-radius: 3px;
+                        cursor: default;
+
+                        &:active {
+                            background-color: inherit;
+                            color: #828491;
+                            opacity: inherit;
+                        }
+                    }
+
+                    &.pointer {
+                        .dropdown button {
+                            cursor: pointer;
+                        }
                     }
                 }
 

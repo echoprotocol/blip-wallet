@@ -354,8 +354,9 @@ class InputDropdown extends React.Component {
 					value={inputValue}
 					error={!!errorText}
 					disabled={disable || isFreeze}
+					tabIndex={disable ? '-1' : '0'}
 					ref={(amountInput) => { this.amountInput = amountInput; }}
-					className={classnames('field input-dropdown', { focus }, { disabled: isDropdownActive })}
+					className={classnames('field input-dropdown', { focus }, { pointer: isDropdownActive })}
 					placeholder={title}
 					onFocus={isFreeze ? () => this.setFocus(true) : () => {}}
 					onBlur={isFreeze ? () => this.setFocus(false) : () => {}}
@@ -377,6 +378,7 @@ class InputDropdown extends React.Component {
 										<Dropdown.Toggle
 											onClick={isDropdownActive ? () => this.toggleDropdown() : () => {}}
 											variant="Info"
+											tabIndex={disable ? '-1' : '0'}
 										>
 											<span className="dropdown-toggle-text">{currentVal || 'ECHO'}</span>
 											{isDropdownActive ? <span className="carret" /> : null}
