@@ -27,14 +27,10 @@ jobs:
         - npm run build
         - npm run test
         - npm run lint
-
-
-
-
     - stage: build
       name: "Build Linux App"
       env:
-        - DOWNLOAD_ECHO_NODE_URL= "https://echo-bin.s3.eu-central-1.amazonaws.com/echo-linux.0.11.3.tar"
+        - DOWNLOAD_ECHO_NODE_URL= "https://echo-bin.s3.eu-central-1.amazonaws.com/echo-linux.0.13.0-rc.6.tar"
       if: tag IS present
       script:
         - sudo apt-get install rpm

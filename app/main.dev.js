@@ -300,9 +300,10 @@ async function createWindow() {
 			const networkOptions = {
 				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
 				'rpc-endpoint': `127.0.0.1:${port}`,
-				plugin: 'registration',
-				testnet: null,
+				// testnet: null,
 				// 'replay-blockchain': null,
+				devnet: null,
+				'seed-node': 'node2.devnet.echo-dev.io:6310',
 			};
 
 			const accounts = args && args.accounts ? args.accounts : [];
