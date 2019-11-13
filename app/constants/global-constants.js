@@ -41,6 +41,8 @@ export const RANDOM_SIZE = 2048;
 export const NAME_MIN_LENGTH = 1;
 export const NAME_MAX_LENGTH = 63;
 
+export const MIN_DROPDOWN_ITEMS_COUNT = 1;
+
 export const CONNECTION_TIMEOUT = 5000;
 export const MAX_RETRIES = 999999999;
 export const PING_TIMEOUT = 7000;
@@ -65,14 +67,14 @@ export const FREEZE_FUNDS_PERIODS = [{
 },
 {
 	text: '6 months',
-	shortText: '4',
+	shortText: '6',
 	value: 180,
 	coefficient: '1.4',
 	fullCoefficient: 14000,
 },
 {
 	text: '12 months',
-	shortText: '5',
+	shortText: '12',
 	value: 360,
 	coefficient: '1.5',
 	fullCoefficient: 15000,

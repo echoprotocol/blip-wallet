@@ -153,6 +153,10 @@
                 min-width: 59%;
                 position: relative;
 
+                .input {
+                    max-height: 50px;
+                }
+
                 .dropdown-toggle,
                 input {
                     width: 100%;
@@ -167,10 +171,27 @@
 
                 .disabled:not(.dropdown-toggle-text) {
                     background-color: #DADADD;
+                    border-color: #DADADD;
+                    border-radius: 3px;
 
-                    input,
+                    &>input,
                     button {
                         color: #828491;
+                        border-color: #DADADD;
+                        border-radius: 3px;
+                        cursor: default;
+
+                        &:active {
+                            background-color: inherit;
+                            color: #828491;
+                            opacity: inherit;
+                        }
+                    }
+
+                    &.pointer {
+                        .dropdown button {
+                            cursor: pointer;
+                        }
                     }
                 }
 
@@ -193,6 +214,9 @@
                             width: 100%;
                         }
                     }
+                }
+                .error-message {
+                    z-index: 1;
                 }
             }
 
