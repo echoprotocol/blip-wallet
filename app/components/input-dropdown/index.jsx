@@ -304,7 +304,7 @@ class InputDropdown extends React.Component {
 			opened, focus, assetsList, tokensList, search, currentVal,
 		} = this.state;
 		const {
-			title, hints, disable, errorText, value: inputValue, name, intl, placeholder,
+			title, hints, disable, errorText, value: inputValue, name, intl, placeholder, isFreeze,
 		} = this.props;
 
 		const assetsTitle = intl.formatMessage({ id: 'send.dropdown.assets' });
@@ -352,86 +352,93 @@ class InputDropdown extends React.Component {
 					name={name}
 					value={inputValue}
 					error={!!errorText}
-					disabled={disable}
+					disabled={disable || isFreeze}
 					ref={(amountInput) => { this.amountInput = amountInput; }}
 					className={classnames('field input-dropdown', { focus }, { disabled: isDropdownActive })}
 					placeholder={title}
-					onFocus={() => this.setFocus(true)}
-					onBlur={() => this.setFocus(false)}
+					onFocus={isFreeze ? () => this.setFocus(true) : () => {}}
+					onBlur={isFreeze ? () => this.setFocus(false) : () => {}}
 					onChange={(e) => this.props.onChange(e)}
 					onKeyPress={(e) => this.props.onKeyPress(e)}
 					action={(
 						<div ref={this.setMenuRef}>
-							<Dropdown
-								onFocus={isDropdownActive ? () => this.setFocus(true) : () => {}}
-								onBlur={() => this.setFocus(false)}
-								show={opened && isDropdownActive}
-							>
-								<Dropdown.Toggle
-									onClick={isDropdownActive ? () => this.toggleDropdown() : () => {}}
-									variant="Info"
-								>
+							{isFreeze ? (
+								<Dropdown>
 									<span className="dropdown-toggle-text">{currentVal || 'ECHO'}</span>
-									{isDropdownActive ? <span className="carret" /> : null}
-								</Dropdown.Toggle>
+								</Dropdown>
+							)
+								: (
+									<Dropdown
+										onFocus={isDropdownActive ? () => this.setFocus(true) : () => {}}
+										onBlur={() => this.setFocus(false)}
+										show={opened && isDropdownActive}
+									>
+										<Dropdown.Toggle
+											onClick={isDropdownActive ? () => this.toggleDropdown() : () => {}}
+											variant="Info"
+										>
+											<span className="dropdown-toggle-text">{currentVal || 'ECHO'}</span>
+											{isDropdownActive ? <span className="carret" /> : null}
+										</Dropdown.Toggle>
 
-								<Dropdown.Menu role="menu" alignRight>
+										<Dropdown.Menu role="menu" alignRight>
 
-									<input
-										value={search}
-										type="text"
-										placeholder={placeholder}
-										onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
-										onKeyDown={(e) => { this.onInputKeyDown(e); }}
-										onChange={(e) => this.onChange(e)}
-										ref={(node) => { this.searchInput = node; }}
-									/>
-									<PerfectScrollbar className="input-dropdown-scroll">
-										{
-											isResultsExists
-												? dropdownData.map((elem, index) => (
-													elem.list.length
-														? (
+											<input
+												value={search}
+												type="text"
+												placeholder={placeholder}
+												onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+												onKeyDown={(e) => { this.onInputKeyDown(e); }}
+												onChange={(e) => this.onChange(e)}
+												ref={(node) => { this.searchInput = node; }}
+											/>
+											<PerfectScrollbar className="input-dropdown-scroll">
+												{
+													isResultsExists
+														? dropdownData.map((elem, index) => (
+															elem.list.length
+																? (
 
-															<div className={elem.title.toLowerCase()} key={elem.title}>
-																<div className="title">{elem.title}</div>
-																{
-																	elem.list.map(({ text, value, active }, i) => (
+																	<div className={elem.title.toLowerCase()} key={elem.title}>
+																		<div className="title">{elem.title}</div>
+																		{
+																			elem.list.map(({ text, value, active }, i) => (
 
-																		<a
-																			key={i.toString()}
-																			ref={(ref) => {
-																				if (ref) {
-																					if (!this.refList[index]) {
-																						this.refList[index] = [];
+																				<a
+																					key={i.toString()}
+																					ref={(ref) => {
+																						if (ref) {
+																							if (!this.refList[index]) {
+																								this.refList[index] = [];
+																							}
+																							this.refList[index][i] = ref;
+																						}
+																					}}
+																					href="/"
+																					className={classnames({ active })}
+																					tabIndex={0}
+																					onKeyPress={
+																						(e) => {
+																							this.onItemKeyPress(e, text, value);
+																							e.preventDefault();
+																						}
 																					}
-																					this.refList[index][i] = ref;
-																				}
-																			}}
-																			href="/"
-																			className={classnames({ active })}
-																			tabIndex={0}
-																			onKeyPress={
-																				(e) => {
-																					this.onItemKeyPress(e, text, value);
-																					e.preventDefault();
-																				}
-																			}
-																			onKeyDown={(e) => this.onKeyDown(e, index, i)}
-																			onClick={(e) => {
-																				this.handleClick(e, text, value);
-																			}}
-																		> {text}
-																		</a>
-																	))
-																}
-															</div>
-														) : ''
-												)) : <div className="no-results">No results</div>
-										}
-									</PerfectScrollbar>
-								</Dropdown.Menu>
-							</Dropdown>
+																					onKeyDown={(e) => this.onKeyDown(e, index, i)}
+																					onClick={(e) => {
+																						this.handleClick(e, text, value);
+																					}}
+																				> {text}
+																				</a>
+																			))
+																		}
+																	</div>
+																) : ''
+														)) : <div className="no-results">No results</div>
+												}
+											</PerfectScrollbar>
+										</Dropdown.Menu>
+									</Dropdown>
+								)}
 						</div>
 					)}
 				/>
@@ -476,6 +483,7 @@ InputDropdown.propTypes = {
 	onKeyPress: PropTypes.func,
 	setFee: PropTypes.func,
 	intl: intlShape.isRequired,
+	isFreeze: PropTypes.bool,
 };
 
 InputDropdown.defaultProps = {
@@ -492,6 +500,7 @@ InputDropdown.defaultProps = {
 	onKeyPress: () => {},
 	setFee: () => {},
 	data: null,
+	isFreeze: false,
 };
 
 export default injectIntl(InputDropdown);

@@ -314,6 +314,7 @@ class FrozenFundsForm extends React.Component {
 													value={form.get('fee').value}
 													setFee={this.props.setFeeFormValue}
 													placeholder={placeholderFee}
+													isFreeze
 												/>
 											</div>
 										</React.Fragment>
