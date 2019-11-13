@@ -41,14 +41,14 @@
         }
 
         .page-title {
-            font-size: 15px;
-            letter-spacing: 2.1px;
+            font-size: 14px;
+            letter-spacing: 2.8px;
             text-transform: uppercase;
             margin-bottom: 37px;
 
             @include max-vw($md) {
                 font-size: 13px;
-                letter-spacing: 2.3px;
+                letter-spacing: 2.6px;
                 margin-bottom: 26px;
             }
         }
@@ -58,7 +58,7 @@
             padding: 60px 100px 75px 0;
 
             @include max-vw($md) {
-                padding: 30px 60px 50px 53px;
+                padding: 27px 60px 50px 53px;
             }
         }
 
@@ -78,10 +78,10 @@
             }
 
             &:not(:last-child) {
-                margin-bottom: 35px;
+                margin-bottom: 28px;
 
                 @include max-vw($md) {
-                    margin-bottom: 28px;
+                    margin-bottom: 24px;
                 }
             }
 
@@ -140,7 +140,7 @@
                     font-weight: 700;
                     line-height: 22px;
                     color: #3F4A52;
-                    margin-right: 20px;
+                    margin-right: 15px;
                     letter-spacing: 0.7px;
 
                     @include max-vw($md) {
@@ -165,12 +165,33 @@
                     }
                 }
 
-                .disabled {
+                .disabled:not(.dropdown-toggle-text) {
+                    background-color: #DADADD;
 
                     &>input,
                     button {
-                        background-color: #DADADD;
                         color: #828491;
+                    }
+                }
+
+                input::placeholder {
+                    color: #828491;
+                }
+
+                .dropdown-toggle-text {
+                    &.disabled {
+                        color: #828491;
+                    }
+                }
+
+                .select-period {
+                    button {
+                        width: 170px;
+                        padding: 0 14px;
+
+                        @include max-vw($md) {
+                            width: 100%;
+                        }
                     }
                 }
             }
@@ -239,14 +260,14 @@
 
     .text-about {
         font-family: 'SourceSansPro-Regular';
-        margin: 37px 45px 25px 45px;
+        margin: 37px 45px 0px 45px;
         color: #5F686E;
         letter-spacing: 0.37px;
         font-size: 15px;
         line-height: 21px;
 
         @include max-vw($md) {
-            margin: 27px 45px 20px 45px;
+            margin: 27px 45px 0px 45px;
             font-size: 14px;
             line-height: 18px;
         }
@@ -256,11 +277,11 @@
         &-wrap {
             font-family: 'SourceSansPro-Regular';
             font-weight: 100;
-            margin: 0px 45px 45px 45px;
+            margin: 25px 45px 0px 45px;
             width: calc(100% - 90px);
 
             @include max-vw($md) {
-                margin: 0px 30px 30px 30px;
+                margin: 20px 30px 0px 30px;
                 width: calc(100% - 60px);
             }
 
@@ -399,13 +420,14 @@
         color: #7156AD;
         font-size: 18px;
         background-color: transparent;
-        margin: 0 45px 45px;
+        margin: 45px;
         border-radius: 3px;
         letter-spacing: 1px;
 
         @include max-vw($md) {
             padding: 10px 45px;
             font-size: 18px;
+            margin: 35px 45px;
         }
 
         &:hover {
