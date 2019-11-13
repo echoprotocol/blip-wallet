@@ -324,7 +324,7 @@ class FrozenFundsForm extends React.Component {
 							</div>
 							<div className="line-content">
 								<Dropdown
-									className="white select-account"
+									className={classnames('white select-account ', { disabled: !(accounts.size > 1) })}
 									show={accountsDropdownShow && accounts && accounts.size > 1}
 									onToggle={() => this.onAccountsDropdownToggle()}
 								>

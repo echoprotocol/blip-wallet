@@ -461,7 +461,7 @@
 			"popup": "This is the coefficient that will be used to calculate the reward for participating in blocks creation."
 		},
 		"fee": {
-			"label": "Transaction Fee, ECHO",
+			"label": "Transaction Fee",
 			"placeholder": "Fee"
 		},
 		"button": {
