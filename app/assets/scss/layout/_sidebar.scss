@@ -146,7 +146,7 @@
             font-size: 13px;
             line-height: 28px;
             color: #C1AEEE;
-            transition: background-color $speed;
+            transition: color $speed;
 
             .info-empty {
                 z-index: 10;
@@ -168,10 +168,6 @@
                 @include text-overflow();
                 margin: 0 0 0 auto;
                 margin-right: 5px;
-            }
-
-            span:first-child {
-                transition: color $speed;
             }
 
             &.active {
@@ -213,6 +209,12 @@ li.submenu {
             span:last-child {
                 max-width: 40px;
             }
+        }
+    }
+
+    .sidebar-nav-link:hover {
+        span:first-child {
+            color: #e1d2ff;
         }
     }
 }

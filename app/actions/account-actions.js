@@ -9,6 +9,7 @@ import {
 	ECHO_ASSET_ID,
 	GLOBAL_ID_1,
 	EXPIRATION_INFELICITY,
+	CREATE_ACCOUNT_DELEGATE_SHARE_PERCENT,
 } from '../constants/global-constants';
 import { toggleLoading, setValue } from './form-actions';
 import { setValue as setGlobal, setValue as setValueGlobal, setAccounts } from './global-actions';
@@ -135,7 +136,7 @@ export const registerAccount = (accountName) => async (dispatch, getState) => {
 						voting_account: config.ECHO_PROXY_TO_SELF_ACCOUNT,
 						delegating_account: account.id,
 						num_committee: 0,
-						delegate_share: 0,
+						delegate_share: CREATE_ACCOUNT_DELEGATE_SHARE_PERCENT * config.ECHO_1_PERCENT,
 						votes: [],
 					},
 					extensions: [],

@@ -114,6 +114,32 @@ export const updateBalance = () => async (dispatch, getState) => {
 	dispatch(setValue('balances', balances));
 };
 
+export const totalFreezeSum = (frozenBalance) => (frozenBalance.balance ? new BN(frozenBalance.balance.amount) : new BN(0));
+
+export const getFrozenBalance = () => async (dispatch, getState) => {
+	const accounts = getState().global.get('accounts').toJS();
+	const currentAccIds = [];
+	for (const account in accounts) {
+		if (accounts[account].selected) {
+			currentAccIds.push(account);
+		}
+	}
+	const results = [];
+	for (let i = 0; i < currentAccIds.length; i += 1) {
+		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
+	}
+	const res = (await Promise.all(results)).flat();
+	const freezeSum = res.reduce((acc, f) => acc.plus(totalFreezeSum(f)), new BN(0)).div(10 ** ECHO_ASSET_PRECISION).toString(10);
+	const finalRes = res.map(async (f) => {
+		const accName = (await Services.getEcho().api.getObject(f.owner)).name;
+		f.ownerName = accName;
+		return f;
+	});
+	const freezeBalanceWithOwners = await Promise.all(finalRes);
+	dispatch(setValue('frozenBalances', freezeBalanceWithOwners));
+	dispatch(setValue('freezeSum', freezeSum));
+};
+
 /**
  *  @method saveSelectedAccounts
  *
@@ -146,6 +172,7 @@ export const saveSelectedAccounts = (selectedAccounts) => async (dispatch, getSt
 	});
 
 	dispatch(setGlobal('accounts', stateAccounts));
+	dispatch(getFrozenBalance());
 };
 
 /**
@@ -276,33 +303,6 @@ export const goToSend = (currencyId, balances) => (dispatch, getState) => {
 
 	return true;
 };
-
-export const totalFreezeSum = (frozenBalance) => (frozenBalance.balance ? new BN(frozenBalance.balance.amount) : new BN(0));
-
-export const getFrozenBalance = () => async (dispatch, getState) => {
-	const accounts = getState().global.get('accounts').toJS();
-	const currentAccIds = [];
-	for (const account in accounts) {
-		if (accounts[account].selected) {
-			currentAccIds.push(account);
-		}
-	}
-	const results = [];
-	for (let i = 0; i < currentAccIds.length; i += 1) {
-		results.push(Services.getEcho().api.getFrozenBalances(currentAccIds[i]));
-	}
-	const res = (await Promise.all(results)).flat();
-	const freezeSum = res.reduce((acc, f) => acc.plus(totalFreezeSum(f)), new BN(0)).div(10 ** ECHO_ASSET_PRECISION).toString(10);
-	const finalRes = res.map(async (f) => {
-		const accName = (await Services.getEcho().api.getObject(f.owner)).name;
-		f.ownerName = accName;
-		return f;
-	});
-	const freezeBalanceWithOwners = await Promise.all(finalRes);
-	dispatch(setValue('frozenBalances', freezeBalanceWithOwners));
-	dispatch(setValue('freezeSum', freezeSum));
-};
-
 
 export const getBalance = (balances) => {
 	if (!balances.size) {
