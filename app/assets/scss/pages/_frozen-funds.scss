@@ -168,7 +168,7 @@
                 .disabled:not(.dropdown-toggle-text) {
                     background-color: #DADADD;
 
-                    input,
+                    &>input,
                     button {
                         color: #828491;
                     }
