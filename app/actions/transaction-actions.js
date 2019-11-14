@@ -266,7 +266,6 @@ const getFilteredHistory = async (filter, offset = 0, count = DEFAULT_HISTORY_CO
 		.filter((o) => o.get('selected'))
 		.reduce((arr, o) => [...arr, o.get('type').toUpperCase()], []);
 
-
 	const { items, total } = await getHistoryByAccounts(
 		selectedAccounts,
 		assets,
@@ -407,7 +406,6 @@ const updateFilters = (filter) => async (dispatch, getState) => {
 			contract: null,
 		});
 	}
-
 
 	const newCoins = fromJS(coins)
 		.filter((coin) => !filter.get('coins').find((c) => (
