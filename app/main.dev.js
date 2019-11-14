@@ -303,7 +303,7 @@ async function createWindow() {
 				// testnet: null,
 				// 'replay-blockchain': null,
 				devnet: null,
-				'seed-node': 'node2.devnet.echo-dev.io:6310',
+				'seed-node': 'node1.devnet.echo-dev.io:6310',
 			};
 
 			const accounts = args && args.accounts ? args.accounts : [];
