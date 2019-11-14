@@ -11,7 +11,7 @@ import {
 	LOCAL_NODE,
 	CONNECT_STATUS,
 } from '../constants/global-constants';
-import { DIFF_TIME_SYNC_MS, SYNC_MONITOR_MS, RESTART_TIME_CHECKING_NODE_MS } from '../constants/chain-constants';
+import { SYNC_MONITOR_MS, RESTART_TIME_CHECKING_NODE_MS } from '../constants/chain-constants';
 
 let ipcRenderer;
 
@@ -46,6 +46,10 @@ class Blockchain {
 		this.store = null;
 		this.localNodePercent = 0;
 		this.localNodeDiffSyncTime = 10e9;
+
+
+		this.localBlockNumber = 0;
+		this.remoteBlockNumber = 0;
 	}
 
 	/**
@@ -71,7 +75,8 @@ class Blockchain {
 
 	async checkSwitching() {
 
-		if ((this.localNodeDiffSyncTime >= 0 && this.localNodeDiffSyncTime <= DIFF_TIME_SYNC_MS && this.isLocalConnected) || (this.isLocalConnected && !this.isRemoteConnected)) {
+		if (this.isLocalConnected && this.remoteBlockNumber > 0 && this.localBlockNumber >= this.remoteBlockNumber - 1) {
+		// if ((this.localNodeDiffSyncTime >= 0 && this.localNodeDiffSyncTime <= DIFF_TIME_SYNC_MS && this.isLocalConnected) || (this.isLocalConnected && !this.isRemoteConnected)) {
 
 			if (this.isLocalConnected) {
 				await this.switchToLocal();
@@ -158,46 +163,63 @@ class Blockchain {
 
 	async checkNodeSync() {
 
+		if (!this.local || !this.remote) {
+			return;
+		}
 
 		try {
 
-			const timeOffset = await this.getTimeOffset();
-			const localGlobalObject = await this.local.api.getObject('2.1.0');
-			let found = false;
-			let blockNum = 1;
+			const localGlobalObject = await this.local.api.getObject('2.1.0', true);
+			const remoteGlobalObject = await this.remote.api.getObject('2.1.0', true);
 
-			while (!found && localGlobalObject.head_block_number >= blockNum) {
-				/* eslint-disable no-await-in-loop */
-				const block = await this.local.api.getBlock(blockNum);
-
-				if (!block) {
-					return false;
-				}
-
-				if (!block || (block && block.timestamp === '1970-01-01T00:00:00')) {
-					blockNum += 1;
-				} else {
-					found = true;
-				}
-
+			if (localGlobalObject && localGlobalObject.head_block_number && remoteGlobalObject && remoteGlobalObject.head_block_number) {
+				console.log(localGlobalObject.head_block_number, 'l');
+				console.log(remoteGlobalObject.head_block_number, 'r');
+				this.localBlockNumber = localGlobalObject.head_block_number;
+				this.remoteBlockNumber = remoteGlobalObject.head_block_number;
 			}
 
-			const firstBlock = await this.local.api.getBlock(blockNum);
+			// if (localGlobalObject.head_block_number >= remoteGlobalObject.head_block_number - 1) {
+
+			// }
+
+			// const timeOffset = await this.getTimeOffset();
+			// const localGlobalObject = await this.local.api.getObject('2.1.0');
+			// let found = false;
+			// let blockNum = 1;
+
+			// while (!found && localGlobalObject.head_block_number >= blockNum) {
+			// 	/* eslint-disable no-await-in-loop */
+			// 	const block = await this.local.api.getBlock(blockNum);
+
+			// 	if (!block) {
+			// 		return false;
+			// 	}
+
+			// 	if (!block || (block && block.timestamp === '1970-01-01T00:00:00')) {
+			// 		blockNum += 1;
+			// 	} else {
+			// 		found = true;
+			// 	}
+
+			// }
+
+			// const firstBlock = await this.local.api.getBlock(blockNum);
 
 
-			if (!firstBlock) {
-				return false;
-			}
+			// if (!firstBlock) {
+			// 	return false;
+			// }
 
-			const firstBlockTime = new Date(`${firstBlock.timestamp}Z`).getTime();
-			const chainTime = new Date(`${localGlobalObject.time}Z`).getTime();
-			const now = Date.now() + timeOffset;
-			const percent = (chainTime - firstBlockTime) / (now - firstBlockTime) * 100;
+			// const firstBlockTime = new Date(`${firstBlock.timestamp}Z`).getTime();
+			// const chainTime = new Date(`${localGlobalObject.time}Z`).getTime();
+			// const now = Date.now() + timeOffset;
+			// const percent = (chainTime - firstBlockTime) / (now - firstBlockTime) * 100;
 
-			console.info(`[BLOCKCHAIN] Percent: ${percent}%. Diff time: ${now - chainTime}. Height: ${localGlobalObject.head_block_number}`);
+			// console.info(`[BLOCKCHAIN] Percent: ${percent}%. Diff time: ${now - chainTime}. Height: ${localGlobalObject.head_block_number}`);
 
-			this.localNodeDiffSyncTime = now - chainTime;
-			this.localNodePercent = percent;
+			// this.localNodeDiffSyncTime = now - chainTime;
+			// this.localNodePercent = percent;
 
 			this.notifyLocalNodePercent();
 
@@ -206,11 +228,15 @@ class Blockchain {
 			console.warn('checkNodeSync error', e);
 		}
 
-		return true;
 	}
 
 	notifyLocalNodePercent() {
-		this.emitter.emit('setLocalNodePercent', this.isOnline && this.isLocalConnected && this.localNodeDiffSyncTime >= 0 && this.localNodeDiffSyncTime < DIFF_TIME_SYNC_MS ? 100 : Math.floor(this.localNodePercent * 100) / 100);
+		console.log('this.remoteBlockNumber', this.remoteBlockNumber);
+		console.log('this.localBlockNumber', this.localBlockNumber);
+		const percent = this.remoteBlockNumber && this.localBlockNumber ? this.localBlockNumber / this.remoteBlockNumber * 100 : 0;
+		console.log('percent', percent);
+
+		this.emitter.emit('setLocalNodePercent', percent);
 	}
 
 	switchToLocal() {
@@ -237,7 +263,7 @@ class Blockchain {
 		this.switching = false;
 		this.local.subscriber._subscribeCache();
 
-		this._overrideApi(this.local);
+		this._overrideApi(this.local, 'local');
 
 		console.info(`[BLOCKCHAIN] SET CURRENT NODE: ${LOCAL_NODE}`);
 
@@ -269,7 +295,7 @@ class Blockchain {
 		this.remote.subscriber._subscribeCache();
 		this.switching = false;
 
-		this._overrideApi(this.remote);
+		this._overrideApi(this.remote, 'remote');
 
 		console.info(`[BLOCKCHAIN] SET CURRENT NODE: ${REMOTE_NODE}`);
 
@@ -355,7 +381,8 @@ class Blockchain {
 		}
 
 		if (!this.localNodeUrl) {
-			return console.log('[LOCAL NODE] URL is empty');
+			console.log('[LOCAL NODE] URL is empty');
+			return false;
 		}
 
 		if (this.localConnecting) {
@@ -400,7 +427,7 @@ class Blockchain {
 			maxRetries: MAX_RETRIES,
 			pingTimeout: PING_TIMEOUT,
 			pingInterval: PING_INTERVAL,
-			debug: false,
+			debug: true,
 			apis: [
 				'database',
 				'network_broadcast',
@@ -416,7 +443,7 @@ class Blockchain {
 	}
 
 	async _localStart() {
-
+		// TODO:: local switch  unsubscribe previous!!
 		this.local = await this._createConnection(this.localNodeUrl);
 
 		console.info('[LOCAL NODE] Connected');
@@ -440,6 +467,8 @@ class Blockchain {
 
 	async _remoteStart() {
 
+		// TODO:: remote switch  unsubscribe previous!!
+
 		this.remote = await this._createConnection(NETWORKS[this.network][REMOTE_NODE].url, { pingInterval: PING_INTERVAL, pingTimeout: PING_TIMEOUT });
 
 		this.remote.cache.setStore(this.store);
@@ -447,7 +476,7 @@ class Blockchain {
 		console.info('[REMOTE NODE] Connected');
 
 		this.current = REMOTE_NODE;
-		this._overrideApi(this.remote);
+		this._overrideApi(this.remote, 'remotes');
 
 		this.remote.subscriber.setStatusSubscribe(DISCONNECT_STATUS, () => {
 			this.isRemoteConnected = false;

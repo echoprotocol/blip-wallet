@@ -47,13 +47,13 @@ export const initTokens = () => async (dispatch, getState) => {
 	try {
 		const tokens = await getBalances(accounts);
 
-		if (!tokens || !tokens.data.getBalances.length) {
+		if (!tokens || !tokens.data || !tokens.data.getBalances.length) {
 			return false;
 		}
 
 		dispatch(setValue('tokens', fromJS(tokens.data.getBalances.filter((t) => t.type === TOKEN_TYPE))));
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 	}
 
 	return true;
@@ -92,7 +92,9 @@ export const clear = (field) => (dispatch) => {
 export const updateBalance = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts');
 
-	const selectedAccounts = await Services.getEcho().api.getFullAccounts([...accounts.keys()]);
+	let selectedAccounts = await Services.getEcho().api.getFullAccounts([...accounts.keys()]);
+
+	selectedAccounts = selectedAccounts.filter((account) => account);
 
 	const objectIds = selectedAccounts.reduce((balances, account) => {
 		const result = Object.entries(account.balances).reduce((arr, b) => [...arr, ...b], []);
