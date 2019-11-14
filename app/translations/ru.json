@@ -201,6 +201,11 @@
             "title.received": "Перевод получен",
             "from": "Отправитель",
             "subject": "Получатель"
+		},
+		"transfer_to_address": {
+            "title": "Перевод на адрес",
+            "from": "Отправитель",
+            "subject": "Получатель"
         },
         "account_create": {
             "title": "Аккаунт создан",
@@ -281,7 +286,33 @@
         },
         "committee_member_update_global_parameters": {
             "title": "Обновление глобальных параметров"
-        },
+		},
+		"committee_member_activate": {
+			"title": "Committee member activate"
+		},
+		"committee_member_deactivate": {
+			"title": "Committee member deactivate"
+		},
+		"committee_frozen_balance_deposit": {
+			"title": "Committee frozen balance deposit",
+			"from": "Account"
+		},
+		"committee_frozen_balance_withdraw": {
+			"title": "Committee frozen balance withdraw",
+			"from": "Account"
+		},
+		"contract_internal_create": {
+			"title": "Contract internal create",
+			"from": "Caller"
+		},
+		"contract_internal_call": {
+			"title": "Contract internal call",
+			"from": "Caller"
+		},
+		"contract_selfdestruct": {
+			"title": "Contract selfdestruct",
+			"from": "caller"
+		},
         "vesting_balance_create": {
             "title": "Создать наделяющий баланс",
             "from": "Создатель",
@@ -335,11 +366,7 @@
             "title": "Создать адрес аккаунта",
             "from": "Владелец"
         },
-        "transfer_to_address": {
-            "title": "Перевод на адрес",
-            "from": "Отправитель",
-            "subject": "Получатель"
-        },
+        
         "sidechain_eth_create_address": {
             "title": "Сгенерировать ethereum адрес",
             "from": "Аккаунт"
@@ -416,7 +443,11 @@
         "sidechain_btc_create_address": {
             "title": "Создать BTC адрес",
             "from": "Аккаунт"
-        },
+		},
+		"sidechain_btc_create_intermediate_deposit": {
+			"title": "Intermediate BTC create intermediate deposit",
+			"from": "Account"			
+		},
         "sidechain_btc_intermediate_deposit": {
             "title": "Промежуточный BTC депозит",
             "from": "Аккаунт",
@@ -440,7 +471,12 @@
         "sidechain_btc_aggregate": {
             "title": "Объединение BTC",
             "subject": "ID транзакции"
-        },
+		},
+		"sidechain_btc_approve_aggregate": {
+			"title": "Approve aggregate BTC",
+			"from": "Committee",
+			"subject": "Transaction ID"
+		},
         "block_reward": {
             "title": "Вознаграждение за блок",
             "subject": "Аккаунт"

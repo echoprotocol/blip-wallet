@@ -129,6 +129,7 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 	}
 
 	options = Object.entries(options).map(async ([key, value]) => {
+
 		if (!value) { return value; }
 
 		let response;
@@ -264,6 +265,7 @@ const getFilteredHistory = async (filter, offset = 0, count = DEFAULT_HISTORY_CO
 	const operations = filter.get('types')
 		.filter((o) => o.get('selected'))
 		.reduce((arr, o) => [...arr, o.get('type').toUpperCase()], []);
+
 
 	const { items, total } = await getHistoryByAccounts(
 		selectedAccounts,
@@ -406,6 +408,7 @@ const updateFilters = (filter) => async (dispatch, getState) => {
 		});
 	}
 
+
 	const newCoins = fromJS(coins)
 		.filter((coin) => !filter.get('coins').find((c) => (
 			c.get('type') === coin.get('type') && c.getIn(['asset', 'id']) === coin.getIn(['asset', 'id']) && c.getIn(['contract', 'id']) === coin.getIn(['contract', 'id'])
@@ -422,6 +425,7 @@ const updateFilters = (filter) => async (dispatch, getState) => {
 
 	dispatch(setIn('history', { filter }));
 	saveHistoryFilter(filter);
+
 };
 
 /**
