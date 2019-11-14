@@ -288,30 +288,30 @@
             "title": "Обновление глобальных параметров"
 		},
 		"committee_member_activate": {
-			"title": "Committee member activate"
+			"title": "Активация участника комитета"
 		},
 		"committee_member_deactivate": {
-			"title": "Committee member deactivate"
+			"title": "Деактивация участника комитета"
 		},
 		"committee_frozen_balance_deposit": {
 			"title": "Committee frozen balance deposit",
-			"from": "Account"
+			"from": "Аккаунт"
 		},
 		"committee_frozen_balance_withdraw": {
 			"title": "Committee frozen balance withdraw",
-			"from": "Account"
+			"from": "Аккаунт"
 		},
 		"contract_internal_create": {
-			"title": "Contract internal create",
+			"title": "Внутреннее создание контракта",
 			"from": "Caller"
 		},
 		"contract_internal_call": {
-			"title": "Contract internal call",
+			"title": "Внутренний вызов контракта",
 			"from": "Caller"
 		},
 		"contract_selfdestruct": {
 			"title": "Contract selfdestruct",
-			"from": "caller"
+			"from": "Caller"
 		},
         "vesting_balance_create": {
             "title": "Создать наделяющий баланс",
@@ -365,8 +365,7 @@
         "account_address_create": {
             "title": "Создать адрес аккаунта",
             "from": "Владелец"
-        },
-        
+        },        
         "sidechain_eth_create_address": {
             "title": "Сгенерировать ethereum адрес",
             "from": "Аккаунт"
@@ -445,8 +444,8 @@
             "from": "Аккаунт"
 		},
 		"sidechain_btc_create_intermediate_deposit": {
-			"title": "Intermediate BTC create intermediate deposit",
-			"from": "Account"			
+			"title": "Создание промежуточного BTC депозита",
+			"from": "Аккаунт"			
 		},
         "sidechain_btc_intermediate_deposit": {
             "title": "Промежуточный BTC депозит",
@@ -473,9 +472,9 @@
             "subject": "ID транзакции"
 		},
 		"sidechain_btc_approve_aggregate": {
-			"title": "Approve aggregate BTC",
-			"from": "Committee",
-			"subject": "Transaction ID"
+			"title": "Одобрение агрегации BTC",
+			"from": "Комитет",
+			"subject": "ID транзакции"
 		},
         "block_reward": {
             "title": "Вознаграждение за блок",
