@@ -159,6 +159,10 @@ class Blockchain {
 
 	}
 
+	/**
+	 *
+	 * @param {string} node
+	 */
 	async setBlockNumber(node) {
 		try {
 
