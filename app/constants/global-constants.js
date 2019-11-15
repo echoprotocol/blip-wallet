@@ -29,6 +29,8 @@ export const CONTRACT_ID_PREFIX = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.CONTRAC
 export const EETH_ASSET_SYMBOL = 'EETH';
 export const ERC20_TOKEN_PRECISION = 18;
 
+export const CREATE_ACCOUNT_DELEGATE_SHARE_PERCENT = 20;
+
 export const DISCONNECT_STATUS = 'disconnect';
 export const CONNECT_STATUS = 'connect';
 export const ACTIVE_KEY = 'active';
