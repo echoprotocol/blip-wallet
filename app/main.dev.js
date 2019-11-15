@@ -266,9 +266,13 @@ async function createWindow() {
 					networkOptions: data.networkOptions,
 					accounts: data.accounts,
 					chainToken: data.chainToken,
+					networkId: data.networkId,
 				})));
 			}),
 		).subscribe((data) => {
+
+			mainWindow.webContents.send('startEchoNode', { networkId: data.networkId });
+
 			lastNode = new EchoNode();
 			lastNode.start(data.networkOptions, data.accounts, data.chainToken).then(() => {
 				if (!quited && !lastNode.stopInProcess) {
@@ -291,9 +295,21 @@ async function createWindow() {
 				'rpc-endpoint': `127.0.0.1:${port}`,
 				// testnet: null,
 				// 'replay-blockchain': null,
-				devnet: null,
-				'seed-node': 'node1.devnet.echo-dev.io:6310',
+				// devnet: null,
+				// 'seed-node': 'node1.devnet.echo-dev.io:6310',
 			};
+
+			switch (NETWORK_ID) {
+				case 'testnet':
+					networkOptions.testnet = null;
+					break;
+				case 'devnet':
+					networkOptions.devnet = null;
+					networkOptions['seed-node'] = 'node1.devnet.echo-dev.io:6310';
+					break;
+				default:
+
+			}
 
 			const accounts = args && args.accounts ? args.accounts : [];
 
@@ -305,6 +321,7 @@ async function createWindow() {
 					networkOptions,
 					accounts,
 					chainToken,
+					networkId: NETWORK_ID,
 				});
 			}
 

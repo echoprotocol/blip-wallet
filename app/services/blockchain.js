@@ -147,6 +147,17 @@ class Blockchain {
 				});
 
 				ipcRenderer.send('subscribePort');
+
+				ipcRenderer.on('startEchoNode', (_, data) => {
+
+					if (this.networkId !== data.networkId) {
+						this.remoteBlockNumber = 0;
+						this.localBlockNumber = 0;
+						this.notifyLocalNodePercent();
+					}
+
+					this.networkId = data.networkId;
+				});
 			}
 
 			await this.startCheckingRemote();
