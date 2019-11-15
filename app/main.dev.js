@@ -27,7 +27,6 @@ import { PrivateKey } from 'echojs-lib';
 import { Subject, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
 import getPlatform from './main/get-platform';
@@ -123,16 +122,6 @@ let restartTimer = null;
 let tray = null;
 
 async function createWindow() {
-	const timeOffset = new TimeOffset();
-
-	ipcMain.on('getTimeOffset', async (event) => {
-		try {
-			const offset = await timeOffset.getOffset();
-			event.sender.send('getTimeOffset', { result: offset });
-		} catch (e) {
-			event.sender.send('getTimeOffset', { error: e });
-		}
-	});
 
 	const execPath = process.env.NODE_ENV === 'production' ? joinPath(dirname(appRootDir.get()), 'icons') : joinPath(appRootDir.get(), 'resources', 'icons');
 

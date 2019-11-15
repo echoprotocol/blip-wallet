@@ -38,7 +38,6 @@ class Blockchain {
 		this.api = null;
 		this.emitter = emitter;
 		this.isOnline = window.navigator.onLine;
-		this.timeOffset = null;
 		this.isRemoteConnected = false;
 		this.isLocalConnected = false;
 		this.localNodeUrl = false;
@@ -75,8 +74,7 @@ class Blockchain {
 
 	async checkSwitching() {
 
-		if (this.isLocalConnected && this.remoteBlockNumber > 0 && this.localBlockNumber >= this.remoteBlockNumber - 1) {
-		// if ((this.localNodeDiffSyncTime >= 0 && this.localNodeDiffSyncTime <= DIFF_TIME_SYNC_MS && this.isLocalConnected) || (this.isLocalConnected && !this.isRemoteConnected)) {
+		if (this.isOnline && this.isLocalConnected && this.remoteBlockNumber > 0 && this.localBlockNumber >= this.remoteBlockNumber - 1) {
 
 			if (this.isLocalConnected) {
 				await this.switchToLocal();
@@ -86,7 +84,7 @@ class Blockchain {
 			await this.switchToRemote();
 		}
 
-		console.info(`[BLOCKCHAIN] Check switching. Current: ${this.current}. Connected ${this.isConnected}`);
+		console.info(`[BLOCKCHAIN] Check switching. Current: ${this.current}. Connected ${this.isConnected}. isOnline: ${this.isOnline}. isLocalConnected: ${this.isLocalConnected}. isRemoteConnected: ${this.isRemoteConnected}`);
 	}
 
 
@@ -161,82 +159,41 @@ class Blockchain {
 
 	}
 
+	async setBlockNumber(node) {
+		try {
+
+			const globalObject = await this[node].api.getObject(constants.DYNAMIC_GLOBAL_OBJECT_ID, true);
+
+			if (globalObject && globalObject.head_block_number) {
+				this[`${node}BlockNumber`] = globalObject.head_block_number;
+			}
+
+		} catch (e) {
+			console.warn(`${node} checkNodeSync error`, e);
+		}
+	}
+
 	async checkNodeSync() {
 
 		if (!this.local || !this.remote) {
 			return;
 		}
 
-		try {
+		await this.setBlockNumber('remote');
+		await this.setBlockNumber('local');
 
-			const localGlobalObject = await this.local.api.getObject('2.1.0', true);
-			const remoteGlobalObject = await this.remote.api.getObject('2.1.0', true);
+		this.notifyLocalNodePercent();
 
-			if (localGlobalObject && localGlobalObject.head_block_number && remoteGlobalObject && remoteGlobalObject.head_block_number) {
-				console.log(localGlobalObject.head_block_number, 'l');
-				console.log(remoteGlobalObject.head_block_number, 'r');
-				this.localBlockNumber = localGlobalObject.head_block_number;
-				this.remoteBlockNumber = remoteGlobalObject.head_block_number;
-			}
-
-			// if (localGlobalObject.head_block_number >= remoteGlobalObject.head_block_number - 1) {
-
-			// }
-
-			// const timeOffset = await this.getTimeOffset();
-			// const localGlobalObject = await this.local.api.getObject('2.1.0');
-			// let found = false;
-			// let blockNum = 1;
-
-			// while (!found && localGlobalObject.head_block_number >= blockNum) {
-			// 	/* eslint-disable no-await-in-loop */
-			// 	const block = await this.local.api.getBlock(blockNum);
-
-			// 	if (!block) {
-			// 		return false;
-			// 	}
-
-			// 	if (!block || (block && block.timestamp === '1970-01-01T00:00:00')) {
-			// 		blockNum += 1;
-			// 	} else {
-			// 		found = true;
-			// 	}
-
-			// }
-
-			// const firstBlock = await this.local.api.getBlock(blockNum);
-
-
-			// if (!firstBlock) {
-			// 	return false;
-			// }
-
-			// const firstBlockTime = new Date(`${firstBlock.timestamp}Z`).getTime();
-			// const chainTime = new Date(`${localGlobalObject.time}Z`).getTime();
-			// const now = Date.now() + timeOffset;
-			// const percent = (chainTime - firstBlockTime) / (now - firstBlockTime) * 100;
-
-			// console.info(`[BLOCKCHAIN] Percent: ${percent}%. Diff time: ${now - chainTime}. Height: ${localGlobalObject.head_block_number}`);
-
-			// this.localNodeDiffSyncTime = now - chainTime;
-			// this.localNodePercent = percent;
-
-			this.notifyLocalNodePercent();
-
-			this.checkSwitching();
-		} catch (e) {
-			console.warn('checkNodeSync error', e);
-		}
+		this.checkSwitching();
 
 	}
 
 	notifyLocalNodePercent() {
-		console.log('this.remoteBlockNumber', this.remoteBlockNumber);
-		console.log('this.localBlockNumber', this.localBlockNumber);
 		const percent = this.remoteBlockNumber && this.localBlockNumber ? this.localBlockNumber / this.remoteBlockNumber * 100 : 0;
-		console.log('percent', percent);
 
-		this.emitter.emit('setLocalNodePercent', percent);
+		console.log('percent', percent, 'localBlockNumber', this.localBlockNumber, 'remoteBlockNumber', this.remoteBlockNumber);
+
+		this.emitter.emit('setLocalNodePercent', Math.min(percent, 100));
 	}
 
 	switchToLocal() {
@@ -342,31 +299,6 @@ class Blockchain {
 		return true;
 	}
 
-	async getTimeOffset() {
-		return new Promise((resolve, reject) => {
-
-			if (this.timeOffset) {
-				return resolve(this.timeOffset);
-			}
-
-			ipcRenderer.once('getTimeOffset', (event, arg) => {
-				if (arg.result) {
-					if (!this.timeOffset) {
-						this.timeOffset = arg.result;
-					}
-					return resolve(this.timeOffset);
-				}
-
-				return reject(arg.error);
-
-			});
-
-			ipcRenderer.send('getTimeOffset', 'ping');
-
-			return true;
-		});
-	}
-
 	startSyncMonitor() {
 		setInterval(async () => {
 			this.checkNodeSync();
@@ -427,7 +359,7 @@ class Blockchain {
 			maxRetries: MAX_RETRIES,
 			pingTimeout: PING_TIMEOUT,
 			pingInterval: PING_INTERVAL,
-			debug: true,
+			debug: false,
 			apis: [
 				'database',
 				'network_broadcast',

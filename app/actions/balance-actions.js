@@ -92,6 +92,10 @@ export const clear = (field) => (dispatch) => {
 export const updateBalance = () => async (dispatch, getState) => {
 	const accounts = getState().global.get('accounts');
 
+	if (!Services.getEcho().api) {
+		return;
+	}
+
 	let selectedAccounts = await Services.getEcho().api.getFullAccounts([...accounts.keys()]);
 
 	selectedAccounts = selectedAccounts.filter((account) => account);
