@@ -262,6 +262,32 @@
 		"committee_member_update_global_parameters": {
 			"title": "Global parameters update"
 		},
+		"committee_member_activate": {
+			"title": "Committee member activate"
+		},
+		"committee_member_deactivate": {
+			"title": "Committee member deactivate"
+		},
+		"committee_frozen_balance_deposit": {
+			"title": "Committee frozen balance deposit",
+			"from": "Account"
+		},
+		"committee_frozen_balance_withdraw": {
+			"title": "Committee frozen balance withdraw",
+			"from": "Account"
+		},
+		"contract_internal_create": {
+			"title": "Contract internal create",
+			"from": "Caller"
+		},
+		"contract_internal_call": {
+			"title": "Contract internal call",
+			"from": "Caller"
+		},
+		"contract_selfdestruct": {
+			"title": "Contract selfdestruct",
+			"from": "caller"
+		},
 		"vesting_balance_create": {
 			"title": "Create vesting balance",
 			"from": "Creator",
@@ -397,6 +423,10 @@
 			"title": "Create BTC address",
 			"from": "Account"
 		},
+		"sidechain_btc_create_intermediate_deposit": {
+			"title": "Intermediate BTC create intermediate deposit",
+			"from": "Account"			
+		},
 		"sidechain_btc_intermediate_deposit": {
 			"title": "Intermediate BTC deposit",
 			"from": "Account",
@@ -419,6 +449,11 @@
 		},
 		"sidechain_btc_aggregate": {
 			"title": "Aggregate BTC",
+			"subject": "Transaction ID"
+		},
+		"sidechain_btc_approve_aggregate": {
+			"title": "Approve aggregate BTC",
+			"from": "Committee",
 			"subject": "Transaction ID"
 		},
 		"block_reward": {

@@ -129,6 +129,7 @@ export const formatTransaction = async (type, operation, blockNumber, resultId, 
 	}
 
 	options = Object.entries(options).map(async ([key, value]) => {
+
 		if (!value) { return value; }
 
 		let response;
@@ -422,6 +423,7 @@ const updateFilters = (filter) => async (dispatch, getState) => {
 
 	dispatch(setIn('history', { filter }));
 	saveHistoryFilter(filter);
+
 };
 
 /**

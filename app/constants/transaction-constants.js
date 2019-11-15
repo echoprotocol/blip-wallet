@@ -20,7 +20,6 @@ export const OPTION_TYPES = {
 export const CONTRACT_TYPES = [
 	OPERATIONS_IDS.CONTRACT_CREATE,
 	OPERATIONS_IDS.CONTRACT_CALL,
-	OPERATIONS_IDS.CONTRACT_TRANSFER,
 ];
 
 export const ACCOUNT_TYPES = [
@@ -52,6 +51,54 @@ export const OPERATIONS = {
 				field: 'to',
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.transfer.subject',
+			},
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	transfer_to_address: {
+		value: OPERATIONS_IDS.TRANSFER_TO_ADDRESS,
+		name: 'operations.transfer_to_address.title',
+		options: {
+			from: {
+				field: 'from',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.transfer_to_address.from',
+			},
+			subject: {
+				field: 'to',
+				type: OPTION_TYPES.ACCOUNT_ADDRESS,
+				label: 'operations.transfer_to_address.subject',
+			},
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	override_transfer: {
+		value: OPERATIONS_IDS.OVERRIDE_TRANSFER,
+		name: 'operations.override_transfer.title',
+		options: {
+			from: {
+				field: 'from',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.override_transfer.from',
+			},
+			subject: {
+				field: 'to',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.override_transfer.subject',
 			},
 			amount: {
 				field: 'amount.amount',
@@ -109,6 +156,20 @@ export const OPERATIONS = {
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.account_whitelist.subject',
 			},
+			amount: null,
+			asset: null,
+		},
+	},
+	account_address_create: {
+		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
+		name: 'operations.account_address_create.title',
+		options: {
+			from: {
+				field: 'owner',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.account_address_create.from',
+			},
+			subject: null,
 			amount: null,
 			asset: null,
 		},
@@ -273,6 +334,26 @@ export const OPERATIONS = {
 			},
 		},
 	},
+	asset_claim_fees: {
+		value: OPERATIONS_IDS.ASSET_CLAIM_FEES,
+		name: 'operations.asset_claim_fees.title',
+		options: {
+			from: {
+				field: 'issuer',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.asset_claim_fees.from',
+			},
+			subject: null,
+			amount: {
+				field: 'amount_to_claim.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount_to_claim.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
 	proposal_create: {
 		value: OPERATIONS_IDS.PROPOSAL_CREATE,
 		name: 'operations.proposal_create.title',
@@ -351,6 +432,66 @@ export const OPERATIONS = {
 			subject: null,
 			amount: null,
 			asset: null,
+		},
+	},
+	committee_member_activate: {
+		value: OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE,
+		name: 'operations.committee_member_activate.title',
+		options: {
+			from: null,
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	committee_member_deactivate: {
+		value: OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE,
+		name: 'operations.committee_member_deactivate.title',
+		options: {
+			from: null,
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	committee_frozen_balance_deposit: {
+		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT,
+		name: 'operations.committee_frozen_balance_deposit.title',
+		options: {
+			from: {
+				field: 'committee_member_account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.committee_frozen_balance_deposit.from',
+			},
+			subject: null,
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	committee_frozen_balance_withdraw: {
+		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW,
+		name: 'operations.committee_frozen_balance_withdraw.title',
+		options: {
+			from: {
+				field: 'committee_member_account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.committee_frozen_balance_withdraw.from',
+			},
+			subject: null,
+			amount: {
+				field: 'amount.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'amount.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
 		},
 	},
 	vesting_balance_create: {
@@ -451,50 +592,6 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	override_transfer: {
-		value: OPERATIONS_IDS.OVERRIDE_TRANSFER,
-		name: 'operations.override_transfer.title',
-		options: {
-			from: {
-				field: 'from',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.override_transfer.from',
-			},
-			subject: {
-				field: 'to',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.override_transfer.subject',
-			},
-			amount: {
-				field: 'amount.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	asset_claim_fees: {
-		value: OPERATIONS_IDS.ASSET_CLAIM_FEES,
-		name: 'operations.asset_claim_fees.title',
-		options: {
-			from: {
-				field: 'issuer',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.asset_claim_fees.from',
-			},
-			subject: null,
-			amount: {
-				field: 'amount_to_claim.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'amount_to_claim.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
 	contract_create: {
 		value: OPERATIONS_IDS.CONTRACT_CREATE,
 		name: 'operations.contract_create.title',
@@ -539,28 +636,58 @@ export const OPERATIONS = {
 			},
 		},
 	},
-	contract_transfer: {
-		value: OPERATIONS_IDS.CONTRACT_TRANSFER,
-		name: 'operations.contract_transfer.title',
+	contract_internal_create: {
+		value: OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE,
+		name: 'operations.contract_internal_create.title',
 		options: {
 			from: {
-				field: 'from',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.contract_transfer.from',
+				field: 'caller',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_internal_create.from',
 			},
-			subject: {
-				field: 'to',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.contract_transfer.subject',
-			},
+			subject: null,
 			amount: {
-				field: 'amount.amount',
+				field: 'value.amount',
 				type: OPTION_TYPES.NUMBER,
 			},
 			asset: {
-				field: 'amount.asset_id',
+				field: 'value.asset_id',
 				type: OPTION_TYPES.ASSET,
 			},
+		},
+	},
+	contract_internal_call: {
+		value: OPERATIONS_IDS.CONTRACT_INTERNAL_CALL,
+		name: 'operations.contract_internal_call.title',
+		options: {
+			from: {
+				field: 'caller',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_internal_call.from',
+			},
+			subject: null,
+			amount: {
+				field: 'value.amount',
+				type: OPTION_TYPES.NUMBER,
+			},
+			asset: {
+				field: 'value.asset_id',
+				type: OPTION_TYPES.ASSET,
+			},
+		},
+	},
+	contract_selfdestruct: {
+		value: OPERATIONS_IDS.CONTRACT_SELFDESTRUCT,
+		name: 'operations.contract_selfdestruct.title',
+		options: {
+			from: {
+				field: 'contract',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_selfdestruct.from',
+			},
+			subject: null,
+			value: null,
+			asset: null,
 		},
 	},
 	contract_update: {
@@ -581,42 +708,46 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	account_address_create: {
-		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
-		name: 'operations.account_address_create.title',
+	contract_fund_pool: {
+		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
+		name: 'operations.contract_fund_pool.title',
 		options: {
 			from: {
-				field: 'owner',
+				field: 'sender',
 				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.account_address_create.from',
-			},
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	transfer_to_address: {
-		value: OPERATIONS_IDS.TRANSFER_TO_ADDRESS,
-		name: 'operations.transfer_to_address.title',
-		options: {
-			from: {
-				field: 'from',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.transfer_to_address.from',
+				label: 'operations.contract_fund_pool.from',
 			},
 			subject: {
-				field: 'to',
-				type: OPTION_TYPES.ACCOUNT_ADDRESS,
-				label: 'operations.transfer_to_address.subject',
+				field: 'contract',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_fund_pool.subject',
 			},
 			amount: {
-				field: 'amount.amount',
+				field: 'value.amount',
 				type: OPTION_TYPES.NUMBER,
 			},
 			asset: {
-				field: 'amount.asset_id',
+				field: 'value.asset_id',
 				type: OPTION_TYPES.ASSET,
 			},
+		},
+	},
+	contract_whitelist: {
+		value: OPERATIONS_IDS.CONTRACT_WHITELIST,
+		name: 'operations.contract_whitelist.title',
+		options: {
+			from: {
+				field: 'sender',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.contract_whitelist.from',
+			},
+			subject: {
+				field: 'contract',
+				type: OPTION_TYPES.CONTRACT,
+				label: 'operations.contract_whitelist.subject',
+			},
+			amount: null,
+			asset: null,
 		},
 	},
 	sidechain_eth_create_address: {
@@ -706,48 +837,6 @@ export const OPERATIONS = {
 				field: 'withdraw_id',
 				type: OPTION_TYPES.NUMBER,
 				label: 'operations.sidechain_eth_approve_withdraw.subject',
-			},
-			amount: null,
-			asset: null,
-		},
-	},
-	contract_fund_pool: {
-		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
-		name: 'operations.contract_fund_pool.title',
-		options: {
-			from: {
-				field: 'sender',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.contract_fund_pool.from',
-			},
-			subject: {
-				field: 'contract',
-				type: OPTION_TYPES.CONTRACT,
-				label: 'operations.contract_fund_pool.subject',
-			},
-			amount: {
-				field: 'value.amount',
-				type: OPTION_TYPES.NUMBER,
-			},
-			asset: {
-				field: 'value.asset_id',
-				type: OPTION_TYPES.ASSET,
-			},
-		},
-	},
-	contract_whitelist: {
-		value: OPERATIONS_IDS.CONTRACT_WHITELIST,
-		name: 'operations.contract_whitelist.title',
-		options: {
-			from: {
-				field: 'sender',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.contract_whitelist.from',
-			},
-			subject: {
-				field: 'contract',
-				type: OPTION_TYPES.CONTRACT,
-				label: 'operations.contract_whitelist.subject',
 			},
 			amount: null,
 			asset: null,
@@ -944,6 +1033,20 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
+	sidechain_btc_create_intermediate_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT,
+		name: 'operations.sidechain_btc_create_intermediate_deposit.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_create_intermediate_deposit.from',
+			},
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
 	sidechain_btc_intermediate_deposit: {
 		value: OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT,
 		name: 'operations.sidechain_btc_intermediate_deposit.title',
@@ -1001,24 +1104,6 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	sidechain_btc_approve_withdraw: {
-		value: OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_WITHDRAW,
-		name: 'operations.sidechain_btc_approve_withdraw.title',
-		options: {
-			from: {
-				field: 'committee_member_id',
-				type: OPTION_TYPES.ACCOUNT,
-				label: 'operations.sidechain_btc_approve_withdraw.from',
-			},
-			subject: {
-				field: 'withdraw_id',
-				type: OPTION_TYPES.STRING,
-				label: 'operations.sidechain_btc_approve_withdraw.subject',
-			},
-			amount: null,
-			asset: null,
-		},
-	},
 	sidechain_btc_aggregate: {
 		value: OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE,
 		name: 'operations.sidechain_btc_aggregate.title',
@@ -1033,7 +1118,25 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
-	block_reward_operation: {
+	sidechain_btc_approve_aggregate: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE,
+		name: 'operations.sidechain_btc_approve_aggregate.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_approve_aggregate.from',
+			},
+			subject: {
+				field: 'transaction_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_approve_aggregate.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
+	block_reward: {
 		value: OPERATIONS_IDS.BLOCK_REWARD,
 		name: 'operations.block_reward.title',
 		options: {
