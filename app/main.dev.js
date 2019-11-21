@@ -273,6 +273,11 @@ async function createWindow() {
 
 			mainWindow.webContents.send('startEchoNode', { networkId: data.networkId });
 
+			if (data.networkId === 'devnet') {
+				lastNode = null;
+				return;
+			}
+
 			lastNode = new EchoNode();
 			lastNode.start(data.networkOptions, data.accounts, data.chainToken).then(() => {
 				if (!quited && !lastNode.stopInProcess) {
@@ -291,7 +296,7 @@ async function createWindow() {
 			const chainToken = args && args.chainToken ? args.chainToken : null;
 
 			const networkOptions = {
-				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
+				'data-dir': `"${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}"`.replace(/(\s+)/g, '%20'),
 				'rpc-endpoint': `127.0.0.1:${port}`,
 				// testnet: null,
 				// 'replay-blockchain': null,

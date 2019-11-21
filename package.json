@@ -38,7 +38,7 @@
     "test-e2e-live": "node -r @babel/register ./internals/scripts/CheckBuiltsExist.js && cross-env NODE_ENV=test testcafe-live electron:./ ./test/e2e/HomePage.e2e.js",
     "test-watch": "yarn test --watch",
     "download-linux-build": "DOWNLOAD_ECHO_NODE_OS=linux node -r @babel/register ./internals/scripts/DownloadBuild.js",
-    "download-max-build": "DOWNLOAD_ECHO_NODE_OS=mac node -r @babel/register ./internals/scripts/DownloadBuild.js"
+    "download-mac-build": "DOWNLOAD_ECHO_NODE_OS=mac node -r @babel/register ./internals/scripts/DownloadBuild.js"
   },
   "lint-staged": {
     "*.{js,jsx}": [
