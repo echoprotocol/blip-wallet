@@ -275,7 +275,6 @@ async function createWindow() {
 			mainWindow.webContents.send('startEchoNode', { networkId: data.networkId });
 
 			if (data.networkId === 'devnet') {
-				echoNode = null;
 				return;
 			}
 
