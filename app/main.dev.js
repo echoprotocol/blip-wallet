@@ -244,6 +244,7 @@ async function createWindow() {
 		const subject = new Subject();
 		let previousPublicKeys = [];
 		let removeBeforeStart;
+		let prevNetwork;
 
 		function removeFolderAndRetrySyncNode(dataDir) {
 			return new Promise((resolve) => {
@@ -274,7 +275,7 @@ async function createWindow() {
 			mainWindow.webContents.send('startEchoNode', { networkId: data.networkId });
 
 			if (data.networkId === 'devnet') {
-				lastNode = null;
+				echoNode = null;
 				return;
 			}
 
@@ -320,7 +321,7 @@ async function createWindow() {
 
 			const receivedPublicKeys = accounts.map(({ key }) => PrivateKey.fromWif(key).toPublicKey().toString());
 
-			if (!lastNode || previousPublicKeys.length !== receivedPublicKeys.length || xor(receivedPublicKeys, previousPublicKeys).length) {
+			if (prevNetwork !== NETWORK_ID || !lastNode || previousPublicKeys.length !== receivedPublicKeys.length || xor(receivedPublicKeys, previousPublicKeys).length) {
 				subject.next({
 					lastNode,
 					networkOptions,
@@ -328,6 +329,7 @@ async function createWindow() {
 					chainToken,
 					networkId: NETWORK_ID,
 				});
+				prevNetwork = NETWORK_ID;
 			}
 
 			previousPublicKeys = receivedPublicKeys;
