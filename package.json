@@ -32,7 +32,7 @@
     "test-all": "yarn lint && yarn build && yarn test",    
     "test-watch": "yarn test --watch",
     "download-linux-build": "DOWNLOAD_ECHO_NODE_OS=linux node -r @babel/register ./internals/scripts/DownloadBuild.js",
-    "download-max-build": "DOWNLOAD_ECHO_NODE_OS=mac node -r @babel/register ./internals/scripts/DownloadBuild.js"
+    "download-mac-build": "DOWNLOAD_ECHO_NODE_OS=mac node -r @babel/register ./internals/scripts/DownloadBuild.js"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -228,7 +228,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.6.3",
-    "@hapi/sntp": "^3.1.1",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
     "apollo-link": "^1.2.11",

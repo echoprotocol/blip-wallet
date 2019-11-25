@@ -27,7 +27,6 @@ import { PrivateKey } from 'echojs-lib';
 import { Subject, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
 import getPlatform from './main/get-platform';
@@ -123,16 +122,6 @@ let restartTimer = null;
 let tray = null;
 
 async function createWindow() {
-	const timeOffset = new TimeOffset();
-
-	ipcMain.on('getTimeOffset', async (event) => {
-		try {
-			const offset = await timeOffset.getOffset();
-			event.sender.send('getTimeOffset', { result: offset });
-		} catch (e) {
-			event.sender.send('getTimeOffset', { error: e });
-		}
-	});
 
 	const execPath = process.env.NODE_ENV === 'production' ? joinPath(dirname(appRootDir.get()), 'icons') : joinPath(appRootDir.get(), 'resources', 'icons');
 
@@ -255,6 +244,7 @@ async function createWindow() {
 		const subject = new Subject();
 		let previousPublicKeys = [];
 		let removeBeforeStart;
+		let prevNetwork;
 
 		function removeFolderAndRetrySyncNode(dataDir) {
 			return new Promise((resolve) => {
@@ -277,9 +267,17 @@ async function createWindow() {
 					networkOptions: data.networkOptions,
 					accounts: data.accounts,
 					chainToken: data.chainToken,
+					networkId: data.networkId,
 				})));
 			}),
 		).subscribe((data) => {
+
+			mainWindow.webContents.send('startEchoNode', { networkId: data.networkId });
+
+			if (data.networkId === 'devnet') {
+				return;
+			}
+
 			lastNode = new EchoNode();
 			lastNode.start(data.networkOptions, data.accounts, data.chainToken).then(() => {
 				if (!quited && !lastNode.stopInProcess) {
@@ -298,25 +296,39 @@ async function createWindow() {
 			const chainToken = args && args.chainToken ? args.chainToken : null;
 
 			const networkOptions = {
-				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
+				'data-dir': `"${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}"`.replace(/(\s+)/g, '%20'),
 				'rpc-endpoint': `127.0.0.1:${port}`,
 				// testnet: null,
 				// 'replay-blockchain': null,
-				devnet: null,
-				'seed-node': 'node2.devnet.echo-dev.io:6310',
+				// devnet: null,
+				// 'seed-node': 'node1.devnet.echo-dev.io:6310',
 			};
+
+			switch (NETWORK_ID) {
+				case 'testnet':
+					networkOptions.testnet = null;
+					break;
+				case 'devnet':
+					networkOptions.devnet = null;
+					networkOptions['seed-node'] = 'node1.devnet.echo-dev.io:6310';
+					break;
+				default:
+
+			}
 
 			const accounts = args && args.accounts ? args.accounts : [];
 
 			const receivedPublicKeys = accounts.map(({ key }) => PrivateKey.fromWif(key).toPublicKey().toString());
 
-			if (!lastNode || previousPublicKeys.length !== receivedPublicKeys.length || xor(receivedPublicKeys, previousPublicKeys).length) {
+			if (prevNetwork !== NETWORK_ID || !lastNode || previousPublicKeys.length !== receivedPublicKeys.length || xor(receivedPublicKeys, previousPublicKeys).length) {
 				subject.next({
 					lastNode,
 					networkOptions,
 					accounts,
 					chainToken,
+					networkId: NETWORK_ID,
 				});
+				prevNetwork = NETWORK_ID;
 			}
 
 			previousPublicKeys = receivedPublicKeys;
