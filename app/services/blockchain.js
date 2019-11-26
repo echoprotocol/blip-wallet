@@ -235,7 +235,7 @@ class Blockchain {
 		this.switching = false;
 		this.local.subscriber._subscribeCache();
 
-		this._overrideApi(this.local, 'local');
+		this._overrideApi(this.local);
 
 		console.info(`[BLOCKCHAIN] SET CURRENT NODE: ${LOCAL_NODE}`);
 
@@ -267,13 +267,17 @@ class Blockchain {
 		this.remote.subscriber._subscribeCache();
 		this.switching = false;
 
-		this._overrideApi(this.remote, 'remote');
+		this._overrideApi(this.remote);
 
 		console.info(`[BLOCKCHAIN] SET CURRENT NODE: ${REMOTE_NODE}`);
 
 		return true;
 	}
 
+	/**
+	 * @method _overrideApi
+	 * @param {Object} node
+	 */
 	_overrideApi(node) {
 		this.api = node.api;
 		this.api.createTransaction = node.createTransaction.bind(node);
@@ -423,7 +427,7 @@ class Blockchain {
 		console.info('[REMOTE NODE] Connected');
 
 		this.current = REMOTE_NODE;
-		this._overrideApi(this.remote, 'remotes');
+		this._overrideApi(this.remote);
 
 		this.remote.subscriber.setStatusSubscribe(DISCONNECT_STATUS, () => {
 			this.isRemoteConnected = false;
