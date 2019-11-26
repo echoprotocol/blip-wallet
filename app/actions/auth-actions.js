@@ -81,6 +81,7 @@ export const loadRegistrators = () => async (dispatch, getState) => {
 	], []);
 
 	await Services.getEcho().api.getObjects(objectIds);
+
 };
 
 /**

@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import { Map, fromJS } from 'immutable';
-import { PrivateKey } from 'echojs-lib';
 
 import GlobalReducer from '../reducers/global-reducer';
 import Services from '../services';
@@ -102,6 +101,7 @@ export const setAccounts = () => (async () => {
 	const userStorage = Services.getUserStorage();
 	const accounts = await userStorage.getAllAccounts();
 	const networkId = await userStorage.getNetworkId();
+	const chainToken = await userStorage.getChainToken();
 
 	const keyPromises = accounts.map((account) => new Promise(async (resolve) => {
 
@@ -109,7 +109,7 @@ export const setAccounts = () => (async () => {
 
 		return resolve(keys.map((key) => ({
 			id: account.id,
-			key: PrivateKey.fromWif(key.wif).toPrivateKeyString(),
+			key: key.wif,
 		})));
 
 	}));
@@ -123,7 +123,7 @@ export const setAccounts = () => (async () => {
 		});
 	});
 
-	Services.getEcho().setOptions(accountsKeys, networkId);
+	Services.getEcho().setOptions(accountsKeys, networkId, chainToken);
 
 });
 

@@ -27,21 +27,17 @@ jobs:
         - npm run build
         - npm run test
         - npm run lint
-
-
-
-
     - stage: build
       name: "Build Linux App"
       env:
-        - DOWNLOAD_ECHO_NODE_URL= "https://github.com/echoprotocol/echo/releases/download/0.6.1/echo_node"
+        - DOWNLOAD_ECHO_NODE_URL= "https://d14s13k07yt1gw.cloudfront.net/echo-linux.0.13.5.tar"
       if: tag IS present
       script:
         - sudo apt-get install rpm
         - npm config set unsafe-perm true
         - rm -rf node_modules/node-sass
         - npm i
-        - DEBUG_PROD=true npm run package-linux
+        - DEBUG_PROD=true npm run package-linux-with-download-build
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
@@ -77,11 +73,13 @@ jobs:
     - stage: build
       os: osx
       name: "Build macOS App"
+      env:
+        - DOWNLOAD_ECHO_NODE_URL= "https://d14s13k07yt1gw.cloudfront.net/echo-mac.0.13.5.tar"
       if: tag IS present
       script:
         - npm config set unsafe-perm true
         - npm i
-        - DEBUG_PROD=true npm run package-mac
+        - DEBUG_PROD=true npm run package-mac-with-download-build
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN

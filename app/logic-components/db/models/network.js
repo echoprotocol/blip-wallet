@@ -5,19 +5,22 @@ class Network {
 	 *
 	 * @param {Array} accounts
 	 * @param {Array} keys
+	 * @param {Object} chainToken
 	 */
-	constructor(accounts, keys) {
+	constructor(accounts, keys, chainToken = null) {
 		this.accounts = accounts;
 		this.keys = keys;
+		this.chainToken = chainToken;
 	}
 
 	/**
 	 *
 	 * @param {Array} accounts
 	 * @param {Array} keys
+	 * @param {Object} chainToken
 	 */
-	static create(accounts, keys) {
-		return new Network(accounts, keys);
+	static create(accounts, keys, chainToken = null) {
+		return new Network(accounts, keys, chainToken);
 	}
 
 	/**
@@ -74,6 +77,10 @@ class Network {
 	 */
 	getAllKeys() {
 		return this.keys;
+	}
+
+	getChainToken() {
+		return this.chainToken;
 	}
 
 }
