@@ -29,7 +29,6 @@ module.exports = (api) => {
 					corejs: 'core-js@3',
 				},
 			],
-			require('@babel/preset-flow'),
 			[require('@babel/preset-react'), { development }],
 		],
 		plugins: [

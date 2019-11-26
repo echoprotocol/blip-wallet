@@ -1,3 +1,4 @@
+import CryptoService from './crypto-service';
 import StorageService from './storage-service';
 import Storage from '../logic-components/db/storage';
 import { DB_NAME, STORE } from '../constants/global-constants';
@@ -144,6 +145,17 @@ class UserStorageService {
 
 		console.info(`[DB] Account added. Account: ${JSON.stringify(account)}. Network: ${networkId}`);
 
+	}
+
+	async getChainToken(params) {
+		this.checkNetwork();
+
+		const decryptedData = await this.getCurrentScheme().getDecryptedData(params);
+
+		const networkId = this.getNetworkId();
+		const network = await this.getNetworkFromDecryptedData(networkId, decryptedData);
+
+		return network.getChainToken();
 	}
 
 	/**
@@ -354,18 +366,22 @@ class UserStorageService {
 
 		if (!decryptedData.data.networks) {
 			decryptedData.data.networks = {};
-			network = Network.create([], []);
+			network = Network.create([], [], { token: this.getRandomToken() });
 		} else if (!decryptedData.data.networks[networkId]) {
-			network = Network.create([], []);
+			network = Network.create([], [], { token: this.getRandomToken() });
 		} else {
 			const rawNetwork = decryptedData.data.networks[networkId];
-			network = Network.create(rawNetwork.accounts.map((account) => Account.create(account.id, account.name, account.selected, account.primary)), rawNetwork.keys.map((key) => Key.create(key.publicKey, key.wif, key.accountId)));
+			network = Network.create(rawNetwork.accounts.map((account) => Account.create(account.id, account.name, account.selected, account.primary)), rawNetwork.keys.map((key) => Key.create(key.publicKey, key.wif, key.accountId)), rawNetwork.chainToken);
 		}
 
 		decryptedData.data.networks[networkId] = network;
 
 		return network;
 
+	}
+
+	getRandomToken() {
+		return CryptoService.randomBytes(256).toString('hex');
 	}
 
 }

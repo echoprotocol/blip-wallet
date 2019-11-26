@@ -16,22 +16,24 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import getPort from 'get-port';
+import { xor } from 'lodash';
 import log from 'electron-log';
 import appRootDir from 'app-root-dir';
 import notifier from 'node-notifier';
 import { join as joinPath, dirname } from 'path';
 import rimraf from 'rimraf';
 import i18next from 'i18next';
+import { PrivateKey } from 'echojs-lib';
+import { Subject, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import TimeOffset from './main/time-offset';
 import MenuBuilder from './menu';
 import EchoNode from './main/echo-node';
 import getPlatform from './main/get-platform';
 
+
 import {
 	DATA_DIR,
-	// SEED_NODE,
-	RESTART_PAUSE_MS,
 	CHAIN_MIN_RANGE_PORT,
 	CHAIN_MAX_RANGE_PORT,
 } from './constants/chain-constants';
@@ -43,14 +45,14 @@ import {
 	APP_WINDOW_MIN_WIDTH,
 	TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS,
 	DEFAULT_NETWORK_ID,
-	LOCAL_NODE,
 } from './constants/global-constants';
 import { WIN_PLATFORM } from './constants/platform-constants';
 import EN_TRANSLATION from './translations/en';
 
+
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=8096');
 
-
+let quited = false;
 export default class AppUpdater {
 
 	constructor() {
@@ -115,21 +117,11 @@ app.on('window-all-closed', () => {
 	}
 });
 
-const echoNode = new EchoNode();
+let lastNode = null;
 let restartTimer = null;
 let tray = null;
 
 async function createWindow() {
-	const timeOffset = new TimeOffset();
-
-	ipcMain.on('getTimeOffset', async (event) => {
-		try {
-			const offset = await timeOffset.getOffset();
-			event.sender.send('getTimeOffset', { result: offset });
-		} catch (e) {
-			event.sender.send('getTimeOffset', { error: e });
-		}
-	});
 
 	const execPath = process.env.NODE_ENV === 'production' ? joinPath(dirname(appRootDir.get()), 'icons') : joinPath(appRootDir.get(), 'resources', 'icons');
 
@@ -165,7 +157,7 @@ async function createWindow() {
 
 	await i18next.init({
 		lng: 'en',
-		debug: true,
+		debug: false,
 		resources: {
 			en: {
 				translation: EN_TRANSLATION,
@@ -249,96 +241,98 @@ async function createWindow() {
 
 		sendPort();
 
-		const countAttempts = {};
-		let startingError = false;
-		let processCounterId = 1;
-		const options = {
-			echorand: null,
-			'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${DEFAULT_NETWORK_ID}`,
-			'rpc-endpoint': `127.0.0.1:${port}`,
-			'seed-node': NETWORKS[DEFAULT_NETWORK_ID][LOCAL_NODE].seed,
-		};
+		const subject = new Subject();
+		let previousPublicKeys = [];
+		let removeBeforeStart;
+		let prevNetwork;
 
-		const tryStart = (processId, params, accounts) => {
+		function removeFolderAndRetrySyncNode(dataDir) {
+			return new Promise((resolve) => {
+				previousPublicKeys = [];
+				lastNode = null;
 
-			if (processId < processCounterId) {
-				return false;
+				if (removeBeforeStart) {
+					removeBeforeStart = false;
+					return rimraf(dataDir, () => resolve());
+				}
+
+				return resolve();
+			});
+		}
+
+		subject.pipe(
+			switchMap((data) => {
+				const promise = data.lastNode ? data.lastNode.stop() : Promise.resolve();
+				return from(promise.then(() => removeFolderAndRetrySyncNode(data.networkOptions['data-dir'])).then(() => ({
+					networkOptions: data.networkOptions,
+					accounts: data.accounts,
+					chainToken: data.chainToken,
+					networkId: data.networkId,
+				})));
+			}),
+		).subscribe((data) => {
+
+			mainWindow.webContents.send('startEchoNode', { networkId: data.networkId });
+
+			if (data.networkId === 'devnet') {
+				return;
 			}
 
-			clearTimeout(restartTimer);
+			lastNode = new EchoNode();
+			lastNode.start(data.networkOptions, data.accounts, data.chainToken).then(() => {
+				if (!quited && !lastNode.stopInProcess) {
+					removeBeforeStart = true;
+				}
+			}).catch(() => {
+				if (!quited && !lastNode.stopInProcess) {
+					removeBeforeStart = true;
+				}
+			});
+		});
 
-			echoNode.stop()
-				.then(() => {
-					restartTimer = setTimeout(() => {
-						/* eslint-disable no-use-before-define */
-						startNode(processId, params, accounts);
-					}, RESTART_PAUSE_MS);
-				});
-
-			return true;
-
-		};
-
-		const incrementCounterId = (processId) => {
-			if (!countAttempts[processId]) {
-				countAttempts[processId] = 0;
-			}
-
-			countAttempts[processId] += 1;
-		};
-
-		const startNode = (processId, params, accounts) => {
-
-			clearTimeout(restartTimer);
-
-			if (startingError) {
-				console.warn('startingError', startingError);
-				return false;
-			}
-
-			try {
-				incrementCounterId(processId);
-				echoNode.start(params, accounts)
-					.then((data) => {
-						console.log('[NODE] child then', data);
-					})
-					.catch((err) => {
-						console.log('[NODE] child err', err);
-						if (countAttempts[processId] === 1) {
-							console.info('TRY TO START');
-							tryStart(processId, params, accounts);
-						} else if (countAttempts[processId] === 2) {
-							rimraf(params['data-dir'], () => {
-								console.info('TRY TO REMOVE FOLDER');
-								tryStart(processId, params, accounts);
-							});
-						} else {
-							startingError = true;
-						}
-
-					});
-
-			} catch (e) {
-				console.log('[NODE] error:', e);
-			}
-
-			return true;
-		};
-
-		startNode(processCounterId += 1, options, []);
-
-		ipcMain.on('startNode', async (event, args) => {
+		ipcMain.on('startNode', async (_, args) => {
 
 			const NETWORK_ID = args && args.networkId ? args.networkId : DEFAULT_NETWORK_ID;
+			const chainToken = args && args.chainToken ? args.chainToken : null;
 
 			const networkOptions = {
-				echorand: null,
-				'data-dir': `${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}`,
+				'data-dir': `"${app.getPath('userData')}/${DATA_DIR}/${NETWORK_ID}"`.replace(/(\s+)/g, '%20'),
 				'rpc-endpoint': `127.0.0.1:${port}`,
-				'seed-node': NETWORKS[NETWORK_ID][LOCAL_NODE].seed,
+				// testnet: null,
+				// 'replay-blockchain': null,
+				// devnet: null,
+				// 'seed-node': 'node1.devnet.echo-dev.io:6310',
 			};
 
-			tryStart(processCounterId += 1, networkOptions, args && args.accounts ? args.accounts : []);
+			switch (NETWORK_ID) {
+				case 'testnet':
+					networkOptions.testnet = null;
+					break;
+				case 'devnet':
+					networkOptions.devnet = null;
+					networkOptions['seed-node'] = 'node1.devnet.echo-dev.io:6310';
+					break;
+				default:
+
+			}
+
+			const accounts = args && args.accounts ? args.accounts : [];
+
+			const receivedPublicKeys = accounts.map(({ key }) => PrivateKey.fromWif(key).toPublicKey().toString());
+
+			if (prevNetwork !== NETWORK_ID || !lastNode || previousPublicKeys.length !== receivedPublicKeys.length || xor(receivedPublicKeys, previousPublicKeys).length) {
+				subject.next({
+					lastNode,
+					networkOptions,
+					accounts,
+					chainToken,
+					networkId: NETWORK_ID,
+				});
+				prevNetwork = NETWORK_ID;
+			}
+
+			previousPublicKeys = receivedPublicKeys;
+
 		});
 
 	});
@@ -363,23 +357,25 @@ async function createWindow() {
 }
 app.on('before-quit', (event) => {
 
+	quited = true;
+
 	if (restartTimer) {
 		clearTimeout(restartTimer);
 		restartTimer = null;
 	}
 
-	console.log('Caught before-quit. Exiting in 5 seconds.');
+	console.log(`Caught before-quit. Exiting in ${TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS} seconds.`);
 
 	event.preventDefault();
 
-	if (echoNode.child) {
-		echoNode.child.then(() => {
+	if (lastNode && lastNode.child) {
+		lastNode.child.then(() => {
 			process.exit(0);
 		}).catch(() => {
 			process.exit(0);
 		});
 
-		echoNode.stop();
+		lastNode.stop();
 
 		setTimeout(() => { process.exit(0); }, TIMEOUT_BEFORE_APP_PROCESS_EXITS_MS);
 

@@ -11,7 +11,7 @@ import {
 	LOCAL_NODE,
 	CONNECT_STATUS,
 } from '../constants/global-constants';
-import { DIFF_TIME_SYNC_MS, SYNC_MONITOR_MS, RESTART_TIME_CHECKING_NODE_MS } from '../constants/chain-constants';
+import { SYNC_MONITOR_MS, RESTART_TIME_CHECKING_NODE_MS } from '../constants/chain-constants';
 
 let ipcRenderer;
 
@@ -38,7 +38,6 @@ class Blockchain {
 		this.api = null;
 		this.emitter = emitter;
 		this.isOnline = window.navigator.onLine;
-		this.timeOffset = null;
 		this.isRemoteConnected = false;
 		this.isLocalConnected = false;
 		this.localNodeUrl = false;
@@ -46,6 +45,10 @@ class Blockchain {
 		this.store = null;
 		this.localNodePercent = 0;
 		this.localNodeDiffSyncTime = 10e9;
+
+
+		this.localBlockNumber = 0;
+		this.remoteBlockNumber = 0;
 	}
 
 	/**
@@ -71,7 +74,7 @@ class Blockchain {
 
 	async checkSwitching() {
 
-		if ((this.localNodeDiffSyncTime >= 0 && this.localNodeDiffSyncTime <= DIFF_TIME_SYNC_MS && this.isLocalConnected) || (this.isLocalConnected && !this.isRemoteConnected)) {
+		if (this.isOnline && this.isLocalConnected && this.remoteBlockNumber > 0 && this.localBlockNumber >= this.remoteBlockNumber - 1) {
 
 			if (this.isLocalConnected) {
 				await this.switchToLocal();
@@ -81,7 +84,7 @@ class Blockchain {
 			await this.switchToRemote();
 		}
 
-		console.info(`[BLOCKCHAIN] Check switching. Current: ${this.current}. Connected ${this.isConnected}`);
+		console.info(`[BLOCKCHAIN] Check switching. Current: ${this.current}. Connected ${this.isConnected}. isOnline: ${this.isOnline}. isLocalConnected: ${this.isLocalConnected}. isRemoteConnected: ${this.isRemoteConnected}`);
 	}
 
 
@@ -144,6 +147,17 @@ class Blockchain {
 				});
 
 				ipcRenderer.send('subscribePort');
+
+				ipcRenderer.on('startEchoNode', (_, data) => {
+
+					if (this.networkId !== data.networkId) {
+						this.remoteBlockNumber = 0;
+						this.localBlockNumber = 0;
+						this.notifyLocalNodePercent();
+					}
+
+					this.networkId = data.networkId;
+				});
 			}
 
 			await this.startCheckingRemote();
@@ -156,61 +170,45 @@ class Blockchain {
 
 	}
 
-	async checkNodeSync() {
-
-
+	/**
+	 *
+	 * @param {string} node
+	 */
+	async setBlockNumber(node) {
 		try {
 
-			const timeOffset = await this.getTimeOffset();
-			const localGlobalObject = await this.local.api.getObject('2.1.0');
-			let found = false;
-			let blockNum = 1;
+			const globalObject = await this[node].api.getObject(constants.DYNAMIC_GLOBAL_OBJECT_ID, true);
 
-			while (!found && localGlobalObject.head_block_number >= blockNum) {
-				/* eslint-disable no-await-in-loop */
-				const block = await this.local.api.getBlock(blockNum);
-
-				if (!block) {
-					return false;
-				}
-
-				if (!block || (block && block.timestamp === '1970-01-01T00:00:00')) {
-					blockNum += 1;
-				} else {
-					found = true;
-				}
-
+			if (globalObject && globalObject.head_block_number) {
+				this[`${node}BlockNumber`] = globalObject.head_block_number;
 			}
 
-			const firstBlock = await this.local.api.getBlock(blockNum);
-
-
-			if (!firstBlock) {
-				return false;
-			}
-
-			const firstBlockTime = new Date(`${firstBlock.timestamp}Z`).getTime();
-			const chainTime = new Date(`${localGlobalObject.time}Z`).getTime();
-			const now = Date.now() + timeOffset;
-			const percent = (chainTime - firstBlockTime) / (now - firstBlockTime) * 100;
-
-			console.info(`[BLOCKCHAIN] Percent: ${percent}%. Diff time: ${now - chainTime}. Height: ${localGlobalObject.head_block_number}`);
-
-			this.localNodeDiffSyncTime = now - chainTime;
-			this.localNodePercent = percent;
-
-			this.notifyLocalNodePercent();
-
-			this.checkSwitching();
 		} catch (e) {
-			console.warn('checkNodeSync error', e);
+			console.warn(`${node} checkNodeSync error`, e);
+		}
+	}
+
+	async checkNodeSync() {
+
+		if (!this.local || !this.remote) {
+			return;
 		}
 
-		return true;
+		await this.setBlockNumber('remote');
+		await this.setBlockNumber('local');
+
+		this.notifyLocalNodePercent();
+
+		this.checkSwitching();
+
 	}
 
 	notifyLocalNodePercent() {
-		this.emitter.emit('setLocalNodePercent', this.isOnline && this.isLocalConnected && this.localNodeDiffSyncTime >= 0 && this.localNodeDiffSyncTime < DIFF_TIME_SYNC_MS ? 100 : Math.floor(this.localNodePercent * 100) / 100);
+		const percent = this.remoteBlockNumber && this.localBlockNumber ? this.localBlockNumber / this.remoteBlockNumber * 100 : 0;
+
+		console.log('percent', percent, 'localBlockNumber', this.localBlockNumber, 'remoteBlockNumber', this.remoteBlockNumber);
+
+		this.emitter.emit('setLocalNodePercent', Math.min(percent, 100));
 	}
 
 	switchToLocal() {
@@ -276,6 +274,10 @@ class Blockchain {
 		return true;
 	}
 
+	/**
+	 * @method _overrideApi
+	 * @param {Object} node
+	 */
 	_overrideApi(node) {
 		this.api = node.api;
 		this.api.createTransaction = node.createTransaction.bind(node);
@@ -316,31 +318,6 @@ class Blockchain {
 		return true;
 	}
 
-	async getTimeOffset() {
-		return new Promise((resolve, reject) => {
-
-			if (this.timeOffset) {
-				return resolve(this.timeOffset);
-			}
-
-			ipcRenderer.once('getTimeOffset', (event, arg) => {
-				if (arg.result) {
-					if (!this.timeOffset) {
-						this.timeOffset = arg.result;
-					}
-					return resolve(this.timeOffset);
-				}
-
-				return reject(arg.error);
-
-			});
-
-			ipcRenderer.send('getTimeOffset', 'ping');
-
-			return true;
-		});
-	}
-
 	startSyncMonitor() {
 		setInterval(async () => {
 			this.checkNodeSync();
@@ -355,7 +332,8 @@ class Blockchain {
 		}
 
 		if (!this.localNodeUrl) {
-			return console.log('[LOCAL NODE] URL is empty');
+			console.log('[LOCAL NODE] URL is empty');
+			return false;
 		}
 
 		if (this.localConnecting) {
@@ -416,7 +394,7 @@ class Blockchain {
 	}
 
 	async _localStart() {
-
+		// TODO:: local switch  unsubscribe previous!!
 		this.local = await this._createConnection(this.localNodeUrl);
 
 		console.info('[LOCAL NODE] Connected');
@@ -439,6 +417,8 @@ class Blockchain {
 	}
 
 	async _remoteStart() {
+
+		// TODO:: remote switch  unsubscribe previous!!
 
 		this.remote = await this._createConnection(NETWORKS[this.network][REMOTE_NODE].url, { pingInterval: PING_INTERVAL, pingTimeout: PING_TIMEOUT });
 
@@ -512,15 +492,16 @@ class Blockchain {
 	 *
 	 * @param {Array} accounts
 	 * @param {String} networkId
+	 * @param {Object} chainToken
 	 * @return {boolean}
 	 */
-	setOptions(accounts = [], networkId) {
+	setOptions(accounts = [], networkId, chainToken) {
 
 		if (!ipcRenderer) {
 			return false;
 		}
 
-		ipcRenderer.send('startNode', { accounts, networkId });
+		ipcRenderer.send('startNode', { accounts, networkId, chainToken });
 
 		return true;
 	}
