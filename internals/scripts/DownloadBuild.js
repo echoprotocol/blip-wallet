@@ -3,6 +3,7 @@ import fs from "fs";
 import download from "download";
 import { parse } from "url";
 import tar from "tar";
+import config from "config";
 
 /**
  * 
@@ -53,13 +54,12 @@ const downloadBuild = async (url, os, filename) => {
 
     try {
 
-        const downloadUrl = process.env.DOWNLOAD_ECHO_NODE_URL;
         const downloadOS = process.env.DOWNLOAD_ECHO_NODE_OS;
 
+        const downloadUrl = process.env.DOWNLOAD_ECHO_NODE_URL || config.DOWNLOAD_ECHO_NODE_URLS[downloadOS.toUpperCase()];
 
         if (!downloadUrl) {
-            throw new Error('You need to set process.env.DOWNLOAD_ECHO_NODE_URL');
-            process.exit(1);
+            throw new Error('You need to set process.env.DOWNLOAD_ECHO_NODE_URL');            
         }
 
         if (!downloadOS) {
