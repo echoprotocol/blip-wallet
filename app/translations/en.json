@@ -361,7 +361,8 @@
 		},
 		"sidechain_eth_send_deposit": {
 			"title": "Send deposit ETH",
-			"from": "Committee member"
+			"from": "Committee member",
+			"subject": "Deposit Id"
 		},
 		"sidechain_eth_withdraw": {
 			"title": "Withdraw ETH",
@@ -370,7 +371,8 @@
 		},
 		"sidechain_eth_send_withdraw": {
 			"title": "Send withdraw ETH",
-			"from": "Committee member"
+			"from": "Committee member",
+			"subject": "Deposit Id"
 		},
 		"sidechain_eth_approve_withdraw": {
 			"title": "Approve withdraw ETH",
@@ -413,7 +415,8 @@
 		},
 		"sidechain_erc20_send_deposit": {
 			"title": "Send deposit ERC20",
-			"from": "Committee member"
+			"from": "Committee member",
+			"subject": "Deposit Id"
 		},
 		"sidechain_erc20_withdraw_token": {
 			"title": "Withdraw ERC20 token",
@@ -422,7 +425,8 @@
 		},
 		"sidechain_erc20_send_withdraw": {
 			"title": "Send withdraw ERC20",
-			"from": "Committee member"
+			"from": "Committee member",
+			"subject": "Deposit Id"
 		},
 		"sidechain_erc20_approve_token_withdraw": {
 			"title": "Approve ERC20 token withdrawal",

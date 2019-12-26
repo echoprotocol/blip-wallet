@@ -381,7 +381,8 @@
         },
         "sidechain_eth_send_deposit": {
             "title": "Отправить депозит ETH",
-            "from": "Член комитета"
+            "from": "Член комитета",
+            "subject": "ID депозита"
         },
         "sidechain_eth_withdraw": {
             "title": "Вывод ETH",
@@ -390,7 +391,8 @@
         },
         "sidechain_eth_send_withdraw": {
             "title": "Отправка вывода ETH",
-            "from": "Член комитета"
+            "from": "Член комитета",
+            "subject": "ID депозита"
         },
         "sidechain_eth_approve_withdraw": {
             "title": "Подтвердить вывод ETH",
@@ -433,7 +435,8 @@
         },
         "sidechain_erc20_send_deposit": {
             "title": "Отправка депозита ERC20",
-            "from": "Член комитета"
+            "from": "Член комитета",
+            "subject": "ID депозита"
         },
         "sidechain_erc20_withdraw_token": {
             "title": "Вывод ERC20 токена",
@@ -442,7 +445,8 @@
         },
         "sidechain_erc20_send_withdraw": {
             "title": "Отправка вывода ERC20",
-            "from": "Член комитета"
+            "from": "Член комитета",
+            "subject": "ID депозита"
         },
         "sidechain_erc20_approve_token_withdraw": {
             "title": "Одобрение вывода ERC20 токена",
