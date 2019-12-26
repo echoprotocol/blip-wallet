@@ -214,6 +214,7 @@ class MultiDropdown extends React.Component {
 					checked={coin.get('selected')}
 				/>
 
+				{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
 				<label htmlFor={`id-${id}`} onClick={(e) => this.onItemToggle(e, coin)}>
 					<span className="label-text">
 						{symbol}

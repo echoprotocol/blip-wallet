@@ -131,6 +131,7 @@ class Settings extends React.Component {
 							id={index}
 							onChange={() => {}}
 						/>
+						{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
 						<label htmlFor={index} className="checkbox-label" onClick={() => this.onSelect(index)}>
 							<Avatar accountName={account.get('name')} round />
 							<span className="label-account-name">{account.get('name')}</span>

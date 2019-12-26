@@ -359,15 +359,27 @@
 			"from": "Committee member",
 			"subject": "Account"
 		},
+		"sidechain_eth_send_deposit": {
+			"title": "Send deposit ETH",
+			"from": "Committee member"
+		},
 		"sidechain_eth_withdraw": {
 			"title": "Withdraw ETH",
 			"from": "From",
 			"subject": "To"
 		},
+		"sidechain_eth_send_withdraw": {
+			"title": "Send withdraw ETH",
+			"from": "Committee member"
+		},
 		"sidechain_eth_approve_withdraw": {
 			"title": "Approve withdraw ETH",
 			"from": "Committee member",
 			"subject": "Withdraw Id"
+		},
+		"sidechain_eth_update_contract_address": {
+			"title": "Update contract address ETH",
+			"subject": "Ethereum address"
 		},
 		"contract_fund_pool": {
 			"title": "Contract fund pool",
@@ -399,10 +411,18 @@
 			"from": "Account",
 			"subject": "Ethereum address"
 		},
+		"sidechain_erc20_send_deposit": {
+			"title": "Send deposit ERC20",
+			"from": "Committee member"
+		},
 		"sidechain_erc20_withdraw_token": {
 			"title": "Withdraw ERC20 token",
 			"from": "Account",
 			"subject": "Ethereum address"
+		},
+		"sidechain_erc20_send_withdraw": {
+			"title": "Send withdraw ERC20",
+			"from": "Committee member"
 		},
 		"sidechain_erc20_approve_token_withdraw": {
 			"title": "Approve ERC20 token withdrawal",
@@ -425,7 +445,7 @@
 		},
 		"sidechain_btc_create_intermediate_deposit": {
 			"title": "Intermediate BTC create intermediate deposit",
-			"from": "Account"			
+			"from": "Account"
 		},
 		"sidechain_btc_intermediate_deposit": {
 			"title": "Intermediate BTC deposit",
