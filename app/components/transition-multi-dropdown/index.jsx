@@ -230,6 +230,7 @@ class TransactionMultiDropdown extends React.Component {
 												checked={item.get('selected')}
 											/>
 
+											{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
 											<label htmlFor={`tr-${item.get('type')}`} onClick={(e) => this.onItemToggle(e, item)}>
 												<span className="label-text">
 													<FormattedMessage id={item.get('name')} />

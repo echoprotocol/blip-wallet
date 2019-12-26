@@ -10,6 +10,7 @@
     "import"
   ],
   "rules": {
+    "import/extensions": 0,
     "import/no-named-as-default-member": 0,
     "import/no-extraneous-dependencies": 0,
 	"import/no-named-as-default": 0,
@@ -41,7 +42,7 @@
         "allowChildren": false
       }
 	],
-	
+
     "no-param-reassign": 0,
     "no-tabs": 0,
     "max-len": 0,

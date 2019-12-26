@@ -229,6 +229,7 @@ class AccountsMultiDropdown extends React.Component {
 													checked={a.get('selected')}
 												/>
 
+												{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
 												<label htmlFor={`ac-${a.get('id')}`} onClick={(e) => this.onItemToggle(e, a)}>
 													<Avatar accountName={a.get('name')} />
 													<span className="label-text">

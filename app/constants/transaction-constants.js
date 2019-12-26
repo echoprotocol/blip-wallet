@@ -801,6 +801,24 @@ export const OPERATIONS = {
 			},
 		},
 	},
+	sidechain_eth_send_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT,
+		name: 'operations.sidechain_eth_send_deposit.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_eth_send_deposit.from',
+			},
+			subject: {
+				field: 'deposit_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_eth_send_deposit.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
 	sidechain_eth_withdraw: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW,
 		name: 'operations.sidechain_eth_withdraw.title',
@@ -824,6 +842,24 @@ export const OPERATIONS = {
 			},
 		},
 	},
+	sidechain_eth_send_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW,
+		name: 'operations.sidechain_eth_send_withdraw.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_eth_send_withdraw.from',
+			},
+			subject: {
+				field: 'deposit_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_eth_send_withdraw.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
 	sidechain_eth_approve_withdraw: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW,
 		name: 'operations.sidechain_eth_approve_withdraw.title',
@@ -837,6 +873,20 @@ export const OPERATIONS = {
 				field: 'withdraw_id',
 				type: OPTION_TYPES.NUMBER,
 				label: 'operations.sidechain_eth_approve_withdraw.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_eth_update_contract_address: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS,
+		name: 'operations.sidechain_eth_update_contract_address.title',
+		options: {
+			from: null,
+			subject: {
+				field: 'new_addr',
+				type: OPTION_TYPES.CONTRACT_ADDRESS,
+				label: 'operations.sidechain_eth_update_contract_address.subject',
 			},
 			amount: null,
 			asset: null,
@@ -931,6 +981,24 @@ export const OPERATIONS = {
 			},
 		},
 	},
+	sidechain_erc20_send_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT,
+		name: 'operations.sidechain_erc20_send_deposit.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_erc20_send_deposit.from',
+			},
+			subject: {
+				field: 'deposit_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_erc20_send_deposit.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
 	sidechain_erc20_withdraw_token: {
 		value: OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN,
 		name: 'operations.sidechain_erc20_withdraw_token.title',
@@ -952,6 +1020,24 @@ export const OPERATIONS = {
 			asset: {
 				type: OPTION_TYPES.ERC20_TOKEN,
 			},
+		},
+	},
+	sidechain_erc20_send_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW,
+		name: 'operations.sidechain_erc20_send_withdraw.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_erc20_send_withdraw.from',
+			},
+			subject: {
+				field: 'deposit_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_erc20_send_withdraw.subject',
+			},
+			amount: null,
+			asset: null,
 		},
 	},
 	sidechain_erc20_approve_token_withdraw: {
