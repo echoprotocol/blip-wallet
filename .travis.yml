@@ -30,7 +30,7 @@ jobs:
     - stage: build
       name: "Build Linux App"
       env:
-        - DOWNLOAD_ECHO_NODE_URL= "https://d14s13k07yt1gw.cloudfront.net/echo-linux.0.13.5.tar"
+        - DOWNLOAD_ECHO_NODE_URL= "https://d14s13k07yt1gw.cloudfront.net/echo-linux.0.14.0-rc.0.tar"
       if: tag IS present
       script:
         - sudo apt-get install rpm
@@ -74,7 +74,7 @@ jobs:
       os: osx
       name: "Build macOS App"
       env:
-        - DOWNLOAD_ECHO_NODE_URL= "https://d14s13k07yt1gw.cloudfront.net/echo-mac.0.13.5.tar"
+        - DOWNLOAD_ECHO_NODE_URL= "https://d14s13k07yt1gw.cloudfront.net/echo-mac.0.14.0-rc.0.tar"
       if: tag IS present
       script:
         - npm config set unsafe-perm true
