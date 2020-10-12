@@ -592,6 +592,20 @@ export const OPERATIONS = {
 			},
 		},
 	},
+	request_balance_unfreeze: {
+		value: OPERATIONS_IDS.REQUEST_BALANCE_UNFREEZE,
+		name: 'operations.request_balance_unfreeze.title',
+		options: {
+			from: {
+				field: 'account',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.request_balance_unfreeze.from',
+			},
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
 	contract_create: {
 		value: OPERATIONS_IDS.CONTRACT_CREATE,
 		name: 'operations.contract_create.title',
@@ -982,7 +996,7 @@ export const OPERATIONS = {
 		},
 	},
 	sidechain_erc20_send_deposit: {
-		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN,
 		name: 'operations.sidechain_erc20_send_deposit.title',
 		options: {
 			from: {
@@ -1023,7 +1037,7 @@ export const OPERATIONS = {
 		},
 	},
 	sidechain_erc20_send_withdraw: {
-		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN,
 		name: 'operations.sidechain_erc20_send_withdraw.title',
 		options: {
 			from: {
@@ -1031,11 +1045,7 @@ export const OPERATIONS = {
 				type: OPTION_TYPES.ACCOUNT,
 				label: 'operations.sidechain_erc20_send_withdraw.from',
 			},
-			subject: {
-				field: 'deposit_id',
-				type: OPTION_TYPES.STRING,
-				label: 'operations.sidechain_erc20_send_withdraw.subject',
-			},
+			subject: null,
 			amount: null,
 			asset: null,
 		},
@@ -1222,6 +1232,24 @@ export const OPERATIONS = {
 			asset: null,
 		},
 	},
+	sidechain_btc_block_process: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_BLOCK_PROCESS,
+		name: 'operations.sidechain_btc_block_process.title',
+		options: {
+			from: {
+				field: 'committee_member_id',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.sidechain_btc_block_process.from',
+			},
+			subject: {
+				field: 'transaction_id',
+				type: OPTION_TYPES.STRING,
+				label: 'operations.sidechain_btc_block_process.subject',
+			},
+			amount: null,
+			asset: null,
+		},
+	},
 	block_reward: {
 		value: OPERATIONS_IDS.BLOCK_REWARD,
 		name: 'operations.block_reward.title',
@@ -1239,6 +1267,24 @@ export const OPERATIONS = {
 			asset: {
 				type: OPTION_TYPES.ECHO_ASSET,
 			},
+		},
+	},
+	evm_address_register: {
+		value: OPERATIONS_IDS.EVM_ADDRESS_REGISTER,
+		name: 'operations.evm_address_register.title',
+		options: {
+			from: {
+				field: 'owner',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.evm_address_register.from',
+			},
+			subject: {
+				field: 'evm_address',
+				type: OPTION_TYPES.ACCOUNT,
+				label: 'operations.evm_address_register.subject',
+			},
+			amount: null,
+			asset: null,
 		},
 	},
 };

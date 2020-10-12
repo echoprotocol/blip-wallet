@@ -318,6 +318,10 @@
 			"title": "Claim asset fees",
 			"from": "Issuer"
 		},
+		"request_balance_unfreeze": {
+			"title": "Request balance unfreeze",
+			"from": "Account"
+		},
 		"contract_create": {
 			"title": "Contract create",
 			"from": "Creator"
@@ -480,9 +484,19 @@
 			"from": "Committee",
 			"subject": "Transaction ID"
 		},
+		"sidechain_btc_block_process": {
+			"title": "Sidechain BTC block process",
+			"from": "Committee",
+			"subject": "Transaction ID"
+		},
 		"block_reward": {
 			"title": "Block reward",
 			"subject": "Account"
+		},
+		"evm_address_register": {
+			"title": "EVM address register",
+			"from": "Owner",
+			"subject": "EVM address"
 		}
 	},
 	"send": {

@@ -343,6 +343,10 @@
             "title": "Запрос по активам",
             "from": "Издатель"
         },
+        "request_balance_unfreeze": {
+			"title": "Запрос разморозки баланса",
+			"from": "Аккаунт"
+		},
         "contract_create": {
             "title": "Создание контракта",
             "from": "Создатель"
@@ -499,11 +503,21 @@
 			"title": "Одобрение агрегации BTC",
 			"from": "Комитет",
 			"subject": "ID транзакции"
+        },
+        "sidechain_btc_block_process": {
+			"title": "Обработка BTC блока",
+			"from": "Комитет",
+			"subject": "ID транзакции"
 		},
         "block_reward": {
             "title": "Вознаграждение за блок",
             "subject": "Аккаунт"
-        }
+        },
+        "evm_address_register": {
+			"title": "Регистрация EVM адреса",
+			"from": "Владелец",
+			"subject": "EVM адрес"
+		}
     },
     "send": {
         "loading": "Транзакция обрабатывается",

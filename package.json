@@ -1,7 +1,7 @@
 {
   "name": "blip-wallet",
   "productName": "BlipWallet",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Blip Wallet",
   "scripts": {
     "web": "cross-env NODE_ENV=development node --trace-warnings -r @babel/register ./node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack-configs/webpack.config.web.babel.js --mode development --progress --colors --history-api-fallback --hot --inline",
@@ -245,7 +245,7 @@
     "connected-react-router": "^5.0.1",
     "crypto-random-string": "^1.0.0",
     "devtron": "^1.4.0",
-    "echojs-lib": "1.10.0-rc.1",
+    "echojs-lib": "^1.12.3-rc.0",
     "echojs-ping": "^0.1.5",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",

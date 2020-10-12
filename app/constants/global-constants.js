@@ -14,7 +14,7 @@ export const SCRYPT_ALGORITHM_PARAMS = {
 export const ALGORITHM_IV_BYTES_LENGTH = 16;
 
 
-export const DEFAULT_NETWORK_ID = 'testnet';
+export const DEFAULT_NETWORK_ID = 'devnet';
 export const NETWORK_STATUS = {
 	ONLINE: 'online',
 	OFFLINE: 'offline',
